@@ -1,5 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#E9FA06</color>
+    <color name="colorPrimaryDark">#1976D2</color>
+    <color name="colorAccent">#2196F3</color>
+    <color name="titleBarColor">#2196F3</color>
+    <color name="colorPrimaryTransparent">#8d2196F3</color>
+
+    <color name="primary_bg">#171717</color>
+    <color name="green">#68DA89</color>
+    <color name="gray_bg">#F3F5F7</color>
+
+    <color name="primary_text">#171922</color>
+    <color name="secondary_text">#171717</color>
+    <color name="text_33">#333333</color>
+    <color name="text_99">#999999</color>
+    <color name="text_gray">#959EB1</color>
+    <color name="text_red">#FF2C55</color>
+    <color name="text_gold">#B05D17</color>
+    <color name="tab_unselected">#969FA8</color>
+
+
+    <color name="dialog_bg_black">#99000000</color>
+
+
+    <color name="hint_text">#61000000</color>
+    <color name="divider_color">#ffeeeeee</color>
+
+    <color name="windowBackground">#FAFAFA</color>
+    <color name="surface">#FFFFFF</color>
+    <color name="background_secondary">#F9F9F9</color>
+
+    <color name="white">#FFFFFF</color>
+    <color name="white_90">#E6FFFFFF</color>
+    <color name="transparent">#00000000</color>
+    <color name="black">#000000</color>
+
+    <color name="error_color">#F44336</color>
+    <color name="success_color">#68DA89</color>
+    <color name="warning_color">#FF9800</color>
+    <color name="chinaHoliDay">#e10015</color>
+
+    <color name="pressed_state">#0A000000</color>
+    <color name="ripple_color">#1F000000</color>
+
+    <color name="text_primary">#333333</color>
+    <color name="text_hint">#969FA8</color>
+
+
 </resources>

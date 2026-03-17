@@ -26,6 +26,7 @@
         android:value="false"/>
 
     <application
+        android:name=".ui.App"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -37,7 +38,7 @@
         android:requestLegacyExternalStorage="true"
         android:enableOnBackInvokedCallback="true"
         tools:replace="android:allowBackup,android:fullBackupContent,android:dataExtractionRules"
-        android:theme="@style/Theme.Bridge"
+        android:theme="@style/MyTheme"
         tools:targetApi="33">
         <activity
             android:name=".MainActivity"

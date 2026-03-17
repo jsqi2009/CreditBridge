@@ -1,0 +1,107 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="MyTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- primary color -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+        <!-- statusbar color -->
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@color/colorPrimaryDark</item>
+
+        <!-- navi -->
+        <item name="android:navigationBarColor">@color/white</item>
+
+        <!-- bg -->
+        <item name="android:windowBackground">@color/windowBackground</item>
+
+        <!-- text -->
+        <item name="android:textColorPrimary">@color/primary_text</item>
+        <item name="android:textColorSecondary">@color/secondary_text</item>
+        <item name="android:textColorHint">@color/hint_text</item>
+
+
+
+        <item name="colorControlHighlight">@color/ripple_color</item>
+        <item name="android:overScrollMode">never</item>
+
+
+    </style>
+
+    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:navigationBarColor">@color/colorPrimary</item>
+        <item name="android:windowBackground">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="BottomDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/white</item>
+    </style>
+
+
+    <style name="bottom_tab_title_active">
+        <item name="android:textSize">13sp</item>
+    </style>
+
+    <style name="bottom_tab_title_inactive">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="bottomSheetStyleMy" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="MyBottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/bottomSheetStyleMy</item>
+        <!--<item name="android:backgroundDimEnabled">false</item>-->
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="Dialog.Alert.NoTitle" parent="@style/Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="Dialog.Alert.NoTitle.Popup" parent="@style/Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="Dialog.Alert.NoTitle.Permission.Popup" parent="@style/Dialog.Alert">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/dialog_bg_black</item>
+    </style>
+
+    <style name="Dialog.Alert" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/hint_text</item>
+        <item name="android:lineSpacingExtra">@dimen/margin_4</item>
+    </style>
+
+    <style name="LogingDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+    <style name="CustomSliderLabel" parent="TextAppearance.Material3.LabelLarge.Emphasized">
+        <item name="android:textColor">@android:color/white</item>
+        <item name="backgroundTint">@color/green</item>
+        <item name="cornerRadius">20dp</item>
+    </style>
+
+    <style name="CustomSliderStyle" parent="Widget.Material3.Slider">
+        <item name="labelStyle">@style/CustomSliderLabel</item>
+    </style>
+
+
+</resources>
