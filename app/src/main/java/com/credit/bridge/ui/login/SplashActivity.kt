@@ -21,7 +21,6 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun initRes() {
         super.initRes()
-        enableEdgeToEdge()
 
     }
 }
