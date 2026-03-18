@@ -45,20 +45,26 @@
         android:theme="@style/MyTheme"
         tools:replace="android:allowBackup,android:fullBackupContent,android:dataExtractionRules"
         tools:targetApi="33">
-
+        <activity
+            android:name=".ui.RootActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:exported="false" />
         <activity
             android:name=".ui.login.SplashActivity"
             android:exported="true"
             android:theme="@style/SplashTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
         <activity
             android:name=".MainActivity"
             android:exported="true">

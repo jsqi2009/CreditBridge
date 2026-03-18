@@ -5,7 +5,7 @@ import com.credit.bridge.util.SPCache
 object CacheManager {
 
     var isAgree by SPCache(false)
-    var isLogin by SPCache(false)
+    var isAuth by SPCache(false)
     var isNewCustomer by SPCache(false)
 
     var smsCode by SPCache("")

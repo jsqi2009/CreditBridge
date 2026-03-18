@@ -18,7 +18,7 @@ import com.credit.bridge.widget.GlobalLoading
 
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
-    protected lateinit var views: VB
+    protected lateinit var bindViews: VB
     lateinit var eventBus: AndroidBus
     //loading
     private var loadingDialog: GlobalLoading? = null
@@ -34,7 +34,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
         try {
             doBeforeSetContentView()
-            views = getBinding()
+            bindViews = getBinding()
             initStatus()
 
             initRes()
@@ -47,7 +47,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
                     setTitle(titleRes)
                 }
             }
-            setContentView(views.root)
+            setContentView(bindViews.root)
 
             eventBus = App[this].eventBus
             this.eventBus.register(this)
