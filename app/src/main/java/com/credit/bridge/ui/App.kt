@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
  */
 class App : Application() , DFTransferResultInterface {
 
-    lateinit var myBus: AndroidBus
+    lateinit var eventBus: AndroidBus
 
     var googleAdIdResult: GoogleAdUtils.GoogleAdIDResult? = null
 
@@ -30,9 +30,9 @@ class App : Application() , DFTransferResultInterface {
         super.onCreate()
         instance = this
         SPUtil.init(this)
-        myBus = AndroidBus()
+        eventBus = AndroidBus()
         //HttpClient.init(this, myBus)
-        myBus.register(this)
+        eventBus.register(this)
 
         AppsFlyerLib.getInstance().init("CjXpBDqDEEDA2TthYp7HgV", object :
             AppsFlyerConversionListener {
