@@ -1,5 +1,248 @@
 <resources>
-    <string name="app_name">Bridge</string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">Credit Bridge</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_index">IndexActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_bills">Bills</string>
+    <string name="title_profile">Profile</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="facebook_application_id" translatable="false">YOUR_FACEBOOK_APP_ID</string>
+
+    <!--select login start -->
+    <string name="login_mobile">Mobile number</string>
+    <string name="login_OPT">SMS Code</string>
+    <string name="login_OPT_get">Send Code</string>
+    <string name="login_voice_get">Get Voice Verification</string>
+    <string name="login_login">Sign In</string>
+    <string name="login_privacy">By continuing, you agree to our Privacy Policy.</string>
+    <string name="login_verify_notice_title">Verification Notice</string>
+    <string name="login_verify_notice_desc">We will call the phone number you provided to deliver your verification code via voice call. Please answer the call to complete verification.</string>
+    <string name="login_confirm">Confirm</string>
+
+
+
+    <!--select login end -->
+
+
+    <!--select info start -->
+    <string name="info_title_1">Basic info(1/5)</string>
+    <string name="info_title_2">Contact info(2/5)</string>
+    <string name="info_title_3">Bank info(3/5)</string>
+    <string name="info_title_4">KYC info(4/5)</string>
+    <string name="info_title_5">Liveness info(5/5)</string>
+
+    <string name="info_5_tap">Tap the virtual avatar below to start recognition.</string>
+    <string name="info_5_pop">Daily remaining attempts: </string>
+    <string name="info_5_points">Bullet points</string>
+
+    <string name="info_points_1">Take the photo in a well-lit environment</string>
+    <string name="info_points_2">Do not wear masks, hats, or glasses</string>
+    <string name="info_points_3">Keep your face centered and clearly visible</string>
+    <string name="info_points_4">Look straight at the camera and avoid movement</string>
+    <string name="info_points_5">Only you should appear in the frame</string>
+
+    <string name="info_not_leave_title">Identity Verification</string>
+    <string name="info_not_leave_content">Completing your verification helps us set up your account and ensure secure access. This will only take a moment, and your data is safely protected.</string>
+
+    <string name="info_top_two">Contacts will not be used for repayment reminders or collection purposes.</string>
+    <string name="info_top_three">Accurate bank information is required to confirm your account details.</string>
+    <string name="info_top_four">Please upload clear, valid, and authentic photos of your identity documents.</string>
+    <string name="info_top_five">To verify your identity securely, please complete the face verification process.</string>
+    <string name="info_card_notice">Place the ID card within the frame and ensure the photo is clear and complete.</string>
+    <string name="info_card_pop">Daily remaining photo attempts: </string>
+    <string name="info_card_take">Take Photo</string>
+
+    <string name="info_hint_relationship">Relationship to Contact</string>
+    <string name="info_hint_name">Name</string>
+    <string name="info_hint_phone">Phone Number</string>
+
+    <string name="info_number_limit">Daily limit reached. Try again tomorrow.</string>
+
+    <!--select info end -->
+
+    <!--my start -->
+    <string name="my_please">Sign in to view\nyour account</string>
+    <string name="my_pay">Payment Account</string>
+    <string name="my_private">Privacy Policy</string>
+    <string name="my_about">About us</string>
+    <string name="my_bank">Bank Account</string>
+    <string name="my_setting">Settings</string>
+    <string name="my_bank_ensure">Please ensure your bank account information is accurate.</string>
+    <string name="my_bank_name">Bank Name</string>
+    <string name="my_edit_title">Edit Bank Details</string>
+    <!--my end -->
+
+    <!--hint start -->
+    <string name="hint_enter">Please enter</string>
+    <string name="hint_select">Please Select</string>
+    <!--hint end -->
+
+    <string name="contact_1">Contact 1</string>
+    <string name="contact_2">Contact 2</string>
+
+    <!--permission dialog -->
+    <string name="permission_dialog_title">Permissions</string>
+    <string name="permission_dialog_top_content1">In order to provide you with faster and more convenlent service. we need your authorization below to access to your data.</string>
+    <string name="permission_dialog_top_content2">As loan provider. we will upload your application data to make risk assessment and we commit to your data which will never be leaked to any third party.</string>
+    <string name="permission_dialog_sms">SMS</string>
+    <string name="permission_dialog_sms_content">We collect and monitor only financial and non personal SMS for transaction detalls &amp; amounts to calculate eligibility and assess customer risk Other SMS data is not accessed.</string>
+    <string name="permission_dialog_camera_photo">Camera and Photos</string>
+    <string name="permission_dialog_camera_photo_content">We require camera and photo permission so that you can scan and upload KYC documents. which help us ensure that the loan application Is done by yourself and give you a smooth application experience.</string>
+    <string name="permission_dialog_agree">Agree</string>
+    <string name="permission_dialog_refuse">Refuse</string>
+
+
+    <!--bill fragment  -->
+    <string name="bill_title">Bills</string>
+    <string name="bill_history">History</string>
+    <string name="bill_current">Current</string>
+    <string name="bill_empty_desc">  Your bill details will appear here once you have activity in your account.</string>
+    <string name="bill_default_desc">  Your bill details will appear hereonce you start using your credit limit.</string>
+    <string name="bill_status_process">Processing</string>
+    <string name="bill_status_past_due">Past Due</string>
+    <string name="bill_status_pending">Pending</string>
+    <string name="bill_status_due">Due</string>
+    <string name="bill_status_repaid">Repaid</string>
+    <string name="bill_status_paid">Paid</string>
+    <string name="bill_status_cancel">Canceled</string>
+    <string name="bill_status_closed">Closed</string>
+    <string name="bill_statement1">Credit Option</string>
+    <string name="bill_statement2">Billing Statement 2</string>
+    <string name="bill_statement3">Billing Statement 3</string>
+    <string name="bill_statement4">Billing Statement 4</string>
+    <string name="bill_statement5">Billing Statement 5</string>
+    <string name="bill_statement6">Billing Statement 6</string>
+    <string name="bill_extend_due_date">View Payment Options</string>
+    <string name="bill_pay_now">Make a Payment</string>
+    <string name="bill_dollar_tips1">Settled Amount</string>
+    <string name="bill_dollar_tips2">Outstanding Balance</string>
+    <string name="bill_dollar_tips3">Amount to Use</string>
+    <string name="bill_date_tips1">Created On</string>
+    <string name="bill_date_tips2">Due Date</string>
+    <string name="bill_date_tips3">Settled On</string>
+
+
+    <!--bill details  -->
+    <string name="bill_details_title">Details</string>
+    <string name="bill_details_desc">Review the details of your current statement below.</string>
+    <string name="bill_details_desc2">The request could not be completed. Please review your bank account details and try again. This attempt did not affect your available credit.</string>
+    <string name="bill_details_status">Status</string>
+    <string name="bill_details_statement_id">Statement ID</string>
+    <string name="bill_details_created_on">Created On</string>
+    <string name="bill_details_statement_amount">Statement Amount</string>
+    <string name="bill_details_amount_due">Amount to Due</string>
+    <string name="bill_details_due_date">Due Date</string>
+    <string name="bill_details_past_due_days">Past Due Days</string>
+    <string name="bill_details_past_due_fee">Past Due Fee</string>
+    <string name="bill_details_paid_off_amount">Paid-off Amount</string>
+    <string name="bill_details_paid_off_date">Paid-off Date</string>
+    <string name="bill_details_estimate_amount">Estimated Amount</string>
+    <string name="bill_details_bank_details">Bank Details</string>
+    <string name="bill_details_bank_name">Bank Name</string>
+    <string name="bill_details_account">Account</string>
+    <string name="bill_details_days">Days</string>
+    <string name="bill_details_hours">Hours</string>
+    <string name="bill_details_minutes">Minutes</string>
+    <string name="bill_details_seconds">Seconds</string>
+    <string name="bill_details_record">Record</string>
+    <string name="bill_details_amount">Amount</string>
+    <string name="bill_details_amount_used">Amount to Use</string>
+    <string name="bill_details_outstanding_balance">Outstanding Balance</string>
+    <string name="bill_details_additional_charge">Additional Charge</string>
+    <string name="bill_details_credit_use_extension_fee">Credit Use Extension Fee</string>
+    <string name="bill_details_next_statement_date">Next Statement Date</string>
+    <string name="bill_details_extension">Extension</string>
+    <string name="bill_details_request_not_completed">Request Not Completed</string>
+    <string name="bill_details_cancel_desc">This credit request has been closed. You may submit a new request when available.</string>
+    <string name="bill_details_receive_account">Linked bank account</string>
+    <string name="bill_details_current_due_date">Current Due Date</string>
+    <string name="bill_details_statement_update_charge">Update Charge</string>
+    <string name="bill_details_statement_update">Bill Update</string>
+
+    <!--home page  -->
+    <string name="home_symbol">₹</string>
+    <string name="home_tips">Discover your credit limit and manage your available credit.</string>
+    <string name="home_total_credit_limit">Total Credit Limit</string>
+    <string name="home_credit_desc">This is a revolving credit facility. Terms apply.</string>
+    <string name="home_view_credit_limit">View Credit Limit</string>
+    <string name="home_view_credit_limit_desc">Complete verification to activate your credit limit.</string>
+    <string name="home_manage_credit">Manage Credit</string>
+    <string name="home_online_process">Online Process</string>
+    <string name="home_easy_to_use">Easy to Use</string>
+    <string name="home_service">24/7 Service</string>
+    <string name="home_privacy_protection">Privacy Protection</string>
+    <string name="home_desc1">Responsible usage and timely repayment help maintain your available credit and account status.</string>
+    <string name="home_desc2">Your outstanding balance is past due. Please make a payment to restore your account to good standing.</string>
+    <string name="home_desc3">Your outstanding balance is past due. Please complete your payment to bring your account back to good standing.</string>
+
+
+    <!--toast -->
+    <string name="toast_network_error">Network error</string>
+    <string name="toast_contact_relationship_exist">Contact relationship already exists</string>
+    <string name="toast_invalid_mobile"> Invalid mobile number format</string>
+    <string name="toast_contact_exist">This contact already exists</string>
+    <string name="toast_contact_not_has_phone">This contact does not have a phone number</string>
+    <string name="toast_contact_not_has_name">This contact does not have a name</string>
+    <string name="toast_tap_recognition">Tap the area above to start face recognition</string>
+    <string name="toast_recognition_failed">Face recognition failed</string>
+    <string name="toast_wait_countdown">Please wait for the countdown to finish</string>
+    <string name="toast_agree_terms">Please agree to the terms and conditions</string>
+    <string name="toast_invalid_bank_card">The original bank card number length is incorrect</string>
+    <string name="toast_please_select_rating">Please select a rating</string>
+    <string name="toast_invalid_comment">Comment content cannot be empty</string>
+    <string name="toast_enter_verification_code">Please enter the verification code</string>
+    <string name="toast_enter_bank_name">Please enter the bank name</string>
+    <string name="toast_incorrect_card_number_length">Incorrect card number length</string>
+    <string name="toast_id_info_recognition_failed">ID information could not be recognized. Please re-upload the ID photo.</string>
+    <string name="toast_recognition_attempts_remaining">Recognition attempts remaining: 0</string>
+    <string name="toast_info_incomplete">The submitted information is incomplete</string>
+    <string name="toast_copy_success">Copied successfully</string>
+    <string name="toast_image_upload_failed">Image upload failed</string>
+    <string name="toast_email_format"> Invalid email format</string>
+    <string name="toast_ocr_failed">OCR recognition failed</string>
+    <string name="toast_success">Success</string>
+    <string name="toast_incorrect_mobile_null">Mobile number cannot be empty</string>
+
+
+    <!--product list page  -->
+    <string name="product_title">Credit Usage Selection</string>
+    <string name="product_desc">Select a credit amount to use from your available credit.</string>
+    <string name="product_total">Total Credit Limit:</string>
+    <string name="product_credit_option">Credit Option</string>
+    <string name="product_flexible">Flexible Tenure</string>
+    <string name="product_up_to">Up to</string>
+    <string name="product_days">days</string>
+    <string name="product_amount_to_use">Amount to use：</string>
+    <string name="product_view_details">View Details</string>
+    <string name="product_use_credit_now">Confirm Selection</string>
+
+    <!--product details page  -->
+    <string name="product_details_title">Details</string>
+    <string name="product_details_total_eligible_amount">Total Eligible Amount</string>
+    <string name="product_details_maximum_tenure">Maximum Tenure (days)</string>
+    <string name="product_details_daily_interest_rate">Daily Interest Rate</string>
+    <string name="product_details_receive_account">Linked Bank Account</string>
+    <string name="product_details_bank_desc">This bank account is used for account verification and credit management purposes only.</string>
+
+    <!--success page  -->
+    <string name="success_tips">Thank you for choosing us. If you’re satisfied with our service, we’d appreciate your feedback.</string>
+    <string name="success_top">Your credit request has been successfully submitted.</string>
+    <string name="success_go_home">Detail</string>
+    <string name="success_reminder">Thank you for choosing us.If you’re satisfied with our service, we’d appreciate your feedback.</string>
+    <string name="success_feedback">Share your feedback</string>
+    <string name="success_enter_hint">Please enter</string>
+    <string name="success_submit">Submit</string>
+
+
+
+
+
 </resources>
