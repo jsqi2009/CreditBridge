@@ -3,14 +3,87 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/text_99"
+    android:fitsSystemWindows="true"
+    android:background="@mipmap/home_bg"
+    android:orientation="vertical"
     tools:context=".ui.fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textColor="@color/text_red"
-        android:text="@string/hello_blank_fragment" />
+        android:paddingBottom="@dimen/margin_90"
+        android:orientation="vertical">
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginStart="@dimen/margin_15"
+            android:src="@mipmap/ic_app_name"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_15"
+            android:scaleType="fitXY"
+            android:src="@mipmap/home_top_image"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/ic_access_manage"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_marginTop="@dimen/margin_20"
+            android:background="@mipmap/home_credit_info"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_gravity="center_horizontal"
+                android:text="A revolving credit facility is provided. "
+                android:textColor="#ffffd29f"
+                android:textSize="12sp"
+                />
+
+
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/verified_need_pay_due"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/home_verified_need_pay_due"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/verified_need_pay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/home_verified_need_pay"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/verified_fail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:layout_gravity="center_horizontal"
+            android:src="@mipmap/home_verified_fail"/>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>
