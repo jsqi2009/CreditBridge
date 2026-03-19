@@ -49,12 +49,11 @@ class OrderFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            OrderFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        fun newInstance(): OrderFragment {
+            val args = Bundle()
+            val fragment = OrderFragment()
+            fragment.arguments = args
+            return fragment
+        }
     }
 }

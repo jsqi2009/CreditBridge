@@ -1,10 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.RootActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/mainViewPager"
+        android:layout_width="match_parent"
+        android:paddingBottom="@dimen/margin_90"
+        android:layout_height="match_parent"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_90"
+        android:layout_gravity="center_vertical"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_vertical"
+        android:background="@drawable/shape_bottom_nav_bg"
+        android:elevation="2dp"
+        android:paddingHorizontal="@dimen/margin_8"
+        android:orientation="horizontal">
+
+        <include
+            android:id="@+id/item_home"
+            layout="@layout/layout_bottom_nav_item"/>
+
+        <include
+            android:id="@+id/item_bill"
+            layout="@layout/layout_bottom_nav_item"/>
+
+        <include
+            android:id="@+id/item_profile"
+            layout="@layout/layout_bottom_nav_item"/>
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

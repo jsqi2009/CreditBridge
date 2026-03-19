@@ -11,7 +11,7 @@ import com.credit.bridge.widget.GlobalLoading
 abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     private var _binding: VB? = null
-    protected val views: VB
+    protected val bindViews: VB
         get() = _binding!!
 
     var eventBus: AndroidBus? = null
@@ -26,7 +26,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = getBinding(inflater, container)
         initRes()
-        return views.root
+        return bindViews.root
     }
 
     abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): VB

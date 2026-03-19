@@ -23,7 +23,7 @@ import kotlin.let
 abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
 
     private var _binding: VB? = null
-    protected val views: VB
+    protected val bindViews: VB
         get() = _binding!!
 
     abstract fun getBinding(inflater: LayoutInflater, container: ViewGroup?): VB
@@ -35,7 +35,7 @@ abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDial
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = getBinding(inflater, container)
-        return views.root
+        return bindViews.root
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

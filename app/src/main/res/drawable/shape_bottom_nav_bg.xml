@@ -1,0 +1,39 @@
+<!-- res/drawable/gradient_rounded_border.xml -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- outer -->
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:centerColor="#7F5637"
+                android:endColor="#60250200"
+                android:startColor="#F6EBDC" />
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp"
+                android:topLeftRadius="@dimen/margin_38"
+                android:topRightRadius="@dimen/margin_38" />
+        </shape>
+    </item>
+
+    <!-- inner -->
+    <item
+        android:bottom="0dp"
+        android:left="4dp"
+        android:right="4dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:endColor="#331F02"
+                android:startColor="#1B0302" />
+            <corners
+                android:bottomLeftRadius="0dp"
+                android:bottomRightRadius="0dp"
+                android:topLeftRadius="@dimen/margin_36"
+                android:topRightRadius="@dimen/margin_36" />
+        </shape>
+    </item>
+
+</layer-list>
