@@ -21,6 +21,7 @@
     <color name="text_gray">#959EB1</color>
     <color name="text_red">#FF2C55</color>
     <color name="text_gold">#FFD29F</color>
+    <color name="text_unselected">#A4A5A7</color>
     <color name="tab_unselected">#969FA8</color>
 
 

@@ -52,6 +52,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_55"
             android:background="@drawable/shape_login_input"
+            android:layout_marginTop="@dimen/margin_10"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
             android:paddingHorizontal="@dimen/margin_15"
@@ -71,6 +72,7 @@
                 android:layout_height="wrap_content"
                 android:background="@null"
                 android:hint="@string/hint_enter"
+                android:textColorHint="@color/text_99"
                 android:inputType="phone"
                 android:maxLength="10"
                 android:paddingLeft="15dp"
@@ -82,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="@string/login_OPT"
+            android:text="@string/login_verify_code"
             android:textColor="@color/theme_color"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -90,6 +92,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/margin_55"
+            android:layout_marginTop="@dimen/margin_10"
             android:background="@drawable/shape_login_input"
             android:layout_gravity="center_vertical"
             android:gravity="center_vertical"
@@ -103,6 +106,7 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/hint_enter"
+                android:textColorHint="@color/text_99"
                 android:inputType="number"
                 android:maxLength="4"
                 android:textColor="@color/theme_color"
@@ -112,7 +116,7 @@
                 android:id="@+id/sendTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/login_OPT_get"
+                android:text="@string/login_send"
                 android:textColor="@color/theme_color"
                 android:textSize="@dimen/ts_16"
                 android:textStyle="bold" />
@@ -129,7 +133,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:gravity="center"
-                android:text="@string/login_voice_get"
+                android:text="@string/login_verify_voice"
                 android:textColor="@color/text_gold"
                 android:textSize="15sp" />
         </RelativeLayout>
@@ -146,8 +150,8 @@
             android:layout_marginTop="35dp"
             android:background="@drawable/shape_theme"
             android:gravity="center"
-            android:text="@string/login_login"
-            android:textColor="@color/white"
+            android:text="@string/login"
+            android:textColor="#2E0D05"
             android:textSize="15sp" />
 
         <LinearLayout

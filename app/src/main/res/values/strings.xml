@@ -1,35 +1,29 @@
 <resources>
     <string name="app_name">Credit Bridge</string>
-    <string name="action_settings">Settings</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_index">IndexActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_bills">Bills</string>
-    <string name="title_profile">Profile</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="facebook_application_id" translatable="false">YOUR_FACEBOOK_APP_ID</string>
 
-    <!--select login start -->
+    <string name="tab_home">Home</string>
+    <string name="tab_order">Bills</string>
+    <string name="tab_account">Profile</string>
+
+
+    <string name="btn_continue">Continue</string>
+
+
+    <string name="hint_enter">Please enter</string>
+    <string name="hint_select">Please select</string>
+
+    <!--login -->
     <string name="login_mobile">Mobile number</string>
-    <string name="login_OPT">SMS Code</string>
-    <string name="login_OPT_get">Send Code</string>
-    <string name="login_voice_get">Get Voice Verification</string>
-    <string name="login_login">Sign In</string>
-    <string name="login_privacy">By continuing, you agree to our Privacy Policy.</string>
+    <string name="login">Log in</string>
+    <string name="login_send">Send</string>
+    <string name="login_verify_voice">Verify by voice</string>
+    <string name="login_verify_code">Verification code</string>
+    <string name="login_privacy">By continuing, you accept our Privacy Policy.</string>
     <string name="login_verify_notice_title">Verification Notice</string>
-    <string name="login_verify_notice_desc">We will call the phone number you provided to deliver your verification code via voice call. Please answer the call to complete verification.</string>
-    <string name="login_confirm">Confirm</string>
-
-
-
-    <!--select login end -->
+    <string name="login_voice_verify">Voice verification</string>
+    <string name="login_voice_verify_desc">A call with your one-time code will be made to your mobile number. Please answer to complete this step.</string>
+    <string name="login_complete_later">Confirm</string>
 
 
     <!--select info start -->
@@ -79,11 +73,6 @@
     <string name="my_bank_name">Bank Name</string>
     <string name="my_edit_title">Edit Bank Details</string>
     <!--my end -->
-
-    <!--hint start -->
-    <string name="hint_enter">Please enter</string>
-    <string name="hint_select">Please Select</string>
-    <!--hint end -->
 
     <string name="contact_1">Contact 1</string>
     <string name="contact_2">Contact 2</string>

@@ -23,9 +23,9 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
 
     override fun getBinding() = ActivityRootBinding.inflate(layoutInflater)
 
-    private val tabIcons = listOf(R.drawable.ic_bill, R.drawable.ic_bill, R.drawable.ic_bill)
-    private val tabIconsSelected = listOf(R.drawable.ic_bill, R.drawable.ic_bill, R.drawable.ic_bill)
-    private val tabTexts = listOf(R.string.title_home, R.string.title_bills, R.string.title_profile)
+    private val tabIcons = listOf(R.mipmap.ic_tab_home, R.mipmap.ic_tab_order, R.mipmap.ic_tab_account)
+    private val tabIconsSelected = listOf(R.mipmap.ic_tab_home_select, R.mipmap.ic_tab_order_selected, R.mipmap.ic_tab_account_selected)
+    private val tabTexts = listOf(R.string.tab_home, R.string.tab_order, R.string.tab_account)
     private var exitAppTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +47,9 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
         bindViews.viewPager.adapter = RootAdapter(this)
         bindViews.viewPager.isUserInputEnabled = false
 
-        bindViews.tabHome.navItemRoot.setOnClickListener(this)
-        bindViews.tabOrder.navItemRoot.setOnClickListener(this)
-        bindViews.tabAccount.navItemRoot.setOnClickListener(this)
+        bindViews.tabHome.tabItem.setOnClickListener(this)
+        bindViews.tabOrder.tabItem.setOnClickListener(this)
+        bindViews.tabAccount.tabItem.setOnClickListener(this)
 
         initTabItems()
         initTabItemSelected()
@@ -58,38 +58,35 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
     }
 
     private fun initTabItems() {
-        tabItem(bindViews.tabHome.navItemRoot, 0)
-        tabItem(bindViews.tabOrder.navItemRoot, 1)
-        tabItem(bindViews.tabAccount.navItemRoot, 2)
+        tabItem(bindViews.tabHome.tabItem, 0)
+        tabItem(bindViews.tabOrder.tabItem, 1)
+        tabItem(bindViews.tabAccount.tabItem, 2)
     }
 
     private fun initTabItemSelected() {
-        tabItemSelected(bindViews.tabHome.navItemRoot, true, 0)
-        tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-        tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
+        tabItemSelected(bindViews.tabHome.tabItem, true, 0)
+        tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+        tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun tabItem(tabItem: LinearLayout, position: Int) {
-        val tabIcon = tabItem.findViewById<ImageView>(R.id.nav_item_icon)
-        val tabText = tabItem.findViewById<TextView>(R.id.nav_item_text)
+        val tabIcon = tabItem.findViewById<ImageView>(R.id.item_icon)
+        val tabText = tabItem.findViewById<TextView>(R.id.item_text)
         tabIcon.setImageResource(tabIcons[position])
         tabText.setText(tabTexts[position])
-        tabItem.background = resources.getDrawable(R.drawable.bottom_nav_item_bg, theme)
     }
 
     private fun tabItemSelected(tabItem: LinearLayout, isSelected: Boolean, index : Int) {
         tabItem.isSelected = isSelected
-        val tabIcon = tabItem.findViewById<ImageView>(R.id.nav_item_icon)
-        val tabText = tabItem.findViewById<TextView>(R.id.nav_item_text)
+        val tabIcon = tabItem.findViewById<ImageView>(R.id.item_icon)
+        val tabText = tabItem.findViewById<TextView>(R.id.item_text)
         if (isSelected) {
             tabIcon.setImageResource(tabIconsSelected[index])
-            tabText.setTextColor(resources.getColor(android.R.color.white, theme))
-            tabText.visibility = View.VISIBLE
+            tabText.setTextColor(resources.getColor(R.color.text_gold, theme))
         } else {
             tabIcon.setImageResource(tabIcons[index])
-            tabText.setTextColor(resources.getColor(android.R.color.darker_gray, theme))
-            tabText.visibility = View.GONE
+            tabText.setTextColor(resources.getColor(R.color.text_unselected, theme))
         }
     }
 
@@ -97,43 +94,43 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
          when(v?.id) {
             R.id.tabHome -> {
                 bindViews.viewPager.currentItem = 0
-                tabItemSelected(bindViews.tabHome.navItemRoot, true, 0)
-                tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-                tabItemSelected(bindViews.tabAccount.navItemRoot, false,2)
+                tabItemSelected(bindViews.tabHome.tabItem, true, 0)
+                tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+                tabItemSelected(bindViews.tabAccount.tabItem, false,2)
             }
             R.id.tabOrder -> {
                 bindViews.viewPager.currentItem = 1
-                tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
-                tabItemSelected(bindViews.tabOrder.navItemRoot, true, 1)
-                tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
+                tabItemSelected(bindViews.tabHome.tabItem, false, 0)
+                tabItemSelected(bindViews.tabOrder.tabItem, true, 1)
+                tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
             }
              R.id.tabAccount -> {
                  bindViews.viewPager.currentItem = 2
-                 tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
-                 tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-                 tabItemSelected(bindViews.tabAccount.navItemRoot, true, 2)
+                 tabItemSelected(bindViews.tabHome.tabItem, false, 0)
+                 tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+                 tabItemSelected(bindViews.tabAccount.tabItem, true, 2)
              }
          }
     }
 
     /*private fun bindNavClick() {
-        bindViews.itemHome.navItemRoot.setOnClickListener {
+        bindViews.itemHome.tabItem.setOnClickListener {
             bindViews.viewPager.currentItem = 0
-            tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-            tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-            tabItemSelected(bindViews.tabAccount.navItemRoot, false,2)
+            tabItemSelected(bindViews.itemHome.tabItem, true, 0)
+            tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+            tabItemSelected(bindViews.tabAccount.tabItem, false,2)
         }
-        bindViews.tabOrder.navItemRoot.setOnClickListener {
+        bindViews.tabOrder.tabItem.setOnClickListener {
             bindViews.viewPager.currentItem = 1
-            tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-            tabItemSelected(bindViews.tabOrder.navItemRoot, true, 1)
-            tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
+            tabItemSelected(bindViews.itemHome.tabItem, false, 0)
+            tabItemSelected(bindViews.tabOrder.tabItem, true, 1)
+            tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
         }
-        bindViews.tabAccount.navItemRoot.setOnClickListener {
+        bindViews.tabAccount.tabItem.setOnClickListener {
             bindViews.viewPager.currentItem = 2
-            tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-            tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-            tabItemSelected(bindViews.tabAccount.navItemRoot, true, 2)
+            tabItemSelected(bindViews.itemHome.tabItem, false, 0)
+            tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+            tabItemSelected(bindViews.tabAccount.tabItem, true, 2)
         }
     }*/
 
@@ -143,19 +140,19 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
                 super.onPageSelected(index)
                 when (index) {
                     0 -> {
-                        tabItemSelected(bindViews.tabHome.navItemRoot, true, 0)
-                        tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-                        tabItemSelected(bindViews.tabAccount.navItemRoot, false,2)
+                        tabItemSelected(bindViews.tabHome.tabItem, true, 0)
+                        tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+                        tabItemSelected(bindViews.tabAccount.tabItem, false,2)
                     }
                     1 -> {
-                        tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
-                        tabItemSelected(bindViews.tabOrder.navItemRoot, true, 1)
-                        tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
+                        tabItemSelected(bindViews.tabHome.tabItem, false, 0)
+                        tabItemSelected(bindViews.tabOrder.tabItem, true, 1)
+                        tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
                     }
                     2 -> {
-                        tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
-                        tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
-                        tabItemSelected(bindViews.tabAccount.navItemRoot, true, 2)
+                        tabItemSelected(bindViews.tabHome.tabItem, false, 0)
+                        tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+                        tabItemSelected(bindViews.tabAccount.tabItem, true, 2)
                     }
                 }
             }
@@ -169,9 +166,9 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
     fun onSwitchPageEvent(event: SwitchPageEvent) {
         if (event.pageIndex == 1) {
             views.mainViewPager.currentItem = 1
-            setNavItemSelected(views.itemHome.navItemRoot, false, 0)
-            setNavItemSelected(views.tabOrder.navItemRoot, true, 1)
-            setNavItemSelected(views.tabAccount.navItemRoot, false, 2)
+            setNavItemSelected(views.itemHome.tabItem, false, 0)
+            setNavItemSelected(views.tabOrder.tabItem, true, 1)
+            setNavItemSelected(views.tabAccount.tabItem, false, 2)
         }
     }*/
 

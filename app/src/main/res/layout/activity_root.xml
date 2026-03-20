@@ -26,15 +26,15 @@
 
         <include
             android:id="@+id/tabHome"
-            layout="@layout/layout_bottom_nav_item"/>
+            layout="@layout/layout_bottom_tab_item"/>
 
         <include
             android:id="@+id/tabOrder"
-            layout="@layout/layout_bottom_nav_item"/>
+            layout="@layout/layout_bottom_tab_item"/>
 
         <include
             android:id="@+id/tabAccount"
-            layout="@layout/layout_bottom_nav_item"/>
+            layout="@layout/layout_bottom_tab_item"/>
 
     </LinearLayout>
 
