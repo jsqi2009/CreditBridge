@@ -46,6 +46,12 @@
         tools:replace="android:allowBackup,android:fullBackupContent,android:dataExtractionRules"
         tools:targetApi="33">
         <activity
+            android:name=".ui.order.EditCardActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.order.OrderDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.RootActivity"
             android:exported="false" />
         <activity

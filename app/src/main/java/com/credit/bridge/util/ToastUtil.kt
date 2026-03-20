@@ -120,7 +120,7 @@ class ToastUtil private constructor() {
                 }
                 if (toastView == null) {
                     toastView =
-                        LayoutInflater.from(context).inflate(R.layout.view_custom_toast, null)
+                        LayoutInflater.from(context).inflate(R.layout.layout_custom_toast, null)
                 }
                 (toastView!!.findViewById<View?>(R.id.tvToast) as TextView).text = message
                 if (toastView != null) {
