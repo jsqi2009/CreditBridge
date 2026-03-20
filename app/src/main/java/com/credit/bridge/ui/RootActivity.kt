@@ -1,5 +1,6 @@
 package com.credit.bridge.ui
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
@@ -18,22 +19,22 @@ import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityRootBinding
 import com.squareup.otto.Subscribe
 
-class RootActivity : BaseActivity<ActivityRootBinding>() {
+class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
 
     override fun getBinding() = ActivityRootBinding.inflate(layoutInflater)
 
-    private val navIcons = listOf(R.drawable.ic_bill, R.drawable.ic_bill, R.drawable.ic_bill)
-    private val navIconsSelected = listOf(R.drawable.ic_bill, R.drawable.ic_bill, R.drawable.ic_bill)
-    private val navTexts = listOf(R.string.title_home, R.string.title_bills, R.string.title_profile)
-    var exitTime = 0L
+    private val tabIcons = listOf(R.drawable.ic_bill, R.drawable.ic_bill, R.drawable.ic_bill)
+    private val tabIconsSelected = listOf(R.drawable.ic_bill, R.drawable.ic_bill, R.drawable.ic_bill)
+    private val tabTexts = listOf(R.string.title_home, R.string.title_bills, R.string.title_profile)
+    private var exitAppTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (System.currentTimeMillis() - exitTime > 2000) {
-                    exitTime = System.currentTimeMillis()
+                if (System.currentTimeMillis() - exitAppTime > 2000) {
+                    exitAppTime = System.currentTimeMillis()
                 } else {
                     finish()
                 }
@@ -46,88 +47,122 @@ class RootActivity : BaseActivity<ActivityRootBinding>() {
         bindViews.mainViewPager.adapter = RootAdapter(this)
         bindViews.mainViewPager.isUserInputEnabled = false
 
-        initNavItem(bindViews.itemHome.navItemRoot, 0)
-        initNavItem(bindViews.itemBill.navItemRoot, 1)
-        initNavItem(bindViews.itemProfile.navItemRoot, 2)
+        bindViews.itemHome.navItemRoot.setOnClickListener(this)
+        bindViews.itemBill.navItemRoot.setOnClickListener(this)
+        bindViews.itemProfile.navItemRoot.setOnClickListener(this)
 
-        setNavItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-        setNavItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-        setNavItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
-
-        bindNavClick()
-        bindViewPagerListener()
+        initTabItems()
+        initTabItemSelected()
+        //bindNavClick()
+        addPageChangeListener()
     }
 
-    private fun initNavItem(item: LinearLayout, position: Int) {
-        val icon = item.findViewById<ImageView>(R.id.nav_item_icon)
-        val text = item.findViewById<TextView>(R.id.nav_item_text)
-        icon.setImageResource(navIcons[position])
-        text.setText(navTexts[position])
-        item.background = resources.getDrawable(R.drawable.bottom_nav_item_bg, theme)
+    private fun initTabItems() {
+        tabItem(bindViews.itemHome.navItemRoot, 0)
+        tabItem(bindViews.itemBill.navItemRoot, 1)
+        tabItem(bindViews.itemProfile.navItemRoot, 2)
     }
 
-    private fun setNavItemSelected(item: LinearLayout, isSelected: Boolean, index : Int) {
-        item.isSelected = isSelected
-        val icon = item.findViewById<ImageView>(R.id.nav_item_icon)
-        val text = item.findViewById<TextView>(R.id.nav_item_text)
+    private fun initTabItemSelected() {
+        tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
+        tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+        tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+    }
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun tabItem(tabItem: LinearLayout, position: Int) {
+        val tabIcon = tabItem.findViewById<ImageView>(R.id.nav_item_icon)
+        val tabText = tabItem.findViewById<TextView>(R.id.nav_item_text)
+        tabIcon.setImageResource(tabIcons[position])
+        tabText.setText(tabTexts[position])
+        tabItem.background = resources.getDrawable(R.drawable.bottom_nav_item_bg, theme)
+    }
+
+    private fun tabItemSelected(tabItem: LinearLayout, isSelected: Boolean, index : Int) {
+        tabItem.isSelected = isSelected
+        val tabIcon = tabItem.findViewById<ImageView>(R.id.nav_item_icon)
+        val tabText = tabItem.findViewById<TextView>(R.id.nav_item_text)
         if (isSelected) {
-            icon.setImageResource(navIconsSelected[index])
-            //icon.setColorFilter(resources.getColor(android.R.color.white, theme))
-            text.setTextColor(resources.getColor(android.R.color.white, theme))
-            text.visibility = View.VISIBLE
+            tabIcon.setImageResource(tabIconsSelected[index])
+            tabText.setTextColor(resources.getColor(android.R.color.white, theme))
+            tabText.visibility = View.VISIBLE
         } else {
-            icon.setImageResource(navIcons[index])
-            //icon.setColorFilter(resources.getColor(android.R.color.darker_gray, theme))
-            text.setTextColor(resources.getColor(android.R.color.darker_gray, theme))
-            text.visibility = View.GONE
+            tabIcon.setImageResource(tabIcons[index])
+            tabText.setTextColor(resources.getColor(android.R.color.darker_gray, theme))
+            tabText.visibility = View.GONE
         }
+    }
+
+    override fun onClick(v: View?) {
+         when(v?.id) {
+            R.id.item_home -> {
+                bindViews.mainViewPager.currentItem = 0
+                tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
+                tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+                tabItemSelected(bindViews.itemProfile.navItemRoot, false,2)
+            }
+            R.id.item_bill -> {
+                bindViews.mainViewPager.currentItem = 1
+                tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
+                tabItemSelected(bindViews.itemBill.navItemRoot, true, 1)
+                tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+            }
+             R.id.item_profile -> {
+                 bindViews.mainViewPager.currentItem = 2
+                 tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
+                 tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+                 tabItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
+             }
+         }
     }
 
     private fun bindNavClick() {
         bindViews.itemHome.navItemRoot.setOnClickListener {
             bindViews.mainViewPager.currentItem = 0
-            setNavItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-            setNavItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-            setNavItemSelected(bindViews.itemProfile.navItemRoot, false,2)
+            tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
+            tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+            tabItemSelected(bindViews.itemProfile.navItemRoot, false,2)
         }
         bindViews.itemBill.navItemRoot.setOnClickListener {
             bindViews.mainViewPager.currentItem = 1
-            setNavItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-            setNavItemSelected(bindViews.itemBill.navItemRoot, true, 1)
-            setNavItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+            tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
+            tabItemSelected(bindViews.itemBill.navItemRoot, true, 1)
+            tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
         }
         bindViews.itemProfile.navItemRoot.setOnClickListener {
             bindViews.mainViewPager.currentItem = 2
-            setNavItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-            setNavItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-            setNavItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
+            tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
+            tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+            tabItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
         }
     }
 
-    private fun bindViewPagerListener() {
+    private fun addPageChangeListener() {
         bindViews.mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                super.onPageSelected(position)
-                when (position) {
+            override fun onPageSelected(index: Int) {
+                super.onPageSelected(index)
+                when (index) {
                     0 -> {
-                        setNavItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-                        setNavItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-                        setNavItemSelected(bindViews.itemProfile.navItemRoot, false,2)
+                        tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
+                        tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+                        tabItemSelected(bindViews.itemProfile.navItemRoot, false,2)
                     }
                     1 -> {
-                        setNavItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-                        setNavItemSelected(bindViews.itemBill.navItemRoot, true, 1)
-                        setNavItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+                        tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
+                        tabItemSelected(bindViews.itemBill.navItemRoot, true, 1)
+                        tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
                     }
                     2 -> {
-                        setNavItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-                        setNavItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-                        setNavItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
+                        tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
+                        tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
+                        tabItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
                     }
                 }
             }
         })
     }
+
+
 
 
     /*@Subscribe
