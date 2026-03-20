@@ -44,12 +44,12 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
 
     override fun initRes() {
         super.initRes()
-        bindViews.mainViewPager.adapter = RootAdapter(this)
-        bindViews.mainViewPager.isUserInputEnabled = false
+        bindViews.viewPager.adapter = RootAdapter(this)
+        bindViews.viewPager.isUserInputEnabled = false
 
-        bindViews.itemHome.navItemRoot.setOnClickListener(this)
-        bindViews.itemBill.navItemRoot.setOnClickListener(this)
-        bindViews.itemProfile.navItemRoot.setOnClickListener(this)
+        bindViews.tabHome.navItemRoot.setOnClickListener(this)
+        bindViews.tabOrder.navItemRoot.setOnClickListener(this)
+        bindViews.tabAccount.navItemRoot.setOnClickListener(this)
 
         initTabItems()
         initTabItemSelected()
@@ -58,15 +58,15 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
     }
 
     private fun initTabItems() {
-        tabItem(bindViews.itemHome.navItemRoot, 0)
-        tabItem(bindViews.itemBill.navItemRoot, 1)
-        tabItem(bindViews.itemProfile.navItemRoot, 2)
+        tabItem(bindViews.tabHome.navItemRoot, 0)
+        tabItem(bindViews.tabOrder.navItemRoot, 1)
+        tabItem(bindViews.tabAccount.navItemRoot, 2)
     }
 
     private fun initTabItemSelected() {
-        tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-        tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-        tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+        tabItemSelected(bindViews.tabHome.navItemRoot, true, 0)
+        tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+        tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
     }
 
     @SuppressLint("UseCompatLoadingForDrawables")
@@ -95,67 +95,67 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
 
     override fun onClick(v: View?) {
          when(v?.id) {
-            R.id.item_home -> {
-                bindViews.mainViewPager.currentItem = 0
-                tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-                tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-                tabItemSelected(bindViews.itemProfile.navItemRoot, false,2)
+            R.id.tabHome -> {
+                bindViews.viewPager.currentItem = 0
+                tabItemSelected(bindViews.tabHome.navItemRoot, true, 0)
+                tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+                tabItemSelected(bindViews.tabAccount.navItemRoot, false,2)
             }
-            R.id.item_bill -> {
-                bindViews.mainViewPager.currentItem = 1
-                tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-                tabItemSelected(bindViews.itemBill.navItemRoot, true, 1)
-                tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+            R.id.tabOrder -> {
+                bindViews.viewPager.currentItem = 1
+                tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
+                tabItemSelected(bindViews.tabOrder.navItemRoot, true, 1)
+                tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
             }
-             R.id.item_profile -> {
-                 bindViews.mainViewPager.currentItem = 2
-                 tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-                 tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-                 tabItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
+             R.id.tabAccount -> {
+                 bindViews.viewPager.currentItem = 2
+                 tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
+                 tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+                 tabItemSelected(bindViews.tabAccount.navItemRoot, true, 2)
              }
          }
     }
 
-    private fun bindNavClick() {
+    /*private fun bindNavClick() {
         bindViews.itemHome.navItemRoot.setOnClickListener {
-            bindViews.mainViewPager.currentItem = 0
+            bindViews.viewPager.currentItem = 0
             tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-            tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-            tabItemSelected(bindViews.itemProfile.navItemRoot, false,2)
+            tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+            tabItemSelected(bindViews.tabAccount.navItemRoot, false,2)
         }
-        bindViews.itemBill.navItemRoot.setOnClickListener {
-            bindViews.mainViewPager.currentItem = 1
+        bindViews.tabOrder.navItemRoot.setOnClickListener {
+            bindViews.viewPager.currentItem = 1
             tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-            tabItemSelected(bindViews.itemBill.navItemRoot, true, 1)
-            tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+            tabItemSelected(bindViews.tabOrder.navItemRoot, true, 1)
+            tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
         }
-        bindViews.itemProfile.navItemRoot.setOnClickListener {
-            bindViews.mainViewPager.currentItem = 2
+        bindViews.tabAccount.navItemRoot.setOnClickListener {
+            bindViews.viewPager.currentItem = 2
             tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-            tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-            tabItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
+            tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+            tabItemSelected(bindViews.tabAccount.navItemRoot, true, 2)
         }
-    }
+    }*/
 
     private fun addPageChangeListener() {
-        bindViews.mainViewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+        bindViews.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
             override fun onPageSelected(index: Int) {
                 super.onPageSelected(index)
                 when (index) {
                     0 -> {
-                        tabItemSelected(bindViews.itemHome.navItemRoot, true, 0)
-                        tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-                        tabItemSelected(bindViews.itemProfile.navItemRoot, false,2)
+                        tabItemSelected(bindViews.tabHome.navItemRoot, true, 0)
+                        tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+                        tabItemSelected(bindViews.tabAccount.navItemRoot, false,2)
                     }
                     1 -> {
-                        tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-                        tabItemSelected(bindViews.itemBill.navItemRoot, true, 1)
-                        tabItemSelected(bindViews.itemProfile.navItemRoot, false, 2)
+                        tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
+                        tabItemSelected(bindViews.tabOrder.navItemRoot, true, 1)
+                        tabItemSelected(bindViews.tabAccount.navItemRoot, false, 2)
                     }
                     2 -> {
-                        tabItemSelected(bindViews.itemHome.navItemRoot, false, 0)
-                        tabItemSelected(bindViews.itemBill.navItemRoot, false, 1)
-                        tabItemSelected(bindViews.itemProfile.navItemRoot, true, 2)
+                        tabItemSelected(bindViews.tabHome.navItemRoot, false, 0)
+                        tabItemSelected(bindViews.tabOrder.navItemRoot, false, 1)
+                        tabItemSelected(bindViews.tabAccount.navItemRoot, true, 2)
                     }
                 }
             }
@@ -170,8 +170,8 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
         if (event.pageIndex == 1) {
             views.mainViewPager.currentItem = 1
             setNavItemSelected(views.itemHome.navItemRoot, false, 0)
-            setNavItemSelected(views.itemBill.navItemRoot, true, 1)
-            setNavItemSelected(views.itemProfile.navItemRoot, false, 2)
+            setNavItemSelected(views.tabOrder.navItemRoot, true, 1)
+            setNavItemSelected(views.tabAccount.navItemRoot, false, 2)
         }
     }*/
 

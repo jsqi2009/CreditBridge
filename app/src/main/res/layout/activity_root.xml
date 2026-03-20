@@ -9,7 +9,7 @@
     tools:context=".ui.RootActivity">
 
     <androidx.viewpager2.widget.ViewPager2
-        android:id="@+id/mainViewPager"
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
@@ -25,15 +25,15 @@
         android:orientation="horizontal">
 
         <include
-            android:id="@+id/item_home"
+            android:id="@+id/tabHome"
             layout="@layout/layout_bottom_nav_item"/>
 
         <include
-            android:id="@+id/item_bill"
+            android:id="@+id/tabOrder"
             layout="@layout/layout_bottom_nav_item"/>
 
         <include
-            android:id="@+id/item_profile"
+            android:id="@+id/tabAccount"
             layout="@layout/layout_bottom_nav_item"/>
 
     </LinearLayout>
