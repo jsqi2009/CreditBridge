@@ -9,6 +9,10 @@
     <color name="theme_color">#FFEBD3</color>
     <color name="shape_start_color">#FFE1CC</color>
     <color name="shape_end_color">#D5926D</color>
+    <color name="order_bg">#351003</color>
+
+
+
 
     <color name="primary_bg">#171717</color>
     <color name="green">#68DA89</color>
@@ -21,6 +25,7 @@
     <color name="text_gray">#959EB1</color>
     <color name="text_red">#FF2C55</color>
     <color name="text_gold">#FFD29F</color>
+    <color name="text_selected">#FFEBD3</color>
     <color name="text_unselected">#A4A5A7</color>
     <color name="tab_unselected">#969FA8</color>
 

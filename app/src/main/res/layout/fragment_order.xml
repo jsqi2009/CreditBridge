@@ -1,9 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/order_bg"
     tools:context=".ui.fragments.OrderFragment">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:background="@mipmap/ic_order_top_image">
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_45"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/status_bar_height_37"
+            android:text="@string/bill_title"
+            android:textColor="@color/order_bg"
+            android:textSize="@dimen/ts_18"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:id="@+id/currentLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/currentTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/bill_current"
+                android:textSize="@dimen/ts_20"
+                android:textColor="@color/text_selected"/>
+
+            <ImageView
+                android:id="@+id/currentIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_tab_selected"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/historyLayout"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/historyTab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/bill_history"
+                android:textSize="@dimen/ts_13"
+                android:textColor="@color/text_unselected"/>
+
+            <ImageView
+                android:id="@+id/historyIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_3"
+                android:src="@mipmap/ic_tab_selected"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/defaultView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_30"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/ic_default_empty"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_25"
+                    android:gravity="center"
+                    android:text="@string/bill_empty_desc"
+                    android:textSize="@dimen/ts_12"
+                    android:textColor="@color/text_gray"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>

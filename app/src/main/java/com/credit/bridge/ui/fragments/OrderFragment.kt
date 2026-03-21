@@ -6,48 +6,69 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.credit.bridge.R
+import com.credit.bridge.base.BaseFragment
+import com.credit.bridge.content.ConstConfig
+import com.credit.bridge.databinding.FragmentHomeBinding
+import com.credit.bridge.databinding.FragmentOrderBinding
+import com.credit.bridge.util.ScreenUtil
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener {
+    override fun getBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = FragmentOrderBinding.inflate(inflater, container, false)
 
-/**
- * A simple [Fragment] subclass.
- * Use the [OrderFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class OrderFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+    private var orderType = ConstConfig.ORDER_TYPE_CURRENT
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initAllRes()
+    }
+
+    private fun initAllRes() {
+        bindViews.currentLayout.setOnClickListener(this)
+        bindViews.historyLayout.setOnClickListener(this)
+    }
+
+    private fun fetchBillOrderList() {
+
+        //HttpClient.getOrderList(requireContext(), selectedType,"bill")
+    }
+
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.currentLayout -> {
+                bindViews.currentTab.setTextColor(resources.getColor(R.color.text_selected, null))
+                bindViews.historyTab.setTextColor(resources.getColor(R.color.text_unselected, null))
+                bindViews.currentTab.textSize = 20f
+                bindViews.historyTab.textSize = 13f
+                bindViews.historyIv.visibility = View.GONE
+                bindViews.currentIv.visibility = View.VISIBLE
+
+                orderType = ConstConfig.ORDER_TYPE_CURRENT
+                fetchBillOrderList()
+            }
+            R.id.historyLayout -> {
+                bindViews.historyTab.setTextColor(resources.getColor(R.color.text_selected, null))
+                bindViews.currentTab.setTextColor(resources.getColor(R.color.text_unselected, null))
+                bindViews.historyTab.textSize = 20f
+                bindViews.currentTab.textSize = 13f
+                /*bindViews.historyTab.textSize = ScreenUtil.sp2px(requireActivity(), 20f).toFloat()
+                bindViews.currentTab.textSize = ScreenUtil.sp2px(requireActivity(), 13f).toFloat()*/
+                bindViews.currentIv.visibility = View.GONE
+                bindViews.historyIv.visibility = View.VISIBLE
+
+                orderType = ConstConfig.ORDER_TYPE_CURRENT
+                fetchBillOrderList()
+            }
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_order, container, false)
-    }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment OrderFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(): OrderFragment {
             val args = Bundle()
