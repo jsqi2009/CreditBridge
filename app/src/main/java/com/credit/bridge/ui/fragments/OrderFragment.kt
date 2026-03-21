@@ -1,18 +1,26 @@
 package com.credit.bridge.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
+import com.credit.bridge.adapter.OrderListAdapter
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.FragmentHomeBinding
 import com.credit.bridge.databinding.FragmentOrderBinding
+import com.credit.bridge.inter.OrderItemClickListener
+import com.credit.bridge.remote.bean.OrderInfo
+import com.credit.bridge.ui.order.OrderDetailsActivity
+import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ScreenUtil
 
-class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener {
+class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener, OrderItemClickListener {
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -20,16 +28,24 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
 
 
     private var orderType = ConstConfig.ORDER_TYPE_CURRENT
+    private var orderList: ArrayList<OrderInfo> =  ArrayList()
+    private var mAdapter: OrderListAdapter? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         initAllRes()
+        initListAdapter()
     }
 
     private fun initAllRes() {
         bindViews.currentLayout.setOnClickListener(this)
         bindViews.historyLayout.setOnClickListener(this)
+
+        orderList.add(OrderInfo())
+        orderList.add(OrderInfo())
+        orderList.add(OrderInfo())
+        orderList.add(OrderInfo())
     }
 
     private fun fetchBillOrderList() {
@@ -61,12 +77,32 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
                 bindViews.currentIv.visibility = View.GONE
                 bindViews.historyIv.visibility = View.VISIBLE
 
-                orderType = ConstConfig.ORDER_TYPE_CURRENT
+                orderType = ConstConfig.ORDER_TYPE_HISTORY
                 fetchBillOrderList()
             }
         }
     }
 
+    private fun initListAdapter() {
+
+        bindViews.orderRv.layoutManager = LinearLayoutManager(requireContext())
+        mAdapter = OrderListAdapter(requireActivity(), items = orderList,this)
+        bindViews.orderRv.adapter = mAdapter
+        mAdapter?.notifyDataSetChanged()
+    }
+
+    override fun onItemClick(info: OrderInfo) {
+        if (OrderStatus.getStatusByValue(info.ufzqlyyxash) == OrderStatus.ISSUE_FAILED) {
+            //val intent = Intent(requireContext(), BillTransferFailActivity::class.java)
+            val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
+            intent.putExtra("orderInfo", info)
+            requireContext().startActivity(intent)
+        } else {
+            val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
+            intent.putExtra("orderInfo", info)
+            requireContext().startActivity(intent)
+        }
+    }
 
     companion object {
         @JvmStatic

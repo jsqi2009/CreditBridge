@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:layout_marginBottom="@dimen/margin_15"
+    android:background="@drawable/shape_order_item_bg"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_40"
+        android:paddingHorizontal="@dimen/margin_15"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_centerVertical="true"
+            android:text="Credit Option"
+            android:textColor="#ff2e0d05"
+            android:textSize="13sp"
+            />
+
+
+        <TextView
+            android:id="@+id/paymentOptionsTv"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_marginRight="@dimen/margin_5"
+            android:text="View payment options"
+            android:textColor="@color/order_bg"
+            android:textSize="12sp"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_right_arrow"/>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_marginBottom="@dimen/margin_15"
+        android:background="@color/line_color"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_marginTop="-20dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvAmount"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/ts_19"
+                android:text="100"/>
+
+            <TextView
+                android:id="@+id/tvDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/ts_19"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Processing"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_5"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvAmountDesc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/ts_12"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Billing Statement 1  "/>
+
+            <TextView
+                android:id="@+id/tvDateDesc"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/ts_12"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Processing"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/llBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/margin_15"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tvExtend"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_35"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_6"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:visibility="visible"
+                android:textColor="@color/primary_text"
+                android:textSize="@dimen/ts_10"
+                android:text="@string/bill_extend_due_date"/>
+
+            <TextView
+                android:id="@+id/tvPay"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_35"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textColor="@color/white"
+                android:textSize="@dimen/ts_10"
+                android:text="@string/bill_pay_now"/>
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
