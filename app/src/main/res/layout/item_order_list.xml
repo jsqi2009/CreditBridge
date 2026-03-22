@@ -47,45 +47,44 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="@dimen/margin_15"
-        android:layout_marginBottom="@dimen/margin_15"
         android:background="@color/line_color"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:paddingHorizontal="@dimen/margin_10"
         android:layout_gravity="center_vertical"
         android:gravity="center_vertical"
-        android:layout_marginTop="-20dp"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvAmount"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/ts_19"
-                android:text="100"/>
+                android:layout_marginEnd="@dimen/margin_10"
+                android:text="₹ 1,000"
+                android:textColor="#ff2e0d05"
+                android:textStyle="bold"
+                android:textSize="19sp"
+                />
 
             <TextView
-                android:id="@+id/tvDate"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/ts_19"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:text="Processing"/>
+                android:paddingVertical="@dimen/margin_2"
+                android:paddingHorizontal="@dimen/margin_6"
+                android:background="@drawable/shape_order_status_processing"
+                android:text="Processing"
+                android:textColor="#ff125ce7"
+                android:textSize="12sp" />
+
         </LinearLayout>
 
         <LinearLayout
@@ -97,57 +96,56 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvAmountDesc"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/text_99"
-                android:textSize="@dimen/ts_12"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:text="Billing Statement 1  "/>
+                android:text="Usage amount"
+                android:textColor="#ffc35712"
+                android:textSize="12sp"
+                />
+
+
+            <Space
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"/>
 
             <TextView
                 android:id="@+id/tvDateDesc"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_99"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/margin_34"
+                android:paddingHorizontal="@dimen/margin_15"
+                android:paddingVertical="@dimen/margin_5"
+                android:background="@drawable/shape_order_continue_to_payment"
+                android:textColor="#FFFFFF"
                 android:textSize="@dimen/ts_12"
                 android:gravity="center"
-                android:layout_weight="1"
-                android:text="Processing"/>
+                android:text="Continue to Payment"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/llBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="@dimen/margin_15"
-            android:gravity="center_horizontal"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tvExtend"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/margin_35"
-                android:layout_marginBottom="@dimen/margin_10"
-                android:layout_marginEnd="@dimen/margin_6"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:visibility="visible"
-                android:textColor="@color/primary_text"
-                android:textSize="@dimen/ts_10"
-                android:text="@string/bill_extend_due_date"/>
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/margin_3"
+                android:text="Due date："
+                android:textColor="#ffc35712"
+                android:textSize="12sp"
+                />
 
             <TextView
-                android:id="@+id/tvPay"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/margin_35"
-                android:gravity="center"
-                android:layout_weight="1"
-                android:textColor="@color/white"
-                android:textSize="@dimen/ts_10"
-                android:text="@string/bill_pay_now"/>
+                android:layout_height="wrap_content"
+                android:text="31-12-2025"
+                android:textColor="#2E0D05"
+                android:textSize="12sp"
+                />
+
         </LinearLayout>
 
     </LinearLayout>

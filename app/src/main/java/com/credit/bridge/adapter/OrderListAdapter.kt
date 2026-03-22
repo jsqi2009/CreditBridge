@@ -36,14 +36,14 @@ class OrderListAdapter(
         val itemInfo = items[position]
         /*holder.bindView.tvStatusDesc.text = itemInfo.fwwluzpnudp
         holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_process)*/
-        holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
-        holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-        holder.bindView.tvDate.text = itemInfo.suibvbw
-        holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips1)
+        //holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+        //holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
+        //holder.bindView.tvDate.text = itemInfo.suibvbw
+        //holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips1)
 
         val orderStatus = OrderStatus.getStatusByValue(itemInfo.ufzqlyyxash)
 
-        when (orderStatus) {
+       /* when (orderStatus) {
             OrderStatus.PRE_REVIEW, OrderStatus.ISSUING -> {
                 //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_process)
                 holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
@@ -123,7 +123,7 @@ class OrderListAdapter(
                 holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips3)
                 holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " +  DataFormatUtils.float2Str(itemInfo.oalkejegtgf)
             }
-        }
+        }*/
 
         holder.bindView.root.setOnClickListener {
             listener.onItemClick(itemInfo)
