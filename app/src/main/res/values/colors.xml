@@ -12,6 +12,7 @@
     <color name="order_bg">#351003</color>
     <color name="line_color">#D2AD97</color>
     <color name="details_bg_color">#E9AC58</color>
+    <color name="bank_item_bg_color">#4D2311</color>
 
 
 
@@ -35,7 +36,7 @@
     <color name="dialog_bg_black">#99000000</color>
 
 
-    <color name="hint_text">#61000000</color>
+    <color name="hint_text">#B8A58E</color>
     <color name="divider_color">#ffeeeeee</color>
 
     <color name="windowBackground">#FAFAFA</color>

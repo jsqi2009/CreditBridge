@@ -1,10 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/order_bg"
     tools:context=".ui.order.EditCardActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:orientation="vertical"
+        android:paddingTop="@dimen/status_bar_height_37"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:background="@mipmap/ic_account_top_bg">
+
+        <include
+            android:id="@+id/titleLayout"
+            layout="@layout/layout_title" />
+
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:gravity="center_vertical"
+            android:background="@mipmap/ic_account_payment_bg"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="IFSC：123*******A0"
+                android:textColor="#FFD29F"
+                android:textSize="14sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_gravity="center_horizontal"
+                android:text="123*************12"
+                android:textColor="#FFD29F"
+                android:textSize="24sp"
+                />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/detailsTipsLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingVertical="@dimen/margin_8"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_marginTop="@dimen/margin_15"
+        android:background="@drawable/shape_order_tips_bg"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/margin_15">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Please ensure the bank details you provide are accurate."
+            android:textColor="#FFEBD3"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:paddingVertical="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_15"
+            android:paddingHorizontal="@dimen/margin_15"
+            android:background="@drawable/shape_edit_bank_item_bg"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Current account number"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@null"
+                android:hint="@string/hint_enter"
+                android:textColorHint="@color/hint_text"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/margin_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:background="#784628"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New account number"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@null"
+                android:hint="@string/hint_enter"
+                android:textColorHint="@color/hint_text"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/margin_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:background="#784628"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Re-enter new account number"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@null"
+                android:hint="@string/hint_enter"
+                android:textColorHint="@color/hint_text"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/margin_15" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:background="#784628"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IFSC code"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:background="@null"
+                android:hint="@string/hint_enter"
+                android:textColorHint="@color/hint_text"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/margin_15" />
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_height="54dp"
+        android:background="@drawable/shape_theme"
+        android:gravity="center"
+        android:text="Submit"
+        android:textStyle="bold"
+        android:textColor="#2E0D05"
+        android:textSize="@dimen/ts_18" />
+
+
+</LinearLayout>
