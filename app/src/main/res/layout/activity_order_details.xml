@@ -48,8 +48,51 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_20"
         android:layout_marginTop="-30dp"
         android:src="@mipmap/ic_details_usage_option" />
+
+
+    <include
+        android:id="@+id/processingLayout"
+        layout="@layout/layout_details_processing"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/dueLayout"
+        layout="@layout/layout_details_due"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/overdueLayout"
+        layout="@layout/layout_details_overdue"
+        android:visibility="gone"/>
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_height="54dp"
+        android:background="@drawable/shape_theme"
+        android:gravity="center"
+        android:text="Continue to Payment"
+        android:textColor="#2E0D05"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_height="54dp"
+        android:background="@drawable/shape_view_payment_options"
+        android:gravity="center"
+        android:text="View payment options"
+        android:textColor="#FFEBD3"
+        android:textSize="15sp" />
+
+
+
 
 
 

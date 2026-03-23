@@ -88,6 +88,8 @@
     <dimen name="margin_200">200dp</dimen>
     <dimen name="margin_280">280dp</dimen>
     <dimen name="margin_300">300dp</dimen>
+    <dimen name="margin_120">120dp</dimen>
+    <dimen name="margin_130">130dp</dimen>
 
     <dimen name="dp_40">40dp</dimen>
 
