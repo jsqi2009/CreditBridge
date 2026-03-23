@@ -68,6 +68,26 @@
         layout="@layout/layout_details_overdue"
         android:visibility="gone"/>
 
+    <include
+        android:id="@+id/cancelFrozenLayout"
+        layout="@layout/layout_details_canceled_frozen"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/cancelLayout"
+        layout="@layout/layout_details_canceled"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/extendLayout"
+        layout="@layout/layout_details_extend"
+        android:visibility="gone"/>
+
+    <include
+        android:id="@+id/failureLayout"
+        layout="@layout/layout_details_failure"
+        android:visibility="gone"/>
+
 
 
     <TextView
@@ -77,6 +97,7 @@
         android:background="@drawable/shape_theme"
         android:gravity="center"
         android:text="Continue to Payment"
+        android:textStyle="bold"
         android:textColor="#2E0D05"
         android:textSize="15sp" />
 
@@ -89,6 +110,28 @@
         android:gravity="center"
         android:text="View payment options"
         android:textColor="#FFEBD3"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_height="54dp"
+        android:background="@drawable/shape_theme"
+        android:gravity="center"
+        android:text="Edit Bank Details"
+        android:textStyle="bold"
+        android:textColor="#2E0D05"
+        android:textSize="15sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:layout_height="54dp"
+        android:background="@drawable/shape_theme"
+        android:gravity="center"
+        android:text="Continue"
+        android:textStyle="bold"
+        android:textColor="#2E0D05"
         android:textSize="15sp" />
 
 
