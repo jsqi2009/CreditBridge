@@ -12,6 +12,7 @@ import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityLoginBinding
 import com.credit.bridge.databinding.ActivitySplashBinding
 import com.credit.bridge.ui.RootActivity
+import com.credit.bridge.widget.VerifyBankBottomSheet
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener {
 
@@ -35,7 +36,21 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
     override fun onClick(view: View) {
         when (view.id) {
             R.id.loginTv -> {
-                startActivity(Intent(this@LoginActivity, RootActivity::class.java))
+                //startActivity(Intent(this@LoginActivity, RootActivity::class.java))
+
+                var bankVerifyBottomSheet = VerifyBankBottomSheet(
+                    this,
+                    object : VerifyBankBottomSheet.Listener {
+                        override fun click(code :String) {
+                            /*showLoading()
+                            HttpClient.postBankInfo(this@EditBankActivity,views.tvName.text.toString(),
+                                views.etNewNumber.text.toString().replace(" ",""),
+                                views.etNewNumberRe.text.toString().replace(" ",""),
+                                views.etCode.text.toString().replace(" ",""),
+                                code)*/
+                        }
+                    },"123","7777777")
+                bankVerifyBottomSheet?.show(supportFragmentManager, "")
             }
         }
     }

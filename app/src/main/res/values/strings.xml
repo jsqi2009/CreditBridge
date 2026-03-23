@@ -229,6 +229,8 @@
     <string name="success_feedback">Share your feedback</string>
     <string name="success_enter_hint">Please enter</string>
     <string name="success_submit">Submit</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

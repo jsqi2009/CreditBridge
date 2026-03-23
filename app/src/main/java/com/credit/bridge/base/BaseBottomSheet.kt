@@ -20,7 +20,7 @@ import kotlin.apply
 import kotlin.let
 
 
-abstract class BaseBottomSheetDialogFragment<VB : ViewBinding> : BottomSheetDialogFragment() {
+abstract class BaseBottomSheet<VB : ViewBinding> : BottomSheetDialogFragment() {
 
     private var _binding: VB? = null
     protected val bindViews: VB
