@@ -9,4 +9,48 @@
     android:background="@color/order_bg"
     tools:context=".ui.order.OrderDetailsActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:paddingTop="@dimen/status_bar_height_37"
+        android:background="@drawable/shape_details_top_bg"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/titleLayout"
+            layout="@layout/layout_title" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_16"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_details_notice" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_5"
+                android:text="Check the information regarding your current account activity below."
+                android:textColor="#ff2e0d05"
+                android:includeFontPadding="false"
+                android:textSize="14sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:src="@mipmap/ic_details_usage_option" />
+
+
+
 </LinearLayout>
