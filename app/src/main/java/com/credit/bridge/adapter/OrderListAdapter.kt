@@ -3,22 +3,19 @@ package com.credit.bridge.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.credit.bridge.R
 import com.credit.bridge.base.BaseAdapter
 import com.credit.bridge.databinding.ItemOrderListBinding
-import com.credit.bridge.inter.OrderItemClickListener
+import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
-import com.credit.bridge.util.DataFormatUtils
 import com.credit.bridge.util.OrderStatus
 
 
 class OrderListAdapter(
     private val mContext: Context,
     items: MutableList<OrderInfo>,
-    private val listener: OrderItemClickListener,
+    private val listener: OnItemClickListener,
 ) : BaseAdapter<OrderInfo, OrderListAdapter.BillListViewHolder>(items) {
     override fun onCreateViewHolder(
         parent: ViewGroup,

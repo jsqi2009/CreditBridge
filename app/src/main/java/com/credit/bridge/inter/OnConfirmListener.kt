@@ -3,7 +3,7 @@ package com.credit.bridge.inter
 import com.credit.bridge.remote.bean.OrderInfo
 
 
-interface OrderItemClickListener {
+interface OnConfirmListener {
 
-    fun onItemClick(info: OrderInfo)
+    fun onClick(info: String)
 }

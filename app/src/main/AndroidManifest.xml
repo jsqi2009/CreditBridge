@@ -46,6 +46,9 @@
         tools:replace="android:allowBackup,android:fullBackupContent,android:dataExtractionRules"
         tools:targetApi="33">
         <activity
+            android:name=".ui.verify.VerifyInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.order.EditCardActivity"
             android:exported="false" />
         <activity

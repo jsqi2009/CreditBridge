@@ -10,19 +10,16 @@ import androidx.lifecycle.coroutineScope
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseBottomSheet
 import com.credit.bridge.databinding.BottomSheetVerifyBankBinding
+import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.util.ToastUtil
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class VerifyBankBottomSheet (val mContext: Context, val listener: Listener, var name : String, var cardNo : String)
+class VerifyBankBottomSheet (val mContext: Context, val confirmListener: OnConfirmListener, var name : String, var cardNo : String)
     : BaseBottomSheet<BottomSheetVerifyBankBinding>(), View.OnClickListener {
     private val totalTime = 60
     private var smsTime = totalTime
     private var voiceTime = totalTime
-
-    interface Listener{
-        fun click( code : String)
-    }
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -54,7 +51,7 @@ class VerifyBankBottomSheet (val mContext: Context, val listener: Listener, var 
                     ToastUtil.showLong(requireContext(), "Verification code cannot be empty")
                     return
                 }
-                listener.click(bindViews.etCode.text.toString())
+                confirmListener.onClick(bindViews.etCode.text.toString())
                 dismiss()
             }
             R.id.tv_get_opt -> {

@@ -2,8 +2,6 @@ package com.credit.bridge.ui.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,15 +10,13 @@ import com.credit.bridge.R
 import com.credit.bridge.adapter.OrderListAdapter
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
-import com.credit.bridge.databinding.FragmentHomeBinding
 import com.credit.bridge.databinding.FragmentOrderBinding
-import com.credit.bridge.inter.OrderItemClickListener
+import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.ui.order.OrderDetailsActivity
 import com.credit.bridge.util.OrderStatus
-import com.credit.bridge.util.ScreenUtil
 
-class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener, OrderItemClickListener {
+class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener, OnItemClickListener {
     override fun getBinding(
         inflater: LayoutInflater,
         container: ViewGroup?

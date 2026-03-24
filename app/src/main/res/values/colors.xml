@@ -13,6 +13,8 @@
     <color name="line_color">#D2AD97</color>
     <color name="details_bg_color">#E9AC58</color>
     <color name="bank_item_bg_color">#4D2311</color>
+    <color name="sheet_item_select_color">#2E0D05</color>
+    <color name="sheet_item_color">#C35712</color>
 
 
 
