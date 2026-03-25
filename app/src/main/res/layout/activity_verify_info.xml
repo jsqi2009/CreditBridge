@@ -5,44 +5,98 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@color/order_bg"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/bottom_menu_height_64"
     tools:context=".ui.verify.VerifyInfoActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        android:paddingTop="@dimen/status_bar_height_37"
         android:background="@drawable/shape_details_top_bg"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingTop="@dimen/status_bar_height_37">
 
         <include
             android:id="@+id/titleLayout"
             layout="@layout/layout_title" />
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:layout_marginTop="-80dp"
+        android:background="@mipmap/ic_verify_top_1"
+        android:orientation="horizontal">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_45"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:background="@drawable/shape_order_tips_bg"
+        android:layout_marginTop="@dimen/margin_10"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingHorizontal="@dimen/margin_15">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Kindly confirm that your bank information is correct to validate your account."
+            android:textColor="#ffffebd3"
+            android:textSize="12sp"
+            />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginVertical="@dimen/margin_15"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
-            android:layout_marginHorizontal="@dimen/margin_16"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/ic_details_notice" />
+            <include
+                android:id="@+id/verify1"
+                layout="@layout/layout_verify_1"
+                android:visibility="gone" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_5"
-                android:text="Check the information regarding your current account activity below."
-                android:textColor="#ff2e0d05"
-                android:includeFontPadding="false"
-                android:textSize="14sp"
-                />
+            <include
+                android:id="@+id/verify2"
+                layout="@layout/layout_verify_2"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/verify3"
+                layout="@layout/layout_verify_3" />
         </LinearLayout>
 
-    </LinearLayout>
+
+    </ScrollView>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/margin_50"
+        android:layout_marginHorizontal="@dimen/margin_15"
+        android:background="@drawable/shape_theme"
+        android:gravity="center"
+        android:text="Continue"
+        android:textColor="#2E0D05"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
 
 </LinearLayout>

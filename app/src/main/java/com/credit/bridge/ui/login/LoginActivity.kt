@@ -45,20 +45,20 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
     override fun onClick(view: View) {
         when (view.id) {
             R.id.loginTv -> {
-                //startActivity(Intent(this@LoginActivity, RootActivity::class.java))
+                startActivity(Intent(this@LoginActivity, RootActivity::class.java))
 
-                val bankVerifyBottomSheet = VerifyBankBottomSheet(
+                /*val bankVerifyBottomSheet = VerifyBankBottomSheet(
                     this, object : OnConfirmListener {
                         override fun onClick(info: String) {
-                            /*showLoading()
+                            *//*showLoading()
                             HttpClient.postBankInfo(this@EditBankActivity,views.tvName.text.toString(),
                                 views.etNewNumber.text.toString().replace(" ",""),
                                 views.etNewNumberRe.text.toString().replace(" ",""),
                                 views.etCode.text.toString().replace(" ",""),
-                                code)*/
+                                code)*//*
                         }
                     },"123","7777777")
-                bankVerifyBottomSheet?.show(supportFragmentManager, "")
+                bankVerifyBottomSheet?.show(supportFragmentManager, "")*/
             }
             R.id.sendTv -> {
                 showWorkTypeSheet()
