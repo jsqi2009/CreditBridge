@@ -80,11 +80,32 @@
 
             <include
                 android:id="@+id/verify3"
-                layout="@layout/layout_verify_3" />
+                layout="@layout/layout_verify_3"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/verify4"
+                layout="@layout/layout_verify_4"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/verify5"
+                layout="@layout/layout_verify_5" />
+
         </LinearLayout>
 
 
     </ScrollView>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_5"
+        android:gravity="center_horizontal"
+        android:text="Photo attempts left today: X"
+        android:textColor="#ffffebd3"
+        android:textSize="12sp"
+        />
 
 
     <TextView
