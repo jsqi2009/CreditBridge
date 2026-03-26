@@ -30,6 +30,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.text = "Details"
+
+        bindViews.retryTv.paint.isUnderlineText = true
     }
 
     override fun onClick(v: View?) {

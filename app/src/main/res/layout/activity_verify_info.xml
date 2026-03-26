@@ -86,11 +86,12 @@
             <include
                 android:id="@+id/verify4"
                 layout="@layout/layout_verify_4"
-                android:visibility="gone"/>
+                android:visibility="visible"/>
 
             <include
                 android:id="@+id/verify5"
-                layout="@layout/layout_verify_5" />
+                layout="@layout/layout_verify_5"
+                android:visibility="gone"/>
 
         </LinearLayout>
 
@@ -118,6 +119,57 @@
         android:textColor="#2E0D05"
         android:textSize="18sp"
         android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/stepBtn4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            layout="@layout/layout_verify_line"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_8"
+            android:gravity="center_horizontal"
+            android:text="Photo attempts left today: X"
+            android:textColor="#ffffebd3"
+            android:textSize="12sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/retryTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_30"
+                android:text="Retry"
+                android:textColor="#ffffd29f"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_50"
+                android:layout_marginEnd="@dimen/margin_15"
+                android:background="@drawable/shape_theme"
+                android:gravity="center"
+                android:text="Continue"
+                android:textColor="#2E0D05"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
 
 
 </LinearLayout>
