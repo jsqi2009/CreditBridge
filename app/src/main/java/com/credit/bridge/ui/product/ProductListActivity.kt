@@ -1,5 +1,6 @@
 package com.credit.bridge.ui.product
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -14,6 +15,7 @@ import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.databinding.ActivityProductListBinding
 import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
+import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.ToastUtil
 
 class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnClickListener {
@@ -31,6 +33,9 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
 
     override fun initRes() {
         super.initRes()
+
+        bindViews.titleLayout.titleTv.setOnClickListener(this)
+        bindViews.titleLayout.backIv.setOnClickListener(this)
 
         bindViews.amountSlider.apply {
             min = 1000f
@@ -51,7 +56,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
                 finish()
             }
             R.id.titleTv -> {
-                ToastUtil.showShort(this, "Right")
+                startActivity(Intent(this, ConfirmProductActivity::class.java))
             }
         }
     }
