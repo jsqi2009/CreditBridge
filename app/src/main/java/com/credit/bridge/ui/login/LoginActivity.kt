@@ -1,8 +1,14 @@
 package com.credit.bridge.ui.login
 
+import android.app.Dialog
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.view.Gravity
 import android.view.View
+import android.view.Window
+import android.view.WindowManager
+import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -14,6 +20,7 @@ import com.credit.bridge.databinding.ActivitySplashBinding
 import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.ui.RootActivity
+import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
 import com.credit.bridge.widget.CommonBottomSheet
@@ -39,6 +46,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
 
         bindViews.loginTv.setOnClickListener(this)
         bindViews.sendTv.setOnClickListener(this)
+        bindViews.verifyVoiceTv.setOnClickListener(this)
 
     }
 
@@ -63,6 +71,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             R.id.sendTv -> {
                 showWorkTypeSheet()
             }
+            R.id.verifyVoiceTv -> {
+                DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
+
+                }, onCancel = {
+
+                })
+            }
         }
     }
 
@@ -76,4 +91,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             })
         workTypeSheet.show(supportFragmentManager, "workTypeSheet")
     }
+
+
+
 }
