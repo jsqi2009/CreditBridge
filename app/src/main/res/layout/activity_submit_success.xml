@@ -1,10 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.product.SubmitSuccessActivity">
+    android:paddingBottom="@dimen/bottom_menu_height_64"
+    android:background="@color/order_bg"
+    android:orientation="vertical"
+    tools:context=".ui.product.ConfirmProductActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        android:paddingTop="@dimen/status_bar_height_37"
+        android:background="@mipmap/ic_submit_top"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/titleLayout"
+            layout="@layout/layout_title" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_20"
+            android:src="@mipmap/ic_success_text"/>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-100dp"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:src="@mipmap/ic_submit_success"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="Thank you for your submission. "
+            android:textColor="#FFD29F"
+            android:textSize="16sp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_45"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:background="@drawable/shape_order_tips_bg"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_15">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Your request is being processed. Your feedback is welcome."
+                android:textColor="#ffffebd3"
+                android:textSize="12sp"
+                />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/margin_45"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:background="@drawable/shape_back_to_home"
+            android:layout_marginTop="@dimen/margin_15"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/margin_50">
+
+            <TextView
+                android:layout_width="96dp"
+                android:layout_height="19dp"
+                android:text="Back to Home"
+                android:textColor="#ffffebd3"
+                android:textSize="14sp"
+                />
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_submit_feedback"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_55"
+                android:layout_gravity="center_horizontal"
+                android:src="@mipmap/ic_feedback"/>
+
+            <com.credit.bridge.widget.StarRatingView
+                android:id="@+id/starView"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="@dimen/margin_40"
+                android:layout_height="wrap_content"/>
+
+            <EditText
+                android:id="@+id/etFeedback"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:gravity="top"
+                android:layout_marginHorizontal="@dimen/margin_50"
+                android:padding="@dimen/margin_6"
+                android:hint="Enter..."
+                android:textSize="@dimen/ts_14"
+                android:maxLines="4"
+                android:minLines="4"
+                android:background="@drawable/shape_feedback_input_bg"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/margin_44"
+                android:layout_marginBottom="@dimen/margin_30"
+                android:gravity="center"
+                android:layout_marginHorizontal="@dimen/margin_50"
+                android:background="@drawable/shape_submit_bg"
+                android:text="Submit"
+                android:textColor="#ffffebd3"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+
+
+
+
+</LinearLayout>
