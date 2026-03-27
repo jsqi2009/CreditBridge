@@ -39,7 +39,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="220dp"
+                android:layout_height="210dp"
                 android:background="@mipmap/ic_product_limit_bg"
                 android:layout_marginHorizontal="@dimen/margin_16"
                 android:layout_gravity="center_horizontal"
@@ -89,11 +89,10 @@
 
                 <com.credit.bridge.widget.AmountSliderView
                     android:id="@+id/amountSlider"
-                    android:layout_marginHorizontal="@dimen/margin_15"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginHorizontal="@dimen/margin_15" />
 
 
             </LinearLayout>

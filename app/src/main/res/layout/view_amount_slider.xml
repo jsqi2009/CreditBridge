@@ -37,6 +37,7 @@
 
         <!-- Slider -->
         <com.google.android.material.slider.Slider
+            style="@style/Widget.MySlider"
             android:id="@+id/slider"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -48,7 +49,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:trackHeight="6dp"
-            app:labelBehavior="gone"
             app:trackColorInactive="#784628"
             app:trackColorActive="#FFD29F"
             app:thumbColor="#FFD29F"
