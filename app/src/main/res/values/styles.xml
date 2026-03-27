@@ -108,5 +108,14 @@
         <item name="labelStyle">@style/CustomSliderLabel</item>
     </style>
 
+    <style name="Widget.MySlider" parent="Widget.MaterialComponents.Slider">
+        <item name="labelStyle">@style/Widget.MySlider.Label</item>
+    </style>
+
+    <style name="Widget.MySlider.Label" parent="Widget.MaterialComponents.Tooltip">
+        <item name="android:textColor">#FFEBD3</item>
+        <item name="backgroundTint">#FF6A00</item>
+    </style>
+
 
 </resources>

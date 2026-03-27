@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.databinding.FragmentHomeBinding
+import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import pub.devrel.easypermissions.EasyPermissions
 
@@ -26,12 +27,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     override fun initRes() {
         super.initRes()
         bindViews.accessAccountIv.setOnClickListener(this)
+        bindViews.accessManageIv.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.accessAccountIv -> {
                 startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
+            }
+            R.id.accessManageIv -> {
+                startActivity(Intent(requireActivity(), ProductListActivity::class.java))
             }
         }
     }

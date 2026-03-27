@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- left -->
+        <TextView
+            android:id="@+id/tvMin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_5"
+            android:text="₹1000"
+            android:textColor="#FFEBD3"
+            android:textSize="@dimen/ts_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- right -->
+        <TextView
+            android:id="@+id/tvMax"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_5"
+            android:text="₹5000"
+            android:textColor="#FFEBD3"
+            android:textSize="@dimen/ts_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <!-- Slider -->
+        <com.google.android.material.slider.Slider
+            android:id="@+id/slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:valueFrom="1000"
+            android:valueTo="5000"
+            android:stepSize="100"
+            app:layout_constraintStart_toEndOf="@id/tvMin"
+            app:layout_constraintEnd_toStartOf="@id/tvMax"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:trackHeight="6dp"
+            app:labelBehavior="gone"
+            app:trackColorInactive="#784628"
+            app:trackColorActive="#FFD29F"
+            app:thumbColor="#FFD29F"
+            app:thumbRadius="@dimen/margin_12"
+            app:haloRadius="0dp"/>
+
+        <!-- bubble -->
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="₹4500"
+            android:textColor="#FFEBD3"
+            android:textSize="10sp"
+            android:paddingHorizontal="8dp"
+            android:visibility="visible"
+            tools:ignore="MissingConstraints" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>
