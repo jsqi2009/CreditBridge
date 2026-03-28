@@ -1,10 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/bottom_menu_height_64"
+    android:background="@color/order_bg"
+    android:orientation="vertical"
     tools:context=".ui.account.AboutUsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="225dp"
+        android:paddingTop="@dimen/status_bar_height_37"
+        android:background="@mipmap/ic_pro_details_top"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/titleLayout"
+            layout="@layout/layout_title" />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_logo_image" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginVertical="@dimen/margin_15"
+            android:src="@mipmap/ic_account_app_name" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@mipmap/ic_account_content_bg"
+        android:layout_weight="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_100"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:lineHeight="@dimen/margin_25"
+            android:text="Rupee Cycle follows an “assess first, use when needed” approach. This model provides flexibility while helping users maintain better control over their personal financial planning and credit usage."
+            android:textColor="#ffffebd3"
+            android:textSize="15sp"
+            />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/bottom_menu_height_64"
+    android:background="@color/order_bg"
+    android:orientation="vertical"
+    tools:context=".ui.account.SettingActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="88dp"
+        android:paddingTop="@dimen/status_bar_height_37"
+        android:background="@drawable/shape_details_top_bg"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/titleLayout"
+            layout="@layout/layout_title" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_60"
+            android:src="@mipmap/ic_avatar"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_30"
+            android:text=" Current login mobile number"
+            android:textColor="#ffffebd3"
+            android:textSize="16sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_20"
+            android:text=" +91123*****90"
+            android:textColor="#ffffebd3"
+            android:textSize="22sp"
+            />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_30"
+            android:layout_height="54dp"
+            android:background="@drawable/shape_view_payment_options"
+            android:gravity="center"
+            android:text="Log out"
+            android:textStyle="bold"
+            android:textColor="#FFEBD3"
+            android:textSize="18sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

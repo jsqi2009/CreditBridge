@@ -10,12 +10,11 @@ import androidx.core.view.WindowInsetsCompat
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityAboutUsBinding
-import com.credit.bridge.databinding.ActivityConfirmProductBinding
-import com.credit.bridge.databinding.ActivityPaymentAccountBinding
+import com.credit.bridge.databinding.ActivitySettingBinding
 import com.credit.bridge.ui.product.SubmitSuccessActivity
 
-class AboutUsActivity : BaseActivity<ActivityAboutUsBinding>(), View.OnClickListener {
-    override fun getBinding() = ActivityAboutUsBinding.inflate(layoutInflater)
+class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickListener {
+    override fun getBinding() = ActivitySettingBinding.inflate(layoutInflater)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
