@@ -24,6 +24,7 @@ import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
 import com.credit.bridge.widget.CommonBottomSheet
+import com.credit.bridge.widget.PermissionBottomSheet
 import com.credit.bridge.widget.VerifyBankBottomSheet
 import kotlin.collections.get
 
@@ -69,7 +70,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 bankVerifyBottomSheet?.show(supportFragmentManager, "")*/
             }
             R.id.sendTv -> {
-                showWorkTypeSheet()
+                showPermissionSheet()
             }
             R.id.verifyVoiceTv -> {
                 DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
@@ -81,15 +82,15 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         }
     }
 
-    fun showWorkTypeSheet() {
-        val workTypeSheet = CommonBottomSheet(
+    fun showPermissionSheet() {
+        val permissionSheet = PermissionBottomSheet(
             this,"Employment Status",VerifyInfoUtil.getWorkTypeList(),
             workTypeIndex, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     ToastUtil.showShort(this@LoginActivity, "Select: $index")
                 }
             })
-        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+        permissionSheet.show(supportFragmentManager, "workTypeSheet")
     }
 
 
