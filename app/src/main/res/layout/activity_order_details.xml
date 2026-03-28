@@ -113,6 +113,7 @@
         android:textSize="15sp" />
 
     <TextView
+        android:id="@+id/editBankTv"
         android:layout_width="match_parent"
         android:layout_marginHorizontal="@dimen/margin_15"
         android:layout_height="54dp"

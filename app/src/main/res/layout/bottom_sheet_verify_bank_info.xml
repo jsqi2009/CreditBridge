@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:orientation="vertical"
+    tools:context=".widget.CommonBottomSheet">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_bottom_sheet_bg"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:orientation="horizontal"
+            android:paddingVertical="14dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:includeFontPadding="false"
+                android:layout_marginTop="@dimen/margin_15"
+                android:textColor="#2E0D05"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Verify Bank Information"
+                />
+
+            <ImageView
+                android:id="@+id/dismissIv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:src="@mipmap/ic_common_close" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:paddingVertical="@dimen/margin_20"
+            android:layout_marginTop="@dimen/margin_10"
+            android:paddingHorizontal="@dimen/margin_15"
+            android:background="@drawable/shape_edit_bank_item_bg"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="IFSC"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="123 9204 02A0"
+                android:textColor="#ffffebd3"
+                android:textSize="14sp"
+                />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:background="#784628"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Account number"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:text="1234 1234 1234 1212"
+                android:textColor="#ffffebd3"
+                android:textSize="14sp"
+                />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:background="#784628"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Verification code"
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_15"
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="@string/hint_enter"
+                    android:textColorHint="#B8A58E"
+                    android:inputType="number"
+                    android:maxLength="1"
+                    android:textColor="#ffffebd3"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/sendTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/login_send"
+                    android:textColor="@color/theme_color"
+                    android:textSize="@dimen/ts_16"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginVertical="@dimen/margin_15"
+                android:background="#784628"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/verifyVoiceTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:textStyle="bold"
+                    android:gravity="center"
+                    android:text="@string/login_verify_voice"
+                    android:textColor="#FFEBD3"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_marginBottom="@dimen/margin_30"
+            android:layout_marginTop="@dimen/margin_10"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginEnd="5dp"
+                android:gravity="center"
+                android:layout_height="@dimen/margin_50"
+                android:background="@drawable/shape_permission_refuse"
+                android:text="Cancel"
+                android:textColor="#ff2e0d05"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_height="@dimen/margin_50"
+                android:gravity="center"
+                android:background="@drawable/shape_permission_agree"
+                android:text="Confirm"
+                android:textColor="#ffffffff"
+                android:textSize="18sp"
+                />
+
+        </LinearLayout>
+
+
+
+
+
+
+
+
+    </LinearLayout>
+
+</LinearLayout>

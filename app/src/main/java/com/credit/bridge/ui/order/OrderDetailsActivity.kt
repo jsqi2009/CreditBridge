@@ -25,9 +25,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     override fun initRes() {
         super.initRes()
 
+        bindViews.titleLayout.titleTv.text = "Details"
+
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
-        bindViews.titleLayout.titleTv.text = "Details"
+        bindViews.editBankTv.setOnClickListener(this)
+
     }
 
     override fun onClick(v: View?) {
@@ -37,6 +40,9 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             }
             R.id.titleTv -> {
                 ToastUtil.showShort(this, "Right")
+            }
+            R.id.editBankTv -> {
+                startActivity(Intent(this@OrderDetailsActivity, EditCardActivity::class.java))
             }
         }
     }

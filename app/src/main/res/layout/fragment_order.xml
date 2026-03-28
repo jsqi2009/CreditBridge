@@ -125,9 +125,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_25"
                     android:gravity="center"
-                    android:text="@string/bill_empty_desc"
+                    android:text="  No billing records available yet."
                     android:textSize="@dimen/ts_12"
-                    android:textColor="@color/text_gray"/>
+                    android:textColor="#FFD29F"/>
 
             </LinearLayout>
 

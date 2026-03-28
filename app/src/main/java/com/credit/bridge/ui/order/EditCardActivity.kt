@@ -10,7 +10,11 @@ import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityEditCardBinding
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
+import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.util.ToastUtil
+import com.credit.bridge.util.VerifyInfoUtil
+import com.credit.bridge.widget.PermissionBottomSheet
+import com.credit.bridge.widget.VerifyBankInfoBottomSheet
 
 class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickListener {
 
@@ -29,6 +33,8 @@ override fun initRes() {
     bindViews.titleLayout.backIv.setOnClickListener(this)
     bindViews.titleLayout.titleTv.setOnClickListener(this)
     bindViews.titleLayout.titleTv.text = "Details"
+
+    bindViews.submitTv.setOnClickListener(this)
 }
 
     override fun onClick(v: View?) {
@@ -39,6 +45,20 @@ override fun initRes() {
             R.id.titleTv -> {
                 ToastUtil.showShort(this, "Right")
             }
+            R.id.submitTv -> {
+                showVerifyBankSheet()
+            }
         }
+    }
+
+    private fun showVerifyBankSheet() {
+        val verifyBankInfoBottomSheet = VerifyBankInfoBottomSheet(
+            this,"Employment Status",VerifyInfoUtil.getWorkTypeList(),
+            -1, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    ToastUtil.showShort(this@EditCardActivity, "Select: $index")
+                }
+            })
+        verifyBankInfoBottomSheet.show(supportFragmentManager, "workTypeSheet")
     }
 }
