@@ -1,5 +1,6 @@
 package com.credit.bridge.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,8 @@ import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.databinding.FragmentAccountBinding
 import com.credit.bridge.databinding.FragmentHomeBinding
 import com.credit.bridge.databinding.FragmentOrderBinding
+import com.credit.bridge.ui.account.PaymentAccountActivity
+import com.credit.bridge.ui.product.SubmitSuccessActivity
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListener{
 
@@ -22,7 +25,18 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
         super.onViewCreated(view, savedInstanceState)
     }
 
+    override fun initRes() {
+        super.initRes()
+        bindViews.paymentAccountLl.setOnClickListener(this)
+    }
+
     override fun onClick(v: View?) {
+        when (v?.id) {
+
+            R.id.paymentAccountLl -> {
+                startActivity(Intent(requireActivity(), PaymentAccountActivity::class.java))
+            }
+        }
     }
 
     companion object {
