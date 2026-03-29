@@ -1139,4 +1139,16 @@ object SystemDataUtils {
         }
     }
 
+    @SuppressLint("HardwareIds")
+    fun getAndroidId(): String {
+        return try {
+            Settings.Secure.getString(
+                App.instance.contentResolver,
+                Settings.Secure.ANDROID_ID
+            ) ?: ""
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
 }

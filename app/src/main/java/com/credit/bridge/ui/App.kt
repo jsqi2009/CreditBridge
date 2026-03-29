@@ -7,6 +7,7 @@ import android.util.Log
 import com.appsflyer.AppsFlyerConversionListener
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.content.AndroidBus
+import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.util.GoogleAdUtils
 import com.credit.bridge.util.SPUtil
 import com.liveness.dflivenesslibrary.DFProductResult
@@ -31,7 +32,7 @@ class App : Application() , DFTransferResultInterface {
         instance = this
         SPUtil.init(this)
         eventBus = AndroidBus()
-        //HttpClient.init(this, myBus)
+        HttpClient.init(this, eventBus)
         eventBus.register(this)
 
         initFlyer()

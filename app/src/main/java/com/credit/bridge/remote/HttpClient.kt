@@ -1,0 +1,468 @@
+package com.credit.bridge.remote
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageInfo
+import android.os.Build
+import android.provider.Settings
+import android.text.TextUtils
+import androidx.annotation.RequiresApi
+import androidx.annotation.RequiresPermission
+import androidx.appcompat.app.AppCompatActivity
+import com.appsflyer.AppsFlyerLib
+import com.credit.bridge.R
+import com.credit.bridge.content.AndroidBus
+import com.credit.bridge.content.Contants
+import com.credit.bridge.ui.App
+import com.credit.bridge.util.SystemDataUtils
+import com.google.gson.Gson
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
+import javax.net.ssl.SSLContext
+import javax.net.ssl.SSLSocketFactory
+import javax.net.ssl.X509TrustManager
+import javax.net.ssl.TrustManager
+import java.security.cert.CertificateException
+import java.security.cert.X509Certificate
+
+object HttpClient {
+
+    private val HTTP_RESPONSE_CACHE = 10485760L
+    private val HTTP_TIMEOUT_MS = 60 * 1000
+    private var mHttpApi: HttpApi? = null
+    private var httpClient: OkHttpClient? = null
+    private var mBus: AndroidBus? = null
+    var authorization: String? = null
+    var dispatchClient: DispatchClient? = null
+    var severRootUrl: String? = null
+
+
+    fun init(context: Context, bus: AndroidBus) {
+        severRootUrl = Contants.BASE_SERVER_URL
+        initOkHTTP(context)
+        mBus = bus
+        dispatchClient = DispatchClient(context, mBus!!)
+    }
+
+
+    private fun initOkHTTP(context: Context) {
+        httpClient = provideOkHttpClient(context)
+        initHttpClientApi()
+    }
+
+    private fun provideOkHttpClient(context: Context): OkHttpClient {
+        val loggingInterceptor = HttpLoggingInterceptor()
+        loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
+        val builder = OkHttpClient.Builder()
+        builder.apply {
+            connectTimeout(HTTP_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
+            readTimeout(HTTP_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
+            addInterceptor(loggingInterceptor)
+            addInterceptor { chain ->
+                val original = chain.request()
+                val request = original.newBuilder()
+                chain.proceed(request.build())
+            }
+            createInsecureSslSocketFactory()
+            builder.hostnameVerifier { hostname, session -> true }
+        }
+        return builder.build()
+    }
+    private fun createInsecureSslSocketFactory(): SSLSocketFactory {
+        try {
+            val context = SSLContext.getInstance("TLS")
+            val permissive = object : X509TrustManager {
+                @Throws(CertificateException::class)
+                override fun checkClientTrusted(certs: Array<X509Certificate>, authType: String) {
+                    checkServerTrusted(certs, authType)
+                }
+
+                @Throws(CertificateException::class)
+                override fun checkServerTrusted(chain: Array<X509Certificate>, authType: String) {
+                }
+
+                override fun getAcceptedIssuers(): Array<X509Certificate> {
+                    return arrayOf()
+                }
+            }
+            context.init(null, arrayOf<TrustManager>(permissive), null)
+            return context.socketFactory
+        } catch (e: Exception) {
+            throw AssertionError(e)
+        }
+
+    }
+
+    private fun initHttpClientApi() {
+        try {
+            val restAdapter = Retrofit.Builder()
+                .client(httpClient!!)
+                .baseUrl(severRootUrl!!)
+                //.baseUrl(mSession!!.baseServerURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+
+            mHttpApi = restAdapter.create(HttpApi::class.java)
+        } catch (E: Throwable) {
+
+        }
+
+    }
+
+    private fun getHeaders(mContext: Context): HashMap<String, String> {
+
+        val packageInfo: PackageInfo = mContext.packageManager.getPackageInfo(mContext.packageName, 0)
+        val headerMap: HashMap<String, String> = HashMap<String, String>()
+
+        headerMap["Accept"] = "application/json"
+        headerMap["X-SGIYRD-FPEQWUXJY"] = ""
+        headerMap["X-WRK-ZZPB"] = CacheManager.smsCode
+        headerMap["X-AWNMXNKZ-DPCQJ"] = ""
+        headerMap["X-FWNP-XRNBH"] = CacheManager.token
+        headerMap["X-EXOGETRG-TQQNENCUQU"] = ""//firebase
+        headerMap["X-HNOSNMBQ-UOZ"] = if (TextUtils.isEmpty(CacheManager.afChannel)) "Organic" else CacheManager.afChannel
+        headerMap["X-TQWHMBK-YGR"] = ""
+        headerMap["X-LBQ-PGNOCIG"] = packageInfo.versionCode.toString()
+        headerMap["X-NECBSE-ZNHI"] = ""
+        headerMap["X-TXCDBAD-OQ"] = SystemDataUtils.getAndroidId()
+        headerMap["X-NXH-IZSGJQX-XCON"] = mContext.packageName
+        headerMap["X-KY-CY"] =
+            AppsFlyerLib.getInstance().getAppsFlyerUID(App.instance) ?: ""
+        headerMap["X-IZYEAW-WLXX"] = ""
+        headerMap["X-JAKXSOJABRG"] = ""
+        headerMap["X-HNH-ON"] = ""
+        headerMap["X-HT-UB"] = App.instance.googleAdIdResult?.gaid ?: ""
+        headerMap["X-WFS-YAJC"] = mContext.resources.getString(R.string.app_name)
+        headerMap["X-ILWKWSQO"] = CacheManager.afChannel
+
+        return headerMap
+    }
+
+    /*fun sendSms(mContext: Context, mobile: String, type: String) {
+        val body = RequestSmsBody()
+        body.qfve = type
+        body.sucbzl = mobile
+        val call = mHttpApi!!.requestPostSms(getHeaders(mContext), Contants.URL_SEND_SMS, body)
+        dispatchClient?.enqueue(call, StringResponse::class.java, SmsResponseEvent::class.java)
+    }
+
+    fun ocrPanNumber(mContext: Context) {
+
+        val body = RequestOcrNumberBody()
+        body.qfve = "PAN"
+        val call = mHttpApi!!.ocrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
+        dispatchClient?.enqueue(call, IntResponse::class.java, OcrPanNumberResponseEvent::class.java)
+    }
+
+    fun ocrFaceNumber(mContext: Context) {
+
+        val body = RequestOcrNumberBody()
+        body.qfve = "FACE"
+        val call = mHttpApi!!.ocrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
+        dispatchClient?.enqueue(call, IntResponse::class.java, OcrFaceNumberResponseEvent::class.java)
+    }
+
+    fun ocrPan(mContext: Context, url: String) {
+
+        val body = RequestOcrBody()
+        body.fwadagpin = url
+        val call = mHttpApi!!.ocrPan(getHeaders(mContext), Contants.URL_SAVE_PAN_RESULT, body)
+        dispatchClient?.enqueue(call, OcrResponse::class.java, OcrPanResponseEvent::class.java)
+    }
+
+    fun ocrFace(mContext: Context, url: String) {
+
+        val body = RequestOcrBody()
+        body.fwadagpin = url
+        val call = mHttpApi!!.ocrPan(getHeaders(mContext), Contants.URL_UPLOAD_FACE_IMAGE, body)
+        dispatchClient?.enqueue(call, StringResponse::class.java, OcrFaceResponseEvent::class.java)
+    }
+
+    fun getPrivateUrl(mContext: Context) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap["alfekfdvov"] = "policy"
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
+        dispatchClient?.enqueue(call, StringResponse::class.java, PrivateUrlResponseEvent::class.java)
+    }
+
+    fun getPermissionUrl(mContext: Context) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap["alfekfdvov"] = "declaration"
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
+        dispatchClient?.enqueue(call, StringResponse::class.java, PersissionUrlResponseEvent::class.java)
+    }
+
+    fun getBankInfo(mContext: Context) {
+
+        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_GET_BANK_INFO)
+        dispatchClient?.enqueue(call, BankResponse::class.java, BankInfoResponseEvent::class.java)
+    }
+
+    fun userCredit(mContext: Context) {
+
+        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_USER_CREDIT)
+        dispatchClient?.enqueue(call, UserCreditResponse::class.java, UserCreditResponseEvent::class.java)
+    }
+
+    fun postBankInfo(mContext: Context, bankName: String, cardNo: String,cardNoSecond: String ,bankCode: String,code: String) {
+        val body = RequestBankBody()
+        body.aosqii = cardNo
+        body.fikvylg = bankName
+        body.wqumwrph = bankCode
+        body.pxcvycbjwxnn = cardNoSecond
+        body.kutc = code
+        val call = mHttpApi!!.postBankInfo(getHeaders(mContext), Contants.URL_CHANGE_BACK, body)
+        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionThreeResponseEvent::class.java)
+    }
+
+    fun saveQuestionOne(mContext: Context, childrenNumber: String, email: String, employmentStatues: String, lastEducation: String, maritalStatus: String,
+                        monthlyIcome: String, whatsAppAccount: String) {
+
+        val personalInfo = PersonalInfo()
+        personalInfo.hkalauhobxroaq = childrenNumber
+        personalInfo.zztal = email
+        personalInfo.uhynjkkijdcmdvhvl = employmentStatues
+        personalInfo.ufhjanixbqltq = lastEducation
+        personalInfo.wrxrgcbckiewb = maritalStatus
+        personalInfo.utmytmlcmuso = monthlyIcome
+        personalInfo.egwgclynecudnbh = whatsAppAccount
+        val call = mHttpApi!!.requestPutPersonalInfoOne(getHeaders(mContext), Contants.URL_PRESONAL_INFO, personalInfo)
+
+        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionOneResponseEvent::class.java)
+    }
+
+    fun saveQuestionTwo(mContext: Context, body: ArrayList<RequestContactBody>) {
+
+        val call = mHttpApi!!.requestPutPersonalInfoTwo(getHeaders(mContext), Contants.URL_CONTACT, body)
+        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionTwoResponseEvent::class.java)
+    }
+
+    fun savePanFour(mContext: Context, panNumber: String, fullName: String, birthday: String, gender: String) {
+
+        val panBody = RequestPanBody()
+        panBody.bcikobrx = fullName
+        panBody.gscxhjjfy = panNumber
+        panBody.ticgsg = gender
+        panBody.zcpoxpzb = birthday
+        val call = mHttpApi!!.requestPutPan(getHeaders(mContext), Contants.URL_SAVE_CARD_RESULT, panBody)
+
+        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionFourPanResponseEvent::class.java)
+    }
+
+    fun login(mContext: Context, mobile: String) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.mobile_login] = mobile
+        val call = mHttpApi!!.requestPost1(getHeaders(mContext), Contants.URL_LOGIN_SMS, formMap)
+        dispatchClient!!.enqueue(call, LoginResponse::class.java, LoginResponseEvent::class.java)
+    }
+
+    fun getOrderBank(mContext: Context, cardNo: String) {
+
+        val orderBody = RequestOrderBankBody()
+        orderBody.aosqii = cardNo
+        val call = mHttpApi!!.postOrderBankList(getHeaders(mContext), Contants.URL_ORDER_BANK, orderBody)
+        dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListBankResponseEvent::class.java)
+    }
+
+    fun collectDataIntegrity(mContext: Context) {
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_COLLECT_DATA_INTEGRITY)
+        dispatchClient!!.enqueue(call, CollectDataIntegrityResponse::class.java,
+            CollectDataIntegrityResponseEvent::class.java)
+    }
+
+    fun getPayUrl(mContext: Context,extension : Boolean,loanAppId : String) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.extension] = extension
+        formMap[Contants.loanAppId] = loanAppId
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
+        dispatchClient!!.enqueue(call, StringResponse::class.java,
+            UrlPayResponseEvent::class.java)
+    }
+
+    fun getPayListUrl(mContext: Context,extension : Boolean,loanAppId : String) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.extension] = extension
+        formMap[Contants.loanAppId] = loanAppId
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
+        dispatchClient!!.enqueue(call, StringResponse::class.java,
+            UrlPayListResponseEvent::class.java)
+    }
+
+    fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.extension] = extension
+        formMap[Contants.loanAppId] = loanAppId
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
+        dispatchClient!!.enqueue(call, StringResponse::class.java,
+            UrlPayListBankResponseEvent::class.java)
+    }
+
+    fun getExtensionApplyDetail(mContext: Context, extensionPeriod: Int, loanAppId: Int) {
+
+        val body = ExtensionApplyDetailRequest()
+        body.nhtfrspjg = loanAppId
+        body.tcxjwmpdlhudlcu = extensionPeriod
+
+        val call = mHttpApi!!.requestExtensionApplyDetail(getHeaders(mContext), Contants.URL_APPLY_DETAIL, body)
+        dispatchClient!!.enqueue(call, ExtensionApplyDetailResponse::class.java,
+            ExtensionApplyDetailResponseEvent::class.java)
+    }
+
+    fun getOssParam(mContext: Context) {
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_OSS)
+        dispatchClient!!.enqueue(call, OssParamResponse::class.java, OssParamResponseEvent::class.java)
+    }
+
+    fun getOssParamFace(mContext: Context) {
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_OSS)
+        dispatchClient!!.enqueue(call, OssParamResponse::class.java, OssParamResponseFaceEvent::class.java)
+    }
+
+    fun getOrderList(mContext: Context, type: String,pageIndex: String) {
+
+        val orderBody = OrderRequestBody()
+        orderBody.qfve = type
+
+        val call = mHttpApi!!.requestPostOrderList(getHeaders(mContext), Contants.URL_ORDER_LIST, orderBody)
+        dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListResponseEvent::class.java,pageIndex)
+    }
+
+    fun logout(mContext: Context) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        //formMap[Contants.type] = type
+
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_LOGOUT, formMap)
+        dispatchClient!!.enqueue(call, BResponse::class.java, LogoutResponseEvent::class.java)
+    }
+
+    fun feedback(mContext: Context,body: RequestFeedbackBody) {
+
+        val call = mHttpApi!!.feedback(getHeaders(mContext), Contants.URL_FEEDBACK, body)
+        dispatchClient!!.enqueue(call, BResponse::class.java, FeedbackResponseEvent::class.java)
+    }
+
+
+    fun feedbackConfig(mContext: Context) {
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_FEEDBACK_CONFIG)
+        dispatchClient!!.enqueue(call, FeedbackConfigResponse::class.java, FeedbackConfigResponseEvent::class.java)
+    }
+
+    fun fetchHomeInfo(mContext: Context, body: HomeInfoRequestBody) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+
+        val call = mHttpApi!!.requestGetHomeInfo(getHeaders(mContext), Contants.URL_HOME, body)
+        dispatchClient!!.enqueue(call, HomeInfoResponse::class.java, HomeInfoResponseEvent::class.java)
+    }
+
+
+    fun orderDetails(mContext: Context, body: OrderDetailsRequestBody, pageIndex: String) {
+
+        val call = mHttpApi!!.requestPostOrderDetails(getHeaders(mContext), Contants.URL_ORDER_DETAIL, body)
+        dispatchClient!!.enqueue(call, OrderDetailResponse::class.java, OrderDetailResponseEvent::class.java, pageIndex)
+    }
+
+    @SuppressLint("HardwareIds")
+    fun uploadZipAppList(mContext: Context) {
+
+        var messageBody = RequestZipMessageBody<BasicDataApp>(protocolName = "INSTALLED_APP", data = DataZipUtils.getAppList(mContext))
+        val json = Gson().toJson(messageBody)
+        val zipString = DataZipUtils.getZipData(json)
+        var requestZipBody = RequestZipBody()
+        requestZipBody.sucbzl = CacheConfig.mobile
+        requestZipBody.xjevovy = zipString
+        requestZipBody.gefl = Settings.Secure.getString(MyApplication.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        val call = mHttpApi!!.postZip(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
+        dispatchClient!!.enqueue(call, StringResponse::class.java, ZipAppListResponseEvent::class.java)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.Q)
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
+    @SuppressLint("HardwareIds")
+    fun uploadZipDeviceInfo(mContext: Context) {
+        var messageBody = RequestZipMessageBody<DeviceInfo>(protocolName = "DEVICE_INFO" , data = DataZipUtils.getDeviceInfo(mContext))
+        val json = Gson().toJson(messageBody)
+        val zipString = DataZipUtils.getZipData(json)
+        var requestZipBody = RequestZipBody()
+        requestZipBody.sucbzl = CacheConfig.mobile
+        requestZipBody.xjevovy = zipString
+        requestZipBody.gefl = Settings.Secure.getString(MyApplication.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        val call = mHttpApi!!.postZip(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
+        dispatchClient!!.enqueue(call, StringResponse::class.java, ZipDeviceResponseEvent::class.java)
+    }
+
+
+    *//**
+     * check upload phone info
+     *//*
+    @SuppressLint("HardwareIds")
+    fun checkUploadZip(mContext: Context) {
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.imei_p] = Settings.Secure.getString(MyApplication.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_CHECK_UPLOAD_STATUS, formMap)
+        dispatchClient!!.enqueue(call, BooleanResponse::class.java, CheckZipStatusResponseEvent::class.java)
+    }
+
+
+    *//**
+     * get voice code
+     *//*
+    fun getVoiceCode(mContext: Context, mobile: String) {
+
+        val body = VoiceCodeRequestBody()
+        body.sucbzl = mobile
+        val call = mHttpApi!!.requestPostVoiceCode(getHeaders(mContext), Contants.URL_GET_VOICE, body)
+        dispatchClient?.enqueue(call, StringResponse::class.java, VoiceCodeResponseEvent::class.java)
+    }
+
+    *//**
+     *  get product list
+     *//*
+    fun getProductList(mContext: Context) {
+
+        val call = mHttpApi!!.requestPost1(getHeaders(mContext), Contants.URL_GET_PRODUCTION_INFO)
+        dispatchClient!!.enqueue(call, ProductListResponse::class.java, ProductListResponseEvent::class.java)
+    }
+
+
+    *//**
+     *  apply order
+     *//*
+    fun applyOrder(mContext: Context, applyBody: ArrayList<CreateOrderRequestBody>, pageIndex: String) {
+
+        val eventValue =  HashMap<String, Any>()
+        eventValue[ConstConfig.POINT_LOAN_SUBMIT] = ""
+        AppsFlyerLib.getInstance().logEvent(mContext, ConstConfig.POINT_LOAN_SUBMIT, eventValue)
+        PointUploadUtils.uploadEvent(mContext as AppCompatActivity,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)
+
+        val call = mHttpApi!!.requestPostApplyOrder(getHeaders(mContext), Contants.URL_CREATE_ORDER, applyBody)
+        dispatchClient!!.enqueue(call, BResponse::class.java, ApplyOrderResponseEvent::class.java, pageIndex)
+    }
+
+
+
+    *//**
+     * login
+     *//*
+    fun pointReport(mContext: Context, actionType: String, comment: String, reportType: String) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.actionType] = actionType
+        formMap[Contants.comment] = comment
+        formMap[Contants.reportType] = reportType
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_POINT_REPORT, formMap)
+        dispatchClient!!.enqueue(call, BResponse::class.java, ResponseEvent::class.java)
+    }*/
+
+}
