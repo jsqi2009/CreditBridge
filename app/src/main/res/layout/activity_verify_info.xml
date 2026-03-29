@@ -34,6 +34,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/verifyTipsLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/margin_45"
         android:layout_marginHorizontal="@dimen/margin_15"
@@ -99,6 +100,7 @@
     </ScrollView>
 
     <TextView
+        android:id="@+id/attemptLeftTv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_5"

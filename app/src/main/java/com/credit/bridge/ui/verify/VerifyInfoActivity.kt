@@ -24,6 +24,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     override fun getBinding() = ActivityVerifyInfoBinding.inflate(layoutInflater)
 
+    private var currentStep = 1
+    private var isPanVerifySuccess = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -39,6 +42,16 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.titleLayout.titleTv.text = "Details"
 
         bindViews.retryTv.paint.isUnderlineText = true
+
+
+        bindViews.verify1.root.visibility = View.VISIBLE
+        bindViews.verify2.root.visibility = View.GONE
+        bindViews.verify3.root.visibility = View.GONE
+        bindViews.verify4.root.visibility = View.GONE
+        bindViews.verify5.root.visibility = View.GONE
+        bindViews.verifyTipsLayout.visibility = View.GONE
+        bindViews.stepBtn4.visibility = View.GONE
+        bindViews.attemptLeftTv.visibility = View.GONE
     }
 
     override fun onClick(v: View?) {
