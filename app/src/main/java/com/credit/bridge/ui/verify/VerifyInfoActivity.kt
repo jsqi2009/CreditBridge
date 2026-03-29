@@ -36,13 +36,15 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     override fun initRes() {
         super.initRes()
 
+        bindViews.titleLayout.titleTv.text = "Details"
+        bindViews.titleLayout.rightTv.text = "1/5"
+        bindViews.titleLayout.rightTv.visibility = View.VISIBLE
+
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
-        bindViews.titleLayout.titleTv.text = "Details"
 
         bindViews.retryTv.paint.isUnderlineText = true
-
 
         bindViews.verify1.root.visibility = View.VISIBLE
         bindViews.verify2.root.visibility = View.GONE
