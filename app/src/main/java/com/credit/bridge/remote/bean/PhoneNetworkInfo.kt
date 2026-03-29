@@ -1,0 +1,50 @@
+package com.credit.bridge.remote.bean
+
+class PhoneNetworkInfo {
+    var ip: String? = ""
+    var localMobile: String? = ""
+    var isEmulator: Boolean? = false
+    var isMod: Boolean? = false
+    var isRoot: Boolean? =  false
+    var isDualSim: Boolean? = false
+    var imeiSim1: String? = ""
+    var imeiSim2: String? =  ""
+    var imsiSim1: String? = ""
+    var imsiSim2: String? = ""
+    var isSim1Ready: Boolean? = false
+    var isSim2Ready: Boolean? = false
+    var networkCountryIso: String? = ""
+    var networkOperator: String? = ""
+    var networkOperatorName: String? = ""
+    var networkType: String? = ""
+    var phoneType: String? = ""
+    var simCountryIso: String? = ""
+    var simOperator: String? = ""
+    var simOperatorName: String? = ""
+    var simSerialNumber: String? = ""
+    var getSimState: String? = ""
+    var subscriberId: String? = ""
+    var voiceMailNumber: String? = ""
+    var mcc: String? = ""
+    var mnc: String? = ""
+    var lac: String? = ""
+    var cell: String? = ""
+    var systemId: String? = ""
+    var networkId: String? = ""
+    var radioType: String? = ""
+    var wifiState: String? = ""
+    var ssid: String? = ""
+    var bssid: String? = ""
+    var macAddress: String? = ""
+    var linkSpeed: String? = ""
+    var rssi: String? = ""
+    var supplicantState: String? = ""
+    var hiddenSsid: String? = ""
+    var frequency: String? = ""
+    var dns1: String? = ""
+    var dns2: String? = ""
+    var ipAddress: String? = ""
+    var netmask: String? = ""
+    var gateway: String? = ""
+    var dhcp: String? = ""
+}

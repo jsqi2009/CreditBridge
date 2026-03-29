@@ -34,6 +34,11 @@ class App : Application() , DFTransferResultInterface {
         //HttpClient.init(this, myBus)
         eventBus.register(this)
 
+        initFlyer()
+        getGoogleAd()
+    }
+
+    private fun initFlyer() {
         AppsFlyerLib.getInstance().init("CjXpBDqDEEDA2TthYp7HgV", object :
             AppsFlyerConversionListener {
             override fun onConversionDataSuccess(data: Map<String, Any>) {
@@ -56,7 +61,6 @@ class App : Application() , DFTransferResultInterface {
 
         }, this)
         AppsFlyerLib.getInstance().start(this)
-        getGoogleAd()
     }
 
     private fun getGoogleAd() {
