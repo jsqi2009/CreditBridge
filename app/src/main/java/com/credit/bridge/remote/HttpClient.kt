@@ -14,8 +14,16 @@ import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
+import com.credit.bridge.remote.body.RequestVerifyCodeBody
+import com.credit.bridge.remote.event.BResponseEvent
+import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.VerifyCodeResponseEvent
+import com.credit.bridge.remote.response.BResponse
+import com.credit.bridge.remote.response.CommonResponse
+import com.credit.bridge.remote.response.LoginResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.SystemDataUtils
+import com.google.android.gms.common.internal.service.Common
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -28,6 +36,7 @@ import javax.net.ssl.X509TrustManager
 import javax.net.ssl.TrustManager
 import java.security.cert.CertificateException
 import java.security.cert.X509Certificate
+import kotlin.jvm.java
 
 object HttpClient {
 
@@ -142,13 +151,38 @@ object HttpClient {
         return headerMap
     }
 
-    /*fun sendSms(mContext: Context, mobile: String, type: String) {
-        val body = RequestSmsBody()
+    fun sendVerifyCode(mContext: Context, mobile: String, type: String) {
+        val body = RequestVerifyCodeBody()
         body.qfve = type
         body.sucbzl = mobile
-        val call = mHttpApi!!.requestPostSms(getHeaders(mContext), Contants.URL_SEND_SMS, body)
-        dispatchClient?.enqueue(call, StringResponse::class.java, SmsResponseEvent::class.java)
+        val call = mHttpApi!!.requestPostVerifyCode(getHeaders(mContext), Contants.URL_SEND_SMS, body)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyCodeResponseEvent::class.java)
     }
+
+    fun login(mContext: Context, mobile: String) {
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[RequestParams.mobile_login] = mobile
+        val call = mHttpApi!!.requestPost1(getHeaders(mContext), RequestParams.URL_LOGIN_SMS, formMap)
+        dispatchClient!!.enqueue(call, LoginResponse::class.java, LoginResponseEvent::class.java)
+    }
+
+
+
+    fun eventReport(mContext: Context, tag: String, actionType: String, status: String, reportType: String = "user") {
+
+        val eventType =  HashMap<String, Any>()
+        eventType[tag] = ""
+        AppsFlyerLib.getInstance().logEvent(mContext, tag, eventType)
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[RequestParams.actionType] = actionType
+        formMap[RequestParams.status] = status
+        formMap[RequestParams.reportType] = reportType
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_POINT_REPORT, formMap)
+        dispatchClient!!.enqueue(call, BResponse::class.java, BResponseEvent::class.java)
+    }
+
+    /*
 
     fun ocrPanNumber(mContext: Context) {
 
@@ -255,13 +289,7 @@ object HttpClient {
         dispatchClient?.enqueue(call, StringResponse::class.java, QuestionFourPanResponseEvent::class.java)
     }
 
-    fun login(mContext: Context, mobile: String) {
 
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.mobile_login] = mobile
-        val call = mHttpApi!!.requestPost1(getHeaders(mContext), Contants.URL_LOGIN_SMS, formMap)
-        dispatchClient!!.enqueue(call, LoginResponse::class.java, LoginResponseEvent::class.java)
-    }
 
     fun getOrderBank(mContext: Context, cardNo: String) {
 

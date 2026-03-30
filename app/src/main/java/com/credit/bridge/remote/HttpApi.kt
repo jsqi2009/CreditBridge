@@ -1,5 +1,6 @@
 package com.credit.bridge.remote
 
+import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -17,6 +18,10 @@ import retrofit2.http.Url
 
 
 interface HttpApi {
+
+    @POST
+    fun requestPostVerifyCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVerifyCodeBody): Call<JsonObject>
+
     /*@POST
     fun requestPostSms(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestSmsBody): Call<JsonObject>
 
