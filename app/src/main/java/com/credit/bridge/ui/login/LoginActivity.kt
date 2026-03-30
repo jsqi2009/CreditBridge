@@ -32,6 +32,8 @@ import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.VerifyCodeResponseEvent
+import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
 import com.credit.bridge.util.DialogUtil
@@ -105,8 +107,17 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 HttpClient.sendVerifyCode(this, phone, "login")
             }
             R.id.verifyVoiceTv -> {
+                val phone = bindViews.phoneEt.text.toString().trim()
+                if (phone.isEmpty()) {
+                    ToastUtil.showLong(this,"Mobile number cannot be empty")
+                    return
+                }
+                if(phone.length != 10){
+                    ToastUtil.showLong(this,"Please enter a correct phone number")
+                    return
+                }
                 DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
-
+                    HttpClient.getVoiceCode(this, phone)
                 }, onCancel = {
 
                 })
@@ -166,6 +177,34 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             }
         }else{
             ToastUtil.showLong(this,event.networkError.toString())
+        }
+    }
+
+    @Subscribe
+    fun onVerifyCodeEvent(event: VerifyCodeResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            verifyCodeCountdown()
+        }else{
+            if(event.model != null && event.model?.wuhi == 500){
+                ToastUtil.showLong(this,event.model?.znxbvyn)
+            }else {
+                ToastUtil.showLong(this, event.networkError.toString())
+            }
+        }
+    }
+
+    @Subscribe
+    fun onVerifyVoiceCodeEvent(event: VoiceCodeResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            verifyVoiceCountdown()
+        }else{
+            if(event.model != null && event.model?.wuhi == 500){
+                ToastUtil.showLong(this,event.model?.znxbvyn)
+            }else {
+                ToastUtil.showLong(this, event.networkError.toString())
+            }
         }
     }
 

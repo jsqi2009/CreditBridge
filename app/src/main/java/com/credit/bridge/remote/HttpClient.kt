@@ -15,9 +15,11 @@ import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
+import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
+import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.BResponse
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.remote.response.LoginResponse
@@ -157,6 +159,14 @@ object HttpClient {
         body.sucbzl = mobile
         val call = mHttpApi!!.requestPostVerifyCode(getHeaders(mContext), Contants.URL_SEND_SMS, body)
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyCodeResponseEvent::class.java)
+    }
+
+    fun getVoiceCode(mContext: Context, mobile: String) {
+
+        val body = RequestVoiceCodeBody()
+        body.sucbzl = mobile
+        val call = mHttpApi!!.requestPostVoiceCode(getHeaders(mContext), Contants.URL_GET_VOICE, body)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VoiceCodeResponseEvent::class.java)
     }
 
     fun login(mContext: Context, mobile: String) {
@@ -446,13 +456,7 @@ object HttpClient {
     *//**
      * get voice code
      *//*
-    fun getVoiceCode(mContext: Context, mobile: String) {
 
-        val body = VoiceCodeRequestBody()
-        body.sucbzl = mobile
-        val call = mHttpApi!!.requestPostVoiceCode(getHeaders(mContext), Contants.URL_GET_VOICE, body)
-        dispatchClient?.enqueue(call, StringResponse::class.java, VoiceCodeResponseEvent::class.java)
-    }
 
     *//**
      *  get product list

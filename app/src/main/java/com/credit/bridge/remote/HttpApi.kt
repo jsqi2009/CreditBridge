@@ -1,6 +1,7 @@
 package com.credit.bridge.remote
 
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
+import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -21,6 +22,10 @@ interface HttpApi {
 
     @POST
     fun requestPostVerifyCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVerifyCodeBody): Call<JsonObject>
+
+    @POST
+    fun requestPostVoiceCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVoiceCodeBody): Call<JsonObject>
+
 
     /*@POST
     fun requestPostSms(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestSmsBody): Call<JsonObject>
@@ -93,8 +98,6 @@ interface HttpApi {
     fun requestDeleteId(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String): Call<JsonObject>
 
 /*
-    @POST
-    fun requestPostVoiceCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: VoiceCodeRequestBody): Call<JsonObject>
 
     @POST
     fun requestPostOrderList(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: OrderRequestBody): Call<JsonObject>
