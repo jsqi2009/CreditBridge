@@ -4,8 +4,6 @@ import kotlin.collections.find
 import kotlin.text.isNullOrBlank
 
 /**
- * author : Jason
- * desc   :
  */
 enum class OrderStatus(val desc: String) {
     REJECTED(""),

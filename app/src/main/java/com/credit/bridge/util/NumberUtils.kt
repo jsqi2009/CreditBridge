@@ -72,7 +72,7 @@ import kotlin.text.substring
 import kotlin.text.toIntOrNull
 
 object NumberUtils {
-    fun numberGeneral(
+    fun formatNumber(
         content: String?,
         startLength: Int,
         endLength: Int

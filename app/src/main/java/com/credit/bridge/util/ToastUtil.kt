@@ -11,8 +11,6 @@ import android.widget.Toast
 import com.credit.bridge.R
 
 /**
- * @author wangwentao
- * @date 2017/1/25
  */
 class ToastUtil private constructor() {
 

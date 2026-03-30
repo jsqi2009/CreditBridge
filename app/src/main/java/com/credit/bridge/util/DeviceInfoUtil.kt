@@ -17,7 +17,7 @@ import kotlin.text.startsWith
  */
 object DeviceInfoUtil {
 
-    fun isVirtualMachine(): Boolean {
+    fun isVirtualDevice(): Boolean {
         val build = Build.FINGERPRINT
         val model = Build.MODEL
         val brand = Build.BRAND
@@ -40,7 +40,7 @@ object DeviceInfoUtil {
                 || product.contains("simulator")
     }
 
-    fun isUseVpn(context: Context): Boolean {
+    fun isVpnOpen(context: Context): Boolean {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val networks = cm.allNetworks
 

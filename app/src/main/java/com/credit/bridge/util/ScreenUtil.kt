@@ -3,8 +3,6 @@ package com.credit.bridge.util
 import android.content.Context
 
 /**
- * @author jsqi
- * @time 2019/12/10 10:24
  */
 object ScreenUtil {
 

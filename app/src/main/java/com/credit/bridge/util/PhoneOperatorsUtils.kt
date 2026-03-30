@@ -23,7 +23,7 @@ object PhoneOperatorsUtils {
     private const val INDIA_MCC_2 = "405"
 
 
-    private val INDIA_CARRIER_MAPPING = mapOf(
+    private val CARRIER_MAPPING = mapOf(
         "05" to "Jio", "06" to "Jio", "07" to "Jio", "08" to "Jio",
         "01" to "Airtel", "03" to "Airtel", "04" to "Airtel", "10" to "Airtel",
         "02" to "Vodafone Idea", "09" to "Vodafone Idea", "11" to "Vodafone Idea",
@@ -38,14 +38,14 @@ object PhoneOperatorsUtils {
      * @param simOperator format: MCCMNC (e.g. 40405 → MCC=404, MNC=05)
      * @return Carrier name, returns "Unknown Carrier" if non-Indian/Unknown
      */
-    private fun parseIndiaCarrier(simOperator: String?): String {
-        if (simOperator.isNullOrEmpty() || simOperator.length < 5) {
+    private fun parseCarrier(operator: String?): String {
+        if (operator.isNullOrEmpty() || operator.length < 5) {
             return "Unknown Carrier"
         }
-        val mcc = simOperator.substring(0, 3)
-        val mnc = simOperator.substring(3, 5)
+        val mcc = operator.substring(0, 3)
+        val mnc = operator.substring(3, 5)
         return if (mcc == INDIA_MCC_1 || mcc == INDIA_MCC_2) {
-            INDIA_CARRIER_MAPPING.getOrDefault(mnc.uppercase(Locale.ENGLISH), "Unknown Carrier($mnc)")
+            CARRIER_MAPPING.getOrDefault(mnc.uppercase(Locale.ENGLISH), "Unknown Carrier($mnc)")
         } else {
             "Non-India Carrier($mcc)"
         }
@@ -58,7 +58,7 @@ object PhoneOperatorsUtils {
             return if (!systemCarrier.isNullOrEmpty() && systemCarrier != "unknown") {
                 systemCarrier.uppercase(Locale.ENGLISH)
             } else {
-                parseIndiaCarrier(telephonyManager.simOperator)
+                parseCarrier(telephonyManager.simOperator)
             }
     }
 
@@ -75,7 +75,7 @@ object PhoneOperatorsUtils {
                 val carrier = if (!info.carrierName.isNullOrEmpty()) {
                     info.carrierName.toString().trim().uppercase(Locale.ENGLISH)
                 } else {
-                    parseIndiaCarrier(info.iccId ?: info.mncString)
+                    parseCarrier(info.iccId ?: info.mncString)
                 }
                 when (index) {
                     0 -> sim1Carrier = carrier

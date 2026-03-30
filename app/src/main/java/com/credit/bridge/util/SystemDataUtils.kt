@@ -105,9 +105,9 @@ import kotlin.toString
 
 object SystemDataUtils {
 
-    fun getAppList(context: Context): Array<BaseDeviceInfo> {
+    fun getInstalledAppList(context: Context): Array<BaseDeviceInfo> {
 
-        var list: Array<BaseDeviceInfo> = arrayOf()
+        val list: Array<BaseDeviceInfo> = arrayOf()
         val packageManager = context.packageManager
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)

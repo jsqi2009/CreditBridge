@@ -64,8 +64,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun fetchHomeData() {
 
-        val isVirtualMachine = DeviceInfoUtil.isVirtualMachine()
-        val isUseVpn = DeviceInfoUtil.isUseVpn(requireContext())
+        val isVirtualMachine = DeviceInfoUtil.isVirtualDevice()
+        val isUseVpn = DeviceInfoUtil.isVpnOpen(requireContext())
         val isRoot = DeviceInfoUtil.isRoot()
 
         val vpn = if (isUseVpn) 1 else 0

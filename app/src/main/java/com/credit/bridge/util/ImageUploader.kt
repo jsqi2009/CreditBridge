@@ -12,34 +12,34 @@ import kotlin.text.endsWith
 
 object ImageUploader {
 
-    private const val HTTP_TIMEOUT_MS = 30 * 1000
-    var TAG = "OssImageUploader"
+    private const val TIMEOUT_MS = 30 * 1000
+    private var TAG = "ImageUploader"
     fun uploadImage(
         imagePath: String,
-        ossToken: OSSUploadInfo,
+        ossInfo: OSSUploadInfo,
         callback: Callback
     ) {
 
         val client = OkHttpClient.Builder()
-            .connectTimeout(HTTP_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
-            .writeTimeout(HTTP_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
-            .readTimeout(HTTP_TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
+            .connectTimeout(TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
+            .writeTimeout(TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
+            .readTimeout(TIMEOUT_MS.toLong(), TimeUnit.MILLISECONDS)
             .build()
 
         val file = File(imagePath)
         if (!file.exists()) {
-            val emptyCall = client.newCall(Request.Builder().url("").build())
-            callback.onFailure(emptyCall, IOException("File not found: $imagePath"))
+            val call = client.newCall(Request.Builder().url("").build())
+            callback.onFailure(call, IOException("File not exist: $imagePath"))
             return
         }
         if (file.length() == 0L) {
-            val emptyCall = client.newCall(Request.Builder().url("").build())
-            callback.onFailure(emptyCall, IOException("File is empty: $imagePath"))
+            val call = client.newCall(Request.Builder().url("").build())
+            callback.onFailure(call, IOException("File is empty: $imagePath"))
             return
         }
 
         val fileName = file.name
-        val key = "${ossToken.dwr}$fileName"
+        val key = "${ossInfo.dwr}$fileName"
 
         val mimeType = when {
             imagePath.endsWith(".png", true) -> "image/png"
@@ -54,16 +54,16 @@ object ImageUploader {
             MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("key", key)
-                .addFormDataPart("OSSAccessKeyId", ossToken.lkjhgstwwut)
-                .addFormDataPart("policy", ossToken.qwcsct)
-                .addFormDataPart("signature", ossToken.pokmnjuyh)
+                .addFormDataPart("OSSAccessKeyId", ossInfo.lkjhgstwwut)
+                .addFormDataPart("policy", ossInfo.qwcsct)
+                .addFormDataPart("signature", ossInfo.pokmnjuyh)
                 .addFormDataPart("success_action_status", "200")
                 .addFormDataPart(
                     "file",
                     fileName,
                     file.asRequestBody(mediaType)
                 )
-        }catch (e: Exception){
+        } catch (e: Exception){
             val emptyCall = client.newCall(Request.Builder().url("").build())
             callback.onFailure(emptyCall, IOException("builder build error：${e.message}"))
             return
@@ -71,12 +71,12 @@ object ImageUploader {
 
         val request = try {
              Request.Builder()
-                .url(ossToken.jupm)
+                .url(ossInfo.jupm)
                 .post(builder.build())
                 .build()
         } catch (e: Exception) {
-            val emptyCall = client.newCall(Request.Builder().url("").build())
-            callback.onFailure(emptyCall, IOException("error：${e.message}"))
+            val call = client.newCall(Request.Builder().url("").build())
+            callback.onFailure(call, IOException("error：${e.message}"))
             return
         }
 
@@ -90,7 +90,6 @@ object ImageUploader {
                 val responseBody = response.body?.string() ?: "no body"
 
                 if (responseCode == 200) {
-                    val ossFileUrl = "${ossToken.jupm}$key"
                     callback.onResponse(call, response)
                 } else {
                     callback.onFailure(call, IOException("upload fail: $responseCode, body: $responseBody"))
