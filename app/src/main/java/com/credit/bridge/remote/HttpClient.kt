@@ -14,14 +14,19 @@ import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
+import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.BResponseEvent
+import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
+import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.BResponse
+import com.credit.bridge.remote.response.CheckCollectDataStatusResponse
 import com.credit.bridge.remote.response.CommonResponse
+import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.SystemDataUtils
@@ -176,6 +181,12 @@ object HttpClient {
         dispatchClient!!.enqueue(call, LoginResponse::class.java, LoginResponseEvent::class.java)
     }
 
+    fun checkCollectDataStatus(mContext: Context) {
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_COLLECT_DATA_INTEGRITY)
+        dispatchClient!!.enqueue(call, CheckCollectDataStatusResponse::class.java,
+            CheckCollectDataStatusResponseEvent::class.java)
+    }
+
 
 
     fun eventReport(mContext: Context, tag: String, actionType: String, status: String, reportType: String = "user") {
@@ -190,6 +201,12 @@ object HttpClient {
         formMap[RequestParams.reportType] = reportType
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_POINT_REPORT, formMap)
         dispatchClient!!.enqueue(call, BResponse::class.java, BResponseEvent::class.java)
+    }
+
+    fun getHomeInfo(mContext: Context, body: RequestHomeInfoBody) {
+
+        val call = mHttpApi!!.requestPostHomeInfo(getHeaders(mContext), Contants.URL_HOME, body)
+        dispatchClient!!.enqueue(call, HomeInfoResponse::class.java, HomeInfoResponseEvent::class.java)
     }
 
     /*
@@ -309,11 +326,7 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListBankResponseEvent::class.java)
     }
 
-    fun collectDataIntegrity(mContext: Context) {
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_COLLECT_DATA_INTEGRITY)
-        dispatchClient!!.enqueue(call, CollectDataIntegrityResponse::class.java,
-            CollectDataIntegrityResponseEvent::class.java)
-    }
+
 
     fun getPayUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
@@ -396,13 +409,7 @@ object HttpClient {
         dispatchClient!!.enqueue(call, FeedbackConfigResponse::class.java, FeedbackConfigResponseEvent::class.java)
     }
 
-    fun fetchHomeInfo(mContext: Context, body: HomeInfoRequestBody) {
 
-        val formMap: HashMap<String, Any> = HashMap()
-
-        val call = mHttpApi!!.requestGetHomeInfo(getHeaders(mContext), Contants.URL_HOME, body)
-        dispatchClient!!.enqueue(call, HomeInfoResponse::class.java, HomeInfoResponseEvent::class.java)
-    }
 
 
     fun orderDetails(mContext: Context, body: OrderDetailsRequestBody, pageIndex: String) {

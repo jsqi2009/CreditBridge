@@ -1,5 +1,6 @@
 package com.credit.bridge.remote
 
+import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.google.gson.JsonObject
@@ -26,6 +27,8 @@ interface HttpApi {
     @POST
     fun requestPostVoiceCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVoiceCodeBody): Call<JsonObject>
 
+    @POST
+    fun requestPostHomeInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestHomeInfoBody): Call<JsonObject>
 
     /*@POST
     fun requestPostSms(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestSmsBody): Call<JsonObject>
@@ -102,8 +105,6 @@ interface HttpApi {
     @POST
     fun requestPostOrderList(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: OrderRequestBody): Call<JsonObject>
 
-    @POST
-    fun requestGetHomeInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: HomeInfoRequestBody): Call<JsonObject>
 */
 
 

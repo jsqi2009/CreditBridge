@@ -38,7 +38,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_20"
             android:background="@mipmap/home_credit_info"
             android:orientation="vertical">
@@ -95,7 +95,7 @@
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical"
                 android:orientation="vertical"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -197,7 +197,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -319,8 +320,45 @@
                 android:id="@+id/accessAccountIv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_30"
                 android:layout_gravity="center_horizontal"
-                android:src="@mipmap/access_account_details"/>
+                android:src="@mipmap/access_account_details"
+                android:visibility="gone"/>
+
+
+            <LinearLayout
+                android:id="@+id/startVerifyLl"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_20"
+                android:paddingHorizontal="@dimen/margin_50"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_vertical"
+                android:background="@mipmap/ic_home_identify_start"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="130dp"
+                    android:layout_height="wrap_content"
+                    android:text="	Complete identity verification to proceed."
+                    android:textColor="#ffecdece"
+                    android:textSize="12sp"
+                    />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Start"
+                    android:textColor="#ffffffff"
+                    android:textSize="21sp"
+                    />
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -348,7 +386,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_20"
             android:layout_gravity="center_horizontal"
-            android:src="@mipmap/home_verified_fail"/>
+            android:src="@mipmap/home_verified_fail"
+            android:visibility="gone"/>
 
     </LinearLayout>
 

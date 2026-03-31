@@ -151,8 +151,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         }
         CacheManager.smsCode = code
 
-        showLoading()
-        HttpClient.login(this, code)
+        /*showLoading()
+        HttpClient.login(this, code)*/
+
+        val intent = Intent(this, RootActivity::class.java)
+        startActivity(intent)
 
     }
 

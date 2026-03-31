@@ -30,6 +30,8 @@
     <string name="bill_history">History</string>
     <string name="bill_current">Current</string>
 
+    <string name="money_symbol">₹</string>
+
 
 
 </resources>
