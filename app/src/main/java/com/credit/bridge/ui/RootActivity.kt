@@ -17,6 +17,7 @@ import com.credit.bridge.R
 import com.credit.bridge.adapter.RootAdapter
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityRootBinding
+import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.squareup.otto.Subscribe
 
 class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
@@ -159,17 +160,14 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
         })
     }
 
-
-
-
-    /*@Subscribe
-    fun onSwitchPageEvent(event: SwitchPageEvent) {
+    @Subscribe
+    fun onUpdateTabIndexEvent(event: UpdateTabIndexEvent) {
         if (event.pageIndex == 1) {
-            views.mainViewPager.currentItem = 1
-            setNavItemSelected(views.itemHome.tabItem, false, 0)
-            setNavItemSelected(views.tabOrder.tabItem, true, 1)
-            setNavItemSelected(views.tabAccount.tabItem, false, 2)
+            bindViews.viewPager.currentItem = 1
+            tabItemSelected(bindViews.tabHome.tabItem, false, 0)
+            tabItemSelected(bindViews.tabOrder.tabItem, true, 1)
+            tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
         }
-    }*/
+    }
 
 }

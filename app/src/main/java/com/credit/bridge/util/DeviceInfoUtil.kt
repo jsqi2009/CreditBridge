@@ -1,9 +1,12 @@
 package com.credit.bridge.util
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
+import android.provider.Settings
+import com.credit.bridge.ui.App
 import java.io.BufferedReader
 import java.io.File
 import java.io.InputStreamReader
@@ -90,6 +93,18 @@ object DeviceInfoUtil {
             return false
         } finally {
             process?.destroy()
+        }
+    }
+
+    @SuppressLint("HardwareIds")
+    fun getAndroidId(): String {
+        return try {
+            Settings.Secure.getString(
+                App.instance.contentResolver,
+                Settings.Secure.ANDROID_ID
+            ) ?: ""
+        } catch (e: Exception) {
+            ""
         }
     }
 

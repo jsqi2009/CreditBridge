@@ -1,7 +1,9 @@
 package com.credit.bridge.ui.fragments
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresPermission
 import androidx.appcompat.app.AppCompatActivity
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
@@ -19,7 +22,13 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.HomeInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
+import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
+import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
+import com.credit.bridge.remote.event.UpdateTabIndexEvent
+import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
+import com.credit.bridge.remote.event.UploadSystemResponseEvent
+import com.credit.bridge.ui.order.OrderDetailsActivity
 import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
@@ -27,6 +36,7 @@ import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
 import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, EasyPermissions.PermissionCallbacks{
     override fun getBinding(
@@ -36,9 +46,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
 
     private var isAuthed = false
+    var isCreateOrder = false
     private var isBackFromVerifyInfoPage = false
     var currentStep = 0
     var homeInfo: HomeInfo? = null
+    private var privacyPolicyUrl = ""
+    private val REQUEST_CODE = 1000
+    var zipDone = false
 
 
     private val verifyInfoLauncher =
@@ -73,9 +87,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         when (v?.id) {
             R.id.accessAccountIv -> {
                 startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
+                isCreateOrder = true
+                checkUploadStatus()
             }
-            R.id.accessManageIv -> {
-                startActivity(Intent(requireActivity(), ProductListActivity::class.java))
+            R.id.startVerifyLl -> {
+                startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
+                isCreateOrder = false
+                checkUploadStatus()
+            }
+            R.id.verified_need_pay_due -> {
+                eventBus?.post(UpdateTabIndexEvent(1))
+            }
+            R.id.verified_need_pay -> {
+                eventBus?.post(UpdateTabIndexEvent(1))
+            }
+            R.id.verified_fail -> {
+                if(homeInfo?.dlxzautuylahk != null && homeInfo?.dlxzautuylahk?.isNotEmpty() == true){
+                    val orderInfo = homeInfo?.dlxzautuylahk?.firstOrNull { it ->
+                        OrderStatus.getStatusByValue(it.ufzqlyyxash) == OrderStatus.ISSUE_FAILED
+                    }
+                    if(orderInfo != null){
+                        val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
+                        intent.putExtra("orderInfo", orderInfo)
+                        startActivity(intent)
+                    }
+                }
             }
         }
     }
@@ -119,11 +155,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }
     }
 
-    private fun checkZipStatus() {
+    private fun checkUploadStatus() {
         showLoading()
-        //HttpClient.checkUploadZip(requireContext())
+        HttpClient.checkUploadStatus(requireContext())
     }
-
 
     private fun checkCollectDataStatus() {
         HttpClient.checkCollectDataStatus(requireContext())
@@ -153,11 +188,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             event.model?.blvb?.let {
                 currentStep = it.jkeurrbf
                 if (it.vovobiifulrzpxjxcoqkb) {
-                    bindViews.accessManageIv.visibility = View.VISIBLE
+                    bindViews.accessAccountIv.visibility = View.VISIBLE
                     bindViews.startVerifyLl.visibility = View.GONE
                     isAuthed = true
                 } else {
-                    bindViews.accessManageIv.visibility = View.GONE
+                    bindViews.accessAccountIv.visibility = View.GONE
                     bindViews.startVerifyLl.visibility = View.VISIBLE
                     isAuthed = false
                     bindViews.verifiedNeedPayDue.visibility = View.GONE
@@ -185,6 +220,104 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }
     }
 
+    @Subscribe
+    fun onCheckUploadStatusResponseEvent(event: CheckUploadStatusResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if(event.model?.blvb != true){
+                if(privacyPolicyUrl.isEmpty()) {
+                    HttpClient.getPrivacyPolicyUrl(requireContext())
+                }else{
+                    //showPermissionPopup()
+                }
+            }else{
+                if(isCreateOrder){
+                    previewProduct()
+                }else {
+                    var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                    intent.putExtra("step", currentStep)
+                    verifyInfoLauncher.launch(intent)
+                }
+            }
+        }else{
+            ToastUtil.showLong(requireContext(),event.networkError.toString())
+        }
+    }
+
+    @Subscribe
+    fun onPrivacyPolicyUrlResponseEvent(event: PrivacyPolicyUrlResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            event.model?.blvb?.let {
+                privacyPolicyUrl = it
+                //showPermissionPopup()
+                requestPermissions()
+            }
+        } else {
+            ToastUtil.showLong(requireContext(), event.networkError.toString())
+        }
+    }
+
+    private fun requestPermissions() {
+        try {
+            val perms = arrayOf( Manifest.permission.READ_PHONE_STATE,
+                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
+                uploadInstalledPackageList()
+            } else {
+                EasyPermissions.requestPermissions(
+                    PermissionRequest.Builder(this, REQUEST_CODE, *perms)
+                        .setRationale("Device Permission Required To help identify your device and protect your account, Rupee Cycle requires access to device status information.") //
+                        .setPositiveButtonText("Allow")
+                        .setNegativeButtonText("Deny")
+                        .build()
+                )
+            }
+        } catch (e: Exception) {
+        }
+    }
+
+    private fun uploadInstalledPackageList() {
+        showLoading()
+        HttpClient.uploadInstalledPackageList(requireContext())
+    }
+
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
+    @Subscribe
+    fun onUploadInstalledPackageListResponseEvent(event: UploadInstalledPackageListResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            uploadZipDevice()
+        }else{
+            if(event.model?.wuhi == 500){
+                ToastUtil.showLong(requireContext(),event.model?.znxbvyn.toString())
+            }else{
+                ToastUtil.showLong(requireContext(),event.networkError.toString())
+            }
+        }
+    }
+
+    @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
+    private fun uploadZipDevice() {
+        HttpClient.uploadSystemInfo(requireContext())
+    }
+
+    @Subscribe
+    fun onUploadSystemResponseEvent(event: UploadSystemResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            zipDone = true
+            if(isCreateOrder){
+                previewProduct()
+            }else {
+                var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                intent.putExtra("step", currentStep)
+                verifyInfoLauncher.launch(intent)
+            }
+        }else{
+            ToastUtil.showLong(requireContext(),event.networkError.toString())        }
+    }
+
     fun previewProduct(){
         isBackFromVerifyInfoPage = false
         if (homeInfo?.cavrafds?.denzlkevws == false) {
@@ -204,14 +337,27 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         requestCode: Int,
         perms: List<String?>
     ) {
-
+        if (requestCode == REQUEST_CODE) {
+            uploadInstalledPackageList()
+        }
     }
 
     override fun onPermissionsDenied(
         requestCode: Int,
         perms: List<String?>
     ) {
+        if (requestCode == REQUEST_CODE) {
+            ToastUtil.showLong(requireContext(),"Please grant the required permissions to continue.")
+        }
+    }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
     companion object {

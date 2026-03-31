@@ -26,17 +26,7 @@ object DataFormatUtils {
         return "$start$star$end"
     }
 
-    @SuppressLint("HardwareIds")
-    fun getAndroidId(): String {
-        return try {
-            Settings.Secure.getString(
-                App.instance.contentResolver,
-                Settings.Secure.ANDROID_ID
-            ) ?: ""
-        } catch (e: Exception) {
-            ""
-        }
-    }
+
 
     fun float2Str(num: Any): String {
         return if (num is Double || num is Float) {

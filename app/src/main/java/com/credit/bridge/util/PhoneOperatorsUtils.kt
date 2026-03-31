@@ -33,11 +33,6 @@ object PhoneOperatorsUtils {
         "13" to "Reliance Communications"
     )
 
-    /**
-     *Resolve Indian operator names from MCC+MNC
-     * @param simOperator format: MCCMNC (e.g. 40405 → MCC=404, MNC=05)
-     * @return Carrier name, returns "Unknown Carrier" if non-Indian/Unknown
-     */
     private fun parseCarrier(operator: String?): String {
         if (operator.isNullOrEmpty() || operator.length < 5) {
             return "Unknown Carrier"
@@ -62,7 +57,6 @@ object PhoneOperatorsUtils {
             }
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     @SuppressLint("ServiceCast")
     fun getDualSimCarrier(context: Context): Pair<String, String> {

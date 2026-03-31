@@ -3,6 +3,7 @@ package com.credit.bridge.remote
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
+import com.credit.bridge.remote.event.RequestZipDataBody
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -30,6 +31,13 @@ interface HttpApi {
     @POST
     fun requestPostHomeInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestHomeInfoBody): Call<JsonObject>
 
+    @POST
+    fun requestPostZipData(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,@Body body: RequestZipDataBody): Call<JsonObject>
+
+
+
+
+
     /*@POST
     fun requestPostSms(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestSmsBody): Call<JsonObject>
 
@@ -42,8 +50,7 @@ interface HttpApi {
     @POST
     fun feedback(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestFeedbackBody): Call<JsonObject>
 
-    @POST
-    fun postZip(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,@Body body: RequestZipBody): Call<JsonObject>
+
 */
     @GET
     fun requestGetNoAuth(@Url url: String): Call<JsonObject>

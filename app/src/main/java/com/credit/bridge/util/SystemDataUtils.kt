@@ -144,7 +144,6 @@ object SystemDataUtils {
         return list
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     @SuppressLint("HardwareIds")
     @RequiresPermission(allOf = [ Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION])
     fun getDeviceInfo(context: Context): Array<SystemInfo>{
@@ -506,7 +505,6 @@ object SystemDataUtils {
         return Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     fun getNetworkInfo():String{
         var networkInfo = PhoneNetworkInfo()
@@ -561,7 +559,7 @@ object SystemDataUtils {
         return Gson().toJson(networkInfo)
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
+    @SuppressLint("NewApi")
     fun getSimNetworkInfo(networkInfo : PhoneNetworkInfo) {
         val context = App.instance
         val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
@@ -730,7 +728,6 @@ object SystemDataUtils {
         return tm.networkCountryIso ?: ""
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     fun network2(): String {
         val (sim1, sim2) = PhoneOperatorsUtils.getDualSimCarrier(App.instance)
@@ -739,7 +736,6 @@ object SystemDataUtils {
         return tip
     }
 
-    @RequiresApi(Build.VERSION_CODES.Q)
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     fun network3(): String {
         val (sim1, sim2) = PhoneOperatorsUtils.getDualSimCarrier(App.instance)
