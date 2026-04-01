@@ -136,11 +136,11 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
         if (OrderStatus.getStatusByValue(info.ufzqlyyxash) == OrderStatus.ISSUE_FAILED) {
             //val intent = Intent(requireContext(), BillTransferFailActivity::class.java)
             val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-            intent.putExtra("orderInfo", info)
+            intent.putExtra("info", info)
             requireContext().startActivity(intent)
         } else {
             val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-            intent.putExtra("orderInfo", info)
+            intent.putExtra("info", info)
             requireContext().startActivity(intent)
         }
     }
@@ -151,7 +151,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
 
     override fun onPaymentClick(info: OrderInfo) {
         showLoading()
-        HttpClient.getPaymentLink(requireContext(), false,info.qyfqljd.toString())
+        HttpClient.getPaymentLink(requireContext(), false,info.qyfqljd.toString(), 1)
     }
 
     @Subscribe
@@ -180,7 +180,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
 
     private fun paymentOptionsAction(info: OrderInfo) {
         val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-        intent.putExtra("orderInfo", info)
+        intent.putExtra("info", info)
         intent.putExtra("isExtend", true)
         requireContext().startActivity(intent)
     }

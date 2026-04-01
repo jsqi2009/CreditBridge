@@ -1,23 +1,17 @@
 package com.credit.bridge.content
 
-/**
- * author : Jason
- * desc   :
- */
 object ConstConfig {
 
 
-    //bill status
-    const val BILL_STATUS_PROCESSING = "Processing"
-    const val BILL_STATUS_PAST_DUE = "Past Due"
-    const val BILL_STATUS_PENDING = "Pending"
-    const val BILL_STATUS_REPAID = "Repaid"
-    const val BILL_STATUS_PAID = "Paid"
-    const val BILL_STATUS_CANCELED = "Canceled"
-    const val BILL_STATUS_CLOSED = "Closed"
-    const val BILL_STATUS_DUE = "Due"
-    const val BILL_STATUS_ISSUE_FAILED = "Issue Failed"
-    const val BILL_STATUS_NOT_COMPLETED = "Not Completed"
+    const val ORDER_STATUS_REJECTED = "REJECTED"
+    const val ORDER_STATUS_OVERDUE = "OVERDUE"
+    const val ORDER_STATUS_ISSUING = "ISSUING"
+    const val ORDER_STATUS_CLOSED = "CLOSED"
+    const val ORDER_STATUS_CURRENT = "CURRENT"
+    const val ORDER_STATUS_PAID_OFF = "PAID_OFF"
+    const val ORDER_STATUS_PRE_REVIEW = "PRE_REVIEW"
+    const val ORDER_STATUS_ISSUE_FAILED = "ISSUE_FAILED"
+    const val ORDER_STATUS_READY_TO_ISSUE = "READY_TO_ISSUE"
 
 
 

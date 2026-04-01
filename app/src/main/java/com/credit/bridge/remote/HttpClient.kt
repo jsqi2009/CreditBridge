@@ -1,5 +1,6 @@
 package com.credit.bridge.remote
 
+import RequestOrderUpdateBody
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -17,6 +18,7 @@ import com.credit.bridge.content.Contants
 import com.credit.bridge.remote.bean.DeviceInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
+import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
@@ -25,7 +27,10 @@ import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.OrderDetailsResponseEvent
 import com.credit.bridge.remote.event.OrderListResponseEvent
+import com.credit.bridge.remote.event.OrderUpdateResponseEvent
+import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
 import com.credit.bridge.remote.event.RequestZipDataBody
@@ -39,7 +44,9 @@ import com.credit.bridge.remote.response.CommonBoolResponse
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
+import com.credit.bridge.remote.response.OrderDetailsResponse
 import com.credit.bridge.remote.response.OrderListResponse
+import com.credit.bridge.remote.response.OrderUpdateResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
@@ -281,14 +288,37 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListResponseEvent::class.java,flag)
     }
 
-    fun getPaymentLink(mContext: Context,extension : Boolean,loanAppId : String) {
+    fun getPaymentLink(mContext: Context, extensionStatus : Boolean,orderId : String, type : Int) {
 
         val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.extension] = extension
-        formMap[Contants.loanAppId] = loanAppId
+        formMap[Contants.extension] = extensionStatus
+        formMap[Contants.loanAppId] = orderId
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
-        dispatchClient!!.enqueue(call, CommonResponse::class.java, PaymentLinkResponseEvent::class.java)
+        if (type == 1) {
+            dispatchClient!!.enqueue(call, CommonResponse::class.java, PaymentLinkResponseEvent::class.java)
+        }else if (type == 2) {
+            dispatchClient!!.enqueue(call, CommonResponse::class.java,
+                PaymentLinkDetailsResponseEvent::class.java)
+        }
     }
+
+    fun getOrderDetails(mContext: Context, body: RequestOrderDetailsBody, flag: String) {
+
+        val call = mHttpApi!!.requestPostOrderDetails(getHeaders(mContext), Contants.URL_ORDER_DETAIL, body)
+        dispatchClient!!.enqueue(call, OrderDetailsResponse::class.java, OrderDetailsResponseEvent::class.java, flag)
+    }
+
+
+    fun getOrderUpdateInfo(mContext: Context, extensionPeriod: Int, loanAppId: Int) {
+
+        val body = RequestOrderUpdateBody()
+        body.nhtfrspjg = loanAppId
+        body.tcxjwmpdlhudlcu = extensionPeriod
+
+        val call = mHttpApi!!.requestPostOrderUpdate(getHeaders(mContext), Contants.URL_APPLY_DETAIL, body)
+        dispatchClient!!.enqueue(call, OrderUpdateResponse::class.java, OrderUpdateResponseEvent::class.java)
+    }
+
 
     /*
 
@@ -402,19 +432,6 @@ object HttpClient {
     }
 
 
-
-    fun getPayUrl(mContext: Context,extension : Boolean,loanAppId : String) {
-
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.extension] = extension
-        formMap[Contants.loanAppId] = loanAppId
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
-        dispatchClient!!.enqueue(call, StringResponse::class.java,
-            UrlPayResponseEvent::class.java)
-    }
-
-
-
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
         val formMap: HashMap<String, Any> = HashMap()
@@ -425,16 +442,6 @@ object HttpClient {
             UrlPayListBankResponseEvent::class.java)
     }
 
-    fun getExtensionApplyDetail(mContext: Context, extensionPeriod: Int, loanAppId: Int) {
-
-        val body = ExtensionApplyDetailRequest()
-        body.nhtfrspjg = loanAppId
-        body.tcxjwmpdlhudlcu = extensionPeriod
-
-        val call = mHttpApi!!.requestExtensionApplyDetail(getHeaders(mContext), Contants.URL_APPLY_DETAIL, body)
-        dispatchClient!!.enqueue(call, ExtensionApplyDetailResponse::class.java,
-            ExtensionApplyDetailResponseEvent::class.java)
-    }
 
     fun getOssParam(mContext: Context) {
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_OSS)
@@ -472,11 +479,6 @@ object HttpClient {
 
 
 
-    fun orderDetails(mContext: Context, body: OrderDetailsRequestBody, pageIndex: String) {
-
-        val call = mHttpApi!!.requestPostOrderDetails(getHeaders(mContext), Contants.URL_ORDER_DETAIL, body)
-        dispatchClient!!.enqueue(call, OrderDetailResponse::class.java, OrderDetailResponseEvent::class.java, pageIndex)
-    }
 
      *//*
     fun getProductList(mContext: Context) {

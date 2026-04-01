@@ -1,6 +1,8 @@
 package com.credit.bridge.remote
 
+import RequestOrderUpdateBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
+import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
@@ -38,8 +40,11 @@ interface HttpApi {
     @POST
     fun requestPostOrderList(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderListBody): Call<JsonObject>
 
+    @POST
+    fun requestPostOrderDetails(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderDetailsBody): Call<JsonObject>
 
-
+    @POST
+    fun requestPostOrderUpdate(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderUpdateBody): Call<JsonObject>
 
     /*@POST
     fun requestPostSms(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestSmsBody): Call<JsonObject>
@@ -120,12 +125,7 @@ interface HttpApi {
     fun requestPostApplyOrder(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,
                              @Body body: ArrayList<CreateOrderRequestBody>): Call<JsonObject>
 
-    @POST
-    fun requestPostOrderDetails(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,
-                              @Body body: OrderDetailsRequestBody): Call<JsonObject>
 
-    @POST
-    fun requestExtensionApplyDetail(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: ExtensionApplyDetailRequest): Call<JsonObject>
 */
 
 }
