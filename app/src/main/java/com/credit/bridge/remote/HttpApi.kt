@@ -1,6 +1,7 @@
 package com.credit.bridge.remote
 
 import com.credit.bridge.remote.body.RequestHomeInfoBody
+import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.RequestZipDataBody
@@ -34,6 +35,8 @@ interface HttpApi {
     @POST
     fun requestPostZipData(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,@Body body: RequestZipDataBody): Call<JsonObject>
 
+    @POST
+    fun requestPostOrderList(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderListBody): Call<JsonObject>
 
 
 
@@ -109,8 +112,6 @@ interface HttpApi {
 
 /*
 
-    @POST
-    fun requestPostOrderList(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: OrderRequestBody): Call<JsonObject>
 
 */
 

@@ -14,12 +14,13 @@ import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityConfirmProductBinding
 import com.credit.bridge.databinding.ActivityPaymentAccountBinding
 import com.credit.bridge.inter.OnItemClickListener
+import com.credit.bridge.inter.OnOrderItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.ui.order.OrderDetailsActivity
 import com.credit.bridge.ui.product.SubmitSuccessActivity
 import com.credit.bridge.util.OrderStatus
 
-class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), View.OnClickListener ,OnItemClickListener{
+class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), View.OnClickListener ,OnOrderItemClickListener{
     override fun getBinding() = ActivityPaymentAccountBinding.inflate(layoutInflater)
 
     private var orderList: ArrayList<OrderInfo> =  ArrayList()
@@ -64,7 +65,8 @@ class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), Vi
         mAdapter?.notifyDataSetChanged()
     }
 
-    override fun onItemClick(info: OrderInfo) {
+
+    override fun onOrderItemClick(info: OrderInfo) {
         if (OrderStatus.getStatusByValue(info.ufzqlyyxash) == OrderStatus.ISSUE_FAILED) {
             //val intent = Intent(requireContext(), BillTransferFailActivity::class.java)
             val intent = Intent(this, OrderDetailsActivity::class.java)
@@ -75,5 +77,11 @@ class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), Vi
             intent.putExtra("orderInfo", info)
             this.startActivity(intent)
         }
+    }
+
+    override fun onViewPaymentOptionsClick(info: OrderInfo) {
+    }
+
+    override fun onPaymentClick(info: OrderInfo) {
     }
 }

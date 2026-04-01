@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.credit.bridge.base.BaseAdapter
 import com.credit.bridge.databinding.ItemOrderListBinding
 import com.credit.bridge.inter.OnItemClickListener
+import com.credit.bridge.inter.OnOrderItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.util.OrderStatus
 
@@ -15,7 +16,7 @@ import com.credit.bridge.util.OrderStatus
 class OrderListAdapter(
     private val mContext: Context,
     items: MutableList<OrderInfo>,
-    private val listener: OnItemClickListener,
+    private val listener: OnOrderItemClickListener,
 ) : BaseAdapter<OrderInfo, OrderListAdapter.BillListViewHolder>(items) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -123,7 +124,7 @@ class OrderListAdapter(
         }*/
 
         holder.bindView.root.setOnClickListener {
-            listener.onItemClick(itemInfo)
+            listener.onOrderItemClick(itemInfo)
         }
     }
 

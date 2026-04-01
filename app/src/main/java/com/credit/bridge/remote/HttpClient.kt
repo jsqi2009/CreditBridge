@@ -17,6 +17,7 @@ import com.credit.bridge.content.Contants
 import com.credit.bridge.remote.bean.DeviceInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
+import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.BResponseEvent
@@ -24,6 +25,8 @@ import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.OrderListResponseEvent
+import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
 import com.credit.bridge.remote.event.RequestZipDataBody
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
@@ -36,6 +39,7 @@ import com.credit.bridge.remote.response.CommonBoolResponse
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
+import com.credit.bridge.remote.response.OrderListResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
@@ -268,6 +272,23 @@ object HttpClient {
         dispatchClient!!.enqueue(call, CommonResponse::class.java, UploadSystemResponseEvent::class.java)
     }
 
+    fun fetchOrderList(mContext: Context, type: String, flag: String) {
+
+        val orderBody = RequestOrderListBody()
+        orderBody.qfve = type
+
+        val call = mHttpApi!!.requestPostOrderList(getHeaders(mContext), Contants.URL_ORDER_LIST, orderBody)
+        dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListResponseEvent::class.java,flag)
+    }
+
+    fun getPaymentLink(mContext: Context,extension : Boolean,loanAppId : String) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.extension] = extension
+        formMap[Contants.loanAppId] = loanAppId
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
+        dispatchClient!!.enqueue(call, CommonResponse::class.java, PaymentLinkResponseEvent::class.java)
+    }
 
     /*
 
@@ -392,15 +413,7 @@ object HttpClient {
             UrlPayResponseEvent::class.java)
     }
 
-    fun getPayListUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.extension] = extension
-        formMap[Contants.loanAppId] = loanAppId
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
-        dispatchClient!!.enqueue(call, StringResponse::class.java,
-            UrlPayListResponseEvent::class.java)
-    }
 
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
@@ -433,14 +446,7 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OssParamResponse::class.java, OssParamResponseFaceEvent::class.java)
     }
 
-    fun getOrderList(mContext: Context, type: String,pageIndex: String) {
 
-        val orderBody = OrderRequestBody()
-        orderBody.qfve = type
-
-        val call = mHttpApi!!.requestPostOrderList(getHeaders(mContext), Contants.URL_ORDER_LIST, orderBody)
-        dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListResponseEvent::class.java,pageIndex)
-    }
 
     fun logout(mContext: Context) {
 
@@ -472,23 +478,6 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OrderDetailResponse::class.java, OrderDetailResponseEvent::class.java, pageIndex)
     }
 
-
-
-
-
-    *//**
-     * check upload phone info
-     *//*
-
-
-
-    *//**
-     * get voice code
-     *//*
-
-
-    *//**
-     *  get product list
      *//*
     fun getProductList(mContext: Context) {
 
