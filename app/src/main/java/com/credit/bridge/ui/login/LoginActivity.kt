@@ -74,6 +74,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         bindViews.verifyVoiceTv.setOnClickListener(this)
         bindViews.checkPolicyIv.setOnClickListener(this)
 
+        bindViews.phoneEt.setText("1234567890")
+        bindViews.codeEt.setText("1234")
+
         configPrivacyPolicy()
 
     }

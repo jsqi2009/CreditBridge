@@ -3,6 +3,9 @@ package com.credit.bridge.remote.bean
 import java.io.Serializable
 
 class OrderInfo: Serializable {
+    constructor(ufzqlyyxash: String = "") {
+        this.ufzqlyyxash = ufzqlyyxash
+    }
 
     val qyfqljd: Int = 0
     var fwwluzpnudp: String = ""
