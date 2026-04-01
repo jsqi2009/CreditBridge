@@ -64,6 +64,11 @@
         android:visibility="gone"/>
 
     <include
+        android:id="@+id/paidLayout"
+        layout="@layout/layout_details_paid"
+        android:visibility="gone"/>
+
+    <include
         android:id="@+id/overdueLayout"
         layout="@layout/layout_details_overdue"
         android:visibility="gone"/>

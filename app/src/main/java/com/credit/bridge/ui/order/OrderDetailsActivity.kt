@@ -68,8 +68,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.editBankTv.setOnClickListener(this)
 
-        getOrderDetailsInfo()
-
+        initOrderDetailsInfo()
     }
 
     override fun onClick(v: View?) {
@@ -141,7 +140,33 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     }
 
     private fun initOrderDetailsInfo() {
-
+        if (orderInfo == null) {
+            return
+        }
+        when (orderInfo?.ufzqlyyxash) {
+            ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
+                bindViews.processingLayout.rootView.visibility = View.VISIBLE
+                bindViews.processingLayout.titleTv.text = "Processing"
+            }
+            ConstConfig.ORDER_STATUS_OVERDUE -> {
+                bindViews.overdueLayout.rootView.visibility = View.VISIBLE
+            }
+            ConstConfig.ORDER_STATUS_CURRENT -> {
+                bindViews.dueLayout.rootView.visibility = View.VISIBLE
+            }
+            ConstConfig.ORDER_STATUS_PAID_OFF -> {
+                bindViews.paidLayout.rootView.visibility = View.VISIBLE
+            }
+            ConstConfig.ORDER_STATUS_REJECTED -> {
+                bindViews.cancelLayout.rootView.visibility = View.VISIBLE
+                bindViews.cancelFrozenLayout.rootView.visibility = View.VISIBLE
+            }
+            ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
+                bindViews.cancelLayout.rootView.visibility = View.VISIBLE
+            }
+            ConstConfig.ORDER_STATUS_CLOSED -> {
+            }
+        }
     }
 
     private fun getOrderUpdateInfo() {
