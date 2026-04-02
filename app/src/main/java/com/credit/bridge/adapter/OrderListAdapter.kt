@@ -3,13 +3,17 @@ package com.credit.bridge.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.credit.bridge.R
 import com.credit.bridge.base.BaseAdapter
+import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ItemOrderListBinding
 import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.inter.OnOrderItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
+import com.credit.bridge.util.DataFormatUtils
 import com.credit.bridge.util.OrderStatus
 
 
@@ -32,99 +36,106 @@ class OrderListAdapter(
         position: Int
     ) {
         val itemInfo = items[position]
-        /*holder.bindView.tvStatusDesc.text = itemInfo.fwwluzpnudp
-        holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_process)*/
-        //holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
-        //holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-        //holder.bindView.tvDate.text = itemInfo.suibvbw
-        //holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips1)
 
-        val orderStatus = OrderStatus.getStatusByValue(itemInfo.ufzqlyyxash)
+        holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+        holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+        holder.bindView.descTv.text = "Created At"
+        holder.bindView.dateDescTv.text = "Created At"
+        holder.bindView.dateTv.text = itemInfo.suibvbw
+        holder.bindView.paymentOptionsTv.visibility = View.GONE
+        holder.bindView.continuePaymentTv.visibility = View.GONE
 
-       /* when (orderStatus) {
-            OrderStatus.PRE_REVIEW, OrderStatus.ISSUING -> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_process)
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips1)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_gray, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.primary_text, null))
-                holder.bindView.llBtn.visibility = View.GONE
+        val orderStatus = itemInfo.fwwluzpnudp
 
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips3)
-                holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " +  DataFormatUtils.float2Str(itemInfo.oalkejegtgf)
-                holder.bindView.tvDate.text = itemInfo.cofllshoi
+        when(orderStatus){
+            ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_processing)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.continuePaymentTv.visibility = View.GONE
             }
-            OrderStatus.OVERDUE -> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_past_due)
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips2)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_red, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.text_red, null))
-                holder.bindView.llBtn.visibility = View.VISIBLE
-                holder.bindView.tvExtend.visibility = View.GONE
-                holder.bindView.tvPay.visibility = View.VISIBLE
-
-                holder.bindView.tvDate.text = itemInfo.suibvbw
+            ConstConfig.ORDER_STATUS_OVERDUE -> {
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_overdue)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.continuePaymentTv.visibility = View.VISIBLE
             }
-            OrderStatus.CURRENT -> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_due)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_gold, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.primary_text, null))
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips2)
-                holder.bindView.llBtn.visibility = View.VISIBLE
-                holder.bindView.tvExtend.visibility = View.VISIBLE
-                holder.bindView.tvPay.visibility = View.VISIBLE
+            ConstConfig.ORDER_STATUS_CURRENT -> {
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_due)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
+                holder.bindView.continuePaymentTv.visibility = View.VISIBLE
             }
-            OrderStatus.PAID_OFF -> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_paid)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_gray, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.primary_text, null))
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips1)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips3)
-                holder.bindView.llBtn.visibility = View.GONE
-
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_details_paid_off_amount)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_details_paid_off_date)
-                holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " +  itemInfo.oalkejegtgf
+            ConstConfig.ORDER_STATUS_PAID_OFF -> {
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_paid)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_payment_date)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_due)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.continuePaymentTv.visibility = View.GONE
             }
-            OrderStatus.ISSUE_FAILED-> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_cancel)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_gray, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.primary_text, null))
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips2)
-                holder.bindView.llBtn.visibility = View.GONE
-
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips3)
-                holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " +  DataFormatUtils.float2Str(itemInfo.oalkejegtgf)
+            ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.continuePaymentTv.visibility = View.GONE
             }
-            OrderStatus.CLOSED-> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_closed)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_gray, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.primary_text, null))
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips2)
-                holder.bindView.llBtn.visibility = View.GONE
-
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips3)
-                holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " +  DataFormatUtils.float2Str(itemInfo.oalkejegtgf)
+            ConstConfig.ORDER_STATUS_CLOSED -> {
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.continuePaymentTv.visibility = View.GONE
             }
             else -> {
-                //holder.bindView.tvStatus.text = mContext.getString(R.string.bill_status_cancel)
-                //holder.bindView.tvStatus.setTextColor(mContext.resources.getColor(R.color.text_gray, null))
-                holder.bindView.tvDate.setTextColor(mContext.resources.getColor(R.color.primary_text, null))
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips2)
-                holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips1)
-                holder.bindView.llBtn.visibility = View.GONE
-
-                holder.bindView.tvAmountDesc.text = mContext.getString(R.string.bill_dollar_tips3)
-                holder.bindView.tvAmount.text = mContext.getString(R.string.home_symbol) + " " +  DataFormatUtils.float2Str(itemInfo.oalkejegtgf)
+                holder.bindView.statusTv.text = itemInfo.fwwluzpnudp
+                holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
+                        " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
+                holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
+                holder.bindView.dateTv.text = itemInfo.suibvbw
+                holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.continuePaymentTv.visibility = View.GONE
             }
-        }*/
+        }
 
         holder.bindView.root.setOnClickListener {
             listener.onOrderItemClick(itemInfo)
+        }
+        holder.bindView.paymentOptionsTv.setOnClickListener {
+            listener.onViewPaymentOptionsClick(itemInfo)
+        }
+        holder.bindView.continuePaymentTv.setOnClickListener {
+            listener.onPaymentClick(itemInfo)
         }
     }
 

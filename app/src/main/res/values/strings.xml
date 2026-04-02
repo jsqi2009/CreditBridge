@@ -25,12 +25,27 @@
     <string name="login_voice_verify_desc">A call with your one-time code will be made to your mobile number. Please answer to complete this step.</string>
     <string name="login_complete_later">Confirm</string>
 
-    <!--bill fragment  -->
-    <string name="bill_title">Bills</string>
-    <string name="bill_history">History</string>
-    <string name="bill_current">Current</string>
 
     <string name="money_symbol">₹</string>
+
+    <!--order fragment  -->
+    <string name="order_title">Bills</string>
+    <string name="bill_history">History</string>
+    <string name="bill_current">Current</string>
+    <string name="order_desc_usage_amount">Usage Amount</string>
+    <string name="order_desc_amount_due">Amount Due</string>
+    <string name="order_desc_amount_paid">Amount Paid</string>
+    <string name="order_date_desc_created_on">Created On</string>
+    <string name="order_date_desc_due_date">Due Date</string>
+    <string name="order_date_desc_payment_date">Payment Date</string>
+    <string name="order_status_processing">Processing</string>
+    <string name="order_status_overdue">Overdue</string>
+    <string name="order_status_due">Due</string>
+    <string name="order_status_paid">Paid</string>
+    <string name="order_status_closed">Closed</string>
+
+
+
 
 
 
