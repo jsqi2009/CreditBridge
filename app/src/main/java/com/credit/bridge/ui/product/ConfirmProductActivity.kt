@@ -11,8 +11,13 @@ import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityConfirmProductBinding
 import com.credit.bridge.databinding.ActivityProductListBinding
+import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.ProductInfo
+import com.credit.bridge.remote.body.RequestSubmitOrderBody
+import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
+import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.util.ToastUtil
+import com.squareup.otto.Subscribe
 
 class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), View.OnClickListener  {
 
@@ -27,6 +32,11 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+    }
+
+    override fun onResume() {
+        super.onResume()
+        fetchCardInfo()
     }
 
     override fun initRes() {
@@ -44,6 +54,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.confirmUseTv.setOnClickListener(this)
     }
 
 
@@ -52,9 +63,68 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
             R.id.backIv -> {
                 finish()
             }
-            R.id.titleTv -> {
-                startActivity(Intent(this, SubmitSuccessActivity::class.java))
+            R.id.confirmUseTv -> {
+                submitOrder()
             }
         }
     }
+
+    private fun fetchCardInfo() {
+        showLoading()
+        HttpClient.fetchBankInfo(this)
+    }
+
+    @Subscribe
+    fun onFetchBankInfoResponseEvent(event: FetchBankInfoResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            event.model?.blvb?.let {
+                /*views.tvBankName.text = it.djhrpmn
+                views.tvBankId.text = CommonUtils.numberGeneral(it.twnkgc,3,2)*/
+                HttpClient.getOrderLinkBank(this,it.twnkgc)
+            }
+        }else{
+            ToastUtil.showLong(this,event.retMsg)
+        }
+    }
+
+    private fun submitOrder() {
+
+        val bodyList: ArrayList<RequestSubmitOrderBody> = ArrayList()
+
+        if (productIdList.isNotEmpty() && amountList.isNotEmpty() && productIdList.size == amountList.size) {
+            productIdList.forEachIndexed { index, productId ->
+
+                val item = RequestSubmitOrderBody()
+                item.ypwqmbzol = productId
+                item.bbxpqv = amountList[index]
+
+                bodyList.add(item)
+            }
+        }
+
+        showLoading()
+        HttpClient.submitOrder(this, bodyList, "2")
+
+        /*val eventValue =  HashMap<String, Any>()
+        eventValue[ConstConfig.POINT_LOAN_SUBMIT] = ""
+        AppsFlyerLib.getInstance().logEvent(mContext, ConstConfig.POINT_LOAN_SUBMIT, eventValue)
+        PointUploadUtils.uploadEvent(mContext as AppCompatActivity,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)*/
+    }
+
+    @Subscribe
+    fun onSubmitOrderResponseEvent(event: SubmitOrderResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if (event.model?.flag == "2") {
+                val intent = Intent(this, SubmitSuccessActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+    }
+
+
+
+
 }

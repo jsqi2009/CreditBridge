@@ -3,6 +3,7 @@ package com.credit.bridge.remote
 import RequestOrderUpdateBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
+import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
@@ -54,6 +55,10 @@ interface HttpApi {
     fun requestPostSubmitOrder(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,
                               @Body body: ArrayList<RequestSubmitOrderBody>): Call<JsonObject>
 
+    @POST
+    fun requestPostOrderLinkBank(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderLinkBankBody): Call<JsonObject>
+
+
 
 
 
@@ -65,8 +70,6 @@ interface HttpApi {
     @POST
     fun postBankInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestBankBody): Call<JsonObject>
 
-    @POST
-    fun postOrderBankList(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderBankBody): Call<JsonObject>
 
     @POST
     fun feedback(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestFeedbackBody): Call<JsonObject>

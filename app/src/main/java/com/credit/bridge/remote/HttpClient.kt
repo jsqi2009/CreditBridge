@@ -19,6 +19,7 @@ import com.credit.bridge.remote.bean.DeviceInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
+import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
@@ -27,9 +28,11 @@ import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
+import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
+import com.credit.bridge.remote.event.OrderLinkBankResponseEvent
 import com.credit.bridge.remote.event.OrderListResponseEvent
 import com.credit.bridge.remote.event.OrderUpdateResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
@@ -46,6 +49,7 @@ import com.credit.bridge.remote.response.BResponse
 import com.credit.bridge.remote.response.CheckCollectDataStatusResponse
 import com.credit.bridge.remote.response.CommonBoolResponse
 import com.credit.bridge.remote.response.CommonResponse
+import com.credit.bridge.remote.response.FetchBankInfoResponse
 import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
 import com.credit.bridge.remote.response.OrderDetailsResponse
@@ -336,6 +340,20 @@ object HttpClient {
         dispatchClient!!.enqueue(call, BResponse::class.java, SubmitOrderResponseEvent::class.java, flag)
     }
 
+    fun fetchBankInfo(mContext: Context) {
+
+        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_GET_BANK_INFO)
+        dispatchClient?.enqueue(call, FetchBankInfoResponse::class.java, FetchBankInfoResponseEvent::class.java)
+    }
+
+    fun getOrderLinkBank(mContext: Context, cardNo: String) {
+
+        val orderBody = RequestOrderLinkBankBody()
+        orderBody.aosqii = cardNo
+        val call = mHttpApi!!.requestPostOrderLinkBank(getHeaders(mContext), Contants.URL_ORDER_BANK, orderBody)
+        dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderLinkBankResponseEvent::class.java)
+    }
+
 
     /*
 
@@ -381,11 +399,7 @@ object HttpClient {
 
 
 
-    fun getBankInfo(mContext: Context) {
 
-        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_GET_BANK_INFO)
-        dispatchClient?.enqueue(call, BankResponse::class.java, BankInfoResponseEvent::class.java)
-    }
 
     fun userCredit(mContext: Context) {
 
@@ -440,13 +454,7 @@ object HttpClient {
 
 
 
-    fun getOrderBank(mContext: Context, cardNo: String) {
 
-        val orderBody = RequestOrderBankBody()
-        orderBody.aosqii = cardNo
-        val call = mHttpApi!!.postOrderBankList(getHeaders(mContext), Contants.URL_ORDER_BANK, orderBody)
-        dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListBankResponseEvent::class.java)
-    }
 
 
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
@@ -500,25 +508,6 @@ object HttpClient {
      *//*
 
 
-
-    *//**
-     *  apply order
-     *//*
-
-
-
-
-    *//**
-     * login
-     *//*
-    fun pointReport(mContext: Context, actionType: String, comment: String, reportType: String) {
-
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.actionType] = actionType
-        formMap[Contants.comment] = comment
-        formMap[Contants.reportType] = reportType
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_POINT_REPORT, formMap)
-        dispatchClient!!.enqueue(call, BResponse::class.java, ResponseEvent::class.java)
     }*/
 
 }
