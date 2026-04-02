@@ -1,6 +1,7 @@
 package com.credit.bridge.remote
 
 import RequestOrderUpdateBody
+import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderLinkBankBody
@@ -58,10 +59,17 @@ interface HttpApi {
     @POST
     fun requestPostOrderLinkBank(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOrderLinkBankBody): Call<JsonObject>
 
+    @POST
+    fun requestPostFeedback(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestFeedbackBody): Call<JsonObject>
 
+    @GET
+    fun requestGet(@HeaderMap map: MutableMap<String, String>, @Url url: String): Call<JsonObject>
 
+    @GET
+    fun requestGetAuth(@HeaderMap map: MutableMap<String, String>, @Url url: String): Call<JsonObject>
 
-
+    @GET
+    fun requestGetQueryMap(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @QueryMap map: MutableMap<String, Any>): Call<JsonObject>
 
 
     /*@POST
@@ -71,16 +79,14 @@ interface HttpApi {
     fun postBankInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestBankBody): Call<JsonObject>
 
 
-    @POST
-    fun feedback(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestFeedbackBody): Call<JsonObject>
+
 
 
 */
     @GET
     fun requestGetNoAuth(@Url url: String): Call<JsonObject>
 
-    @GET
-    fun requestGet(@HeaderMap map: MutableMap<String, String>, @Url url: String): Call<JsonObject>
+
 
     @GET
     fun requestGetAuth1(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @QueryMap map: MutableMap<String, Any>): Call<JsonObject>
@@ -119,8 +125,7 @@ interface HttpApi {
     @GET
     fun requestGetAuth(@HeaderMap map: MutableMap<String, String>, @Url url: String, @Path("key1") key1: String): Call<JsonObject>
 
-    @GET
-    fun requestGetAuth1(@HeaderMap map: MutableMap<String, String>, @Url url: String): Call<JsonObject>
+
 
     @GET
     fun requestAuth3(@HeaderMap map: MutableMap<String, String>, @Url url: String?): Call<JsonObject>

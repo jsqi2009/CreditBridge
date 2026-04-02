@@ -1,21 +1,56 @@
 package com.credit.bridge.ui.account
 
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.credit.bridge.R
+import com.credit.bridge.base.BaseActivity
+import com.credit.bridge.databinding.ActivityPrivacyPolicyBinding
+import com.credit.bridge.databinding.ActivityProductListBinding
+import com.credit.bridge.remote.HttpClient
+import com.credit.bridge.remote.event.PolicyLinkResponseEvent
+import com.credit.bridge.util.ToastUtil
+import com.squareup.otto.Subscribe
 
-class PrivacyPolicyActivity : AppCompatActivity() {
+class PrivacyPolicyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), View.OnClickListener  {
+
+    override fun getBinding() = ActivityPrivacyPolicyBinding.inflate(layoutInflater)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_privacy_policy)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
+    }
+
+    override fun initRes() {
+        super.initRes()
+
+        getPolicyLink()
+    }
+
+    private fun getPolicyLink(){
+        showLoading()
+        HttpClient.getPolicyLink(this)
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+
         }
     }
+
+    @Subscribe
+    fun onPolicyLinkResponseEvent(event: PolicyLinkResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            event.model?.blvb?.let {
+                bindViews.webView.loadUrl(it)
+            }
+        }else{
+            ToastUtil.showLong(this,event.retMsg)
+        }
+    }
+
+
 }

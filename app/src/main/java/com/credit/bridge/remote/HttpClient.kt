@@ -16,6 +16,7 @@ import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
 import com.credit.bridge.remote.bean.DeviceInfo
+import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
@@ -28,15 +29,19 @@ import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
+import com.credit.bridge.remote.event.FeedbackResponseEvent
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
+import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.LogoutResponseEvent
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
 import com.credit.bridge.remote.event.OrderLinkBankResponseEvent
 import com.credit.bridge.remote.event.OrderListResponseEvent
 import com.credit.bridge.remote.event.OrderUpdateResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
+import com.credit.bridge.remote.event.PolicyLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
 import com.credit.bridge.remote.event.RequestZipDataBody
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
@@ -50,6 +55,7 @@ import com.credit.bridge.remote.response.CheckCollectDataStatusResponse
 import com.credit.bridge.remote.response.CommonBoolResponse
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.remote.response.FetchBankInfoResponse
+import com.credit.bridge.remote.response.FetchFeedbackConfigResponse
 import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
 import com.credit.bridge.remote.response.OrderDetailsResponse
@@ -210,12 +216,10 @@ object HttpClient {
     }
 
     fun checkCollectDataStatus(mContext: Context) {
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_COLLECT_DATA_INTEGRITY)
+        val call = mHttpApi!!.requestGetAuth(getHeaders(mContext), Contants.URL_COLLECT_DATA_INTEGRITY)
         dispatchClient!!.enqueue(call, CheckCollectDataStatusResponse::class.java,
             CheckCollectDataStatusResponseEvent::class.java)
     }
-
-
 
     fun eventReport(mContext: Context, tag: String, actionType: String, status: String, reportType: String = "user") {
 
@@ -354,8 +358,38 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderLinkBankResponseEvent::class.java)
     }
 
+    fun logout(mContext: Context) {
+
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_LOGOUT)
+        dispatchClient!!.enqueue(call, BResponse::class.java, LogoutResponseEvent::class.java)
+    }
+
+    fun fetchFeedbackConfig(mContext: Context) {
+        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_FEEDBACK_CONFIG)
+        dispatchClient!!.enqueue(call, FetchFeedbackConfigResponse::class.java, FetchFeedbackConfigResponseEvent::class.java)
+    }
+
+    fun submitFeedback(mContext: Context,body: RequestFeedbackBody) {
+
+        val call = mHttpApi!!.requestPostFeedback(getHeaders(mContext), Contants.URL_FEEDBACK, body)
+        dispatchClient!!.enqueue(call, BResponse::class.java, FeedbackResponseEvent::class.java)
+    }
+
+    fun getPolicyLink(mContext: Context) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap["alfekfdvov"] = "policy"
+        val call = mHttpApi!!.requestGetQueryMap(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, PolicyLinkResponseEvent::class.java)
+    }
+
+
+
+
+
 
     /*
+
 
     fun ocrPanNumber(mContext: Context) {
 
@@ -388,16 +422,6 @@ object HttpClient {
         val call = mHttpApi!!.ocrPan(getHeaders(mContext), Contants.URL_UPLOAD_FACE_IMAGE, body)
         dispatchClient?.enqueue(call, StringResponse::class.java, OcrFaceResponseEvent::class.java)
     }
-
-    fun getPrivateUrl(mContext: Context) {
-
-        val formMap: HashMap<String, Any> = HashMap()
-        formMap["alfekfdvov"] = "policy"
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
-        dispatchClient?.enqueue(call, StringResponse::class.java, PrivateUrlResponseEvent::class.java)
-    }
-
-
 
 
 
@@ -453,10 +477,6 @@ object HttpClient {
     }
 
 
-
-
-
-
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
         val formMap: HashMap<String, Any> = HashMap()
@@ -480,34 +500,9 @@ object HttpClient {
 
 
 
-    fun logout(mContext: Context) {
-
-        val formMap: HashMap<String, Any> = HashMap()
-        //formMap[Contants.type] = type
-
-        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_LOGOUT, formMap)
-        dispatchClient!!.enqueue(call, BResponse::class.java, LogoutResponseEvent::class.java)
-    }
-
-    fun feedback(mContext: Context,body: RequestFeedbackBody) {
-
-        val call = mHttpApi!!.feedback(getHeaders(mContext), Contants.URL_FEEDBACK, body)
-        dispatchClient!!.enqueue(call, BResponse::class.java, FeedbackResponseEvent::class.java)
-    }
-
-
-    fun feedbackConfig(mContext: Context) {
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_FEEDBACK_CONFIG)
-        dispatchClient!!.enqueue(call, FeedbackConfigResponse::class.java, FeedbackConfigResponseEvent::class.java)
-    }
 
 
 
-
-
-     *//*
-
-
-    }*/
+   */
 
 }
