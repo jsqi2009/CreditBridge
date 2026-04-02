@@ -2,6 +2,7 @@ package com.credit.bridge.util
 
 import android.util.Log
 import com.credit.bridge.remote.bean.OSSUploadInfo
+import com.credit.bridge.remote.bean.OssInfo
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -16,7 +17,7 @@ object ImageUploader {
     private var TAG = "ImageUploader"
     fun uploadImage(
         imagePath: String,
-        ossInfo: OSSUploadInfo,
+        ossInfo: OssInfo,
         callback: Callback
     ) {
 

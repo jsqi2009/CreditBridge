@@ -21,6 +21,7 @@ import com.credit.bridge.remote.body.RequestInstalledPackageBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
+import com.credit.bridge.remote.body.RequestPanInfoBody
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
@@ -38,6 +39,8 @@ import com.credit.bridge.remote.event.OrderDetailsResponseEvent
 import com.credit.bridge.remote.event.OrderLinkBankResponseEvent
 import com.credit.bridge.remote.event.OrderListResponseEvent
 import com.credit.bridge.remote.event.OrderUpdateResponseEvent
+import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
+import com.credit.bridge.remote.event.OssInfoResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PolicyLinkResponseEvent
@@ -50,6 +53,7 @@ import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.AllProductListResponse
 import com.credit.bridge.remote.response.BResponse
@@ -63,6 +67,7 @@ import com.credit.bridge.remote.response.LoginResponse
 import com.credit.bridge.remote.response.OrderDetailsResponse
 import com.credit.bridge.remote.response.OrderListResponse
 import com.credit.bridge.remote.response.OrderUpdateResponse
+import com.credit.bridge.remote.response.OssInfoResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
@@ -417,6 +422,27 @@ object HttpClient {
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyBankInfoResponseEvent::class.java)
     }
 
+    fun verifyPanInfo(mContext: Context, panNumber: String, fullName: String, birthday: String, gender: String) {
+
+        val panBody = RequestPanInfoBody()
+        panBody.bcikobrx = fullName
+        panBody.gscxhjjfy = panNumber
+        panBody.ticgsg = gender
+        panBody.zcpoxpzb = birthday
+        val call = mHttpApi!!.requestPutPanInfo(getHeaders(mContext), Contants.URL_SAVE_CARD_RESULT, panBody)
+
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyPanInfoResponseEvent::class.java)
+    }
+
+    fun getOssInfo(mContext: Context, type: Int) {
+        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_GET_OSS)
+        if (type == 1) {
+            dispatchClient!!.enqueue(call, OssInfoResponse::class.java, OssInfoResponseEvent::class.java)
+        }else if (type == 2) {
+            dispatchClient!!.enqueue(call, OssInfoResponse::class.java, OssInfoFaceResponseEvent::class.java)
+        }
+
+    }
 
 
 
@@ -457,32 +483,11 @@ object HttpClient {
         dispatchClient?.enqueue(call, StringResponse::class.java, OcrFaceResponseEvent::class.java)
     }
 
-
-
     fun userCredit(mContext: Context) {
 
         val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_USER_CREDIT)
         dispatchClient?.enqueue(call, UserCreditResponse::class.java, UserCreditResponseEvent::class.java)
     }
-
-
-
-
-
-
-
-    fun savePanFour(mContext: Context, panNumber: String, fullName: String, birthday: String, gender: String) {
-
-        val panBody = RequestPanBody()
-        panBody.bcikobrx = fullName
-        panBody.gscxhjjfy = panNumber
-        panBody.ticgsg = gender
-        panBody.zcpoxpzb = birthday
-        val call = mHttpApi!!.requestPutPan(getHeaders(mContext), Contants.URL_SAVE_CARD_RESULT, panBody)
-
-        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionFourPanResponseEvent::class.java)
-    }
-
 
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
@@ -495,15 +500,6 @@ object HttpClient {
     }
 
 
-    fun getOssParam(mContext: Context) {
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_OSS)
-        dispatchClient!!.enqueue(call, OssParamResponse::class.java, OssParamResponseEvent::class.java)
-    }
-
-    fun getOssParamFace(mContext: Context) {
-        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_OSS)
-        dispatchClient!!.enqueue(call, OssParamResponse::class.java, OssParamResponseFaceEvent::class.java)
-    }
 
 
 

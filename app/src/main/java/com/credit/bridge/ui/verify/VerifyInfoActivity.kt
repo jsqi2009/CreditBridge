@@ -16,11 +16,19 @@ import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestContactBody
+import com.credit.bridge.remote.event.OssInfoResponseEvent
+import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
 import com.credit.bridge.widget.CommonBottomSheet
 import com.credit.bridge.widget.StartVerifyBottomSheet
 import com.credit.bridge.widget.VerifyBankBottomSheet
+import com.squareup.otto.Subscribe
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.Response
+import okio.IOException
+import java.io.File
 
 class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnClickListener {
 
@@ -29,6 +37,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private var currentStep = 1
     private var isPanVerifySuccess = false
+    var real_path = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,6 +114,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             3 -> {
                 verifyBankAction()
+            }
+            4 -> {
+                verifyPanAction()
             }
         }
     }
@@ -186,6 +198,46 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         showLoading()
         HttpClient.verifyBankInfo(this, "", "","", "","")
+    }
+
+    private fun verifyPanAction() {
+        /*val eventValue =  HashMap<String, Any>()
+        eventValue[ConstConfig.POINT_BANKCARD_SUBMIT] = ""
+        AppsFlyerLib.getInstance().logEvent(this, ConstConfig.POINT_BANKCARD_SUBMIT, eventValue)
+        PointUploadUtils.uploadEvent(this,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_BANKCARD_SUBMIT)*/
+
+        showLoading()
+        HttpClient.verifyPanInfo(this, "", "","", "")
+    }
+
+
+    @Subscribe
+    fun onOssInfoResponseEvent(event: OssInfoResponseEvent) {
+        if(event.isSuccess){
+            event.model?.blvb?.let{
+                ImageUploader.uploadImage(real_path,it,object:Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        hideLoading()
+                        runOnUiThread {
+                            ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        runOnUiThread {
+                            val fileName = File(real_path).name
+                            val ossImageUrl = "${it.dwr}$fileName"
+                            /*HttpClient.ocrPan(this@VerifyInfoActivity,ossImageUrl.substringAfterUploadfile())
+                            HttpClient.userCredit(this@VerifyInfoActivity)*/
+                        }
+                    }
+                })
+            }
+        }else {
+           hideLoading()
+            ToastUtil.showLong(this,event.networkError.toString())
+        }
+
     }
 
 }

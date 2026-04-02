@@ -9,6 +9,7 @@ import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
+import com.credit.bridge.remote.body.RequestPanInfoBody
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
@@ -85,6 +86,8 @@ interface HttpApi {
     @POST
     fun requestPostBankInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestBankInfoBody): Call<JsonObject>
 
+    @PUT
+    fun requestPutPanInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestPanInfoBody): Call<JsonObject>
 
 
 
@@ -129,8 +132,7 @@ interface HttpApi {
 
 
 
-    @PUT
-    fun requestPutPan(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestPanBody): Call<JsonObject>
+
 
 */
     @HTTP(method = "DELETE", path = "{key}", hasBody = false)
