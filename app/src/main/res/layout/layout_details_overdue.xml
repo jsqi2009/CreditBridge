@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="380dp">
 
 
     <LinearLayout
         android:id="@+id/orderInfoLl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingVertical="@dimen/margin_20"
         android:layout_marginHorizontal="@dimen/margin_16"
         android:background="@drawable/shape_order_item_bg"
@@ -246,5 +246,13 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@mipmap/ic_due_mark" />
 
 </RelativeLayout>
