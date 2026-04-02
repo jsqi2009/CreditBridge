@@ -58,4 +58,10 @@ object AppUtil {
         }
         return fee
     }
+
+    fun String.formatSubString(): String {
+        val keyword = "uploadfile"
+        val index = indexOf(keyword)
+        return substring(if (index == -1) 0 else index)
+    }
 }

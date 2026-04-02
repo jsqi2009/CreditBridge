@@ -16,7 +16,9 @@ import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestContactBody
+import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
 import com.credit.bridge.remote.event.OssInfoResponseEvent
+import com.credit.bridge.util.AppUtil.formatSubString
 import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
@@ -227,14 +229,49 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                         runOnUiThread {
                             val fileName = File(real_path).name
                             val ossImageUrl = "${it.dwr}$fileName"
-                            /*HttpClient.ocrPan(this@VerifyInfoActivity,ossImageUrl.substringAfterUploadfile())
-                            HttpClient.userCredit(this@VerifyInfoActivity)*/
+                            HttpClient.verifyOcrPan(this@VerifyInfoActivity,ossImageUrl.formatSubString())
+                            HttpClient.getUserCredit(this@VerifyInfoActivity)
                         }
                     }
                 })
             }
         }else {
            hideLoading()
+            ToastUtil.showLong(this,event.networkError.toString())
+        }
+
+    }
+
+    @Subscribe
+    fun onOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
+        if(event.isSuccess){
+            event.model?.blvb?.let{
+                ImageUploader.uploadImage(real_path,it,object:Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        hideLoading()
+                        runOnUiThread {
+                            ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        runOnUiThread {
+                            if (response.isSuccessful) {
+                                val fileName = File(real_path).name
+                                val ossImageUrl = "${it.dwr}$fileName"
+                                HttpClient.verifyOcrFace(this@VerifyInfoActivity,ossImageUrl.formatSubString())
+
+                            } else {
+                                hideLoading()
+                                ToastUtil.showLong(this@VerifyInfoActivity,"upload error：HTTP error code ${response.code}")
+                            }
+                        }
+                        response.close()
+                    }
+                })
+            }
+        }else {
+            hideLoading()
             ToastUtil.showLong(this,event.networkError.toString())
         }
 

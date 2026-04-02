@@ -18,6 +18,7 @@ import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
+import com.credit.bridge.remote.body.RequestOcrPanBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
@@ -35,6 +36,7 @@ import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
 import com.credit.bridge.remote.event.LogoutResponseEvent
+import com.credit.bridge.remote.event.OcrPanResponseEvent
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
 import com.credit.bridge.remote.event.OrderLinkBankResponseEvent
 import com.credit.bridge.remote.event.OrderListResponseEvent
@@ -49,10 +51,12 @@ import com.credit.bridge.remote.event.RequestZipDataBody
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
 import com.credit.bridge.remote.event.UploadSystemResponseEvent
+import com.credit.bridge.remote.event.UserCreditResponseEvent
 import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyOcrFaceResponseEvent
 import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.AllProductListResponse
@@ -64,6 +68,7 @@ import com.credit.bridge.remote.response.FetchBankInfoResponse
 import com.credit.bridge.remote.response.FetchFeedbackConfigResponse
 import com.credit.bridge.remote.response.HomeInfoResponse
 import com.credit.bridge.remote.response.LoginResponse
+import com.credit.bridge.remote.response.OcrPanResponse
 import com.credit.bridge.remote.response.OrderDetailsResponse
 import com.credit.bridge.remote.response.OrderListResponse
 import com.credit.bridge.remote.response.OrderUpdateResponse
@@ -444,6 +449,27 @@ object HttpClient {
 
     }
 
+    fun verifyOcrPan(mContext: Context, url: String) {
+
+        val body = RequestOcrPanBody()
+        body.fwadagpin = url
+        val call = mHttpApi!!.requestPutOcrPan(getHeaders(mContext), Contants.URL_SAVE_PAN_RESULT, body)
+        dispatchClient?.enqueue(call, OcrPanResponse::class.java, OcrPanResponseEvent::class.java)
+    }
+
+    fun getUserCredit(mContext: Context) {
+
+        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_USER_CREDIT)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, UserCreditResponseEvent::class.java)
+    }
+
+    fun verifyOcrFace(mContext: Context, url: String) {
+
+        val body = RequestOcrPanBody()
+        body.fwadagpin = url
+        val call = mHttpApi!!.requestPutOcrPan(getHeaders(mContext), Contants.URL_UPLOAD_FACE_IMAGE, body)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyOcrFaceResponseEvent::class.java)
+    }
 
 
 
@@ -465,28 +491,6 @@ object HttpClient {
         body.qfve = "FACE"
         val call = mHttpApi!!.ocrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
         dispatchClient?.enqueue(call, IntResponse::class.java, OcrFaceNumberResponseEvent::class.java)
-    }
-
-    fun ocrPan(mContext: Context, url: String) {
-
-        val body = RequestOcrBody()
-        body.fwadagpin = url
-        val call = mHttpApi!!.ocrPan(getHeaders(mContext), Contants.URL_SAVE_PAN_RESULT, body)
-        dispatchClient?.enqueue(call, OcrResponse::class.java, OcrPanResponseEvent::class.java)
-    }
-
-    fun ocrFace(mContext: Context, url: String) {
-
-        val body = RequestOcrBody()
-        body.fwadagpin = url
-        val call = mHttpApi!!.ocrPan(getHeaders(mContext), Contants.URL_UPLOAD_FACE_IMAGE, body)
-        dispatchClient?.enqueue(call, StringResponse::class.java, OcrFaceResponseEvent::class.java)
-    }
-
-    fun userCredit(mContext: Context) {
-
-        val call = mHttpApi!!.requestGet(getHeaders(mContext), Contants.URL_USER_CREDIT)
-        dispatchClient?.enqueue(call, UserCreditResponse::class.java, UserCreditResponseEvent::class.java)
     }
 
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
