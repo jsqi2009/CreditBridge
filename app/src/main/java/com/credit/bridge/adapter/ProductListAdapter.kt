@@ -9,15 +9,17 @@ import com.credit.bridge.base.BaseAdapter
 import com.credit.bridge.databinding.ItemOrderListBinding
 import com.credit.bridge.databinding.ItemProductListBinding
 import com.credit.bridge.inter.OnItemClickListener
+import com.credit.bridge.inter.OnProductItemClickListener
 import com.credit.bridge.remote.bean.OrderInfo
+import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.util.OrderStatus
 
 
 class ProductListAdapter(
     private val mContext: Context,
-    items: MutableList<OrderInfo>,
-    private val listener: OnItemClickListener,
-) : BaseAdapter<OrderInfo, ProductListAdapter.BillListViewHolder>(items) {
+    items: MutableList<ProductInfo>,
+    private val listener: OnProductItemClickListener,
+) : BaseAdapter<ProductInfo, ProductListAdapter.BillListViewHolder>(items) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -39,7 +41,7 @@ class ProductListAdapter(
         //holder.bindView.tvDate.text = itemInfo.suibvbw
         //holder.bindView.tvDateDesc.text = mContext.getString(R.string.bill_date_tips1)
 
-        val orderStatus = OrderStatus.getStatusByValue(itemInfo.ufzqlyyxash)
+        //val orderStatus = OrderStatus.getStatusByValue(itemInfo.ufzqlyyxash)
 
        /* when (orderStatus) {
             OrderStatus.PRE_REVIEW, OrderStatus.ISSUING -> {

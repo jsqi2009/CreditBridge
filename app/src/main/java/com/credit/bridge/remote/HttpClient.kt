@@ -20,8 +20,10 @@ import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderListBody
+import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
+import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
@@ -34,10 +36,12 @@ import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
 import com.credit.bridge.remote.event.RequestZipDataBody
+import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
 import com.credit.bridge.remote.event.UploadSystemResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
+import com.credit.bridge.remote.response.AllProductListResponse
 import com.credit.bridge.remote.response.BResponse
 import com.credit.bridge.remote.response.CheckCollectDataStatusResponse
 import com.credit.bridge.remote.response.CommonBoolResponse
@@ -319,6 +323,19 @@ object HttpClient {
         dispatchClient!!.enqueue(call, OrderUpdateResponse::class.java, OrderUpdateResponseEvent::class.java)
     }
 
+    fun getAllProductList(mContext: Context) {
+
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_GET_PRODUCTION_INFO)
+        dispatchClient!!.enqueue(call, AllProductListResponse::class.java,
+            AllProductListResponseEvent::class.java)
+    }
+
+    fun submitOrder(mContext: Context, requestBody: ArrayList<RequestSubmitOrderBody>, flag: String) {
+
+        val call = mHttpApi!!.requestPostSubmitOrder(getHeaders(mContext), Contants.URL_CREATE_ORDER, requestBody)
+        dispatchClient!!.enqueue(call, BResponse::class.java, SubmitOrderResponseEvent::class.java, flag)
+    }
+
 
     /*
 
@@ -481,26 +498,13 @@ object HttpClient {
 
 
      *//*
-    fun getProductList(mContext: Context) {
 
-        val call = mHttpApi!!.requestPost1(getHeaders(mContext), Contants.URL_GET_PRODUCTION_INFO)
-        dispatchClient!!.enqueue(call, ProductListResponse::class.java, ProductListResponseEvent::class.java)
-    }
 
 
     *//**
      *  apply order
      *//*
-    fun applyOrder(mContext: Context, applyBody: ArrayList<CreateOrderRequestBody>, pageIndex: String) {
 
-        val eventValue =  HashMap<String, Any>()
-        eventValue[ConstConfig.POINT_LOAN_SUBMIT] = ""
-        AppsFlyerLib.getInstance().logEvent(mContext, ConstConfig.POINT_LOAN_SUBMIT, eventValue)
-        PointUploadUtils.uploadEvent(mContext as AppCompatActivity,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)
-
-        val call = mHttpApi!!.requestPostApplyOrder(getHeaders(mContext), Contants.URL_CREATE_ORDER, applyBody)
-        dispatchClient!!.enqueue(call, BResponse::class.java, ApplyOrderResponseEvent::class.java, pageIndex)
-    }
 
 
 

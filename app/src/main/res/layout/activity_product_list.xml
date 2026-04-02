@@ -149,17 +149,18 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/retryTv"
+                android:id="@+id/viewDetailsTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="@dimen/margin_30"
-                android:text="Retry"
+                android:text="View Details"
                 android:textColor="#ffffd29f"
                 android:textStyle="bold"
                 android:textSize="16sp"
                 />
 
             <TextView
+                android:id="@+id/continueTv"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/margin_50"
                 android:layout_marginEnd="@dimen/margin_15"

@@ -1,5 +1,6 @@
 package com.credit.bridge.util
 
+import com.credit.bridge.remote.bean.ProductInfo
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.TimeZone
@@ -24,5 +25,37 @@ object AppUtil {
         }
         val remainingTime = targetTimeMillis - currentTimeMillis
         return remainingTime
+    }
+
+    fun formatProductId(productList: ArrayList<ProductInfo>): ArrayList<Int> {
+        val idList = ArrayList<Int>()
+        productList.forEach {
+            idList.add(it.ifbivuyws)
+        }
+        return idList
+    }
+
+    fun formatAmount(productList: ArrayList<ProductInfo>): ArrayList<Int> {
+        val amountList = ArrayList<Int>()
+        productList.forEach {
+            amountList.add(it.auaxapvecxrhb)
+        }
+        return amountList
+    }
+
+    fun formatTotalAmount(productList: ArrayList<ProductInfo>): Int {
+        var totalAmount = 0
+        productList.forEach {
+            totalAmount += it.auaxapvecxrhb
+        }
+        return totalAmount
+    }
+
+    fun formatTotalFee(productList: ArrayList<ProductInfo>): Int {
+        var fee = 0
+        productList.forEach {
+            fee += it.xwnpwazpoz
+        }
+        return fee
     }
 }

@@ -11,12 +11,18 @@ import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityConfirmProductBinding
 import com.credit.bridge.databinding.ActivityProductListBinding
+import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.util.ToastUtil
 
 class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), View.OnClickListener  {
 
     override fun getBinding() = ActivityConfirmProductBinding.inflate(layoutInflater)
 
+    var productIdList: ArrayList<Int> = ArrayList<Int>()
+    var amountList: ArrayList<Int> = ArrayList<Int>()
+    private var totalAmount: Any = 0
+    private var totalFee: Any = 0
+    private var productInfo: ProductInfo? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -25,6 +31,17 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
 
     override fun initRes() {
         super.initRes()
+
+        try {
+            productIdList = intent.getIntegerArrayListExtra("productIdList")!!
+            amountList = intent.getIntegerArrayListExtra("productAmountList")!!
+            totalAmount = intent.getIntExtra("amount", 0)
+            totalFee = intent.getIntExtra("fee", 0)
+            productInfo = intent.getSerializableExtra("productInfo") as ProductInfo
+        } catch (e: Exception) {
+
+        }
+
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
     }
