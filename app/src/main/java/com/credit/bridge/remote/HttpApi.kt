@@ -1,6 +1,9 @@
 package com.credit.bridge.remote
 
 import RequestOrderUpdateBody
+import com.credit.bridge.remote.bean.BaseUserInfo
+import com.credit.bridge.remote.body.RequestBankInfoBody
+import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
@@ -72,11 +75,25 @@ interface HttpApi {
     fun requestGetQueryMap(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @QueryMap map: MutableMap<String, Any>): Call<JsonObject>
 
 
+    @PUT
+    fun requestPutBaseUserInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: BaseUserInfo): Call<JsonObject>
+
+
+    @PUT
+    fun requestPutContactInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: ArrayList<RequestContactBody>): Call<JsonObject>
+
+    @POST
+    fun requestPostBankInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestBankInfoBody): Call<JsonObject>
+
+
+
+
+
+
     /*@POST
     fun requestPostSms(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestSmsBody): Call<JsonObject>
 
-    @POST
-    fun postBankInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestBankBody): Call<JsonObject>
+
 
 
 
@@ -110,14 +127,11 @@ interface HttpApi {
     @POST
     fun ocrPanNumber(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOcrNumberBody): Call<JsonObject>
 
-    @PUT
-    fun requestPutPersonalInfoOne(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: PersonalInfo): Call<JsonObject>
+
 
     @PUT
     fun requestPutPan(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestPanBody): Call<JsonObject>
 
-    @PUT
-    fun requestPutPersonalInfoTwo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: ArrayList<RequestContactBody>): Call<JsonObject>
 */
     @HTTP(method = "DELETE", path = "{key}", hasBody = false)
     fun requestDelete(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String): Call<JsonObject>

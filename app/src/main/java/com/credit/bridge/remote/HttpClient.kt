@@ -5,17 +5,16 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageInfo
-import android.os.Build
 import android.provider.Settings
 import android.text.TextUtils
-import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
-import androidx.appcompat.app.AppCompatActivity
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
-import com.credit.bridge.remote.bean.DeviceInfo
+import com.credit.bridge.remote.bean.BaseUserInfo
+import com.credit.bridge.remote.body.RequestBankInfoBody
+import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.body.RequestInstalledPackageBody
@@ -47,7 +46,10 @@ import com.credit.bridge.remote.event.RequestZipDataBody
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
 import com.credit.bridge.remote.event.UploadSystemResponseEvent
+import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
+import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.AllProductListResponse
 import com.credit.bridge.remote.response.BResponse
@@ -64,7 +66,6 @@ import com.credit.bridge.remote.response.OrderUpdateResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
-import com.google.android.gms.common.internal.service.Common
 import com.google.gson.Gson
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -383,6 +384,39 @@ object HttpClient {
         dispatchClient?.enqueue(call, CommonResponse::class.java, PolicyLinkResponseEvent::class.java)
     }
 
+    fun verifyBaseUserInfo(mContext: Context, childrenNumber: String, email: String, employmentStatues: String, lastEducation: String, maritalStatus: String,
+                        monthlyIcome: String, whatsAppAccount: String) {
+
+        val personalInfo = BaseUserInfo()
+        personalInfo.hkalauhobxroaq = childrenNumber
+        personalInfo.zztal = email
+        personalInfo.uhynjkkijdcmdvhvl = employmentStatues
+        personalInfo.ufhjanixbqltq = lastEducation
+        personalInfo.wrxrgcbckiewb = maritalStatus
+        personalInfo.utmytmlcmuso = monthlyIcome
+        personalInfo.egwgclynecudnbh = whatsAppAccount
+        val call = mHttpApi!!.requestPutBaseUserInfo(getHeaders(mContext), Contants.URL_PRESONAL_INFO, personalInfo)
+
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyBaseUserInfoResponseEvent::class.java)
+    }
+
+    fun verifyContactInfo(mContext: Context, body: ArrayList<RequestContactBody>) {
+
+        val call = mHttpApi!!.requestPutContactInfo(getHeaders(mContext), Contants.URL_CONTACT, body)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyContactInfoResponseEvent::class.java)
+    }
+
+    fun verifyBankInfo(mContext: Context, bankName: String, cardNo: String,cardNoSecond: String ,bankCode: String,code: String) {
+        val body = RequestBankInfoBody()
+        body.aosqii = cardNo
+        body.fikvylg = bankName
+        body.wqumwrph = bankCode
+        body.pxcvycbjwxnn = cardNoSecond
+        body.kutc = code
+        val call = mHttpApi!!.requestPostBankInfo(getHeaders(mContext), Contants.URL_CHANGE_BACK, body)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyBankInfoResponseEvent::class.java)
+    }
+
 
 
 
@@ -431,38 +465,11 @@ object HttpClient {
         dispatchClient?.enqueue(call, UserCreditResponse::class.java, UserCreditResponseEvent::class.java)
     }
 
-    fun postBankInfo(mContext: Context, bankName: String, cardNo: String,cardNoSecond: String ,bankCode: String,code: String) {
-        val body = RequestBankBody()
-        body.aosqii = cardNo
-        body.fikvylg = bankName
-        body.wqumwrph = bankCode
-        body.pxcvycbjwxnn = cardNoSecond
-        body.kutc = code
-        val call = mHttpApi!!.postBankInfo(getHeaders(mContext), Contants.URL_CHANGE_BACK, body)
-        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionThreeResponseEvent::class.java)
-    }
 
-    fun saveQuestionOne(mContext: Context, childrenNumber: String, email: String, employmentStatues: String, lastEducation: String, maritalStatus: String,
-                        monthlyIcome: String, whatsAppAccount: String) {
 
-        val personalInfo = PersonalInfo()
-        personalInfo.hkalauhobxroaq = childrenNumber
-        personalInfo.zztal = email
-        personalInfo.uhynjkkijdcmdvhvl = employmentStatues
-        personalInfo.ufhjanixbqltq = lastEducation
-        personalInfo.wrxrgcbckiewb = maritalStatus
-        personalInfo.utmytmlcmuso = monthlyIcome
-        personalInfo.egwgclynecudnbh = whatsAppAccount
-        val call = mHttpApi!!.requestPutPersonalInfoOne(getHeaders(mContext), Contants.URL_PRESONAL_INFO, personalInfo)
 
-        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionOneResponseEvent::class.java)
-    }
 
-    fun saveQuestionTwo(mContext: Context, body: ArrayList<RequestContactBody>) {
 
-        val call = mHttpApi!!.requestPutPersonalInfoTwo(getHeaders(mContext), Contants.URL_CONTACT, body)
-        dispatchClient?.enqueue(call, StringResponse::class.java, QuestionTwoResponseEvent::class.java)
-    }
 
     fun savePanFour(mContext: Context, panNumber: String, fullName: String, birthday: String, gender: String) {
 
