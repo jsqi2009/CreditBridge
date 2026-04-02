@@ -17,6 +17,12 @@
     <color name="sheet_item_color">#C35712</color>
 
 
+    <color name="order_paid">#4EC067</color>
+    <color name="order_closed">#959EB1</color>
+    <color name="order_processing">#125CE7</color>
+    <color name="order_due">#FF3D3D</color>
+
+
     <color name="text_FFD29F">#FFD29F</color>
 
 

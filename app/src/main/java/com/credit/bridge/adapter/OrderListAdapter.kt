@@ -56,6 +56,8 @@ class OrderListAdapter(
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_processing)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_processing)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_processing))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
@@ -67,6 +69,8 @@ class OrderListAdapter(
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_overdue)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
@@ -78,6 +82,8 @@ class OrderListAdapter(
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_due)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
@@ -88,7 +94,9 @@ class OrderListAdapter(
                         " " + DataFormatUtils.float2Str(itemInfo.tznvtuengiwnrnieyulnqsao)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_paid)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_payment_date)
-                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_due)
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_paid)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_paid)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_paid))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
@@ -100,6 +108,8 @@ class OrderListAdapter(
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
@@ -111,6 +121,8 @@ class OrderListAdapter(
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
@@ -122,6 +134,8 @@ class OrderListAdapter(
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE

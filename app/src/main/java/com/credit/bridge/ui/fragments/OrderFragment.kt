@@ -57,13 +57,13 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
         bindViews.currentLayout.setOnClickListener(this)
         bindViews.historyLayout.setOnClickListener(this)
 
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_PRE_REVIEW))
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_ISSUING))
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_OVERDUE))
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_CURRENT))
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_PAID_OFF))
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_REJECTED))
-        orderList.add(OrderInfo(ufzqlyyxash = ConstConfig.ORDER_STATUS_CLOSED))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_PRE_REVIEW))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_ISSUING))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_OVERDUE))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_CURRENT))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_PAID_OFF))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_REJECTED))
+        orderList.add(OrderInfo(fwwluzpnudp = ConstConfig.ORDER_STATUS_CLOSED))
 
         initListAdapter()
     }
