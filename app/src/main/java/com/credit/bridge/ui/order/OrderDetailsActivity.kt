@@ -57,7 +57,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             intent.getSerializableExtra("info") as? OrderInfo
         }
         orderId = orderInfo?.qyfqljd ?: 0
-        orderStatus = orderInfo?.ufzqlyyxash
+        orderStatus = orderInfo?.fwwluzpnudp
         if (intent.hasExtra("isExtend")) {
             isExtend = intent.getBooleanExtra("isExtend", false)
         }
@@ -143,7 +143,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         if (orderInfo == null) {
             return
         }
-        when (orderInfo?.ufzqlyyxash) {
+        when (orderStatus) {
             ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
                 bindViews.processingLayout.rootView.visibility = View.VISIBLE
                 bindViews.processingLayout.titleTv.text = "Processing"

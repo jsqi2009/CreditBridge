@@ -157,6 +157,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         /*showLoading()
         HttpClient.login(this, code)*/
 
+        CacheManager.isAuth = true
         val intent = Intent(this, RootActivity::class.java)
         startActivity(intent)
 

@@ -60,6 +60,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_processing))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
             }
             ConstConfig.ORDER_STATUS_OVERDUE -> {
@@ -73,6 +74,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
             }
             ConstConfig.ORDER_STATUS_CURRENT -> {
@@ -86,6 +88,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
+                holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
             }
             ConstConfig.ORDER_STATUS_PAID_OFF -> {
@@ -99,6 +102,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_paid))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
             }
             ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
@@ -112,6 +116,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
@@ -125,6 +130,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
             }
             else -> {
@@ -138,6 +144,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
+                holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
             }
         }
