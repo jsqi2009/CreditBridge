@@ -71,7 +71,7 @@ class OrderListAdapter(
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_overdue)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
-                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_overdue))
                 holder.bindView.dateTv.text = itemInfo.suibvbw
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.rightArrowIv.visibility = View.GONE

@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rootView"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="250dp">
 
 
     <LinearLayout
         android:id="@+id/orderInfoLl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:paddingVertical="@dimen/margin_20"
         android:layout_marginHorizontal="@dimen/margin_16"
         android:background="@drawable/shape_order_item_bg"
@@ -34,6 +34,7 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/statusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/shape_order_status_processing"
@@ -161,35 +162,16 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_20"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_15">
-
-            <TextView
-                android:layout_width="@dimen/margin_100"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:text="Due date"
-                android:textColor="#C35712"
-                android:textSize="@dimen/ts_13" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="31-12-2025"
-                android:textColor="#ff4f2a0f"
-                android:textSize="13sp"
-                />
-
-        </LinearLayout>
-
 
     </LinearLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/margin_16"
+        android:paddingHorizontal="@dimen/margin_10"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:src="@mipmap/ic_due_mark" />
 
 </RelativeLayout>

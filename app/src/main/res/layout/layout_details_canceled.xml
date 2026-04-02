@@ -32,141 +32,158 @@
     <View
         android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_10"
+        android:layout_height="@dimen/margin_15"
         android:layout_below="@id/detailsTipsLl"/>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="210dp"
         android:layout_below="@id/view"
-        android:paddingVertical="@dimen/margin_20"
         android:layout_marginHorizontal="@dimen/margin_16"
         android:background="@drawable/shape_order_item_bg"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
+            android:layout_height="match_parent"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_15">
+            android:orientation="vertical">
 
-            <TextView
-                android:layout_width="@dimen/margin_100"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:text="Status"
-                android:textColor="#C35712"
-                android:textSize="@dimen/ts_13" />
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
+                android:layout_gravity="center_vertical"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_15">
+
+                <TextView
+                    android:layout_width="@dimen/margin_100"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:text="Status"
+                    android:textColor="#C35712"
+                    android:textSize="@dimen/ts_13" />
+
+                <TextView
+                    android:id="@+id/statusTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_order_status_processing"
+                    android:paddingHorizontal="@dimen/margin_6"
+                    android:paddingVertical="@dimen/margin_2"
+                    android:text="Processing"
+                    android:textColor="#ff125ce7"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_15">
+
+                <TextView
+                    android:layout_width="@dimen/margin_100"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:text="Created on"
+                    android:textColor="#C35712"
+                    android:textSize="@dimen/ts_13" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_order_status_processing"
+                    android:paddingHorizontal="@dimen/margin_6"
+                    android:paddingVertical="@dimen/margin_2"
+                    android:text="Processing"
+                    android:textColor="#ff125ce7"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_15">
+
+                <TextView
+                    android:layout_width="@dimen/margin_100"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:text="Usage ID"
+                    android:textColor="#C35712"
+                    android:textSize="@dimen/ts_13" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_order_status_processing"
+                    android:paddingHorizontal="@dimen/margin_6"
+                    android:paddingVertical="@dimen/margin_2"
+                    android:text="Processing"
+                    android:textColor="#ff125ce7"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="@dimen/margin_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_15">
+
+                <TextView
+                    android:layout_width="@dimen/margin_100"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/margin_10"
+                    android:text="Usage amount"
+                    android:textColor="#C35712"
+                    android:textSize="@dimen/ts_13" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_order_status_processing"
+                    android:paddingHorizontal="@dimen/margin_6"
+                    android:paddingVertical="@dimen/margin_2"
+                    android:text="Processing"
+                    android:textColor="#ff125ce7"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_20"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_15">
-
-            <TextView
-                android:layout_width="@dimen/margin_100"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:text="Created on"
-                android:textColor="#C35712"
-                android:textSize="@dimen/ts_13" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_20"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_15">
-
-            <TextView
-                android:layout_width="@dimen/margin_100"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:text="Usage ID"
-                android:textColor="#C35712"
-                android:textSize="@dimen/ts_13" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginTop="@dimen/margin_20"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/margin_15">
-
-            <TextView
-                android:layout_width="@dimen/margin_100"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/margin_10"
-                android:text="Usage amount"
-                android:textColor="#C35712"
-                android:textSize="@dimen/ts_13" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
-
-        </LinearLayout>
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/ic_due_mark" />
+    </RelativeLayout>
 
 
-    </LinearLayout>
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/margin_45"
         android:layout_marginTop="@dimen/margin_30"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -175,7 +192,7 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/margin_45"
         android:layout_marginTop="@dimen/margin_30"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
