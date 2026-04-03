@@ -179,15 +179,47 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             }
             ConstConfig.ORDER_STATUS_PAID_OFF -> {
                 bindViews.paidLayout.rootView.visibility = View.VISIBLE
+
+                bindViews.paidLayout.dateTv.text = ""
+                bindViews.paidLayout.usageIdTv.text = ""
+                bindViews.paidLayout.amountTv.text = ""
+                bindViews.paidLayout.amountDueTv.text = ""
             }
             ConstConfig.ORDER_STATUS_REJECTED -> {
                 bindViews.cancelLayout.rootView.visibility = View.VISIBLE
+
+                bindViews.cancelLayout.dateTv.text = ""
+                bindViews.cancelLayout.usageIdTv.text = ""
+                bindViews.cancelLayout.amountTv.text = ""
             }
             ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
                 bindViews.cancelFrozenLayout.rootView.visibility = View.VISIBLE
+
+                bindViews.cancelFrozenLayout.dateTv.text = ""
+                bindViews.cancelFrozenLayout.usageIdTv.text = ""
+                bindViews.cancelFrozenLayout.amountTv.text = ""
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
+                bindViews.extendLayout.rootView.visibility = View.VISIBLE
+                bindViews.continueTv.visibility = View.VISIBLE
+
+                bindViews.extendLayout.dueDateTv.text = ""
+                bindViews.extendLayout.chargeTv.text = ""
+                bindViews.extendLayout.nextStatementDateTv.text = ""
+                bindViews.extendLayout.rootView.visibility = View.GONE
+                bindViews.continueTv.visibility = View.GONE
             }
+            else -> {
+                bindViews.failureLayout.rootView.visibility = View.VISIBLE
+                bindViews.editBankTv.visibility = View.VISIBLE
+
+                bindViews.failureLayout.ifscTv.text = ""
+                bindViews.failureLayout.accountTv.text = ""
+                bindViews.failureLayout.dateTv.text = ""
+                bindViews.failureLayout.usageIdTv.text = ""
+                bindViews.failureLayout.amountTv.text = ""
+            }
+
         }
     }
 

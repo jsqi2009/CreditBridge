@@ -22,6 +22,7 @@
     <color name="order_processing">#125CE7</color>
     <color name="order_overdue">#FF3D3D</color>
     <color name="order_due">#FD7140</color>
+    <color name="order_not_completed">#FF3D3D</color>
 
 
     <color name="text_FFD29F">#FFD29F</color>

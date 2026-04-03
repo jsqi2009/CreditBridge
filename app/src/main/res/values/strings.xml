@@ -43,6 +43,7 @@
     <string name="order_status_due">Due</string>
     <string name="order_status_paid">Paid</string>
     <string name="order_status_closed">Closed</string>
+    <string name="order_status_not_completed">Not Completed</string>
 
 
 
