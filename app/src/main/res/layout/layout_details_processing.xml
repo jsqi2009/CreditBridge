@@ -30,7 +30,6 @@
                 android:paddingHorizontal="@dimen/margin_15">
 
                 <TextView
-                    android:id="@+id/titleTv"
                     android:layout_width="@dimen/margin_100"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_10"
@@ -45,8 +44,8 @@
                     android:background="@drawable/shape_order_status_processing"
                     android:paddingHorizontal="@dimen/margin_6"
                     android:paddingVertical="@dimen/margin_2"
-                    android:text="Processing"
-                    android:textColor="#ff125ce7"
+                    android:text="@string/order_status_processing"
+                    android:textColor="@color/order_processing"
                     android:textSize="12sp" />
 
             </LinearLayout>
@@ -69,14 +68,14 @@
                     android:textSize="@dimen/ts_13" />
 
                 <TextView
+                    android:id="@+id/dateTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_order_status_processing"
                     android:paddingHorizontal="@dimen/margin_6"
                     android:paddingVertical="@dimen/margin_2"
-                    android:text="Processing"
-                    android:textColor="#ff125ce7"
-                    android:textSize="12sp" />
+                    android:text="31-12-2025"
+                    android:textColor="#4F2A0F"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -98,14 +97,14 @@
                     android:textSize="@dimen/ts_13" />
 
                 <TextView
+                    android:id="@+id/usageIdTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_order_status_processing"
                     android:paddingHorizontal="@dimen/margin_6"
                     android:paddingVertical="@dimen/margin_2"
-                    android:text="Processing"
-                    android:textColor="#ff125ce7"
-                    android:textSize="12sp" />
+                    android:text="JKD123456789"
+                    android:textColor="#4F2A0F"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -127,14 +126,14 @@
                     android:textSize="@dimen/ts_13" />
 
                 <TextView
+                    android:id="@+id/amountTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_order_status_processing"
                     android:paddingHorizontal="@dimen/margin_6"
                     android:paddingVertical="@dimen/margin_2"
-                    android:text="Processing"
-                    android:textColor="#ff125ce7"
-                    android:textSize="12sp" />
+                    android:text="₹ 1,000"
+                    android:textColor="#4F2A0F"
+                    android:textSize="13sp" />
 
             </LinearLayout>
 
@@ -146,7 +145,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:src="@mipmap/ic_details_mark1" />
+            android:src="@mipmap/ic_mark1" />
     </RelativeLayout>
 
     <View
@@ -202,14 +201,14 @@
                         android:textSize="@dimen/ts_13" />
 
                     <TextView
+                        android:id="@+id/ifscTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_order_status_processing"
                         android:paddingHorizontal="@dimen/margin_6"
                         android:paddingVertical="@dimen/margin_2"
-                        android:text="Processing"
-                        android:textColor="#ff125ce7"
-                        android:textSize="12sp" />
+                        android:text="123*******A0"
+                        android:textColor="#4F2A0F"
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
@@ -231,14 +230,14 @@
                         android:textSize="@dimen/ts_13" />
 
                     <TextView
+                        android:id="@+id/accountTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/shape_order_status_processing"
                         android:paddingHorizontal="@dimen/margin_6"
                         android:paddingVertical="@dimen/margin_2"
-                        android:text="Processing"
-                        android:textColor="#ff125ce7"
-                        android:textSize="12sp" />
+                        android:text="123*************12"
+                        android:textColor="#4F2A0F"
+                        android:textSize="13sp" />
 
                 </LinearLayout>
 
@@ -254,7 +253,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:src="@mipmap/ic_details_mark2" />
+            android:src="@mipmap/ic_mark2" />
 
     </RelativeLayout>
 

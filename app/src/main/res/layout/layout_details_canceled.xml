@@ -71,11 +71,11 @@
                     android:id="@+id/statusTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/shape_order_status_processing"
+                    android:background="@drawable/shape_order_status_closed"
                     android:paddingHorizontal="@dimen/margin_6"
                     android:paddingVertical="@dimen/margin_2"
-                    android:text="Processing"
-                    android:textColor="#ff125ce7"
+                    android:text="@string/order_status_closed"
+                    android:textColor="@color/order_closed"
                     android:textSize="12sp" />
 
             </LinearLayout>

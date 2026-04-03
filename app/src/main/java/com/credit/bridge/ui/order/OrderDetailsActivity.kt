@@ -146,39 +146,45 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         when (orderStatus) {
             ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
                 bindViews.processingLayout.rootView.visibility = View.VISIBLE
-                bindViews.processingLayout.statusTv.text = getString(R.string.order_status_processing)
-                bindViews.processingLayout.statusTv.setBackgroundResource(R.drawable.shape_order_status_processing)
-                bindViews.processingLayout.statusTv.setTextColor(getColor(R.color.order_processing))
+
+                bindViews.processingLayout.dateTv.text = ""
+                bindViews.processingLayout.usageIdTv.text = ""
+                bindViews.processingLayout.amountTv.text = ""
+                bindViews.processingLayout.ifscTv.text = ""
+                bindViews.processingLayout.accountTv.text = ""
             }
             ConstConfig.ORDER_STATUS_OVERDUE -> {
                 bindViews.overdueLayout.rootView.visibility = View.VISIBLE
-                bindViews.overdueLayout.statusTv.text = getString(R.string.order_status_overdue)
-                bindViews.overdueLayout.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
-                bindViews.overdueLayout.statusTv.setTextColor(getColor(R.color.order_overdue))
+                bindViews.continuePaymentTv.visibility = View.VISIBLE
+                bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
+
+                bindViews.overdueLayout.dateTv.text = ""
+                bindViews.overdueLayout.usageIdTv.text = ""
+                bindViews.overdueLayout.amountTv.text = ""
+                bindViews.overdueLayout.dueDateTv.text = ""
+                bindViews.overdueLayout.dueDurationTv.text = ""
+                bindViews.overdueLayout.durChargesTv.text = ""
+                bindViews.overdueLayout.totalAmountTv.text = ""
             }
             ConstConfig.ORDER_STATUS_CURRENT -> {
                 bindViews.dueLayout.rootView.visibility = View.VISIBLE
-                bindViews.dueLayout.statusTv.text = getString(R.string.order_status_due)
-                bindViews.dueLayout.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
-                bindViews.dueLayout.statusTv.setTextColor(getColor(R.color.order_due))
+                bindViews.continuePaymentTv.visibility = View.VISIBLE
+                bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
+
+                bindViews.dueLayout.dateTv.text = ""
+                bindViews.dueLayout.usageIdTv.text = ""
+                bindViews.dueLayout.amountTv.text = ""
+                bindViews.dueLayout.dueDateTv.text = ""
+                bindViews.dueLayout.amountDueTv.text = ""
             }
             ConstConfig.ORDER_STATUS_PAID_OFF -> {
                 bindViews.paidLayout.rootView.visibility = View.VISIBLE
-                bindViews.paidLayout.statusTv.text = getString(R.string.order_status_paid)
-                bindViews.paidLayout.statusTv.setBackgroundResource(R.drawable.shape_order_status_paid)
-                bindViews.paidLayout.statusTv.setTextColor(getColor(R.color.order_paid))
             }
             ConstConfig.ORDER_STATUS_REJECTED -> {
                 bindViews.cancelLayout.rootView.visibility = View.VISIBLE
-                bindViews.cancelLayout.statusTv.text = getString(R.string.order_status_closed)
-                bindViews.cancelLayout.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
-                bindViews.cancelLayout.statusTv.setTextColor(getColor(R.color.order_closed))
             }
             ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
                 bindViews.cancelFrozenLayout.rootView.visibility = View.VISIBLE
-                bindViews.cancelFrozenLayout.statusTv.text = getString(R.string.order_status_closed)
-                bindViews.cancelFrozenLayout.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
-                bindViews.cancelFrozenLayout.statusTv.setTextColor(getColor(R.color.order_closed))
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
             }

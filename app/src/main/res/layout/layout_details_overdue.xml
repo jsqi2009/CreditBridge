@@ -37,11 +37,11 @@
                 android:id="@+id/statusTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
+                android:background="@drawable/shape_order_status_due"
                 android:paddingHorizontal="@dimen/margin_6"
                 android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
+                android:text="@string/order_status_overdue"
+                android:textColor="@color/order_overdue"
                 android:textSize="12sp" />
 
         </LinearLayout>
@@ -64,14 +64,13 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/dateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
+                android:text="31-12-2025"
+                android:textColor="#ff4f2a0f"
+                android:textSize="13sp"
+                />
 
         </LinearLayout>
 
@@ -93,14 +92,13 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/usageIdTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
+                android:text="31-12-2025"
+                android:textColor="#ff4f2a0f"
+                android:textSize="13sp"
+                />
 
         </LinearLayout>
 
@@ -122,14 +120,13 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/amountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/shape_order_status_processing"
-                android:paddingHorizontal="@dimen/margin_6"
-                android:paddingVertical="@dimen/margin_2"
-                android:text="Processing"
-                android:textColor="#ff125ce7"
-                android:textSize="12sp" />
+                android:text="31-12-2025"
+                android:textColor="#ff4f2a0f"
+                android:textSize="13sp"
+                />
 
         </LinearLayout>
 
@@ -153,12 +150,12 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/dueDateTv"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:text="31-12-2025"
                 android:textColor="#ff4f2a0f"
-                android:textSize="13sp"
-                />
+                android:textSize="13sp" />
 
         </LinearLayout>
 
@@ -180,6 +177,7 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/dueDurationTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="31-12-2025"
@@ -207,6 +205,7 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/durChargesTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="31-12-2025"
@@ -235,6 +234,7 @@
                 android:textSize="@dimen/ts_13" />
 
             <TextView
+                android:id="@+id/totalAmountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="31-12-2025"
