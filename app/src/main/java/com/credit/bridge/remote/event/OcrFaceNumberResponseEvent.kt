@@ -4,7 +4,7 @@ import com.credit.bridge.remote.response.CommonIntResponse
 import retrofit2.Response
 
 
-class OcrFaceResponseEvent: BResponseEvent<CommonIntResponse> {
+class OcrFaceNumberResponseEvent: BResponseEvent<CommonIntResponse> {
 
     constructor(basicResponse: CommonIntResponse, response: Response<*>) : super(basicResponse, response) {}
 

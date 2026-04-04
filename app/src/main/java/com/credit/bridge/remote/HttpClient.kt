@@ -37,7 +37,7 @@ import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.LoginResponseEvent
 import com.credit.bridge.remote.event.LogoutResponseEvent
-import com.credit.bridge.remote.event.OcrFaceResponseEvent
+import com.credit.bridge.remote.event.OcrFaceNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanResponseEvent
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
@@ -480,7 +480,7 @@ object HttpClient {
         val body = RequestOcrPanNumberBody()
         body.qfve = "FACE"
         val call = mHttpApi!!.requestPostOcrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
-        dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrFaceResponseEvent::class.java)
+        dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrFaceNumberResponseEvent::class.java)
     }
 
     fun verifyOcrPanNumber(mContext: Context) {

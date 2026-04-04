@@ -3,12 +3,14 @@ package com.credit.bridge.ui.verify
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
@@ -29,6 +31,7 @@ import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestContactBody
+import com.credit.bridge.remote.event.OcrFaceNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanResponseEvent
 import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
@@ -45,6 +48,9 @@ import com.credit.bridge.util.VerifyInfoUtil
 import com.credit.bridge.widget.CommonBottomSheet
 import com.credit.bridge.widget.StartVerifyBottomSheet
 import com.credit.bridge.widget.VerifyBankBottomSheet
+import com.liveness.dflivenesslibrary.DFTransferResultInterface
+import com.liveness.dflivenesslibrary.liveness.DFActionLivenessActivity
+import com.liveness.dflivenesslibrary.liveness.util.Constants
 import com.squareup.otto.Subscribe
 import kotlinx.coroutines.launch
 import okhttp3.Call
@@ -56,9 +62,11 @@ import pub.devrel.easypermissions.PermissionRequest
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
+import java.io.FileOutputStream
 import kotlin.collections.get
+import kotlin.use
 
-class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnClickListener {
+class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnClickListener, EasyPermissions.PermissionCallbacks {
 
 
     override fun getBinding() = ActivityVerifyInfoBinding.inflate(layoutInflater)
@@ -80,7 +88,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     var panNumberOfTimes = 0
     var faceNumberOfTimes = 0
     var isUseOcePan = false
-    var isHuo = false
+    var isUseVerifyFace = false
 
     private val contact1Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val contactUri = result.data?.data ?: return@registerForActivityResult
@@ -115,6 +123,52 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
         }
     }
+
+    private val liveFaceLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        val data = result.data
+        val resultCode = result.resultCode
+        HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
+        if (resultCode == RESULT_OK ) {
+            val mResult =  (this.application as DFTransferResultInterface).result
+            if (mResult != null) {
+                val imageResultArr = mResult.livenessImageResults
+                if (imageResultArr != null) {
+                    val size = imageResultArr.size
+                    if (size > 0) {
+                        var imageResult = imageResultArr[0]
+                        var imageBitmap = BitmapFactory.decodeByteArray(
+                            imageResult.image,
+                            0,
+                            imageResult.image.size
+                        )
+                        bindViews.verify5.verifyFaceIv.setImageBitmap(imageBitmap)
+                        val tempFile = File.createTempFile("ocr_face_",
+                            ".jpg",
+                            cacheDir
+                        )
+                        FileOutputStream(tempFile).use { it.write(imageResult.image) }
+                        real_path = tempFile.absolutePath
+                        showLoading()
+                        HttpClient.getOssInfo(this@VerifyInfoActivity, 2)
+                    }
+                }
+            }else{
+
+                HttpClient.eventReport(this,ConstConfig.POINT_FAIL_LIVENESS,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_FAIL_LIVENESS)
+            }
+        } else {
+
+            HttpClient.eventReport(this,ConstConfig.POINT_FAIL_LIVENESS,
+                ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_FAIL_LIVENESS)
+
+            if (result.data != null) {
+                val errorCode = data!!.getIntExtra(DFActionLivenessActivity.KEY_RESULT_ERROR_CODE, -10000);
+                Log.e("onActivityResult", "action liveness cancel，error code:" + errorCode);
+            }
+        }
+    }
+
 
     private val takePhoto: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.data != null && !TextUtils.isEmpty(result.data?.getStringExtra("path_img"))) {
@@ -157,6 +211,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.verify3.confirmAccountNumberEt.addTextChangedListener(confirmAccountTextWatcher)
 
         bindViews.verify4.panNumberIv.setOnClickListener(this)
+        bindViews.verify4.genderLl.setOnClickListener(this)
+
+        bindViews.verify5.verifyFaceIv.setOnClickListener(this)
 
         bindViews.retryTv.paint.isUnderlineText = true
 
@@ -213,6 +270,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             R.id.panNumberIv -> {
                 startOcrPanNumber()
+            }
+            R.id.genderLl -> {
+                showGenderSheet()
+            }
+            R.id.verifyFaceIv -> {
+                startVerifyFace()
             }
 
             R.id.continueTv -> {
@@ -681,6 +744,18 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         workTypeSheet.show(supportFragmentManager, "workTypeSheet")
     }
 
+    private fun showGenderSheet() {
+        val workTypeSheet = CommonBottomSheet(
+            this,"Please select",VerifyInfoUtil.getGenderList(),
+            genderIndex, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    genderIndex = index
+                    bindViews.verify4.genderTv.text = VerifyInfoUtil.getGenderList()[genderIndex].name
+                }
+            })
+        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
     private fun chooseContact1() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
         contact1Launcher.launch(intent)
@@ -688,7 +763,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun chooseContact2() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
-        contact1Launcher.launch(intent)
+        contact2Launcher.launch(intent)
     }
 
     private var accountTextWatcher = object : TextWatcher {
@@ -873,12 +948,122 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
     }
 
+    @Subscribe
+    fun onOcrFaceNumberResponseEvent(event: OcrFaceNumberResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            event.model?.blvb?.let {
+                faceNumberOfTimes = it
+                //views.tvFaceNumber.text = resources.getString(R.string.info_5_pop) + faceNumber
+            }
+        }else{
+            if(event.model?.wuhi == 500){
+                ToastUtil.showLong(this,event.model?.znxbvyn)
+            }else {
+                ToastUtil.showLong(this, event.networkError.toString())
+            }
+        }
+    }
 
+    private fun startVerifyFace() {
+        if (faceNumberOfTimes == 0) {
+            ToastUtil.showLong(this@VerifyInfoActivity,"Daily limit reached. Try again tomorrow.")
+            return
+        }
 
+        isUseVerifyFace = true
+        val permission = arrayOf(Manifest.permission.CAMERA)
+        if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
+            val bundle = Bundle()
+            bundle.putString(DFActionLivenessActivity.OUTTYPE, Constants.MULTIIMG)
+            bundle.putString(DFActionLivenessActivity.EXTRA_MOTION_SEQUENCE, "STILL BLINK MOUTH NOD YAW")
+            val intent = Intent()
+            intent.setClass(this, DFActionLivenessActivity::class.java)
+            intent.putExtras(bundle)
+            intent.putExtra(DFActionLivenessActivity.KEY_DETECT_IMAGE_RESULT, true)
+            liveFaceLauncher.launch(intent)
 
+            HttpClient.eventReport(this,ConstConfig.POINT_START_LIVENESS,
+                ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_START_LIVENESS)
 
+        } else {
+            EasyPermissions.requestPermissions(
+                PermissionRequest.Builder(
+                    this@VerifyInfoActivity,
+                    REQUEST_CODE_PERMISSION,
+                    *permission
+                )
+                    .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
+                    .setPositiveButtonText("Allow")
+                    .setNegativeButtonText("Deny")
+                    .build()
+            )
+        }
+    }
 
+    @SuppressLint("SetTextI18n")
+    @Subscribe
+    fun onOOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            event.model?.blvb?.let {
+                showVerifySuccessSheet()
+            }
+        }else {
+            if(event.model != null){
+                ToastUtil.showLong(this, event.model?.znxbvyn)
+            }else{
+                ToastUtil.showLong(this, "Network Error")
+            }
+        }
+    }
 
+    override fun onPermissionsGranted(
+        requestCode: Int,
+        perms: List<String?>
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if(isUseVerifyFace){
+                val bundle = Bundle()
+                bundle.putString(DFActionLivenessActivity.OUTTYPE, Constants.MULTIIMG)
+                bundle.putString(DFActionLivenessActivity.EXTRA_MOTION_SEQUENCE, "STILL BLINK MOUTH NOD YAW")
+                val intent = Intent()
+                intent.setClass(this, DFActionLivenessActivity::class.java)
+                intent.putExtras(bundle)
+                intent.putExtra(DFActionLivenessActivity.KEY_DETECT_IMAGE_RESULT, true)
+                liveFaceLauncher.launch(intent)
+            }else{
+                takePhoto.launch(Intent(this@VerifyInfoActivity, SubmitSuccessActivity::class.java).apply {})
+            }
+        }
+    }
+
+    override fun onPermissionsDenied(
+        requestCode: Int,
+        perms: List<String?>
+    ) {
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            ToastUtil.showLong(this, "Please grant the required permissions to continue.")
+        }
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    
+    private fun showVerifySuccessSheet() {
+
+    }
+
+    private fun showVerifyTipsSheet() {
+
+    }
 
 
 }
