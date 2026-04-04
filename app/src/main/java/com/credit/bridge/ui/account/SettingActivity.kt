@@ -1,5 +1,6 @@
 package com.credit.bridge.ui.account
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -11,7 +12,14 @@ import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityAboutUsBinding
 import com.credit.bridge.databinding.ActivitySettingBinding
+import com.credit.bridge.remote.HttpClient
+import com.credit.bridge.remote.event.LogoutResponseEvent
+import com.credit.bridge.ui.login.LoginActivity
 import com.credit.bridge.ui.product.SubmitSuccessActivity
+import com.credit.bridge.util.AppActivityManager
+import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.NumberUtils
+import com.squareup.otto.Subscribe
 
 class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickListener {
     override fun getBinding() = ActivitySettingBinding.inflate(layoutInflater)
@@ -22,10 +30,17 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
 
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initRes() {
         super.initRes()
+
+        bindViews.titleLayout.titleTv.text = "Setting"
+        bindViews.mobileTv.text = "+91" + NumberUtils.formatNumber(CacheManager.mobile, 3, 2)
+
+
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.logoutTv.setOnClickListener(this)
     }
 
 
@@ -34,9 +49,32 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
             R.id.backIv -> {
                 finish()
             }
-            R.id.titleTv -> {
-                startActivity(Intent(this, SubmitSuccessActivity::class.java))
+            R.id.logoutTv -> {
+                showLogoutDialog()
             }
+        }
+    }
+
+    private fun showLogoutDialog() {
+        DialogUtil.showLogoutDialog(this, onConfirm = {
+
+        }, onCancel = {
+            confirmLogout()
+        })
+    }
+
+    private fun confirmLogout() {
+        showLoading()
+        HttpClient.logout(this)
+    }
+
+    @Subscribe
+    fun onLogoutEvent(event: LogoutResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            CacheManager.isAuth = false
+            AppActivityManager.appManager.finishAllActivity()
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 }

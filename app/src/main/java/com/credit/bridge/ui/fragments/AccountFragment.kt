@@ -1,5 +1,6 @@
 package com.credit.bridge.ui.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -16,6 +17,7 @@ import com.credit.bridge.ui.account.PaymentAccountActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
 import com.credit.bridge.ui.account.SettingActivity
 import com.credit.bridge.ui.product.SubmitSuccessActivity
+import com.credit.bridge.util.NumberUtils
 
 class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListener{
 
@@ -28,12 +30,20 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
         super.onViewCreated(view, savedInstanceState)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initRes() {
         super.initRes()
         bindViews.paymentAccountLl.setOnClickListener(this)
         bindViews.privacyPolicyLl.setOnClickListener(this)
         bindViews.aboutUsLl.setOnClickListener(this)
         bindViews.settingLl.setOnClickListener(this)
+
+        if (CacheManager.isAuth) {
+            bindViews.loginTv.visibility = View.GONE
+            bindViews.signInTv.text = "+91" + NumberUtils.formatNumber(CacheManager.mobile, 3, 2)
+        } else {
+            bindViews.loginTv.visibility = View.VISIBLE
+        }
     }
 
     override fun onClick(v: View?) {
