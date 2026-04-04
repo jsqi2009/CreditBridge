@@ -188,9 +188,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     override fun initRes() {
         super.initRes()
 
+        currentStep = intent.getIntExtra("currentStep",0)
+
         bindViews.titleLayout.titleTv.text = "Details"
         bindViews.titleLayout.rightTv.text = "1/5"
         bindViews.titleLayout.rightTv.visibility = View.VISIBLE
+
+        currentStep++
+        refreshUI()
 
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
@@ -218,11 +223,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         bindViews.retryTv.paint.isUnderlineText = true
 
-        bindViews.verify1.root.visibility = View.VISIBLE
-        bindViews.verify2.root.visibility = View.GONE
-        bindViews.verify3.root.visibility = View.GONE
-        bindViews.verify4.root.visibility = View.GONE
-        bindViews.verify5.root.visibility = View.GONE
         bindViews.verifyTipsLayout.visibility = View.GONE
         bindViews.stepBtn4.visibility = View.GONE
         bindViews.attemptLeftTv.visibility = View.GONE
@@ -231,7 +231,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.backIv -> {
-                finish()
+                showVerifyTipsDialog()
             }
             R.id.titleTv -> {
                 ToastUtil.showShort(this, "Right")
@@ -1060,7 +1060,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showVerifySuccessDialog() {
         DialogUtil.showVerifySuccessDialog(this, onConfirm = {
-
+            setResult(RESULT_OK, Intent())
+            finish()
         }, onCancel = {
 
         })
@@ -1070,7 +1071,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         DialogUtil.showVerifyTipsDialog(this, onConfirm = {
 
         }, onCancel = {
-
+            finish()
         })
     }
 

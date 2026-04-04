@@ -240,7 +240,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     previewProduct()
                 }else {
                     var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
-                    intent.putExtra("step", currentStep)
+                    intent.putExtra("currentStep", currentStep)
                     verifyInfoLauncher.launch(intent)
                 }
             }
@@ -316,7 +316,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 previewProduct()
             }else {
                 var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
-                intent.putExtra("step", currentStep)
+                intent.putExtra("currentStep", currentStep)
                 verifyInfoLauncher.launch(intent)
             }
         }else{
