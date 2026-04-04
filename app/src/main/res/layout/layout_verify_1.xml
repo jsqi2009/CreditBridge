@@ -25,17 +25,20 @@
                 android:textSize="15sp" />
 
             <LinearLayout
+                android:id="@+id/workStatusLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/workStatusTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Select an option"
-                    android:textColor="#ffb8a58e"
+                    android:hint="Select an option"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#ffffebd3"
                     android:textSize="14sp"
                     />
 
@@ -43,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_verify_right_arrow" />
+                    android:src="@mipmap/ic_verify_down_arrow" />
 
             </LinearLayout>
 
@@ -66,17 +69,20 @@
                 android:textSize="15sp" />
 
             <LinearLayout
+                android:id="@+id/incomeLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/incomeTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Select an option"
-                    android:textColor="#ffb8a58e"
+                    android:hint="Select an option"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#ffffebd3"
                     android:textSize="14sp"
                     />
 
@@ -84,7 +90,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_verify_right_arrow" />
+                    android:src="@mipmap/ic_verify_down_arrow" />
 
             </LinearLayout>
 
@@ -107,17 +113,20 @@
                 android:textSize="15sp" />
 
             <LinearLayout
+                android:id="@+id/educationStatusLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/educationStatusTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Select an option"
-                    android:textColor="#ffb8a58e"
+                    android:hint="Select an option"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#ffffebd3"
                     android:textSize="14sp"
                     />
 
@@ -125,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_verify_right_arrow" />
+                    android:src="@mipmap/ic_verify_down_arrow" />
 
             </LinearLayout>
 
@@ -148,17 +157,20 @@
                 android:textSize="15sp" />
 
             <LinearLayout
+                android:id="@+id/maritalStatusLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/maritalStatusTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Select an option"
-                    android:textColor="#ffb8a58e"
+                    android:hint="Select an option"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#ffffebd3"
                     android:textSize="14sp"
                     />
 
@@ -166,7 +178,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_verify_right_arrow" />
+                    android:src="@mipmap/ic_verify_down_arrow" />
 
             </LinearLayout>
 
@@ -189,17 +201,20 @@
                 android:textSize="15sp" />
 
             <LinearLayout
+                android:id="@+id/numberOfChildrenLl"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_15"
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/numberOfChildrenTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Select an option"
-                    android:textColor="#ffb8a58e"
+                    android:hint="Select an option"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#ffffebd3"
                     android:textSize="14sp"
                     />
 
@@ -207,7 +222,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:src="@mipmap/ic_verify_right_arrow" />
+                    android:src="@mipmap/ic_verify_down_arrow" />
 
             </LinearLayout>
 
@@ -236,6 +251,7 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/emailEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#ffb8a58e"
@@ -271,11 +287,12 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/whatsappEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="#ffb8a58e"
                     android:textSize="14sp"
-                    android:hint="Enter email"
+                    android:hint="Enter WhatsApp"
                     android:background="@null"/>
 
             </LinearLayout>

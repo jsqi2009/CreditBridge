@@ -60,6 +60,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/margin_20"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/ts_18"
             android:gravity="center"
             android:text=""
             android:visibility="gone"/>

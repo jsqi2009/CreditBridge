@@ -90,6 +90,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 isCreateOrder = true
                 checkUploadStatus()
             }
+            R.id.accessManageIv -> {
+                startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
+                isCreateOrder = true
+                checkUploadStatus()
+            }
             R.id.startVerifyLl -> {
                 startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
                 isCreateOrder = false

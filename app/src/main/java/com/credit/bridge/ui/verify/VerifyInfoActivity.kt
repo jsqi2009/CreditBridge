@@ -31,6 +31,7 @@ import okhttp3.Callback
 import okhttp3.Response
 import okio.IOException
 import java.io.File
+import kotlin.collections.get
 
 class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnClickListener {
 
@@ -39,6 +40,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private var currentStep = 1
     private var isPanVerifySuccess = false
+    private var workTypeIndex = -1
+    private var monthlyIncomeIndex = -1
+    private var educationIndex = -1
+    private var maritalIndex = -1
+    private var numberOfChildIndex = -1
+
     var real_path = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,6 +64,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
+        bindViews.verify1.workStatusLl.setOnClickListener(this)
+        bindViews.verify1.incomeLl.setOnClickListener(this)
+        bindViews.verify1.educationStatusLl.setOnClickListener(this)
+        bindViews.verify1.maritalStatusLl.setOnClickListener(this)
+        bindViews.verify1.numberOfChildrenLl.setOnClickListener(this)
 
         bindViews.retryTv.paint.isUnderlineText = true
 
@@ -77,6 +89,21 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             R.id.titleTv -> {
                 ToastUtil.showShort(this, "Right")
+            }
+            R.id.workStatusLl -> {
+                showWorkTypeSheet()
+            }
+            R.id.incomeLl -> {
+                showStartVerifySheet()
+            }
+            R.id.educationStatusLl -> {
+                showStartVerifySheet()
+            }
+            R.id.maritalStatusLl -> {
+                showStartVerifySheet()
+            }
+            R.id.numberOfChildrenLl -> {
+                showStartVerifySheet()
             }
             R.id.continueTv -> {
                //showStartVerifySheet()
@@ -276,5 +303,81 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
 
     }
+
+    private fun showWorkTypeSheet() {
+        val workTypeSheet = CommonBottomSheet(
+            this,"Please select",VerifyInfoUtil.getWorkTypeList(),
+            workTypeIndex, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    workTypeIndex = index
+                    bindViews.verify1.workStatusTv.text = VerifyInfoUtil.getWorkTypeList()[workTypeIndex].name
+                    if(bindViews.verify1.incomeTv.text.isEmpty()){
+                        showMonthlyIncomeSheet()
+                    }
+                }
+            })
+        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+    private fun showMonthlyIncomeSheet() {
+        val workTypeSheet = CommonBottomSheet(
+            this,"Please select",VerifyInfoUtil.getMonthlyIncomeList(),
+            monthlyIncomeIndex, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    monthlyIncomeIndex = index
+                    bindViews.verify1.incomeTv.text = VerifyInfoUtil.getMonthlyIncomeList()[monthlyIncomeIndex].name
+                    if(bindViews.verify1.educationStatusTv.text.isEmpty()){
+                        showEducationSheet()
+                    }
+                }
+            })
+        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+    private fun showEducationSheet() {
+        val workTypeSheet = CommonBottomSheet(
+            this,"Please select",VerifyInfoUtil.getEducationList(),
+            educationIndex, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    educationIndex = index
+                    bindViews.verify1.educationStatusTv.text = VerifyInfoUtil.getEducationList()[educationIndex].name
+                    if(bindViews.verify1.maritalStatusTv.text.isEmpty()){
+                        showMaritalSheet()
+                    }
+                }
+            })
+        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+    private fun showMaritalSheet() {
+        val workTypeSheet = CommonBottomSheet(
+            this,"Please select",VerifyInfoUtil.getMaritalList(),
+            maritalIndex, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    maritalIndex = index
+                    bindViews.verify1.maritalStatusTv.text = VerifyInfoUtil.getMaritalList()[maritalIndex].name
+                    if(bindViews.verify1.numberOfChildrenTv.text.isEmpty()){
+                        showNumberSheet()
+                    }
+                }
+            })
+        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+    private fun showNumberSheet() {
+        val workTypeSheet = CommonBottomSheet(
+            this,"Please select",VerifyInfoUtil.getNumOfChildrenList(),
+            numberOfChildIndex, object : OnSelectListener {
+                override fun onSelect(index: Int) {
+                    numberOfChildIndex = index
+                    bindViews.verify1.numberOfChildrenTv.text = VerifyInfoUtil.getNumOfChildrenList()[numberOfChildIndex].name
+                }
+            })
+        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+
+
+
 
 }
