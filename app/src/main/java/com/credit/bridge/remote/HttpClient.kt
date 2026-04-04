@@ -183,26 +183,26 @@ object HttpClient {
         val packageInfo: PackageInfo = mContext.packageManager.getPackageInfo(mContext.packageName, 0)
         val headerMap: HashMap<String, String> = HashMap<String, String>()
 
-        headerMap["Accept"] = "application/json"
-        headerMap["X-SGIYRD-FPEQWUXJY"] = ""
-        headerMap["X-WRK-ZZPB"] = CacheManager.smsCode
-        headerMap["X-AWNMXNKZ-DPCQJ"] = ""
-        headerMap["X-FWNP-XRNBH"] = CacheManager.token
-        headerMap["X-EXOGETRG-TQQNENCUQU"] = ""//firebase
-        headerMap["X-HNOSNMBQ-UOZ"] = if (TextUtils.isEmpty(CacheManager.afChannel)) "Organic" else CacheManager.afChannel
-        headerMap["X-TQWHMBK-YGR"] = ""
-        headerMap["X-LBQ-PGNOCIG"] = packageInfo.versionCode.toString()
-        headerMap["X-NECBSE-ZNHI"] = ""
-        headerMap["X-TXCDBAD-OQ"] = SystemDataUtils.getAndroidId()
-        headerMap["X-NXH-IZSGJQX-XCON"] = mContext.packageName
-        headerMap["X-KY-CY"] =
-            AppsFlyerLib.getInstance().getAppsFlyerUID(App.instance) ?: ""
-        headerMap["X-IZYEAW-WLXX"] = ""
-        headerMap["X-JAKXSOJABRG"] = ""
-        headerMap["X-HNH-ON"] = ""
-        headerMap["X-HT-UB"] = App.instance.googleAdIdResult?.gaid ?: ""
-        headerMap["X-WFS-YAJC"] = mContext.resources.getString(R.string.app_name)
-        headerMap["X-ILWKWSQO"] = CacheManager.afChannel
+        headerMap["X-RRR-DZVRAKC-MMKJ"] = packageInfo.versionName.toString()
+        headerMap["X-CON-VHHD"] = "ANDROID"
+        headerMap["X-NHCKUD-VHQAORMXP"] = CacheManager.afChannel
+        headerMap["X-XRS-QLAE"] = mContext.resources.getString(R.string.app_name)
+        headerMap["X-ENWYHNRJ"] = ""
+        headerMap["X-BHW-JVMM"] = CacheManager.smsCode
+        headerMap["X-IYAOIEZT-IGYAM"] = ""   //Firebase token
+        headerMap["X-CRFG-WWRIH"] = CacheManager.token
+        headerMap["X-QSHIECIQ-QUJKZFAHFS"] = App.instance.googleAdIdResult?.gaid ?: ""
+        headerMap["X-VTZCTGQW-WRR"] = CacheManager.afChannel
+        headerMap["XX-QSNNRMS-XYL"] = "X-CAPTCHA-SID"
+        headerMap["X-HKR-UQCLRVW"] = packageInfo.versionCode.toString()
+        headerMap["X-YGEOCR-SYUU"] = AppsFlyerLib.getInstance().getAppsFlyerUID(App.instance) ?: ""
+        headerMap["X-AQITBIX-JA"] = SystemDataUtils.getAndroidId()
+        headerMap["X-SOH-TILKQCJ-YORU"] = "com.get.credit.full.fin.android"
+        headerMap["X-UE-DU"] = "X-AF-ID"
+        headerMap["X-ZTXHWJ-IXOA"] = ""    //device name
+        headerMap["X-QXMQSXJMGCD"] = ""
+        headerMap["X-UHV-CL"] = ""
+        headerMap["XX-ID-NB"] = ""
 
         return headerMap
     }
