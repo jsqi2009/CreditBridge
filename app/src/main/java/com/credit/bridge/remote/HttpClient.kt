@@ -226,7 +226,8 @@ object HttpClient {
 
     fun login(mContext: Context, mobile: String) {
         val formMap: HashMap<String, Any> = HashMap()
-        formMap[RequestParams.mobile_login] = mobile
+        //formMap[RequestParams.mobile_login] = mobile
+        formMap["mobile"] = mobile
         val call = mHttpApi!!.requestPost1(getHeaders(mContext), Contants.URL_LOGIN_SMS, formMap)
         dispatchClient!!.enqueue(call, LoginResponse::class.java, LoginResponseEvent::class.java)
     }

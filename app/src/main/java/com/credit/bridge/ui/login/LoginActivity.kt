@@ -74,8 +74,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         bindViews.verifyVoiceTv.setOnClickListener(this)
         bindViews.checkPolicyIv.setOnClickListener(this)
 
-        bindViews.phoneEt.setText("1234567890")
-        bindViews.codeEt.setText("1234")
+        bindViews.phoneEt.setText("")
+        bindViews.codeEt.setText("")
 
         configPrivacyPolicy()
 
@@ -156,21 +156,16 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
 
         showLoading()
         HttpClient.login(this, phone)
-
-        /*CacheManager.isAuth = true
-        val intent = Intent(this, RootActivity::class.java)
-        startActivity(intent)*/
-
     }
 
     @Subscribe
     fun onLoginEvent(event: LoginResponseEvent) {
         hideLoading()
         if(event.isSuccess){
-            event.model?.blvb?.let {
-                CacheManager.token = it.bupcd
+            event.model?.mtaw?.let {
+                CacheManager.token = it.igfid
                 CacheManager.mobile = bindViews.phoneEt.text.toString()
-                CacheManager.isNewCustomer = it.rnouhbrwgawkf
+                CacheManager.isNewCustomer = it.gtejmcvokzutw
                 CacheManager.smsCode = bindViews.codeEt.text.toString()
                 CacheManager.isAuth = true
 
@@ -183,7 +178,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 finish()
             }
         }else{
-            ToastUtil.showLong(this,event.networkError.toString())
+            ToastUtil.showLong(this,event.retMsg)
         }
     }
 
