@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:aandroid="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <LinearLayout
@@ -13,7 +14,7 @@
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/margin_15"
-        android:visibility="gone">
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
             android:textSize="15sp" />
 
         <ImageView
+            android:id="@+id/panNumberIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -33,13 +35,16 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/panInfoLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_15"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
+            android:id="@+id/cardIv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -75,6 +80,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/panNumberTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="AJOPM5087G"
@@ -108,6 +114,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/fullNameTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="ASHISH JEETENDRA MEH"
@@ -142,6 +149,7 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/birthDateTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="26/09/1999"
@@ -176,11 +184,13 @@
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/genderTv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Select an option"
-                        android:textColor="#ffffebd3"
+                        android:hint="Select an option"
+                        aandroid:textColorHint="#ffb8a58e"
+                        android:textColor="#FFEBD3"
                         android:textSize="14sp"
                         />
 

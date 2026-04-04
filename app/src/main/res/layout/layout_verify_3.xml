@@ -33,11 +33,13 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/accountNumberEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:textColor="#ffb8a58e"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#FFEBD3"
                     android:textSize="14sp"
                     android:hint="Enter account number"
                     android:background="@null"/>
@@ -77,11 +79,13 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/confirmAccountNumberEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:textColor="#ffb8a58e"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#FFEBD3"
                     android:textSize="14sp"
                     android:hint="Re-enter account number"
                     android:background="@null"/>
@@ -121,11 +125,13 @@
                 android:orientation="horizontal">
 
                 <EditText
+                    android:id="@+id/ifscCodeEt"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:inputType="number"
-                    android:textColor="#ffb8a58e"
+                    android:textColorHint="#ffb8a58e"
+                    android:textColor="#FFEBD3"
                     android:textSize="14sp"
                     android:hint="Enter IFSC code"
                     android:background="@null"/>

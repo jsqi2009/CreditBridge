@@ -1,16 +1,25 @@
 package com.credit.bridge.ui.verify
 
+import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.text.Editable
+import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
+import androidx.core.view.isGone
 import com.appsflyer.AppsFlyerLib
+import com.bumptech.glide.Glide
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
@@ -20,10 +29,15 @@ import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestContactBody
+import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
+import com.credit.bridge.remote.event.OcrPanResponseEvent
 import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
 import com.credit.bridge.remote.event.OssInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
+import com.credit.bridge.ui.product.SubmitSuccessActivity
 import com.credit.bridge.util.AppUtil.formatSubString
 import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
@@ -37,6 +51,10 @@ import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
 import okio.IOException
+import pub.devrel.easypermissions.EasyPermissions
+import pub.devrel.easypermissions.PermissionRequest
+import top.zibin.luban.Luban
+import top.zibin.luban.OnCompressListener
 import java.io.File
 import kotlin.collections.get
 
@@ -54,8 +72,15 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private var numberOfChildIndex = -1
     private var contact1Index = -1
     private var contact2Index = -1
+    private var genderIndex = -1
 
     var real_path = ""
+    var cardImgPath = ""
+    private val REQUEST_CODE_PERMISSION = 1002
+    var panNumberOfTimes = 0
+    var faceNumberOfTimes = 0
+    var isUseOcePan = false
+    var isHuo = false
 
     private val contact1Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val contactUri = result.data?.data ?: return@registerForActivityResult
@@ -91,6 +116,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
     }
 
+    private val takePhoto: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.data != null && !TextUtils.isEmpty(result.data?.getStringExtra("path_img"))) {
+            cardImgPath = result.data?.getStringExtra("path_img") ?: ""
+            Glide.with(this@VerifyInfoActivity).load(cardImgPath).into(bindViews.verify4.cardIv)
+            identifyOcrPanCardInfo()
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -119,6 +152,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.verify2.relationship2Ll.setOnClickListener(this)
         bindViews.verify2.contact2Ll.setOnClickListener(this)
         bindViews.verify2.phone2Ll.setOnClickListener(this)
+
+        bindViews.verify3.accountNumberEt.addTextChangedListener(accountTextWatcher)
+        bindViews.verify3.confirmAccountNumberEt.addTextChangedListener(confirmAccountTextWatcher)
+
+        bindViews.verify4.panNumberIv.setOnClickListener(this)
 
         bindViews.retryTv.paint.isUnderlineText = true
 
@@ -173,32 +211,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             R.id.phone2Ll -> {
                 chooseContact2()
             }
+            R.id.panNumberIv -> {
+                startOcrPanNumber()
+            }
 
             R.id.continueTv -> {
                 handleStepOperation()
             }
         }
-    }
-
-
-    private fun showStartVerifySheet() {
-       /* val bankVerifyBottomSheet = VerifyBankBottomSheet(
-            this, object : OnConfirmListener {
-                override fun onClick(info: String) {
-
-                }
-            }, "123", "7777777"
-        )
-        bankVerifyBottomSheet?.show(supportFragmentManager, "")*/
-
-        val workTypeSheet = StartVerifyBottomSheet(
-            this,"Employment Status",VerifyInfoUtil.getWorkTypeList(),
-            -1, object : OnSelectListener {
-                override fun onSelect(index: Int) {
-                    ToastUtil.showShort(this@VerifyInfoActivity, "Select: $index")
-                }
-            })
-        workTypeSheet.show(supportFragmentManager, "workTypeSheet")
     }
 
     private fun handleStepOperation() {
@@ -265,7 +285,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.eventReport(this,ConstConfig.POINT_INPUT_LIVENESS,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INPUT_LIVENESS)
 
-                HttpClient.verifyCcrFaceNumber(this@VerifyInfoActivity)
+                HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
             }
         }
     }
@@ -302,7 +322,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
 
         HttpClient.eventReport(this,ConstConfig.POINT_INFO_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INFO_SUBMIT)
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_INFO_SUBMIT)
 
 
         showLoading()
@@ -385,7 +405,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             return
         }
         HttpClient.eventReport(this,ConstConfig.POINT_CONTACT_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_CONTACT_SUBMIT)
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_CONTACT_SUBMIT)
 
         val contactList = arrayListOf<RequestContactBody>()
         val contact1 = RequestContactBody()
@@ -421,54 +441,114 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun verifyBankAction() {
-        /*val eventValue =  HashMap<String, Any>()
-        eventValue[ConstConfig.POINT_BANKCARD_SUBMIT] = ""
-        AppsFlyerLib.getInstance().logEvent(this, ConstConfig.POINT_BANKCARD_SUBMIT, eventValue)
-        PointUploadUtils.uploadEvent(this,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_BANKCARD_SUBMIT)*/
+
+        val accountNumber = bindViews.verify3.accountNumberEt.text.toString()
+        val confirmAccountNumber = bindViews.verify3.confirmAccountNumberEt.text.toString()
+        val ifscCode = bindViews.verify3.ifscCodeEt.text.toString()
+
+        if (accountNumber.toString().isEmpty()) {
+            ToastUtil.showLong(this, "Account number cannot be empty")
+            return
+        }
+        if (confirmAccountNumber.toString().isEmpty()) {
+            ToastUtil.showLong(this, "Please re-enter your account number")
+            return
+        }
+        if (ifscCode.toString().isEmpty()) {
+            ToastUtil.showLong(this, "IFSC code cannot be empty")
+            return
+        }
+        if (accountNumber.toString().replace(" ","") != confirmAccountNumber.toString().replace(" ","")) {
+            ToastUtil.showLong(this, "Account number and re-entered account number must match")
+            return
+        }
+        if (ifscCode.toString().length != 11) {
+            ToastUtil.showLong(this, "IFSC code must be 11 characters")
+            return
+        }
+
+        HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_BANKCARD_SUBMIT)
 
         showLoading()
-        HttpClient.verifyBankInfo(this, "", "","", "","")
+        HttpClient.verifyBankInfo(this, "", accountNumber.trim()
+            ,confirmAccountNumber.trim(), ifscCode,"")
+    }
+
+    @Subscribe
+    fun onVerifyBankInfoResponseEvent(event: VerifyBankInfoResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.wuhi == 500){
+                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                }
+            }
+        }
     }
 
     private fun verifyPanAction() {
-        /*val eventValue =  HashMap<String, Any>()
-        eventValue[ConstConfig.POINT_BANKCARD_SUBMIT] = ""
-        AppsFlyerLib.getInstance().logEvent(this, ConstConfig.POINT_BANKCARD_SUBMIT, eventValue)
-        PointUploadUtils.uploadEvent(this,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_BANKCARD_SUBMIT)*/
 
-        showLoading()
-        HttpClient.verifyPanInfo(this, "", "","", "")
-    }
-
-
-    @Subscribe
-    fun onOssInfoResponseEvent(event: OssInfoResponseEvent) {
-        if(event.isSuccess){
-            event.model?.blvb?.let{
-                ImageUploader.uploadImage(real_path,it,object:Callback{
-                    override fun onFailure(call: Call, e: IOException) {
-                        hideLoading()
-                        runOnUiThread {
-                            ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
-                        }
-                    }
-
-                    override fun onResponse(call: Call, response: Response) {
-                        runOnUiThread {
-                            val fileName = File(real_path).name
-                            val ossImageUrl = "${it.dwr}$fileName"
-                            HttpClient.verifyOcrPan(this@VerifyInfoActivity,ossImageUrl.formatSubString())
-                            HttpClient.getUserCredit(this@VerifyInfoActivity)
-                        }
-                    }
-                })
+        if (bindViews.verify4.panInfoLl.isGone) {
+            if(isUseOcePan){
+                ToastUtil.showLong(this, "Recognition failed. Please retake the photo.")
+            }else{
+                ToastUtil.showLong(this, "Please take the photo.")
             }
-        }else {
-           hideLoading()
-            ToastUtil.showLong(this,event.networkError.toString())
+            return
         }
 
+        val fullName = bindViews.verify4.fullNameTv.text.toString()
+        val panNumber = bindViews.verify4.panNumberTv.text.toString()
+        val birthDate = bindViews.verify4.birthDateTv.text.toString()
+
+        if (panNumber.isEmpty()) {
+            ToastUtil.showLong(this, "PAN number cannot be empty")
+            return
+        }
+        if (fullName.isEmpty()) {
+            ToastUtil.showLong(this, "Full name cannot be empty")
+            return
+        }
+        if (birthDate.isEmpty()) {
+            ToastUtil.showLong(this, "Date of birth cannot be empty")
+            return
+        }
+        if (genderIndex == -1) {
+            ToastUtil.showLong(this, "Please select your gender")
+            return
+        }
+
+
+        HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_SUNMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_IDCARD_SUNMIT)
+
+        showLoading()
+        HttpClient.verifyPanInfo(this, panNumber, fullName,birthDate, birthDate)
     }
+
+    @Subscribe
+    fun onVerifyPanInfoResponseEvent(event: VerifyPanInfoResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.wuhi == 500){
+                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                }
+            }
+        }
+    }
+
 
     @Subscribe
     fun onOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
@@ -610,6 +690,189 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
         contact1Launcher.launch(intent)
     }
+
+    private var accountTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(
+            s: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            s: CharSequence?,
+            start: Int,
+            before: Int,
+            count: Int
+        ) {
+            val text = s.toString()
+            val formatted = text.replace("(\\d{4})(?=\\d)".toRegex(), "$1 ")
+            if (formatted != text) {
+                bindViews.verify3.accountNumberEt.setText(formatted)
+                bindViews.verify3.accountNumberEt.setSelection(bindViews.verify3.accountNumberEt.text.toString().length)
+            }
+        }
+    }
+
+    private var confirmAccountTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(
+            s: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+        }
+
+        override fun onTextChanged(
+            s: CharSequence?,
+            start: Int,
+            before: Int,
+            count: Int
+        ) {
+            val text = s.toString()
+            val formatted = text.replace("(\\d{4})(?=\\d)".toRegex(), "$1 ")
+            if (formatted != text) {
+                bindViews.verify3.confirmAccountNumberEt.setText(formatted)
+                bindViews.verify3.confirmAccountNumberEt.setSelection(bindViews.verify3.confirmAccountNumberEt.text.toString().length)
+            }
+        }
+    }
+
+    private fun startOcrPanNumber() {
+        showLoading()
+        HttpClient.verifyOcrPanNumber(this)
+    }
+
+    @Subscribe
+    fun onOcrPanNumberResponseEvent(event: OcrPanNumberResponseEvent) {
+        hideLoading()
+        if(event.isSuccess){
+            event.model?.blvb?.let {
+                panNumberOfTimes = it
+                showStartOcrPanNumberSheet()
+            }
+        }else{
+            ToastUtil.showLong(this,event.networkError.toString())
+        }
+    }
+
+    private fun showStartOcrPanNumberSheet() {
+        val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", takePhoto = {
+            val permission = arrayOf(Manifest.permission.CAMERA)
+            if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
+                takePhoto.launch(Intent(this@VerifyInfoActivity, SubmitSuccessActivity::class.java).apply {})
+            } else {
+                EasyPermissions.requestPermissions(
+                    PermissionRequest.Builder(
+                        this@VerifyInfoActivity,
+                        REQUEST_CODE_PERMISSION,
+                        *permission
+                    )
+                        .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
+                        .setPositiveButtonText("Allow")
+                        .setNegativeButtonText("Deny")
+                        .build()
+                )
+            }
+        } )
+        startOcrPanNumberSheet.show(supportFragmentManager, "startOcrPanNumberSheet")
+    }
+
+    private fun identifyOcrPanCardInfo(imagePath: Uri? = null) {
+        showLoading()
+        val builder = if (imagePath == null) {
+            Luban.with(this).load(cardImgPath)
+        } else {
+            Luban.with(this).load(imagePath)
+        }
+        builder.setCompressListener(object : OnCompressListener {
+            override fun onStart() {
+            }
+
+            override fun onSuccess(index: Int, file: File) {
+                real_path = file.absolutePath
+                HttpClient.getOssInfo(this@VerifyInfoActivity, 1)
+            }
+
+            override fun onError(index: Int, e: Throwable) {
+                hideLoading()
+            }
+        }).launch()
+    }
+
+    @Subscribe
+    fun onOssInfoResponseEvent(event: OssInfoResponseEvent) {
+        if(event.isSuccess){
+            event.model?.blvb?.let{
+                ImageUploader.uploadImage(real_path,it,object:Callback{
+                    override fun onFailure(call: Call, e: IOException) {
+                        hideLoading()
+                        runOnUiThread {
+                            ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
+                        }
+                    }
+
+                    override fun onResponse(call: Call, response: Response) {
+                        runOnUiThread {
+                            val fileName = File(real_path).name
+                            val ossImageUrl = "${it.dwr}$fileName"
+                            HttpClient.verifyOcrPan(this@VerifyInfoActivity,ossImageUrl.formatSubString())
+                            HttpClient.getUserCredit(this@VerifyInfoActivity)
+                        }
+                    }
+                })
+            }
+        }else {
+            hideLoading()
+            ToastUtil.showLong(this,event.networkError.toString())
+        }
+
+    }
+
+    /**
+     * get the identify result
+     */
+    @SuppressLint("SetTextI18n")
+    @Subscribe
+    fun onOcrPanResponseEvent(event: OcrPanResponseEvent) {
+        if(event.isSuccess){
+            event.model?.blvb?.let {
+                isUseOcePan = true
+                if(it.result == "PASS"){
+                    bindViews.verify4.panInfoLl.visibility = View.VISIBLE
+                    bindViews.verify4.fullNameTv.text = it.qwyr
+                    bindViews.verify4.panNumberTv.text = it.foirvcqa
+                    bindViews.verify4.birthDateTv.text = it.pggoxchs
+                    hideLoading()
+                }else{
+                    hideLoading()
+                    ToastUtil.showLong(this, it.znxbvyn)
+
+                    HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_FAIL,
+                        ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_FAIL)
+                }
+            }
+        } else {
+            HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_FAIL,
+                ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_FAIL)
+
+            if(event.model != null){
+                hideLoading()
+                ToastUtil.showLong(this, event.model?.znxbvyn)
+            }else{
+                hideLoading()
+                ToastUtil.showLong(this, "Network Error")
+            }
+        }
+    }
+
 
 
 

@@ -29,9 +29,7 @@ import kotlinx.coroutines.launch
 class StartVerifyBottomSheet(
     val mContext: Context,
     var title: String,
-    var dataList: ArrayList<CommonBean>?,
-    var selectIndex: Int,
-    var onSelectListener: OnSelectListener
+    var takePhoto: () -> Unit,
 ) : BaseBottomSheet<BottomSheetStartVerifyBinding>(), View.OnClickListener {
     private var mAdapter: CommonListAdapter? = null
 
