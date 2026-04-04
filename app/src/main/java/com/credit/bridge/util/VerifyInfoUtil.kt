@@ -4,6 +4,41 @@ import com.credit.bridge.remote.bean.CommonBean
 
 object VerifyInfoUtil {
 
+    val workTypeFormatList = mutableListOf(
+        "GOVERNMENT", "EMPLOYEE", "OWNBUSINESS", "INDEPENDENT",
+        "STUDENT", "RETIRED", "UNEMPLOYED", "PARTTIME"
+    )
+
+    val monthlyIncomeFormatList = mutableListOf(
+        "ICOME_10000_OR_BELOW", "ICOME_10001_20000", "ICOME_20001_30000",
+        "ICOME_30001_50000", "ICOME_50001_AND_ABOVE"
+    )
+
+    val educationFormatList = mutableListOf(
+        "PRIMAY_SCHOOL", "MIDDLE_SCHOOL", "HIGH_SCHOOL",
+        "BACHELOR", "MASTER", "PHD", "OTHERS"
+    )
+
+    val maritalFormatList = mutableListOf(
+        "MARRIED", "SINGLE", "DIVORCED", "WIDOWED"
+    )
+
+    val numOfChildrenFormatList = mutableListOf(
+        "ZERO", "ONE", "TWO", "THREE", "FOUR", "OVER_FOUR"
+    )
+
+    val contact1FormatList = mutableListOf(
+        "PARENT", "COUPLE", "CHILD", "BROTHER", "SISTER"
+    )
+
+    val contact2FormatList = mutableListOf(
+        "PARENT", "COUPLE", "CHILD", "BROTHER", "SISTER", "COLLEAGUE", "FRIEND"
+    )
+
+    val genderFormatList = mutableListOf(
+        "MALE", "FEMALE"
+    )
+
     fun getWorkTypeList(): ArrayList<CommonBean> {
         val items: ArrayList<CommonBean> = arrayListOf(
             CommonBean(name = "Government"), CommonBean(name = "Employee"),
@@ -13,6 +48,7 @@ object VerifyInfoUtil {
         )
         return items
     }
+
 
     fun getMonthlyIncomeList(): ArrayList<CommonBean> {
         val items: ArrayList<CommonBean> = arrayListOf(

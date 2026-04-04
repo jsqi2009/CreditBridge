@@ -10,6 +10,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
+import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.databinding.ActivityVerifyInfoBinding
 import com.credit.bridge.inter.OnConfirmListener
@@ -18,6 +19,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
 import com.credit.bridge.remote.event.OssInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.util.AppUtil.formatSubString
 import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
@@ -106,7 +108,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 showStartVerifySheet()
             }
             R.id.continueTv -> {
-               //showStartVerifySheet()
                 handleStepOperation()
             }
         }
@@ -150,51 +151,120 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
     }
 
+
+    private fun refreshUI() {
+        when (currentStep) {
+            1 -> {
+                bindViews.verify1.root.visibility = View.VISIBLE
+
+                bindViews.titleLayout.rightTv.text = "1/5"
+
+                HttpClient.eventReport(this,ConstConfig.POINT_INTO_INFO,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INTO_INFO)
+            }
+            2 -> {
+                bindViews.verify1.root.visibility = View.GONE
+                bindViews.verify2.root.visibility = View.VISIBLE
+
+                bindViews.titleLayout.rightTv.text = "2/5"
+
+                HttpClient.eventReport(this,ConstConfig.POINT_CONTACT_INPUT,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_CONTACT_INPUT)
+            }
+            3 -> {
+                bindViews.verify2.root.visibility = View.GONE
+                bindViews.verify3.root.visibility = View.VISIBLE
+
+                bindViews.titleLayout.rightTv.text = "3/5"
+
+                HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_INPUT,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_BANKCARD_INPUT)
+            }
+            4 -> {
+                bindViews.verify3.root.visibility = View.GONE
+                bindViews.verify4.root.visibility = View.VISIBLE
+
+                bindViews.titleLayout.rightTv.text = "4/5"
+
+                HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_INPUT,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_INPUT)
+            }
+            5 -> {
+                bindViews.verify4.root.visibility = View.GONE
+                bindViews.verify5.root.visibility = View.VISIBLE
+
+                bindViews.titleLayout.rightTv.text = "5/5"
+
+                HttpClient.eventReport(this,ConstConfig.POINT_INPUT_LIVENESS,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INPUT_LIVENESS)
+
+                HttpClient.verifyCcrFaceNumber(this@VerifyInfoActivity)
+            }
+        }
+    }
+
     private fun verifyBaseUserAction() {
-        /*val eventValue =  HashMap<String, Any>()
-        eventValue[ConstConfig.POINT_INFO_SUBMIT] = ""
-        AppsFlyerLib.getInstance().logEvent(this, ConstConfig.POINT_INFO_SUBMIT, eventValue)
-        PointUploadUtils.uploadEvent(this,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_INFO_SUBMIT)*/
 
-        ToastUtil.showLong(this, "Please select your employment status")
-        return
-
-        /*if (monthlyIndex == -1) {
+        if (workTypeIndex == -1) {
+            ToastUtil.showLong(this, "Please select your employment status")
+            return
+        }
+        if (monthlyIncomeIndex == -1) {
             ToastUtil.showLong(this, "Please select your monthly disposable income")
-            return@setOnClickListener
+            return
         }
         if (educationIndex == -1) {
             ToastUtil.showLong(this, "Please select your highest education level")
-            return@setOnClickListener
+            return
         }
         if (maritalIndex == -1) {
             ToastUtil.showLong(this, "Please select your marital status")
-            return@setOnClickListener
+            return
         }
-        if (dependentsIndex == -1) {
+        if (numberOfChildIndex == -1) {
             ToastUtil.showLong(this, "Please select the number of dependents")
-            return@setOnClickListener
+            return
         }
-        if (views.tvEmail.text.isEmpty() || !views.tvEmail.text.contains("@")) {
+        if (bindViews.verify1.emailEt.text.isEmpty() || !bindViews.verify1.emailEt.text.contains("@")) {
             ToastUtil.showLong(this, "Please enter a valid email address")
-            return@setOnClickListener
+            return
         }
-        if (views.tvWhatsApp.text.isEmpty()) {
+        if (bindViews.verify1.whatsappEt.text.isEmpty()) {
             ToastUtil.showLong(this, "Please enter your WhatsApp number")
-            return@setOnClickListener
-        }*/
+            return
+        }
+
+        HttpClient.eventReport(this,ConstConfig.POINT_INFO_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INFO_SUBMIT)
+
 
         showLoading()
-        HttpClient.verifyBaseUserInfo(
-            this,
-            "",
-            "",
-            "",
-            "oneEducationList[educationIndex]",
-            "oneMaritalList[maritalIndex]",
-            "oneMonthlyList[monthlyIndex]",
-            "views.tvWhatsApp.text.toString()",
+        HttpClient.verifyBaseUserInfo(this,
+            VerifyInfoUtil.numOfChildrenFormatList[numberOfChildIndex],
+            bindViews.verify1.emailEt.text.toString(),
+            VerifyInfoUtil.workTypeFormatList[workTypeIndex],
+            VerifyInfoUtil.educationFormatList[educationIndex],
+            VerifyInfoUtil.maritalFormatList[maritalIndex],
+            VerifyInfoUtil.monthlyIncomeFormatList[monthlyIncomeIndex],
+            bindViews.verify1.whatsappEt.text.toString()
         )
+    }
+
+    @Subscribe
+    fun onVerifyBaseUserInfoResponseEvent(event: VerifyBaseUserInfoResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.wuhi == 500){
+                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                }
+            }
+        }
     }
 
     private fun verifyContactAction() {

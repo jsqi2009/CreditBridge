@@ -471,6 +471,14 @@ object HttpClient {
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyOcrFaceResponseEvent::class.java)
     }
 
+    fun verifyCcrFaceNumber(mContext: Context) {
+
+       /* val body = RequestOcrNumberBody()
+        body.qfve = "FACE"
+        val call = mHttpApi!!.ocrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
+        dispatchClient?.enqueue(call, IntResponse::class.java, OcrFaceNumberResponseEvent::class.java)*/
+    }
+
 
 
 
@@ -485,13 +493,7 @@ object HttpClient {
         dispatchClient?.enqueue(call, IntResponse::class.java, OcrPanNumberResponseEvent::class.java)
     }
 
-    fun ocrFaceNumber(mContext: Context) {
 
-        val body = RequestOcrNumberBody()
-        body.qfve = "FACE"
-        val call = mHttpApi!!.ocrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
-        dispatchClient?.enqueue(call, IntResponse::class.java, OcrFaceNumberResponseEvent::class.java)
-    }
 
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
