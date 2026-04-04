@@ -62,7 +62,7 @@ object RequestParams {
     const val imei_p	= "icis"
     const val code_p	= "ptgf"
     const val orderId	= "bsmweqe"
-    const val mobile_login	= "hcqane"
+    const val mobile_login	= "phajox"
     const val loanAppId	= "oenghohyj"
     const val credentialType= "	ezfllrptsekqxq"
     const val panNumber	= "gscxhjjfy"

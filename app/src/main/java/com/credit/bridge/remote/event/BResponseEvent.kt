@@ -19,7 +19,7 @@ open class BResponseEvent<T : BResponse> {
 
     val retMsg: String
         get() = if (model != null) {
-            this.model!!.znxbvyn!!
+            this.model!!.dvusonb!!
         } else {
             ""
         }
@@ -28,7 +28,7 @@ open class BResponseEvent<T : BResponse> {
         get() = if (this.response != null) this.response!!.code() else 0
 
     val isSuccess: Boolean
-        get() = this.networkError == null && (model!!.wuhi == 200)
+        get() = this.networkError == null && (model!!.fzpn == 200)
 
     constructor(t: T, response: Response<*>) {
         this.model = t
@@ -61,11 +61,11 @@ open class BResponseEvent<T : BResponse> {
 
     fun getErrorMessage(): String {
         if (model != null) {
-            if (model!!.wuhi == 200 || model!!.wuhi == 201) {
-                Log.e("ResponseEvent", "model.getErrorMessage():" + model!!.znxbvyn)
-                return this.model!!.znxbvyn!!
+            if (model!!.fzpn == 200 || model!!.fzpn == 201) {
+                Log.e("ResponseEvent", "model.getErrorMessage():" + model!!.dvusonb)
+                return this.model!!.dvusonb!!
             } else {
-                return this.model!!.znxbvyn!!
+                return this.model!!.dvusonb!!
             }
         }
 

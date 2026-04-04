@@ -94,7 +94,7 @@ class DispatchClient(var mContext: Context, internal var mBus: AndroidBus) {
             ) {
                 try {
                     val bResponse = BResponse()
-                    bResponse.wuhi = response.code()
+                    bResponse.fzpn = response.code()
                     callback!!.onDispatchNetworkError( Throwable(response.code().toString()))
                 } catch (e: Exception) {
                     e.printStackTrace()

@@ -414,8 +414,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             if(event.model == null){
                 ToastUtil.showLong(this,event.networkError.toString())
             }else{
-                if(event.model?.wuhi == 500){
-                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
                 }
             }
         }
@@ -497,8 +497,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             if(event.model == null){
                 ToastUtil.showLong(this,event.networkError.toString())
             }else{
-                if(event.model?.wuhi == 500){
-                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
                 }
             }
         }
@@ -549,8 +549,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             if(event.model == null){
                 ToastUtil.showLong(this,event.networkError.toString())
             }else{
-                if(event.model?.wuhi == 500){
-                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
                 }
             }
         }
@@ -606,8 +606,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             if(event.model == null){
                 ToastUtil.showLong(this,event.networkError.toString())
             }else{
-                if(event.model?.wuhi == 500){
-                    ToastUtil.showLong(this,event.model?.znxbvyn)
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
                 }
             }
         }
@@ -941,7 +941,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
             if(event.model != null){
                 hideLoading()
-                ToastUtil.showLong(this, event.model?.znxbvyn)
+                ToastUtil.showLong(this, event.model?.dvusonb)
             }else{
                 hideLoading()
                 ToastUtil.showLong(this, "Network Error")
@@ -958,8 +958,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 //views.tvFaceNumber.text = resources.getString(R.string.info_5_pop) + faceNumber
             }
         }else{
-            if(event.model?.wuhi == 500){
-                ToastUtil.showLong(this,event.model?.znxbvyn)
+            if(event.model?.fzpn == 500){
+                ToastUtil.showLong(this,event.model?.dvusonb)
             }else {
                 ToastUtil.showLong(this, event.networkError.toString())
             }
@@ -1012,7 +1012,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
         }else {
             if(event.model != null){
-                ToastUtil.showLong(this, event.model?.znxbvyn)
+                ToastUtil.showLong(this, event.model?.dvusonb)
             }else{
                 ToastUtil.showLong(this, "Network Error")
             }

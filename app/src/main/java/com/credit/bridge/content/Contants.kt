@@ -4,8 +4,8 @@ package com.credit.bridge.content
 object Contants {
 
     //Base URL
-    //const val BASE_SERVER_URL = "http://60.205.156.123:7521/"
-    const val BASE_SERVER_URL = "https://api.rupeecycle.com/"
+    const val BASE_SERVER_URL = "http://60.205.156.123:7321/"
+//    const val BASE_SERVER_URL = "https://api.rupeecycle.com/"
 
 
 
@@ -58,7 +58,7 @@ object Contants {
     const val URL_FEEDBACK_CONFIG  = "/saj/acidhwmt/ixehnb/ltkwjr"//	/api/feedback/rating/config
 
 
-    
+
     const val file = "kpar" //
     const val name = "jhov" //
     const val relation = "mngspckl" //

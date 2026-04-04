@@ -202,15 +202,16 @@ object HttpClient {
         headerMap["X-ZTXHWJ-IXOA"] = ""    //device name
         headerMap["X-QXMQSXJMGCD"] = ""
         headerMap["X-UHV-CL"] = ""
-        headerMap["XX-ID-NB"] = ""
+        headerMap["X-ID-NB"] = App.instance.googleAdIdResult?.gaid ?: ""
+        headerMap["X-GA-ID"] = App.instance.googleAdIdResult?.gaid ?: ""
 
         return headerMap
     }
 
     fun sendVerifyCode(mContext: Context, mobile: String, type: String) {
         val body = RequestVerifyCodeBody()
-        body.qfve = type
-        body.sucbzl = mobile
+        body.awja = type
+        body.phajox = mobile
         val call = mHttpApi!!.requestPostVerifyCode(getHeaders(mContext), Contants.URL_SEND_SMS, body)
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyCodeResponseEvent::class.java)
     }
@@ -226,7 +227,7 @@ object HttpClient {
     fun login(mContext: Context, mobile: String) {
         val formMap: HashMap<String, Any> = HashMap()
         formMap[RequestParams.mobile_login] = mobile
-        val call = mHttpApi!!.requestPost1(getHeaders(mContext), RequestParams.URL_LOGIN_SMS, formMap)
+        val call = mHttpApi!!.requestPost1(getHeaders(mContext), Contants.URL_LOGIN_SMS, formMap)
         dispatchClient!!.enqueue(call, LoginResponse::class.java, LoginResponseEvent::class.java)
     }
 

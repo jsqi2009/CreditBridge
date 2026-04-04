@@ -294,8 +294,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
             uploadZipDevice()
         }else{
-            if(event.model?.wuhi == 500){
-                ToastUtil.showLong(requireContext(),event.model?.znxbvyn.toString())
+            if(event.model?.fzpn == 500){
+                ToastUtil.showLong(requireContext(),event.model?.dvusonb.toString())
             }else{
                 ToastUtil.showLong(requireContext(),event.networkError.toString())
             }

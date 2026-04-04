@@ -154,12 +154,12 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         }
         CacheManager.smsCode = code
 
-        /*showLoading()
-        HttpClient.login(this, code)*/
+        showLoading()
+        HttpClient.login(this, phone)
 
-        CacheManager.isAuth = true
+        /*CacheManager.isAuth = true
         val intent = Intent(this, RootActivity::class.java)
-        startActivity(intent)
+        startActivity(intent)*/
 
     }
 
@@ -193,8 +193,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         if(event.isSuccess){
             verifyCodeCountdown()
         }else{
-            if(event.model != null && event.model?.wuhi == 500){
-                ToastUtil.showLong(this,event.model?.znxbvyn)
+            if(event.model != null && event.model?.fzpn == 500){
+                ToastUtil.showLong(this,event.model?.dvusonb)
             }else {
                 ToastUtil.showLong(this, event.networkError.toString())
             }
@@ -207,8 +207,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         if(event.isSuccess){
             verifyVoiceCountdown()
         }else{
-            if(event.model != null && event.model?.wuhi == 500){
-                ToastUtil.showLong(this,event.model?.znxbvyn)
+            if(event.model != null && event.model?.fzpn == 500){
+                ToastUtil.showLong(this,event.model?.dvusonb)
             }else {
                 ToastUtil.showLong(this, event.networkError.toString())
             }
