@@ -497,10 +497,6 @@ object HttpClient {
     /*
 
 
-
-
-
-
     fun getPayListBankUrl(mContext: Context,extension : Boolean,loanAppId : String) {
 
         val formMap: HashMap<String, Any> = HashMap()
@@ -510,12 +506,6 @@ object HttpClient {
         dispatchClient!!.enqueue(call, StringResponse::class.java,
             UrlPayListBankResponseEvent::class.java)
     }
-
-
-
-
-
-
 
 
    */

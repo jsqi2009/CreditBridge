@@ -42,6 +42,7 @@ import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.ui.product.SubmitSuccessActivity
 import com.credit.bridge.util.AppUtil.formatSubString
+import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
@@ -1007,7 +1008,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         hideLoading()
         if(event.isSuccess){
             event.model?.blvb?.let {
-                showVerifySuccessSheet()
+                showVerifySuccessDialog()
             }
         }else {
             if(event.model != null){
@@ -1056,13 +1057,21 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
     }
 
-    
-    private fun showVerifySuccessSheet() {
 
+    private fun showVerifySuccessDialog() {
+        DialogUtil.showVerifySuccessDialog(this, onConfirm = {
+
+        }, onCancel = {
+
+        })
     }
 
-    private fun showVerifyTipsSheet() {
+    private fun showVerifyTipsDialog() {
+        DialogUtil.showVerifyTipsDialog(this, onConfirm = {
 
+        }, onCancel = {
+
+        })
     }
 
 
