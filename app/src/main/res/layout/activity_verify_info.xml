@@ -87,7 +87,7 @@
             <include
                 android:id="@+id/verify4"
                 layout="@layout/layout_verify_4"
-                android:visibility="visible"/>
+                android:visibility="gone"/>
 
             <include
                 android:id="@+id/verify5"

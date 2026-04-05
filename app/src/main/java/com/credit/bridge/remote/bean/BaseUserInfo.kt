@@ -3,12 +3,11 @@ package com.credit.bridge.remote.bean
 import java.io.Serializable
 
 class BaseUserInfo: Serializable {
-    var hkalauhobxroaq: String = "" //childrenNumber
-    //val stthrjndidj: String = "" //companyName
-    var zztal: String = ""//email
-    var uhynjkkijdcmdvhvl: String = ""//employmentStatues
-    var ufhjanixbqltq: String = ""//lastEducation
-    var wrxrgcbckiewb: String = ""//maritalStatus
-    var utmytmlcmuso: String = ""//monthlyIcome
-    var egwgclynecudnbh: String = ""//whatsAppAccount
+    var thyahowyzpcafg: String = "" //childrenNumber
+    var rqfgp: String = ""//email
+    var datocztfsqijqqqhd: String = ""//employmentStatues
+    var fjvrxykbykpdy: String = ""//lastEducation
+    var dxvqjligurqrp: String = ""//maritalStatus
+    var ttemuejkkefd: String = ""//monthlyIcome
+    var dkxbqzeriltnfoc: String = ""//whatsAppAccount
 }

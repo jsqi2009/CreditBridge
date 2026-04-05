@@ -12,6 +12,7 @@ import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestPanInfoBody
+import com.credit.bridge.remote.body.RequestSaveQuestionBody
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
@@ -97,6 +98,8 @@ interface HttpApi {
     @POST
     fun requestPostOcrPanNumber(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestOcrPanNumberBody): Call<JsonObject>
 
+    @POST
+    fun requestPostSaveQuestionInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: ArrayList<RequestSaveQuestionBody>): Call<JsonObject>
 
 
 

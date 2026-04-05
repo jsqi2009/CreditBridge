@@ -30,12 +30,16 @@ import com.credit.bridge.databinding.ActivityVerifyInfoBinding
 import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
+import com.credit.bridge.remote.bean.QuestionGroupInfo
+import com.credit.bridge.remote.bean.QuestionInfoResponse
 import com.credit.bridge.remote.body.RequestContactBody
+import com.credit.bridge.remote.body.RequestSaveQuestionBody
 import com.credit.bridge.remote.event.OcrFaceNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanResponseEvent
 import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
 import com.credit.bridge.remote.event.OssInfoResponseEvent
+import com.credit.bridge.remote.event.QuestionByStepResponseEvent
 import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
@@ -72,7 +76,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     override fun getBinding() = ActivityVerifyInfoBinding.inflate(layoutInflater)
 
-    private var currentStep = 1
+    private var currentStep = 0
     private var isPanVerifySuccess = false
     private var workTypeIndex = -1
     private var monthlyIncomeIndex = -1
@@ -90,6 +94,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     var faceNumberOfTimes = 0
     var isUseOcePan = false
     var isUseVerifyFace = false
+
+    private var step1QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
+    private var step2QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
+    private var step3QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
+    private var step4QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
+    private var step5QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
 
     private val contact1Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val contactUri = result.data?.data ?: return@registerForActivityResult
@@ -308,7 +318,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             1 -> {
                 bindViews.verify1.root.visibility = View.VISIBLE
 
+                bindViews.titleLayout.titleTv.text = "Basic Information"
                 bindViews.titleLayout.rightTv.text = "1/5"
+
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_INTO_INFO,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INTO_INFO)
@@ -316,8 +329,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             2 -> {
                 bindViews.verify1.root.visibility = View.GONE
                 bindViews.verify2.root.visibility = View.VISIBLE
-
+                bindViews.titleLayout.titleTv.text = "Contact Information"
                 bindViews.titleLayout.rightTv.text = "2/5"
+
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_CONTACT_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_CONTACT_INPUT)
@@ -325,8 +340,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             3 -> {
                 bindViews.verify2.root.visibility = View.GONE
                 bindViews.verify3.root.visibility = View.VISIBLE
-
+                bindViews.titleLayout.titleTv.text = "Bank Information"
                 bindViews.titleLayout.rightTv.text = "3/5"
+
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_BANKCARD_INPUT)
@@ -334,8 +351,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             4 -> {
                 bindViews.verify3.root.visibility = View.GONE
                 bindViews.verify4.root.visibility = View.VISIBLE
-
+                bindViews.titleLayout.titleTv.text = "KYC Information"
                 bindViews.titleLayout.rightTv.text = "4/5"
+
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_INPUT)
@@ -343,13 +362,43 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
-
+                bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
+
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_INPUT_LIVENESS,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INPUT_LIVENESS)
 
                 HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
+            }
+        }
+    }
+
+    @Subscribe
+    fun onQuestionByStepResponseEvent(event: QuestionByStepResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if (event.model != null) {
+                event.model?.mtaw.let {
+                    when (event.model?.flag) {
+                        "1" -> {
+                            step1QuestionInfo = event.model!!.mtaw!!
+                        }
+                        "2" -> {
+                            step2QuestionInfo = event.model!!.mtaw!!
+                        }
+                        "3" -> {
+                            step3QuestionInfo = event.model!!.mtaw!!
+                        }
+                        "4" -> {
+                            step4QuestionInfo = event.model!!.mtaw!!
+                        }
+                        "5" -> {
+                            step5QuestionInfo = event.model!!.mtaw!!
+                        }
+                    }
+                }
             }
         }
     }
@@ -388,9 +437,20 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         HttpClient.eventReport(this,ConstConfig.POINT_INFO_SUBMIT,
             ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_INFO_SUBMIT)
 
+        val questionList = arrayListOf<RequestSaveQuestionBody>()
+        val workerBody = RequestSaveQuestionBody()
+        workerBody.vesrq = step1QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        workerBody.snqsj = step1QuestionInfo.ffuyqtcgfw[0].xjcli   //order
+        workerBody.wiuj = 1   //step
+        workerBody.vwqveibeqa = workTypeIndex //question id
+        workerBody.qprib = VerifyInfoUtil.workTypeFormatList[workTypeIndex]   //value
+        questionList.add(workerBody)
+
 
         showLoading()
-        HttpClient.verifyBaseUserInfo(this,
+        HttpClient.saveQuestionInfo(this, questionList, currentStep)
+
+        /*HttpClient.verifyBaseUserInfo(this,
             VerifyInfoUtil.numOfChildrenFormatList[numberOfChildIndex],
             bindViews.verify1.emailEt.text.toString(),
             VerifyInfoUtil.workTypeFormatList[workTypeIndex],
@@ -398,9 +458,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             VerifyInfoUtil.maritalFormatList[maritalIndex],
             VerifyInfoUtil.monthlyIncomeFormatList[monthlyIncomeIndex],
             bindViews.verify1.whatsappEt.text.toString()
-        )
+        )*/
 
-        currentStep++
         refreshUI()
     }
 

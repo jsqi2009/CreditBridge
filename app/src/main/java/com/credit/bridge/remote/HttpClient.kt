@@ -24,6 +24,7 @@ import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.body.RequestOrderLinkBankBody
 import com.credit.bridge.remote.body.RequestOrderListBody
 import com.credit.bridge.remote.body.RequestPanInfoBody
+import com.credit.bridge.remote.body.RequestSaveQuestionBody
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
@@ -50,6 +51,7 @@ import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PolicyLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
+import com.credit.bridge.remote.event.QuestionByStepResponseEvent
 import com.credit.bridge.remote.event.RequestZipDataBody
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
@@ -77,6 +79,7 @@ import com.credit.bridge.remote.response.OrderDetailsResponse
 import com.credit.bridge.remote.response.OrderListResponse
 import com.credit.bridge.remote.response.OrderUpdateResponse
 import com.credit.bridge.remote.response.OssInfoResponse
+import com.credit.bridge.remote.response.QuestionByStepResponse
 import com.credit.bridge.ui.App
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
@@ -399,17 +402,35 @@ object HttpClient {
         dispatchClient?.enqueue(call, CommonResponse::class.java, PolicyLinkResponseEvent::class.java)
     }
 
+
+    fun getQuestionByStep(mContext: Context, step: Int) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap["pwtxmyagbetx"] = step
+        val call = mHttpApi!!.requestGetQueryMap(getHeaders(mContext), Contants.URL_QUESTION_BY_STEP,formMap)
+        dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+            QuestionByStepResponseEvent::class.java, flag = step.toString())
+    }
+
+    fun saveQuestionInfo(mContext: Context, body: ArrayList<RequestSaveQuestionBody>, step: Int) {
+
+        val call = mHttpApi!!.requestPostSaveQuestionInfo(getHeaders(mContext), Contants.URL_SAVE_QUESTION_INFO,body)
+        dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+            QuestionByStepResponseEvent::class.java, step.toString())
+    }
+
+
     fun verifyBaseUserInfo(mContext: Context, childrenNumber: String, email: String, employmentStatues: String, lastEducation: String, maritalStatus: String,
                         monthlyIcome: String, whatsAppAccount: String) {
 
         val personalInfo = BaseUserInfo()
-        personalInfo.hkalauhobxroaq = childrenNumber
-        personalInfo.zztal = email
-        personalInfo.uhynjkkijdcmdvhvl = employmentStatues
-        personalInfo.ufhjanixbqltq = lastEducation
-        personalInfo.wrxrgcbckiewb = maritalStatus
-        personalInfo.utmytmlcmuso = monthlyIcome
-        personalInfo.egwgclynecudnbh = whatsAppAccount
+        personalInfo.thyahowyzpcafg = childrenNumber
+        personalInfo.rqfgp = email
+        personalInfo.datocztfsqijqqqhd = employmentStatues
+        personalInfo.fjvrxykbykpdy = lastEducation
+        personalInfo.dxvqjligurqrp = maritalStatus
+        personalInfo.ttemuejkkefd = monthlyIcome
+        personalInfo.dkxbqzeriltnfoc = whatsAppAccount
         val call = mHttpApi!!.requestPutBaseUserInfo(getHeaders(mContext), Contants.URL_PRESONAL_INFO, personalInfo)
 
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyBaseUserInfoResponseEvent::class.java)
