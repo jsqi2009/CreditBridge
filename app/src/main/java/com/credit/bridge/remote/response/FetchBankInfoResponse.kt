@@ -1,7 +1,7 @@
 package com.credit.bridge.remote.response
 
 class FetchBankInfoResponse: BResponse (){
-    var blvb: BankInfo? = null
+    var mtaw: BankInfo? = null
 }
 
 class BankInfo{

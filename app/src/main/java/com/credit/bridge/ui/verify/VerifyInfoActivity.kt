@@ -617,7 +617,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     @Subscribe
     fun onOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
         if(event.isSuccess){
-            event.model?.blvb?.let{
+            event.model?.mtaw?.let{
                 ImageUploader.uploadImage(real_path,it,object:Callback{
                     override fun onFailure(call: Call, e: IOException) {
                         hideLoading()
@@ -830,7 +830,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     fun onOcrPanNumberResponseEvent(event: OcrPanNumberResponseEvent) {
         hideLoading()
         if(event.isSuccess){
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 panNumberOfTimes = it
                 showStartOcrPanNumberSheet()
             }
@@ -886,7 +886,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     @Subscribe
     fun onOssInfoResponseEvent(event: OssInfoResponseEvent) {
         if(event.isSuccess){
-            event.model?.blvb?.let{
+            event.model?.mtaw?.let{
                 ImageUploader.uploadImage(real_path,it,object:Callback{
                     override fun onFailure(call: Call, e: IOException) {
                         hideLoading()
@@ -919,7 +919,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     @Subscribe
     fun onOcrPanResponseEvent(event: OcrPanResponseEvent) {
         if(event.isSuccess){
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 isUseOcePan = true
                 if(it.result == "PASS"){
                     bindViews.verify4.panInfoLl.visibility = View.VISIBLE
@@ -953,7 +953,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     fun onOcrFaceNumberResponseEvent(event: OcrFaceNumberResponseEvent) {
         hideLoading()
         if(event.isSuccess){
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 faceNumberOfTimes = it
                 //views.tvFaceNumber.text = resources.getString(R.string.info_5_pop) + faceNumber
             }
@@ -1007,7 +1007,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     fun onOOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
         hideLoading()
         if(event.isSuccess){
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 showVerifySuccessDialog()
             }
         }else {

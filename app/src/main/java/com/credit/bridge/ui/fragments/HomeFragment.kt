@@ -190,9 +190,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onCheckCollectDataStatusResponseEvent(event: CheckCollectDataStatusResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            event.model?.blvb?.let {
-                currentStep = it.jkeurrbf
-                if (it.vovobiifulrzpxjxcoqkb) {
+            event.model?.mtaw?.let {
+                currentStep = it.lrksnnsd
+                if (it.rvazxrtziwtcvrfrkzczx) {
                     bindViews.accessAccountIv.visibility = View.VISIBLE
                     bindViews.startVerifyLl.visibility = View.GONE
                     isAuthed = true
@@ -215,7 +215,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     @Subscribe
     fun onHomeInfoEvent(event: HomeInfoResponseEvent) {
         if (event.isSuccess) {
-            homeInfo = event.model?.blvb
+            homeInfo = event.model?.mtaw
             if (homeInfo != null) {
                 refreshView()
             }
@@ -229,7 +229,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onCheckUploadStatusResponseEvent(event: CheckUploadStatusResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            if(event.model?.blvb != true){
+            if(event.model?.mtaw != true){
                 if(privacyPolicyUrl.isEmpty()) {
                     HttpClient.getPrivacyPolicyUrl(requireContext())
                 }else{
@@ -253,7 +253,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onPrivacyPolicyUrlResponseEvent(event: PrivacyPolicyUrlResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 privacyPolicyUrl = it
                 //showPermissionPopup()
                 requestPermissions()

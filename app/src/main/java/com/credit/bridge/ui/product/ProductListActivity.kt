@@ -86,7 +86,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
     fun onAllProductListResponseEvent(event: AllProductListResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            val allProduct: ArrayList<AllProductInfo>? = event.model?.blvb
+            val allProduct: ArrayList<AllProductInfo>? = event.model?.mtaw
             allList = allProduct
             allList?.sortByDescending { it.dsmcbogvwzsgpvkszc }
             if (allProduct != null && allProduct.isNotEmpty()) {

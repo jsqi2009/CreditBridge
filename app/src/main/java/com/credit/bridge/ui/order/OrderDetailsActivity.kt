@@ -100,7 +100,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         if (event.model == null) return
         if (event.model?.flag == ConstConfig.ORDER_DETAIL_COMMON) {
             if (event.isSuccess) {
-                orderInfo = event.model?.blvb
+                orderInfo = event.model?.mtaw
                 initOrderDetailsInfo()
                 if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
                     val leftTime = AppUtil.getTotalSeconds(orderInfo?.eeymvvicicofnhn ?: "")
@@ -127,7 +127,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         hideLoading()
         if(event.isSuccess){
             try {
-                val link = event.model?.blvb ?: return
+                val link = event.model?.mtaw ?: return
                 val uri = link.toUri()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -234,7 +234,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         hideLoading()
         if (event.model == null) return
         if (event.isSuccess) {
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 //views.tvExtendFee.text = "₹ "+CommonUtils.formatFloatToStr(it.usiyspmxkqopjxmcbbbxijkiag)
             }
         }

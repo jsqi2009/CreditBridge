@@ -71,7 +71,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
     fun onFetchFeedbackConfigResponseEvent(event: FetchFeedbackConfigResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            val response = event.model?.blvb
+            val response = event.model?.mtaw
             jumpConfig = response?.czrkyxcf
             if (response?.kmnmaaqvwwuzndu == true) {
                 //views.llDefault.visibility = View.VISIBLE

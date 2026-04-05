@@ -5,7 +5,7 @@ import com.credit.bridge.remote.bean.HomeInfo
 
 class HomeInfoResponse: BResponse() {
 
-    var blvb: HomeInfo? = null
+    var mtaw: HomeInfo? = null
 
 }
 

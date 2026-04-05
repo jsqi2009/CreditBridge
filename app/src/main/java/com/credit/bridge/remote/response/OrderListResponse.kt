@@ -5,7 +5,7 @@ import com.credit.bridge.remote.bean.OrderInfo
 
 class OrderListResponse: BResponse() {
 
-    var blvb: ArrayList<OrderInfo>? = null
+    var mtaw: ArrayList<OrderInfo>? = null
 
 }
 

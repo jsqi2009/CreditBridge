@@ -5,7 +5,7 @@ import com.credit.bridge.remote.bean.OcrPanInfo
 
 class OcrPanResponse: BResponse() {
 
-    var blvb : OcrPanInfo? = null
+    var mtaw : OcrPanInfo? = null
 
 }
 

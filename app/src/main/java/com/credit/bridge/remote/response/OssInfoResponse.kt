@@ -4,6 +4,6 @@ import com.credit.bridge.remote.bean.OssInfo
 
 class OssInfoResponse: BResponse() {
 
-    var blvb: OssInfo? = null
+    var mtaw: OssInfo? = null
 
 }

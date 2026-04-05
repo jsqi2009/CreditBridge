@@ -78,7 +78,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
     fun onFetchBankInfoResponseEvent(event: FetchBankInfoResponseEvent) {
         hideLoading()
         if(event.isSuccess){
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 /*views.tvBankName.text = it.djhrpmn
                 views.tvBankId.text = CommonUtils.numberGeneral(it.twnkgc,3,2)*/
                 HttpClient.getOrderLinkBank(this,it.twnkgc)

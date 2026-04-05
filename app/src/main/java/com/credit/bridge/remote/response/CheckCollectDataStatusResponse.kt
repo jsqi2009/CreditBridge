@@ -5,7 +5,7 @@ import com.credit.bridge.remote.bean.CollectDataInfo
 
 class CheckCollectDataStatusResponse: BResponse() {
 
-    var blvb: CollectDataInfo? = null
+    var mtaw: CollectDataInfo? = null
 
 }
 

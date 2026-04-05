@@ -44,7 +44,7 @@ class PrivacyPolicyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), View
     fun onPolicyLinkResponseEvent(event: PolicyLinkResponseEvent) {
         hideLoading()
         if(event.isSuccess){
-            event.model?.blvb?.let {
+            event.model?.mtaw?.let {
                 bindViews.webView.loadUrl(it)
             }
         }else{

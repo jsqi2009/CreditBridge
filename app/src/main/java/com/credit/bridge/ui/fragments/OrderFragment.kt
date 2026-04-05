@@ -82,7 +82,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
         if (event.isSuccess) {
             if (event.model?.flag == "bill") {
 
-                orderList = event.model?.blvb ?: ArrayList()
+                orderList = event.model?.mtaw ?: ArrayList()
                 mAdapter?.setData(orderList!!)
                 mAdapter?.notifyDataSetChanged()
 
@@ -162,7 +162,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
         hideLoading()
         if(event.isSuccess){
             try {
-                val link = event.model?.blvb ?: return
+                val link = event.model?.mtaw ?: return
                 val uri = link.toUri()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

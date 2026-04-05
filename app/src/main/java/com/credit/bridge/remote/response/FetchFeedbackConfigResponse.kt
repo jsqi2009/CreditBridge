@@ -3,7 +3,7 @@ package com.credit.bridge.remote.response
 
 class FetchFeedbackConfigResponse: BResponse() {
 
-    var blvb: FeedbackConfig? = null
+    var mtaw: FeedbackConfig? = null
 
 }
 class FeedbackConfig{
