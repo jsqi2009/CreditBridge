@@ -279,7 +279,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         }
     }
 
-    fun showPermissionSheet() {
+    /*fun showPermissionSheet() {
         val permissionSheet = PermissionBottomSheet(
             this,"Employment Status",VerifyInfoUtil.getWorkTypeList(),
             workTypeIndex, object : OnSelectListener {
@@ -288,7 +288,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 }
             })
         permissionSheet.show(supportFragmentManager, "workTypeSheet")
-    }
+    }*/
 
 
 

@@ -69,7 +69,7 @@ object Contants {
     const val rootPermission= "	yxyemrayyinyhk" //
     const val useVpn	= "zgtjlc" //
     const val code_b	= "kutc" //
-    const val imei_p	= "icis"
+    const val imei_param	= "nigt"
     const val code_p	= "ptgf"
     const val orderId	= "bsmweqe"
     const val mobile_login	= "hcqane"

@@ -18,6 +18,7 @@ import com.credit.bridge.R
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.FragmentHomeBinding
+import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.HomeInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
@@ -34,6 +35,8 @@ import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
+import com.credit.bridge.util.VerifyInfoUtil
+import com.credit.bridge.widget.PermissionBottomSheet
 import com.squareup.otto.Subscribe
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
@@ -76,6 +79,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.initRes()
         bindViews.accessAccountIv.setOnClickListener(this)
         bindViews.accessManageIv.setOnClickListener(this)
+        bindViews.startVerifyLl.setOnClickListener(this)
 
         HttpClient.eventReport(requireActivity(),ConstConfig.POINT_HOME_SCREEN,
             ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_HOME_SCREEN)
@@ -96,7 +100,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 checkUploadStatus()
             }
             R.id.startVerifyLl -> {
-                startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
                 isCreateOrder = false
                 checkUploadStatus()
             }
@@ -192,7 +195,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
             event.model?.mtaw?.let {
                 currentStep = it.lrksnnsd
-                if (!it.rvazxrtziwtcvrfrkzczx) {
+                if (it.rvazxrtziwtcvrfrkzczx) {
                     bindViews.accessAccountIv.visibility = View.VISIBLE
                     bindViews.startVerifyLl.visibility = View.GONE
                     isAuthed = true
@@ -233,7 +236,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 if(privacyPolicyUrl.isEmpty()) {
                     HttpClient.getPrivacyPolicyUrl(requireContext())
                 }else{
-                    //showPermissionPopup()
+                    showPermissionSheet()
                 }
             }else{
                 if(isCreateOrder){
@@ -255,8 +258,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
             event.model?.mtaw?.let {
                 privacyPolicyUrl = it
-                //showPermissionPopup()
-                requestPermissions()
+                showPermissionSheet()
+                //requestPermissions()
             }
         } else {
             ToastUtil.showLong(requireContext(), event.networkError.toString())
@@ -363,6 +366,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this)
+    }
+
+    fun showPermissionSheet() {
+        val permissionSheet = PermissionBottomSheet( requireActivity(),
+            onRefuseListener = {
+                requestPermissions()
+        }, onAgreeListener = {
+                requestPermissions()
+        })
+        permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
     }
 
     companion object {

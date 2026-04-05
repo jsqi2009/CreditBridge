@@ -28,12 +28,9 @@ import kotlinx.coroutines.launch
 
 class PermissionBottomSheet(
     val mContext: Context,
-    var title: String,
-    var dataList: ArrayList<CommonBean>?,
-    var selectIndex: Int,
-    var onSelectListener: OnSelectListener
+    val onRefuseListener: () -> Unit,
+    val onAgreeListener: () -> Unit
 ) : BaseBottomSheet<BottomSheetPemissionBinding>(), View.OnClickListener {
-    private var mAdapter: CommonListAdapter? = null
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -49,20 +46,23 @@ class PermissionBottomSheet(
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindViews.dismissIv.setOnClickListener(this)
-
-        if (!dataList.isNullOrEmpty()) {
-            initAdapter()
-        }
+        bindViews.refuseTv.setOnClickListener(this)
+        bindViews.agreeTv.setOnClickListener(this)
     }
 
-    private fun initAdapter() {
-
-    }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.dismissIv -> {
                 dismiss()
+            }
+            R.id.refuseTv -> {
+                dismiss()
+                onRefuseListener.invoke()
+            }
+            R.id.agreeTv -> {
+                dismiss()
+                onAgreeListener.invoke()
             }
         }
     }

