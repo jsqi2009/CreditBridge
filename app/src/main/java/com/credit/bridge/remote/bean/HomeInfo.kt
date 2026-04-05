@@ -3,15 +3,15 @@ package com.credit.bridge.remote.bean
 import java.io.Serializable
 
 class HomeInfo: Serializable {
-    var wqdwzbxn: HomeUserInfo = HomeUserInfo()
-    var cavrafds: HomeOrderInfo = HomeOrderInfo()
-    var dlxzautuylahk: ArrayList<OrderInfo>? = null
+    var otytwlcq: HomeUserInfo = HomeUserInfo()  //user info
+    var hahsraev: HomeOrderInfo = HomeOrderInfo()  //home page info
+    var zydllhkuuvpqz: ArrayList<OrderInfo>? = null   //order info
 
 }
 
 class HomeUserInfo: Serializable {
-    var zuvtbfsl: String = ""
-    var tphuexdptauntagplnu: Int = 0
+    var dtwfaeaf: String = ""
+    var gkdtfbvtbvquxbewhmn: Int = 0
 }
 
 class HomeOrderInfo: Serializable {

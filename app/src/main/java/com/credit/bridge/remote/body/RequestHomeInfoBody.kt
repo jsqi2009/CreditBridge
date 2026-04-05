@@ -4,5 +4,5 @@ import com.credit.bridge.remote.bean.DeviceTypeInfo
 import java.io.Serializable
 
 class RequestHomeInfoBody: Serializable {
-    var arlscuqt: DeviceTypeInfo = DeviceTypeInfo ()
+    var rxplnymc: DeviceTypeInfo = DeviceTypeInfo ()
 }

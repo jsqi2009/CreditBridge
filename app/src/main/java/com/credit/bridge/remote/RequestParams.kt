@@ -90,9 +90,9 @@ object RequestParams {
     const val extensionPeriod	= "tcxjwmpdlhudlcu"
     const val dirPrefix	= "ilpaqvwhu"
     const val expireSeconds	= "kpdoiegdryqzn"
-    const val reportType	= "tgmixdndqs"
-    const val actionType	= "pcruapeebw" //
-    const val status	= "vbvwswy" //
+    const val reportType	= "qnzuyzuzos"
+    const val actionType	= "gnjxwophjr" //
+    const val status	= "nhmrhth" //
     const val content	= "xjevovy" //
     const val answers	= "skrxpwi" //
     const val questionId	= "fwpnethyww"

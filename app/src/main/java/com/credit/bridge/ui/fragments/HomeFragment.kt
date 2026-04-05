@@ -107,8 +107,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 eventBus?.post(UpdateTabIndexEvent(1))
             }
             R.id.verified_fail -> {
-                if(homeInfo?.dlxzautuylahk != null && homeInfo?.dlxzautuylahk?.isNotEmpty() == true){
-                    val orderInfo = homeInfo?.dlxzautuylahk?.firstOrNull { it ->
+                if(homeInfo?.zydllhkuuvpqz != null && homeInfo?.zydllhkuuvpqz?.isNotEmpty() == true){
+                    val orderInfo = homeInfo?.zydllhkuuvpqz?.firstOrNull { it ->
                         OrderStatus.getStatusByValue(it.ufzqlyyxash) == OrderStatus.ISSUE_FAILED
                     }
                     if(orderInfo != null){
@@ -126,10 +126,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (homeInfo == null) {
             return
         }
-        if (homeInfo!!.cavrafds.bovcyr != null) {
+        if (homeInfo!!.hahsraev.bovcyr != null) {
             bindViews.totalAmountTv.text =
-                context?.getString(R.string.money_symbol) + " " + homeInfo?.wqdwzbxn?.tphuexdptauntagplnu.toString()
-            val orderStatus = OrderStatus.getStatusByValue(homeInfo?.cavrafds?.bovcyr)
+                context?.getString(R.string.money_symbol) + " " + homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn.toString()
+            val orderStatus = OrderStatus.getStatusByValue(homeInfo?.hahsraev?.bovcyr)
             when (orderStatus) {
                 OrderStatus.CURRENT -> {
                     bindViews.verifiedNeedPay.visibility = View.VISIBLE
@@ -179,9 +179,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         val virtual = if (isVirtualMachine) 1 else 0
 
         val homeInfo = RequestHomeInfoBody()
-        homeInfo.arlscuqt.zgtjlc = vpn
-        homeInfo.arlscuqt.ghquezkftxktsz = virtual
-        homeInfo.arlscuqt.yxyemrayyinyhk = root
+        homeInfo.rxplnymc.hkoluy = vpn
+        homeInfo.rxplnymc.sgcoofijlhbhgh = virtual
+        homeInfo.rxplnymc.plhvpyzwqhoynw = root
 
         HttpClient.getHomeInfo(requireContext(), homeInfo)
     }
@@ -192,7 +192,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
             event.model?.mtaw?.let {
                 currentStep = it.lrksnnsd
-                if (it.rvazxrtziwtcvrfrkzczx) {
+                if (!it.rvazxrtziwtcvrfrkzczx) {
                     bindViews.accessAccountIv.visibility = View.VISIBLE
                     bindViews.startVerifyLl.visibility = View.GONE
                     isAuthed = true
@@ -325,16 +325,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     fun previewProduct(){
         isBackFromVerifyInfoPage = false
-        if (homeInfo?.cavrafds?.denzlkevws == false) {
-            ToastUtil.customToastView(requireContext(), homeInfo?.cavrafds?.dzgpjajkkttrvjjqi, Toast.LENGTH_SHORT)
+        if (homeInfo?.hahsraev?.denzlkevws == false) {
+            ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.dzgpjajkkttrvjjqi, Toast.LENGTH_SHORT)
             return
         }
-        if (homeInfo?.wqdwzbxn?.tphuexdptauntagplnu == null || homeInfo?.wqdwzbxn?.tphuexdptauntagplnu == 0) {
-            ToastUtil.customToastView(requireContext(), homeInfo?.cavrafds?.dzgpjajkkttrvjjqi, Toast.LENGTH_SHORT)
+        if (homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == null || homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == 0) {
+            ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.dzgpjajkkttrvjjqi, Toast.LENGTH_SHORT)
             return
         }
         val intent = Intent(requireContext(), ProductListActivity::class.java)
-        intent.putExtra("totalAmount", homeInfo?.wqdwzbxn?.tphuexdptauntagplnu)
+        intent.putExtra("totalAmount", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
         startActivity(intent)
     }
 
