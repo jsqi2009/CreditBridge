@@ -295,7 +295,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onUploadInstalledPackageListResponseEvent(event: UploadInstalledPackageListResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            uploadZipDevice()
+            uploadSystemInfo()
         }else{
             if(event.model?.fzpn == 500){
                 ToastUtil.showLong(requireContext(),event.model?.dvusonb.toString())
@@ -306,7 +306,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
-    private fun uploadZipDevice() {
+    private fun uploadSystemInfo() {
         HttpClient.uploadSystemInfo(requireContext())
     }
 
@@ -323,7 +323,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 verifyInfoLauncher.launch(intent)
             }
         }else{
-            ToastUtil.showLong(requireContext(),event.networkError.toString())        }
+            ToastUtil.showLong(requireContext(),event.networkError.toString())}
     }
 
     fun previewProduct(){

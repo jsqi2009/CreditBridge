@@ -284,7 +284,7 @@ object HttpClient {
         val jsonList = Gson().toJson(installedPackageBody)
         val zipString = SystemDataUtils.getZipData(jsonList)
         val requestZipBody = RequestZipDataBody()
-        requestZipBody.brqyjc = CacheManager.mobile
+        requestZipBody.phajox = CacheManager.mobile
         requestZipBody.guawnoc = zipString
         requestZipBody.guxf = DeviceInfoUtil.getAndroidId()
         val call = mHttpApi!!.requestPostZipData(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
@@ -300,7 +300,7 @@ object HttpClient {
         val json = Gson().toJson(messageBody)
         val zipString = SystemDataUtils.getZipData(json)
         var requestZipBody = RequestZipDataBody()
-        requestZipBody.brqyjc = CacheManager.mobile
+        requestZipBody.phajox = CacheManager.mobile
         requestZipBody.guawnoc = zipString
         requestZipBody.guxf = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
         val call = mHttpApi!!.requestPostZipData(getHeaders(mContext), Contants.URL_GZIP,requestZipBody)
