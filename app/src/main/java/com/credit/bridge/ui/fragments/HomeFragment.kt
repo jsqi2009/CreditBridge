@@ -47,6 +47,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         container: ViewGroup?
     ) = FragmentHomeBinding.inflate(inflater, container, false)
 
+    private val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA,
+        Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
     private var isAuthed = false
     var isCreateOrder = false
@@ -259,7 +261,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             event.model?.mtaw?.let {
                 privacyPolicyUrl = it
                 showPermissionSheet()
-                //requestPermissions()
             }
         } else {
             ToastUtil.showLong(requireContext(), event.networkError.toString())
@@ -268,13 +269,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun requestPermissions() {
         try {
-            val perms = arrayOf( Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-            if (EasyPermissions.hasPermissions(requireActivity(), *perms)) {
+
+            if (EasyPermissions.hasPermissions(requireActivity(), *permissions)) {
                 uploadInstalledPackageList()
             } else {
                 EasyPermissions.requestPermissions(
-                    PermissionRequest.Builder(this, REQUEST_CODE, *perms)
+                    PermissionRequest.Builder(this, REQUEST_CODE, *permissions)
                         .setRationale("Device Permission Required To help identify your device and protect your account, Rupee Cycle requires access to device status information.") //
                         .setPositiveButtonText("Allow")
                         .setNegativeButtonText("Deny")
