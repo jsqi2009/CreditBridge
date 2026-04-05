@@ -5,7 +5,7 @@ import com.credit.bridge.remote.response.QuestionByStepResponse
 import retrofit2.Response
 
 
-class QuestionByStepResponseEvent: BResponseEvent<QuestionByStepResponse> {
+class QuestionByStep2ResponseEvent: BResponseEvent<QuestionByStepResponse> {
 
     constructor(basicResponse: QuestionByStepResponse, response: Response<*>) : super(basicResponse, response) {}
 

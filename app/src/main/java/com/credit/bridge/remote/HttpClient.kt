@@ -6,7 +6,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.provider.Settings
-import android.text.TextUtils
 import androidx.annotation.RequiresPermission
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
@@ -51,8 +50,17 @@ import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PolicyLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
-import com.credit.bridge.remote.event.QuestionByStepResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep1ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep2ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep3ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep4ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep5ResponseEvent
 import com.credit.bridge.remote.event.RequestZipDataBody
+import com.credit.bridge.remote.event.SaveQuestion1ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion2ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion3ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion4ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion5ResponseEvent
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
 import com.credit.bridge.remote.event.UploadSystemResponseEvent
@@ -403,20 +411,48 @@ object HttpClient {
     }
 
 
-    fun getQuestionByStep(mContext: Context, step: Int) {
+    fun getQuestionByStep(mContext: Context, currentStep: Int) {
 
         val formMap: HashMap<String, Any> = HashMap()
-        formMap["pwtxmyagbetx"] = step
+        formMap["pwtxmyagbetx"] = currentStep
         val call = mHttpApi!!.requestGetQueryMap(getHeaders(mContext), Contants.URL_QUESTION_BY_STEP,formMap)
-        dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
-            QuestionByStepResponseEvent::class.java, flag = step.toString())
+        if (currentStep == 1) {
+            dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+                QuestionByStep1ResponseEvent::class.java)
+        }else if (currentStep == 2) {
+            dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+                QuestionByStep2ResponseEvent::class.java)
+        }else if (currentStep == 3) {
+            dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+                QuestionByStep3ResponseEvent::class.java)
+        }else if (currentStep == 4) {
+            dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+                QuestionByStep4ResponseEvent::class.java)
+        }else if (currentStep == 5) {
+            dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
+                QuestionByStep5ResponseEvent::class.java)
+        }
     }
 
-    fun saveQuestionInfo(mContext: Context, body: ArrayList<RequestSaveQuestionBody>, step: Int) {
+    fun saveQuestionInfo(mContext: Context, body: ArrayList<RequestSaveQuestionBody>, currentStep: Int) {
 
         val call = mHttpApi!!.requestPostSaveQuestionInfo(getHeaders(mContext), Contants.URL_SAVE_QUESTION_INFO,body)
-        dispatchClient?.enqueue(call, QuestionByStepResponse::class.java,
-            QuestionByStepResponseEvent::class.java, step.toString())
+        if (currentStep == 1) {
+            dispatchClient?.enqueue(call, CommonResponse::class.java,
+                SaveQuestion1ResponseEvent::class.java, currentStep.toString())
+        }else if (currentStep == 2) {
+            dispatchClient?.enqueue(call, CommonResponse::class.java,
+                SaveQuestion2ResponseEvent::class.java, currentStep.toString())
+        }else if (currentStep == 3) {
+            dispatchClient?.enqueue(call, CommonResponse::class.java,
+                SaveQuestion3ResponseEvent::class.java, currentStep.toString())
+        }else if (currentStep == 4) {
+            dispatchClient?.enqueue(call, CommonResponse::class.java,
+                SaveQuestion4ResponseEvent::class.java, currentStep.toString())
+        }else if (currentStep == 5) {
+            dispatchClient?.enqueue(call, CommonResponse::class.java,
+                SaveQuestion5ResponseEvent::class.java, currentStep.toString())
+        }
     }
 
 

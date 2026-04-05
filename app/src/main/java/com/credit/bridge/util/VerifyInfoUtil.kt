@@ -1,6 +1,8 @@
 package com.credit.bridge.util
 
 import com.credit.bridge.remote.bean.CommonBean
+import com.credit.bridge.remote.bean.QuestionInfoResponse
+import com.credit.bridge.remote.body.RequestSaveQuestionBody
 
 object VerifyInfoUtil {
 
@@ -81,7 +83,7 @@ object VerifyInfoUtil {
         val items: ArrayList<CommonBean> = arrayListOf(
             CommonBean(name = "No Children"), CommonBean(name = "1 Child"),
             CommonBean(name = "2 Children"), CommonBean(name = "3 Children"),
-            CommonBean(name = "4 or More Children"),
+            CommonBean(name = "4 Children"),CommonBean(name = "More than 4 Children")
         )
         return items
     }
@@ -112,5 +114,126 @@ object VerifyInfoUtil {
         return items
     }
 
+    fun getStep1RequestBody(workTypeIndex: Int, monthlyIncomeIndex: Int, educationIndex: Int, maritalIndex: Int,
+                            numberOfChildIndex: Int, email: String, whatsapp: String,
+                            step1QuestionInfo: QuestionInfoResponse): ArrayList<RequestSaveQuestionBody> {
+        val questionList = arrayListOf<RequestSaveQuestionBody>()
+
+        val workerBody = RequestSaveQuestionBody()
+        workerBody.vesrq = step1QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        workerBody.snqsj = step1QuestionInfo.ffuyqtcgfw[0].xjcli   //order
+        workerBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[0].iinfzdhhhv   //question id
+        workerBody.wiuj = 1   //step
+        workerBody.qprib = workTypeFormatList[workTypeIndex]   //value
+
+        val incomeBody = RequestSaveQuestionBody()
+        incomeBody.vesrq = step1QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq   //group
+        incomeBody.snqsj = step1QuestionInfo.ffuyqtcgfw[1].xjcli   //order
+        incomeBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[1].iinfzdhhhv   //question id
+        incomeBody.wiuj = 1   //step
+        incomeBody.qprib = monthlyIncomeFormatList[monthlyIncomeIndex]   //value
+
+        val educationBody = RequestSaveQuestionBody()
+        educationBody.vesrq = step1QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq   //group
+        educationBody.snqsj = step1QuestionInfo.ffuyqtcgfw[2].xjcli   //order
+        educationBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[2].iinfzdhhhv   //question id
+        educationBody.wiuj = 1   //step
+        educationBody.qprib = educationFormatList[educationIndex]   //value
+
+        val maritalBody = RequestSaveQuestionBody()
+        maritalBody.vesrq = step1QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq   //group
+        maritalBody.snqsj = step1QuestionInfo.ffuyqtcgfw[3].xjcli   //order
+        maritalBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[3].iinfzdhhhv   //question id
+        maritalBody.wiuj = 1   //step
+        maritalBody.qprib = maritalFormatList[maritalIndex]   //value
+
+        val childBody = RequestSaveQuestionBody()
+        childBody.vesrq = step1QuestionInfo.ffuyqtcgfw[4].qpwjbrdvuq   //group
+        childBody.snqsj = step1QuestionInfo.ffuyqtcgfw[4].xjcli   //order
+        childBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[4].iinfzdhhhv   //question id
+        childBody.wiuj = 1   //step
+        childBody.qprib = numOfChildrenFormatList[numberOfChildIndex]   //value
+
+        val emailBody = RequestSaveQuestionBody()
+        emailBody.vesrq = step1QuestionInfo.ffuyqtcgfw[5].qpwjbrdvuq   //group
+        emailBody.snqsj = step1QuestionInfo.ffuyqtcgfw[5].xjcli   //order
+        emailBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[5].iinfzdhhhv   //question id
+        emailBody.wiuj = 1   //step
+        emailBody.qprib = email   //value
+
+        val whatsappBody = RequestSaveQuestionBody()
+        whatsappBody.vesrq = step1QuestionInfo.ffuyqtcgfw[6].qpwjbrdvuq   //group
+        whatsappBody.snqsj = step1QuestionInfo.ffuyqtcgfw[6].xjcli   //order
+        whatsappBody.vwqveibeqa = step1QuestionInfo.ffuyqtcgfw[6].iinfzdhhhv   //question id
+        whatsappBody.wiuj = 1   //step
+        whatsappBody.qprib = whatsapp   //value
+
+        questionList.add(workerBody)
+        questionList.add(incomeBody)
+        questionList.add(educationBody)
+        questionList.add(maritalBody)
+        questionList.add(childBody)
+        questionList.add(emailBody)
+        questionList.add(whatsappBody)
+
+        return questionList
+    }
+
+    fun getStep2RequestBody(relation1: String, relation2: String, contactName1: String, contactName2: String,
+                            contactNumber1: String, contactNumber2: String,
+                            step2QuestionInfo: QuestionInfoResponse): ArrayList<RequestSaveQuestionBody> {
+        val questionList = arrayListOf<RequestSaveQuestionBody>()
+
+        val relation1Body = RequestSaveQuestionBody()
+        relation1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        relation1Body.snqsj = step2QuestionInfo.ffuyqtcgfw[0].xjcli   //order
+        relation1Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[0].iinfzdhhhv   //question id
+        relation1Body.wiuj = 2   //step
+        relation1Body.qprib = relation1   //value
+
+        val relation2Body = RequestSaveQuestionBody()
+        relation2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq   //group
+        relation2Body.snqsj = step2QuestionInfo.ffuyqtcgfw[1].xjcli   //order
+        relation2Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[1].iinfzdhhhv   //question id
+        relation2Body.wiuj = 2   //step
+        relation2Body.qprib = relation2   //value
+
+        val contactName1Body = RequestSaveQuestionBody()
+        contactName1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq   //group
+        contactName1Body.snqsj = step2QuestionInfo.ffuyqtcgfw[2].xjcli   //order
+        contactName1Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[2].iinfzdhhhv   //question id
+        contactName1Body.wiuj = 2   //step
+        contactName1Body.qprib = contactName1   //value
+
+        val contactName2Body = RequestSaveQuestionBody()
+        contactName2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq   //group
+        contactName2Body.snqsj = step2QuestionInfo.ffuyqtcgfw[3].xjcli   //order
+        contactName2Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[3].iinfzdhhhv   //question id
+        contactName2Body.wiuj = 2   //step
+        contactName2Body.qprib = contactName2   //value
+
+        val contactNumber1Body = RequestSaveQuestionBody()
+        contactNumber1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[4].qpwjbrdvuq   //group
+        contactNumber1Body.snqsj = step2QuestionInfo.ffuyqtcgfw[4].xjcli   //order
+        contactNumber1Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[4].iinfzdhhhv   //question id
+        contactNumber1Body.wiuj = 2   //step
+        contactNumber1Body.qprib = contactNumber1   //value
+
+        val contactNumber2Body = RequestSaveQuestionBody()
+        contactNumber2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[5].qpwjbrdvuq   //group
+        contactNumber2Body.snqsj = step2QuestionInfo.ffuyqtcgfw[5].xjcli   //order
+        contactNumber2Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[5].iinfzdhhhv   //question id
+        contactNumber2Body.wiuj = 2   //step
+        contactNumber2Body.qprib = contactNumber2   //value
+
+        questionList.add(relation1Body)
+        questionList.add(relation2Body)
+        questionList.add(contactName1Body)
+        questionList.add(contactName2Body)
+        questionList.add(contactNumber1Body)
+        questionList.add(contactNumber2Body)
+
+        return questionList
+    }
 
 }

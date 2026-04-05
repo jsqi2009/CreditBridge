@@ -15,31 +15,31 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isGone
-import com.appsflyer.AppsFlyerLib
 import com.bumptech.glide.Glide
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
-import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.databinding.ActivityVerifyInfoBinding
-import com.credit.bridge.inter.OnConfirmListener
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
-import com.credit.bridge.remote.bean.QuestionGroupInfo
+import com.credit.bridge.remote.bean.CommonBean
 import com.credit.bridge.remote.bean.QuestionInfoResponse
 import com.credit.bridge.remote.body.RequestContactBody
-import com.credit.bridge.remote.body.RequestSaveQuestionBody
 import com.credit.bridge.remote.event.OcrFaceNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanResponseEvent
 import com.credit.bridge.remote.event.OssInfoFaceResponseEvent
 import com.credit.bridge.remote.event.OssInfoResponseEvent
-import com.credit.bridge.remote.event.QuestionByStepResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep1ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep2ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep3ResponseEvent
+import com.credit.bridge.remote.event.QuestionByStep4ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion1ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion2ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion3ResponseEvent
+import com.credit.bridge.remote.event.SaveQuestion4ResponseEvent
 import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
@@ -52,12 +52,10 @@ import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
 import com.credit.bridge.widget.CommonBottomSheet
 import com.credit.bridge.widget.StartVerifyBottomSheet
-import com.credit.bridge.widget.VerifyBankBottomSheet
 import com.liveness.dflivenesslibrary.DFTransferResultInterface
 import com.liveness.dflivenesslibrary.liveness.DFActionLivenessActivity
 import com.liveness.dflivenesslibrary.liveness.util.Constants
 import com.squareup.otto.Subscribe
-import kotlinx.coroutines.launch
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.Response
@@ -68,7 +66,6 @@ import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
 import java.io.FileOutputStream
-import kotlin.collections.get
 import kotlin.use
 
 class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnClickListener, EasyPermissions.PermissionCallbacks {
@@ -199,6 +196,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         super.initRes()
 
         currentStep = intent.getIntExtra("currentStep",0)
+        Log.e("VerifyInfoActivity", "currentStep: $currentStep")
 
         bindViews.titleLayout.titleTv.text = "Details"
         bindViews.titleLayout.rightTv.text = "1/5"
@@ -288,7 +286,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             R.id.verifyFaceIv -> {
                 startVerifyFace()
             }
-
             R.id.continueTv -> {
                 handleStepOperation()
             }
@@ -343,7 +340,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.titleLayout.titleTv.text = "Bank Information"
                 bindViews.titleLayout.rightTv.text = "3/5"
 
-                HttpClient.getQuestionByStep(this, currentStep)
+                //HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_BANKCARD_INPUT)
@@ -354,7 +351,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.titleLayout.titleTv.text = "KYC Information"
                 bindViews.titleLayout.rightTv.text = "4/5"
 
-                HttpClient.getQuestionByStep(this, currentStep)
+                //HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_INPUT)
@@ -365,7 +362,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
 
-                HttpClient.getQuestionByStep(this, currentStep)
+                //HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_INPUT_LIVENESS,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INPUT_LIVENESS)
@@ -376,33 +373,56 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     @Subscribe
-    fun onQuestionByStepResponseEvent(event: QuestionByStepResponseEvent) {
+    fun onQuestionByStep1ResponseEvent(event: QuestionByStep1ResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
             if (event.model != null) {
                 event.model?.mtaw.let {
-                    when (event.model?.flag) {
-                        "1" -> {
-                            step1QuestionInfo = event.model!!.mtaw!!
-                        }
-                        "2" -> {
-                            step2QuestionInfo = event.model!!.mtaw!!
-                        }
-                        "3" -> {
-                            step3QuestionInfo = event.model!!.mtaw!!
-                        }
-                        "4" -> {
-                            step4QuestionInfo = event.model!!.mtaw!!
-                        }
-                        "5" -> {
-                            step5QuestionInfo = event.model!!.mtaw!!
-                        }
-                    }
+                    step1QuestionInfo = event.model!!.mtaw!!
+                    val originalList = step1QuestionInfo.ffuyqtcgfw[0].dqivkmhqfzwexxoc ?: emptyList()
+                    val workTypeList: ArrayList<CommonBean?> = originalList
+                        .map { CommonBean(name = it.ufpowipd)}
+                        .toCollection(ArrayList())
                 }
             }
         }
     }
 
+    @Subscribe
+    fun onQuestionByStep2ResponseEvent(event: QuestionByStep2ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if (event.model != null) {
+                event.model?.mtaw.let {
+                    step2QuestionInfo = event.model!!.mtaw!!
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    fun onQuestionByStep3ResponseEvent(event: QuestionByStep3ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if (event.model != null) {
+                event.model?.mtaw.let {
+                    step3QuestionInfo = event.model!!.mtaw!!
+                }
+            }
+        }
+    }
+
+    @Subscribe
+    fun onQuestionByStep4ResponseEvent(event: QuestionByStep4ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if (event.model != null) {
+                event.model?.mtaw.let {
+                    step4QuestionInfo = event.model!!.mtaw!!
+                }
+            }
+        }
+    }
     private fun verifyBaseUserAction() {
 
         if (workTypeIndex == -1) {
@@ -437,30 +457,30 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         HttpClient.eventReport(this,ConstConfig.POINT_INFO_SUBMIT,
             ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_INFO_SUBMIT)
 
-        val questionList = arrayListOf<RequestSaveQuestionBody>()
-        val workerBody = RequestSaveQuestionBody()
-        workerBody.vesrq = step1QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
-        workerBody.snqsj = step1QuestionInfo.ffuyqtcgfw[0].xjcli   //order
-        workerBody.wiuj = 1   //step
-        workerBody.vwqveibeqa = workTypeIndex //question id
-        workerBody.qprib = VerifyInfoUtil.workTypeFormatList[workTypeIndex]   //value
-        questionList.add(workerBody)
 
+        val questionList = VerifyInfoUtil.getStep1RequestBody(workTypeIndex, monthlyIncomeIndex,
+            educationIndex, maritalIndex, numberOfChildIndex, bindViews.verify1.emailEt.text.toString(),
+            bindViews.verify1.whatsappEt.text.toString(),  step1QuestionInfo)
 
         showLoading()
         HttpClient.saveQuestionInfo(this, questionList, currentStep)
+    }
 
-        /*HttpClient.verifyBaseUserInfo(this,
-            VerifyInfoUtil.numOfChildrenFormatList[numberOfChildIndex],
-            bindViews.verify1.emailEt.text.toString(),
-            VerifyInfoUtil.workTypeFormatList[workTypeIndex],
-            VerifyInfoUtil.educationFormatList[educationIndex],
-            VerifyInfoUtil.maritalFormatList[maritalIndex],
-            VerifyInfoUtil.monthlyIncomeFormatList[monthlyIncomeIndex],
-            bindViews.verify1.whatsappEt.text.toString()
-        )*/
-
-        refreshUI()
+    @Subscribe
+    fun onSaveQuestion1ResponseEvent(event: SaveQuestion1ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
+                }
+            }
+        }
     }
 
     @Subscribe
@@ -486,12 +506,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             ToastUtil.showLong(this, "Please select the relationship for Contact 1")
             return
         }
-        val contact1Value = bindViews.verify2.contact1Tv.text
-        val phone1Value = bindViews.verify2.phone1Tv.text
-        val contact2Value = bindViews.verify2.contact2Tv.text
-        val phone2Value = bindViews.verify2.phone2Tv.text
-        val relation1 = bindViews.verify2.relationship1Tv.text
-        val relation2 = bindViews.verify2.relationship2Tv.text
+        val contact1Value = bindViews.verify2.contact1Tv.text.toString()
+        val phone1Value = bindViews.verify2.phone1Tv.text.toString()
+        val contact2Value = bindViews.verify2.contact2Tv.text.toString()
+        val phone2Value = bindViews.verify2.phone2Tv.text.toString()
+        val relation1 = bindViews.verify2.relationship1Tv.text.toString()
+        val relation2 = bindViews.verify2.relationship2Tv.text.toString()
 
         if (contact1Value.isEmpty()) {
             ToastUtil.showLong(this, "Contact 1 name cannot be empty")
@@ -530,20 +550,30 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         HttpClient.eventReport(this,ConstConfig.POINT_CONTACT_SUBMIT,
             ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_CONTACT_SUBMIT)
 
-        val contactList = arrayListOf<RequestContactBody>()
-        val contact1 = RequestContactBody()
-        contact1.mngspckl = VerifyInfoUtil.contact1FormatList[contact1Index]
-        contact1.jhov = bindViews.verify2.contact1Tv.text.toString()
-        contact1.sucbzl = bindViews.verify2.phone1Tv.text.toString()
-        val contact2 = RequestContactBody()
-        contact2.mngspckl = VerifyInfoUtil.contact2FormatList[contact2Index]
-        contact2.jhov = bindViews.verify2.contact2Tv.text.toString()
-        contact2.sucbzl = bindViews.verify2.phone2Tv.text.toString()
-        contactList.add(contact1)
-        contactList.add(contact2)
+        val questionList = VerifyInfoUtil.getStep2RequestBody(VerifyInfoUtil.contact1FormatList[contact1Index] ,
+            VerifyInfoUtil.contact2FormatList[contact2Index],
+            contact1Value, contact2Value, phone1Value,phone1Value,
+           step2QuestionInfo)
 
         showLoading()
-        HttpClient.verifyContactInfo(this,contactList,)
+        HttpClient.saveQuestionInfo(this, questionList, currentStep)
+    }
+
+    @Subscribe
+    fun onSaveQuestion2ResponseEvent(event: SaveQuestion2ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
+                }
+            }
+        }
     }
 
     @Subscribe
@@ -596,6 +626,23 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         showLoading()
         HttpClient.verifyBankInfo(this, "", accountNumber.trim()
             ,confirmAccountNumber.trim(), ifscCode,"")
+    }
+
+    @Subscribe
+    fun onSaveQuestion3ResponseEvent(event: SaveQuestion3ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
+                }
+            }
+        }
     }
 
     @Subscribe
@@ -653,6 +700,23 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         showLoading()
         HttpClient.verifyPanInfo(this, panNumber, fullName,birthDate, birthDate)
+    }
+
+    @Subscribe
+    fun onSaveQuestion4ResponseEvent(event: SaveQuestion4ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            currentStep++
+            refreshUI()
+        } else {
+            if(event.model == null){
+                ToastUtil.showLong(this,event.networkError.toString())
+            }else{
+                if(event.model?.fzpn == 500){
+                    ToastUtil.showLong(this,event.model?.dvusonb)
+                }
+            }
+        }
     }
 
     @Subscribe
