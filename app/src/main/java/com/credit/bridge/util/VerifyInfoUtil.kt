@@ -236,4 +236,76 @@ object VerifyInfoUtil {
         return questionList
     }
 
+    fun getStep3RequestBody(accountNum: String, confirmAccountNum: String, ifscCode: String,
+                            step3QuestionInfo: QuestionInfoResponse): ArrayList<RequestSaveQuestionBody> {
+        val questionList = arrayListOf<RequestSaveQuestionBody>()
+
+        val accountNumBody = RequestSaveQuestionBody()
+        accountNumBody.vesrq = step3QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        accountNumBody.snqsj = step3QuestionInfo.ffuyqtcgfw[0].xjcli   //order
+        accountNumBody.vwqveibeqa = step3QuestionInfo.ffuyqtcgfw[0].iinfzdhhhv   //question id
+        accountNumBody.wiuj = 3   //step
+        accountNumBody.qprib = accountNum   //value
+
+        val confirmAccountNumBody = RequestSaveQuestionBody()
+        confirmAccountNumBody.vesrq = step3QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq   //group
+        confirmAccountNumBody.snqsj = step3QuestionInfo.ffuyqtcgfw[1].xjcli   //order
+        confirmAccountNumBody.vwqveibeqa = step3QuestionInfo.ffuyqtcgfw[1].iinfzdhhhv   //question id
+        confirmAccountNumBody.wiuj = 3   //step
+        confirmAccountNumBody.qprib = confirmAccountNum   //value
+
+        val ifscCodeBody = RequestSaveQuestionBody()
+        ifscCodeBody.vesrq = step3QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq   //group
+        ifscCodeBody.snqsj = step3QuestionInfo.ffuyqtcgfw[2].xjcli   //order
+        ifscCodeBody.vwqveibeqa = step3QuestionInfo.ffuyqtcgfw[2].iinfzdhhhv   //question id
+        ifscCodeBody.wiuj = 3   //step
+        ifscCodeBody.qprib = ifscCode   //value
+
+        questionList.add(accountNumBody)
+        questionList.add(confirmAccountNumBody)
+        questionList.add(ifscCodeBody)
+
+        return questionList
+    }
+
+    fun getStep4RequestBody(panNumber: String, fullName: String, birthDate: String, gender: String,
+                            step4QuestionInfo: QuestionInfoResponse): ArrayList<RequestSaveQuestionBody> {
+        val questionList = arrayListOf<RequestSaveQuestionBody>()
+
+        val panNumberBody = RequestSaveQuestionBody()
+        panNumberBody.vesrq = step4QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        panNumberBody.snqsj = step4QuestionInfo.ffuyqtcgfw[0].xjcli   //order
+        panNumberBody.vwqveibeqa = step4QuestionInfo.ffuyqtcgfw[0].iinfzdhhhv   //question id
+        panNumberBody.wiuj = 4   //step
+        panNumberBody.qprib = panNumber   //value
+
+        val fullNameBody = RequestSaveQuestionBody()
+        fullNameBody.vesrq = step4QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq   //group
+        fullNameBody.snqsj = step4QuestionInfo.ffuyqtcgfw[1].xjcli   //order
+        fullNameBody.vwqveibeqa = step4QuestionInfo.ffuyqtcgfw[1].iinfzdhhhv   //question id
+        fullNameBody.wiuj = 4   //step
+        fullNameBody.qprib = fullName   //value
+
+        val birthDateBody = RequestSaveQuestionBody()
+        birthDateBody.vesrq = step4QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq   //group
+        birthDateBody.snqsj = step4QuestionInfo.ffuyqtcgfw[2].xjcli   //order
+        birthDateBody.vwqveibeqa = step4QuestionInfo.ffuyqtcgfw[2].iinfzdhhhv   //question id
+        birthDateBody.wiuj = 4   //step
+        birthDateBody.qprib = birthDate   //value
+
+        val genderBody = RequestSaveQuestionBody()
+        genderBody.vesrq = step4QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq   //group
+        genderBody.snqsj = step4QuestionInfo.ffuyqtcgfw[3].xjcli   //order
+        genderBody.vwqveibeqa = step4QuestionInfo.ffuyqtcgfw[3].iinfzdhhhv   //question id
+        genderBody.wiuj = 4   //step
+        genderBody.qprib = gender   //value
+
+        questionList.add(panNumberBody)
+        questionList.add(fullNameBody)
+        questionList.add(birthDateBody)
+        questionList.add(genderBody)
+
+        return questionList
+    }
+
 }
