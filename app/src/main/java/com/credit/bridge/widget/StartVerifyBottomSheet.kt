@@ -46,14 +46,26 @@ class StartVerifyBottomSheet(
         showExpanded = true
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindViews.titleTv.text = title
+        bindViews.leftTv.text = mContext.getString(R.string.verify_photo_attempts_left_today) + panNumberOfTimes
+
         bindViews.closeIv.setOnClickListener(this)
+        bindViews.takePhotoTv.setOnClickListener(this)
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.closeIv -> {
+                dismiss()
+            }
+            R.id.takePhotoTv -> {
+                if(panNumberOfTimes > 0) {
+                    takePhoto.invoke()
+                }else{
+                    ToastUtil.showLong(mContext,resources.getString(R.string.verify_times_limit))
+                }
                 dismiss()
             }
         }

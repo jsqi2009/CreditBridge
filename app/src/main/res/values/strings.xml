@@ -46,4 +46,9 @@
     <string name="order_status_not_completed">Not Completed</string>
 
 
+    <!--verify  -->
+    <string name="verify_photo_attempts_left_today">Photo attempts left today:</string>
+    <string name="verify_times_limit">Daily limit reached. Try again tomorrow.</string>
+
+
 </resources>

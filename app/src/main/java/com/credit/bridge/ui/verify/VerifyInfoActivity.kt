@@ -978,7 +978,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", panNumberOfTimes, takePhoto = {
             val permission = arrayOf(Manifest.permission.CAMERA)
             if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
-                takePhoto.launch(Intent(this@VerifyInfoActivity, SubmitSuccessActivity::class.java).apply {})
+                takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
             } else {
                 EasyPermissions.requestPermissions(
                     PermissionRequest.Builder(
