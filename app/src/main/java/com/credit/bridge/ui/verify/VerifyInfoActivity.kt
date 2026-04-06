@@ -765,7 +765,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                         runOnUiThread {
                             if (response.isSuccessful) {
                                 val fileName = File(real_path).name
-                                val ossImageUrl = "${it.dwr}$fileName"
+                                val ossImageUrl = "${it.fev}$fileName"
                                 HttpClient.verifyOcrFace(this@VerifyInfoActivity,ossImageUrl.formatSubString())
 
                             } else {
@@ -1020,6 +1020,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     @Subscribe
     fun onOssInfoResponseEvent(event: OssInfoResponseEvent) {
+        //hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let{
                 ImageUploader.uploadImage(real_path,it,object:Callback{
@@ -1033,7 +1034,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     override fun onResponse(call: Call, response: Response) {
                         runOnUiThread {
                             val fileName = File(real_path).name
-                            val ossImageUrl = "${it.dwr}$fileName"
+                            val ossImageUrl = "${it.fev}$fileName"
                             HttpClient.verifyOcrPan(this@VerifyInfoActivity,ossImageUrl.formatSubString())
                             HttpClient.getUserCredit(this@VerifyInfoActivity)
                         }
@@ -1056,7 +1057,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         if(event.isSuccess){
             event.model?.mtaw?.let {
                 isUseOcePan = true
-                if(it.result == "PASS"){
+                if(it.mazcrn == "PASS"){
                     bindViews.verify4.panInfoLl.visibility = View.VISIBLE
                     bindViews.verify4.fullNameTv.text = it.qwyr
                     bindViews.verify4.panNumberTv.text = it.foirvcqa
@@ -1064,7 +1065,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     hideLoading()
                 }else{
                     hideLoading()
-                    ToastUtil.showLong(this, it.znxbvyn)
+                    ToastUtil.showLong(this, it.dvusonb)
 
                     HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_FAIL,
                         ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_FAIL)

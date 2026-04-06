@@ -1,28 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#99000000"
-    tools:context=".ui.verify.TakePhotoActivity">
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_vertical_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Place the PAN card entirely within the guide and ensure the image is clear."
+        android:textColor="#FFFFFF"
+        android:textSize="11sp"
+        android:rotation="90"
+        android:gravity="center"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/view_camera"
+        app:layout_constraintTop_toTopOf="@id/view_camera"
+        app:layout_constraintBottom_toBottomOf="@id/view_camera"/>
+
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/view_camera"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="37dp"
+        android:layout_marginRight="37dp"
+        android:layout_weight="1"
+        android:layout_marginTop="90dp"
+        app:layout_constraintDimensionRatio="300:500"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_up"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="@+id/view_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/view_camera"
+        app:layout_constraintLeft_toLeftOf="@+id/view_camera"
+        app:layout_constraintRight_toRightOf="@+id/view_camera"
+        android:src="@drawable/shape_take_photo_bg" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:gravity="center"
+        android:paddingBottom="115dp"
+        >
 
-
+        <ImageView
+            android:id="@+id/flashIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_flash_on" />
+        <ImageView
+            android:id="@+id/takePhotoIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="74dp"
+            android:src="@mipmap/ic_take_photo"
+            />
+        <ImageView
+            android:id="@+id/chooseIv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_not_choose"/>
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
 
-
-    </LinearLayout>
-
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

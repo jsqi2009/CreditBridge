@@ -40,7 +40,7 @@ object ImageUploader {
         }
 
         val fileName = file.name
-        val key = "${ossInfo.dwr}$fileName"
+        val key = "${ossInfo.fev}$fileName"
 
         val mimeType = when {
             imagePath.endsWith(".png", true) -> "image/png"
@@ -55,9 +55,9 @@ object ImageUploader {
             MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("key", key)
-                .addFormDataPart("OSSAccessKeyId", ossInfo.lkjhgstwwut)
-                .addFormDataPart("policy", ossInfo.qwcsct)
-                .addFormDataPart("signature", ossInfo.pokmnjuyh)
+                .addFormDataPart("OSSAccessKeyId", ossInfo.nydkskicvbp)
+                .addFormDataPart("policy", ossInfo.rlnjfs)
+                .addFormDataPart("signature", ossInfo.jsxuxumqy)
                 .addFormDataPart("success_action_status", "200")
                 .addFormDataPart(
                     "file",
@@ -72,7 +72,7 @@ object ImageUploader {
 
         val request = try {
              Request.Builder()
-                .url(ossInfo.jupm)
+                .url(ossInfo.rmvk)
                 .post(builder.build())
                 .build()
         } catch (e: Exception) {

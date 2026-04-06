@@ -514,7 +514,7 @@ object HttpClient {
     fun verifyOcrPan(mContext: Context, url: String) {
 
         val body = RequestOcrPanBody()
-        body.fwadagpin = url
+        body.sionndss = url
         val call = mHttpApi!!.requestPutOcrPan(getHeaders(mContext), Contants.URL_SAVE_PAN_RESULT, body)
         dispatchClient?.enqueue(call, OcrPanResponse::class.java, OcrPanResponseEvent::class.java)
     }
@@ -528,7 +528,7 @@ object HttpClient {
     fun verifyOcrFace(mContext: Context, url: String) {
 
         val body = RequestOcrPanBody()
-        body.fwadagpin = url
+        body.sionndss = url
         val call = mHttpApi!!.requestPutOcrPan(getHeaders(mContext), Contants.URL_UPLOAD_FACE_IMAGE, body)
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyOcrFaceResponseEvent::class.java)
     }
