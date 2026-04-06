@@ -723,8 +723,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_SUNMIT,
             ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_IDCARD_SUNMIT)
 
+        val questionList = VerifyInfoUtil.getStep4RequestBody(panNumber, fullName, birthDate,
+            VerifyInfoUtil.genderFormatList[genderIndex], step4QuestionInfo)
+
         showLoading()
-        HttpClient.verifyPanInfo(this, panNumber, fullName,birthDate, birthDate)
+        HttpClient.saveQuestionInfo(this, questionList, currentStep)
+
+        /*showLoading()
+        HttpClient.verifyPanInfo(this, panNumber, fullName,birthDate, birthDate)*/
     }
 
     @Subscribe
