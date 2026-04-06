@@ -226,13 +226,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         bindViews.verify4.panNumberIv.setOnClickListener(this)
         bindViews.verify4.genderLl.setOnClickListener(this)
+        bindViews.retryTv.setOnClickListener(this)
+        bindViews.step4ContinueTv.setOnClickListener(this)
 
         bindViews.verify5.verifyFaceIv.setOnClickListener(this)
 
         bindViews.retryTv.paint.isUnderlineText = true
 
-        bindViews.stepBtn4.visibility = View.GONE
-        bindViews.attemptLeftTv.visibility = View.GONE
+
     }
 
     override fun onClick(v: View?) {
@@ -277,7 +278,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 chooseContact2()
             }
             R.id.panNumberIv -> {
-                startOcrPanNumber()
+                //startOcrPanNumber()
+                showStartOcrPanNumberSheet()
             }
             R.id.genderLl -> {
                 showGenderSheet()
@@ -287,6 +289,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             R.id.continueTv -> {
                 handleStepOperation()
+            }
+            R.id.retryTv -> {
+                showStartOcrPanNumberSheet()
+            }
+            R.id.step4ContinueTv -> {
+                verifyPanAction()
             }
         }
     }
@@ -303,7 +311,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 verifyBankAction()
             }
             4 -> {
-                verifyPanAction()
+                //verifyPanAction()
             }
         }
     }
@@ -352,6 +360,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.verify3.root.visibility = View.GONE
                 bindViews.verify4.root.visibility = View.VISIBLE
                 bindViews.verifyTipsLayout.visibility = View.VISIBLE
+                bindViews.attemptLeftTv.visibility = View.VISIBLE
+                bindViews.attemptLeftTv.text = getString(R.string.verify_photo_attempts_left_today) + panNumberOfTimes
                 bindViews.verifyTipsTv.text = "Please verify your ID information to proceed with account confirmation."
                 bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_4)
                 bindViews.titleLayout.titleTv.text = "KYC Information"
@@ -366,6 +376,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.verify4.root.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
                 bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_5)
+                bindViews.attemptLeftTv.visibility = View.VISIBLE
+                bindViews.attemptLeftTv.text = getString(R.string.verify_face_attempts_left_today) + faceNumberOfTimes
                 bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
 
@@ -426,6 +438,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             if (event.model != null) {
                 event.model?.mtaw.let {
                     step4QuestionInfo = event.model!!.mtaw!!
+                    startOcrPanNumber()
                 }
             }
         }
@@ -967,7 +980,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         if(event.isSuccess){
             event.model?.mtaw?.let {
                 panNumberOfTimes = it
-                showStartOcrPanNumberSheet()
+                bindViews.attemptLeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
+                //showStartOcrPanNumberSheet()
             }
         }else{
             ToastUtil.showLong(this,event.networkError.toString())
@@ -1059,9 +1073,15 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 isUseOcePan = true
                 if(it.mazcrn == "PASS"){
                     bindViews.verify4.panInfoLl.visibility = View.VISIBLE
-                    bindViews.verify4.fullNameTv.text = it.qwyr
-                    bindViews.verify4.panNumberTv.text = it.foirvcqa
-                    bindViews.verify4.birthDateTv.text = it.pggoxchs
+                    bindViews.verify4.panTips.visibility = View.GONE
+                    bindViews.stepBtn4.visibility = View.VISIBLE
+                    bindViews.continueTv.visibility = View.GONE
+                    bindViews.attemptLeftTv.visibility = View.GONE
+                    bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + numberOfChildIndex
+                    bindViews.verify4.fullNameTv.text = it.ynyj
+                    bindViews.verify4.panNumberTv.text = it.fwrcjkq
+                    bindViews.verify4.birthDateTv.text = it.bzumerxb
+                    bindViews.verify4.birthDateTv.text = it.bzumerxb
                     hideLoading()
                 }else{
                     hideLoading()

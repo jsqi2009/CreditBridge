@@ -49,6 +49,7 @@
     <!--verify  -->
     <string name="verify_photo_attempts_left_today">Photo attempts left today:</string>
     <string name="verify_times_limit">Daily limit reached. Try again tomorrow.</string>
+    <string name="verify_face_attempts_left_today">Attempts available today:</string>
 
 
 </resources>

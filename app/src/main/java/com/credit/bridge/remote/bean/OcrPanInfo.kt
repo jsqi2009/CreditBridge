@@ -9,8 +9,8 @@ class OcrPanInfo {
     var liwfgap: String = "" // pan
     var showBackCard: Boolean = false //22-09-2001
     var dvusonb: String = "" //fail reson
-    var foirvcqa: String ="" //idNumber
-    var pggoxchs: String ="" //birthday
+    var fwrcjkq: String ="" //idNumber
+    var bzumerxb: String ="" //birthday
     var fatherName: String ="" //	uvefotsenz
-    var qwyr: String ="" //	name
+    var ynyj: String ="" //	name
 }
