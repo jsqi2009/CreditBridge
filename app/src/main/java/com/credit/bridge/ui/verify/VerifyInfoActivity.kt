@@ -27,6 +27,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.CommonBean
 import com.credit.bridge.remote.bean.QuestionInfoResponse
 import com.credit.bridge.remote.body.RequestContactBody
+import com.credit.bridge.remote.event.CompleteVerifyResponseEvent
 import com.credit.bridge.remote.event.OcrFaceNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanResponseEvent
@@ -313,6 +314,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             4 -> {
                 //verifyPanAction()
+            }
+            5 -> {
+
             }
         }
     }
@@ -801,6 +805,19 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             ToastUtil.showLong(this,event.networkError.toString())
         }
 
+    }
+
+    private fun completeVerify(){
+        showLoading()
+        HttpClient.completeVerify(this)
+    }
+
+    @Subscribe
+    fun onCompleteVerifyResponseEvent(event: CompleteVerifyResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            showVerifySuccessDialog()
+        }
     }
 
     private fun showWorkTypeSheet() {

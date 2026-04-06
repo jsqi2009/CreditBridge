@@ -31,6 +31,7 @@ import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
+import com.credit.bridge.remote.event.CompleteVerifyResponseEvent
 import com.credit.bridge.remote.event.FeedbackResponseEvent
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
@@ -547,6 +548,12 @@ object HttpClient {
         body.awja = "PAN"
         val call = mHttpApi!!.requestPostOcrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
         dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrPanNumberResponseEvent::class.java)
+    }
+
+    fun completeVerify(mContext: Context) {
+
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_COMPLETE_VERIFY)
+        dispatchClient?.enqueue(call, BResponse::class.java, CompleteVerifyResponseEvent::class.java)
     }
 
 

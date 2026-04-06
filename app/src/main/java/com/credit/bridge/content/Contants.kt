@@ -60,6 +60,7 @@ object Contants {
 
     const val URL_QUESTION_BY_STEP  = "/wxuxki/jhsuvrkhtcwlrt"//	/credit/questionByStep
     const val URL_SAVE_QUESTION_INFO  = "/lxvwvw/mmmibgyvfzkmozmuigrapkw"//	//credit/saveCollectQuestionInfo
+    const val URL_COMPLETE_VERIFY  = "/qzvfkh/kwuevxeg/qsfsdmbvmrstw"//	/credit/complete/certification
 
 
 

@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@mipmap/ic_dialog_voice_verify" />
+            android:src="@mipmap/ic_logout_tips" />
 
         <LinearLayout
             android:id="@+id/rl"
