@@ -309,11 +309,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private fun refreshUI() {
         when (currentStep) {
             1 -> {
                 bindViews.verify1.root.visibility = View.VISIBLE
-
+                bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_1)
                 bindViews.titleLayout.titleTv.text = "Basic Information"
                 bindViews.titleLayout.rightTv.text = "1/5"
 
@@ -325,6 +326,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             2 -> {
                 bindViews.verify1.root.visibility = View.GONE
                 bindViews.verify2.root.visibility = View.VISIBLE
+                bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_2)
                 bindViews.titleLayout.titleTv.text = "Contact Information"
                 bindViews.titleLayout.rightTv.text = "2/5"
 
@@ -337,6 +339,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.verify2.root.visibility = View.GONE
                 bindViews.verify3.root.visibility = View.VISIBLE
                 bindViews.verifyTipsLayout.visibility = View.VISIBLE
+                bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_3)
                 bindViews.titleLayout.titleTv.text = "Bank Information"
                 bindViews.titleLayout.rightTv.text = "3/5"
 
@@ -349,6 +352,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.verify3.root.visibility = View.GONE
                 bindViews.verify4.root.visibility = View.VISIBLE
                 bindViews.verifyTipsLayout.visibility = View.VISIBLE
+                bindViews.verifyTipsTv.text = "Please verify your ID information to proceed with account confirmation."
+                bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_4)
                 bindViews.titleLayout.titleTv.text = "KYC Information"
                 bindViews.titleLayout.rightTv.text = "4/5"
 
@@ -360,6 +365,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
+                bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_5)
                 bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
 
@@ -969,7 +975,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun showStartOcrPanNumberSheet() {
-        val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", takePhoto = {
+        val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", panNumberOfTimes, takePhoto = {
             val permission = arrayOf(Manifest.permission.CAMERA)
             if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
                 takePhoto.launch(Intent(this@VerifyInfoActivity, SubmitSuccessActivity::class.java).apply {})

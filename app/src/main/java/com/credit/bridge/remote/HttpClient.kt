@@ -536,7 +536,7 @@ object HttpClient {
     fun verifyOcrFaceNumber(mContext: Context) {
 
         val body = RequestOcrPanNumberBody()
-        body.qfve = "FACE"
+        body.awja = "FACE"
         val call = mHttpApi!!.requestPostOcrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
         dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrFaceNumberResponseEvent::class.java)
     }
@@ -544,7 +544,7 @@ object HttpClient {
     fun verifyOcrPanNumber(mContext: Context) {
 
         val body = RequestOcrPanNumberBody()
-        body.qfve = "PAN"
+        body.awja = "PAN"
         val call = mHttpApi!!.requestPostOcrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
         dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrPanNumberResponseEvent::class.java)
     }

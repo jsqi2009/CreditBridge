@@ -24,6 +24,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/verifyTopImg"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/margin_16"
@@ -47,6 +48,7 @@
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/verifyTipsTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

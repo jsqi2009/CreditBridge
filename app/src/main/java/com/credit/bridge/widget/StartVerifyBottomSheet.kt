@@ -29,6 +29,7 @@ import kotlinx.coroutines.launch
 class StartVerifyBottomSheet(
     val mContext: Context,
     var title: String,
+    var panNumberOfTimes: Int,
     var takePhoto: () -> Unit,
 ) : BaseBottomSheet<BottomSheetStartVerifyBinding>(), View.OnClickListener {
     private var mAdapter: CommonListAdapter? = null
@@ -48,10 +49,7 @@ class StartVerifyBottomSheet(
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindViews.titleTv.text = title
         bindViews.closeIv.setOnClickListener(this)
-
     }
-
-
 
     override fun onClick(v: View?) {
         when (v?.id) {
