@@ -241,21 +241,24 @@ object VerifyInfoUtil {
         val questionList = arrayListOf<RequestSaveQuestionBody>()
 
         val accountNumBody = RequestSaveQuestionBody()
-        accountNumBody.vesrq = step3QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        //accountNumBody.vesrq = step3QuestionInfo.ffuyqtcgfw[0].xjcli.toString()   //group
+        accountNumBody.vesrq = ""   //group
         accountNumBody.snqsj = step3QuestionInfo.ffuyqtcgfw[0].xjcli   //order
         accountNumBody.vwqveibeqa = step3QuestionInfo.ffuyqtcgfw[0].iinfzdhhhv   //question id
         accountNumBody.wiuj = 3   //step
         accountNumBody.qprib = accountNum   //value
 
         val confirmAccountNumBody = RequestSaveQuestionBody()
-        confirmAccountNumBody.vesrq = step3QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq   //group
+        //confirmAccountNumBody.vesrq = step3QuestionInfo.ffuyqtcgfw[1].xjcli.toString()   //group
+        accountNumBody.vesrq = ""   //group
         confirmAccountNumBody.snqsj = step3QuestionInfo.ffuyqtcgfw[1].xjcli   //order
         confirmAccountNumBody.vwqveibeqa = step3QuestionInfo.ffuyqtcgfw[1].iinfzdhhhv   //question id
         confirmAccountNumBody.wiuj = 3   //step
         confirmAccountNumBody.qprib = confirmAccountNum   //value
 
         val ifscCodeBody = RequestSaveQuestionBody()
-        ifscCodeBody.vesrq = step3QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq   //group
+        //ifscCodeBody.vesrq = step3QuestionInfo.ffuyqtcgfw[2].xjcli.toString()   //group
+        accountNumBody.vesrq = ""   //group
         ifscCodeBody.snqsj = step3QuestionInfo.ffuyqtcgfw[2].xjcli   //order
         ifscCodeBody.vwqveibeqa = step3QuestionInfo.ffuyqtcgfw[2].iinfzdhhhv   //question id
         ifscCodeBody.wiuj = 3   //step

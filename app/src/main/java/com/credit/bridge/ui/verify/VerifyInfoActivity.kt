@@ -231,7 +231,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         bindViews.retryTv.paint.isUnderlineText = true
 
-        bindViews.verifyTipsLayout.visibility = View.GONE
         bindViews.stepBtn4.visibility = View.GONE
         bindViews.attemptLeftTv.visibility = View.GONE
     }
@@ -337,10 +336,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             3 -> {
                 bindViews.verify2.root.visibility = View.GONE
                 bindViews.verify3.root.visibility = View.VISIBLE
+                bindViews.verifyTipsLayout.visibility = View.VISIBLE
                 bindViews.titleLayout.titleTv.text = "Bank Information"
                 bindViews.titleLayout.rightTv.text = "3/5"
 
-                //HttpClient.getQuestionByStep(this, currentStep)
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_BANKCARD_INPUT)
@@ -348,10 +348,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             4 -> {
                 bindViews.verify3.root.visibility = View.GONE
                 bindViews.verify4.root.visibility = View.VISIBLE
+                bindViews.verifyTipsLayout.visibility = View.VISIBLE
                 bindViews.titleLayout.titleTv.text = "KYC Information"
                 bindViews.titleLayout.rightTv.text = "4/5"
 
-                //HttpClient.getQuestionByStep(this, currentStep)
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_INPUT,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_INPUT)
@@ -362,7 +363,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
 
-                //HttpClient.getQuestionByStep(this, currentStep)
+                HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.POINT_INPUT_LIVENESS,
                     ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INPUT_LIVENESS)
@@ -552,7 +553,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         val questionList = VerifyInfoUtil.getStep2RequestBody(VerifyInfoUtil.contact1FormatList[contact1Index] ,
             VerifyInfoUtil.contact2FormatList[contact2Index],
-            contact1Value, contact2Value, phone1Value,phone1Value,
+            contact1Value, contact2Value, phone1Value,phone2Value,
            step2QuestionInfo)
 
         showLoading()
@@ -623,9 +624,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_SUBMIT,
             ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_BANKCARD_SUBMIT)
 
+        val questionList = VerifyInfoUtil.getStep3RequestBody(accountNumber.replace(" ", ""),
+            confirmAccountNumber.replace(" ", ""), ifscCode, step3QuestionInfo)
         showLoading()
+        HttpClient.saveQuestionInfo(this, questionList, currentStep)
+
+        /*showLoading()
         HttpClient.verifyBankInfo(this, "", accountNumber.trim()
-            ,confirmAccountNumber.trim(), ifscCode,"")
+            ,confirmAccountNumber.trim(), ifscCode,"")*/
     }
 
     @Subscribe
