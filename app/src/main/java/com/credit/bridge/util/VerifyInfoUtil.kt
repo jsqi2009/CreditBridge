@@ -185,42 +185,42 @@ object VerifyInfoUtil {
         val questionList = arrayListOf<RequestSaveQuestionBody>()
 
         val relation1Body = RequestSaveQuestionBody()
-        relation1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq   //group
+        relation1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[0].rmuon   //group
         relation1Body.snqsj = step2QuestionInfo.ffuyqtcgfw[0].xjcli   //order
         relation1Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[0].iinfzdhhhv   //question id
         relation1Body.wiuj = 2   //step
         relation1Body.qprib = relation1   //value
 
         val relation2Body = RequestSaveQuestionBody()
-        relation2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq   //group
+        relation2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[1].rmuon   //group
         relation2Body.snqsj = step2QuestionInfo.ffuyqtcgfw[1].xjcli   //order
         relation2Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[1].iinfzdhhhv   //question id
         relation2Body.wiuj = 2   //step
         relation2Body.qprib = relation2   //value
 
         val contactName1Body = RequestSaveQuestionBody()
-        contactName1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq   //group
+        contactName1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[2].rmuon   //group
         contactName1Body.snqsj = step2QuestionInfo.ffuyqtcgfw[2].xjcli   //order
         contactName1Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[2].iinfzdhhhv   //question id
         contactName1Body.wiuj = 2   //step
         contactName1Body.qprib = contactName1   //value
 
         val contactName2Body = RequestSaveQuestionBody()
-        contactName2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq   //group
+        contactName2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[3].rmuon   //group
         contactName2Body.snqsj = step2QuestionInfo.ffuyqtcgfw[3].xjcli   //order
         contactName2Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[3].iinfzdhhhv   //question id
         contactName2Body.wiuj = 2   //step
         contactName2Body.qprib = contactName2   //value
 
         val contactNumber1Body = RequestSaveQuestionBody()
-        contactNumber1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[4].qpwjbrdvuq   //group
+        contactNumber1Body.vesrq = step2QuestionInfo.ffuyqtcgfw[4].rmuon   //group
         contactNumber1Body.snqsj = step2QuestionInfo.ffuyqtcgfw[4].xjcli   //order
         contactNumber1Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[4].iinfzdhhhv   //question id
         contactNumber1Body.wiuj = 2   //step
         contactNumber1Body.qprib = contactNumber1   //value
 
         val contactNumber2Body = RequestSaveQuestionBody()
-        contactNumber2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[5].qpwjbrdvuq   //group
+        contactNumber2Body.vesrq = step2QuestionInfo.ffuyqtcgfw[5].rmuon   //group
         contactNumber2Body.snqsj = step2QuestionInfo.ffuyqtcgfw[5].xjcli   //order
         contactNumber2Body.vwqveibeqa = step2QuestionInfo.ffuyqtcgfw[5].iinfzdhhhv   //question id
         contactNumber2Body.wiuj = 2   //step
