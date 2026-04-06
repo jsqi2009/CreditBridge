@@ -43,6 +43,7 @@ import com.credit.bridge.remote.event.SaveQuestion4ResponseEvent
 import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyOcrFaceResponseEvent
 import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.ui.product.SubmitSuccessActivity
 import com.credit.bridge.util.AppUtil.formatSubString
@@ -375,11 +376,13 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
+                bindViews.step5Line.root.visibility = View.VISIBLE
                 bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_5)
                 bindViews.attemptLeftTv.visibility = View.VISIBLE
                 bindViews.attemptLeftTv.text = getString(R.string.verify_face_attempts_left_today) + faceNumberOfTimes
                 bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
+                bindViews.continueTv.text = "Submit"
 
                 HttpClient.getQuestionByStep(this, currentStep)
 
@@ -728,9 +731,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         showLoading()
         HttpClient.saveQuestionInfo(this, questionList, currentStep)
-
-        /*showLoading()
-        HttpClient.verifyPanInfo(this, panNumber, fullName,birthDate, birthDate)*/
     }
 
     @Subscribe
@@ -1117,7 +1117,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         if(event.isSuccess){
             event.model?.mtaw?.let {
                 faceNumberOfTimes = it
-                //views.tvFaceNumber.text = resources.getString(R.string.info_5_pop) + faceNumber
+                bindViews.attemptLeftTv.text = resources.getString(R.string.verify_face_attempts_left_today) + " " +  faceNumberOfTimes
             }
         }else{
             if(event.model?.fzpn == 500){
@@ -1166,7 +1166,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     @SuppressLint("SetTextI18n")
     @Subscribe
-    fun onOOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
+    fun onVerifyOcrFaceResponseEvent(event: VerifyOcrFaceResponseEvent) {
         hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let {

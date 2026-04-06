@@ -179,8 +179,7 @@
 
     </LinearLayout>
 
-    <include
-        layout="@layout/layout_verify_line"/>
+
 
 
 </LinearLayout>
