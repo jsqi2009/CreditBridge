@@ -10,6 +10,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
+import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityConfirmProductBinding
 import com.credit.bridge.databinding.ActivityProductListBinding
 import com.credit.bridge.remote.HttpClient
@@ -113,20 +114,18 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
             productIdList.forEachIndexed { index, productId ->
 
                 val item = RequestSubmitOrderBody()
-                item.ypwqmbzol = productId
-                item.bbxpqv = amountList[index]
+                item.venwcxziy = productId
+                item.elkqdr = amountList[index]
 
                 bodyList.add(item)
             }
         }
 
+        HttpClient.eventReport(this,ConstConfig.POINT_LOAN_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)
+
         showLoading()
         HttpClient.submitOrder(this, bodyList, "2")
-
-        /*val eventValue =  HashMap<String, Any>()
-        eventValue[ConstConfig.POINT_LOAN_SUBMIT] = ""
-        AppsFlyerLib.getInstance().logEvent(mContext, ConstConfig.POINT_LOAN_SUBMIT, eventValue)
-        PointUploadUtils.uploadEvent(mContext as AppCompatActivity,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)*/
     }
 
     @Subscribe

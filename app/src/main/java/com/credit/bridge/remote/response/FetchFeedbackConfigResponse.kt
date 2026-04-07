@@ -7,14 +7,14 @@ class FetchFeedbackConfigResponse: BResponse() {
 
 }
 class FeedbackConfig{
-    var czrkyxcf: JumpConfig? = null
-    var kmnmaaqvwwuzndu: Boolean = false //showRatingPopup
+    var whhdieyt: JumpConfig? = null
+    var wigmxieideltelq: Boolean = false //showRating
 }
 
 class JumpConfig{
-    var dajhrgxucv: String = ""
-    var opyujqohzmf: Int = 0
-    var ocuerrncq: String = ""
+    var xhanuoewoy: String = ""  //jump market
+    var opyujqohzmf: Int = 0    //jumpMinStar
+    var ocuerrncq: String = ""   //marketUrl
 }
 
 

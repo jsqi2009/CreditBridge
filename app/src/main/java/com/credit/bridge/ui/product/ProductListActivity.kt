@@ -162,8 +162,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
         val bodyList: ArrayList<RequestSubmitOrderBody> = ArrayList()
         productList.forEach {
             val item: RequestSubmitOrderBody = RequestSubmitOrderBody()
-            item.ypwqmbzol = it.ifbivuyws
-            item.bbxpqv = it.auaxapvecxrhb
+            item.venwcxziy = it.bwhjrtygl
+            item.elkqdr = it.qcakyrooudutx
             bodyList.add(item)
         }
 

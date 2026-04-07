@@ -17,6 +17,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.event.FeedbackResponseEvent
 import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
+import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.remote.response.JumpConfig
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
@@ -37,13 +38,18 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
     override fun initRes() {
         super.initRes()
+
+        bindViews.titleLayout.titleTv.text = "Usage details"
+
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.submitTv.setOnClickListener(this)
+        bindViews.backToHomeLayout1.setOnClickListener(this)
+        bindViews.backToHomeLayout2.setOnClickListener(this)
 
         bindViews.starView.setRating(3)
         bindViews.starView.onRatingChange = { rating ->
-            Log.d("Star", "当前评分: $rating")
+            Log.d("Star", "Current Star Rating: $rating")
             currentStarRating = rating
         }
 
@@ -59,7 +65,18 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
             R.id.submitTv -> {
                 submitFeedback()
             }
+            R.id.backToHomeLayout1 -> {
+                backToHome()
+            }
+            R.id.backToHomeLayout2 -> {
+                backToHome()
+            }
         }
+    }
+
+
+    private fun backToHome() {
+        eventBus.post(UpdateTabIndexEvent(1))
     }
 
     private fun fetchFeedbackConfig() {
@@ -72,29 +89,29 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         hideLoading()
         if (event.isSuccess) {
             val response = event.model?.mtaw
-            jumpConfig = response?.czrkyxcf
-            if (response?.kmnmaaqvwwuzndu == true) {
-                //views.llDefault.visibility = View.VISIBLE
-                //views.llSubmitted.visibility = View.GONE
+            jumpConfig = response?.whhdieyt
+            if (response?.wigmxieideltelq == true) {
+                bindViews.defaultLayout.visibility = View.GONE
+                bindViews.starLayout.visibility = View.VISIBLE
             } else {
-                //views.llDefault.visibility = View.GONE
-                //views.llSubmitted.visibility = View.VISIBLE
+                bindViews.defaultLayout.visibility = View.VISIBLE
+                bindViews.starLayout.visibility = View.GONE
             }
         }
     }
 
     private fun submitFeedback() {
 
-        val comments = bindViews.feedbackEt.text.toString()
-        if (comments.isEmpty()) {
+        val feedback = bindViews.feedbackEt.text.toString()
+        if (feedback.isEmpty()) {
             ToastUtil.showLong(this, "Comment content cannot be empty")
             return
         }
 
         val body = RequestFeedbackBody()
-        body.xjevovy = comments
-        body.vihkrxzz = "RATING"
-        body.ovqov = currentStarRating
+        body.guawnoc = feedback
+        body.feedType = "RATING"
+        body.qvyjt = currentStarRating
 
         showLoading()
         HttpClient.submitFeedback(this, body)
@@ -113,6 +130,8 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
                 } catch (e: Exception) {
                     Log.e("==onResponse==", e.toString())
                 }
+            } else {
+                backToHome()
             }
         }
     }

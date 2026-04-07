@@ -322,7 +322,7 @@ object HttpClient {
     fun fetchOrderList(mContext: Context, type: String, flag: String) {
 
         val orderBody = RequestOrderListBody()
-        orderBody.qfve = type
+        orderBody.awja = type
 
         val call = mHttpApi!!.requestPostOrderList(getHeaders(mContext), Contants.URL_ORDER_LIST, orderBody)
         dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderListResponseEvent::class.java,flag)
