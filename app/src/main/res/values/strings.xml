@@ -35,9 +35,9 @@
     <string name="order_desc_usage_amount">Usage Amount</string>
     <string name="order_desc_amount_due">Amount Due</string>
     <string name="order_desc_amount_paid">Amount Paid</string>
-    <string name="order_date_desc_created_on">Created On</string>
-    <string name="order_date_desc_due_date">Due Date</string>
-    <string name="order_date_desc_payment_date">Payment Date</string>
+    <string name="order_date_desc_created_on">Created On:</string>
+    <string name="order_date_desc_due_date">Due Date:</string>
+    <string name="order_date_desc_payment_date">Payment Date:</string>
     <string name="order_status_processing">Processing</string>
     <string name="order_status_overdue">Overdue</string>
     <string name="order_status_due">Due</string>

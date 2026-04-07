@@ -54,7 +54,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on) + " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_processing)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_processing)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_processing))
@@ -68,7 +68,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_overdue)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_overdue))
@@ -82,7 +82,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_due)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
@@ -96,7 +96,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_paid)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_payment_date)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_payment_date)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_paid)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_paid)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_paid))
@@ -110,7 +110,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
@@ -124,7 +124,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
@@ -138,7 +138,7 @@ class OrderListAdapter(
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
-                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)
+                holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
