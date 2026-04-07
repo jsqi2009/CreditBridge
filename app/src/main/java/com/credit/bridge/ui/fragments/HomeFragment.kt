@@ -93,11 +93,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         when (v?.id) {
             R.id.accessAccountIv -> {
                 isCreateOrder = true
-                checkUploadStatus()
+                //checkUploadStatus()
+                previewProduct()
             }
             R.id.accessManageIv -> {
                 isCreateOrder = true
-                checkUploadStatus()
+                //checkUploadStatus()
+                previewProduct()
             }
             R.id.startVerifyLl -> {
                 isCreateOrder = false

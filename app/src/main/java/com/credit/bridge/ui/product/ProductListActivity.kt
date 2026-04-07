@@ -1,5 +1,6 @@
 package com.credit.bridge.ui.product
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -12,6 +13,7 @@ import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.adapter.ProductListAdapter
 import com.credit.bridge.base.BaseActivity
+import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.databinding.ActivityProductListBinding
 import com.credit.bridge.inter.OnItemClickListener
@@ -51,10 +53,15 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
         getAllProductList()
     }
 
+    @SuppressLint("SetTextI18n")
     override fun initRes() {
         super.initRes()
 
         totalLimit = intent.getIntExtra("amountLimit", 0)
+
+        bindViews.availableLimitTv.text =  getString(R.string.money_symbol) + " $totalLimit"
+        bindViews.titleLayout.titleTv.text = "Credit usage options"
+        bindViews.viewDetailsTv.paint.isUnderlineText = true
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
@@ -69,7 +76,6 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             value = totalLimit.toFloat()
 
             setOnValueChangeListener {
-                ToastUtil.showShort(this@ProductListActivity, it.toString())
                 targetValue = it
                 mAdapter?.setData(arrayListOf())
                 filterProductList(targetValue.toInt())
@@ -88,9 +94,9 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
         if (event.isSuccess) {
             val allProduct: ArrayList<AllProductInfo>? = event.model?.mtaw
             allList = allProduct
-            allList?.sortByDescending { it.dsmcbogvwzsgpvkszc }
+            allList?.sortByDescending { it.lxirhldmgiuuotjldg }
             if (allProduct != null && allProduct.isNotEmpty()) {
-                productList = allProduct[0].vlwauwwzbwoagx
+                productList = allProduct[0].fyyqsmiambqdnu
                 mAdapter?.setData(productList)
             }
             filterProductList(targetValue.toInt())
@@ -116,6 +122,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
         bindViews.productRv.layoutManager = LinearLayoutManager(this)
         mAdapter = ProductListAdapter(this, items = productList,object : OnProductItemClickListener{
             override fun onItemClick(info: ProductInfo) {
+
             }
 
         })
@@ -125,8 +132,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
 
     private fun filterProductList(targetValue: Int) {
         for (i in 0 until allList!!.size) {
-            if (allList!![i].dsmcbogvwzsgpvkszc <= targetValue) {
-                productList = allList!![i].vlwauwwzbwoagx
+            if (allList!![i].lxirhldmgiuuotjldg <= targetValue) {
+                productList = allList!![i].fyyqsmiambqdnu
                 mAdapter?.setData(productList)
                 break
             }
@@ -159,13 +166,12 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             item.bbxpqv = it.auaxapvecxrhb
             bodyList.add(item)
         }
+
+        HttpClient.eventReport(this,ConstConfig.POINT_LOAN_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)
+
         showLoading()
         HttpClient.submitOrder(this, bodyList, "1")
-
-        /*val eventValue =  HashMap<String, Any>()
-        eventValue[ConstConfig.POINT_LOAN_SUBMIT] = ""
-        AppsFlyerLib.getInstance().logEvent(mContext, ConstConfig.POINT_LOAN_SUBMIT, eventValue)
-        PointUploadUtils.uploadEvent(mContext as AppCompatActivity,ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)*/
     }
 
     @Subscribe

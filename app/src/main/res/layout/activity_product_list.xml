@@ -24,8 +24,6 @@
 
     </LinearLayout>
 
-
-
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,6 +54,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/availableLimitTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="₹ 50,000"
@@ -69,7 +68,7 @@
                     android:layout_height="@dimen/margin_45"
                     android:layout_marginHorizontal="@dimen/margin_30"
                     android:background="@drawable/shape_order_tips_bg"
-                    android:layout_marginTop="@dimen/margin_10"
+                    android:layout_marginTop="@dimen/margin_15"
                     android:layout_gravity="center"
                     android:gravity="center"
                     android:orientation="horizontal"
@@ -91,7 +90,7 @@
                     android:id="@+id/amountSlider"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/margin_5"
                     android:layout_marginHorizontal="@dimen/margin_15" />
 
 
@@ -166,7 +165,7 @@
                 android:layout_marginEnd="@dimen/margin_15"
                 android:background="@drawable/shape_theme"
                 android:gravity="center"
-                android:text="Continue"
+                android:text="Confirm usage"
                 android:textColor="#2E0D05"
                 android:textSize="18sp"
                 android:textStyle="bold" />

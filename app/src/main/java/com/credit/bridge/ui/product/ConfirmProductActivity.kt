@@ -26,7 +26,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
     var productIdList: ArrayList<Int> = ArrayList<Int>()
     var amountList: ArrayList<Int> = ArrayList<Int>()
     private var totalAmount: Any = 0
-    private var totalFee: Any = 0
+    private var totalFee: Double = 0.0
     private var productInfo: ProductInfo? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,11 +43,19 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         super.initRes()
 
         try {
+            bindViews.titleLayout.titleTv.text = "CUsage details"
+
             productIdList = intent.getIntegerArrayListExtra("productIdList")!!
             amountList = intent.getIntegerArrayListExtra("productAmountList")!!
             totalAmount = intent.getIntExtra("amount", 0)
-            totalFee = intent.getIntExtra("fee", 0)
+            totalFee = intent.getDoubleExtra("fee", 0.0)
             productInfo = intent.getSerializableExtra("productInfo") as ProductInfo
+
+            bindViews.amountPaidTv.text =  getString(R.string.money_symbol) + " "+ totalAmount.toString()
+            bindViews.daysTv.text = getString(R.string.product_up_to) + " " + productInfo?.tkjgeq.toString() +
+                    " " + productInfo?.wnvelqecci
+            bindViews.rateTv.text = productInfo?.rpstrzkyuypj.toString() + "%"
+            bindViews.serviceChargeTv.text = getString(R.string.money_symbol) + " " + totalFee.toString()
         } catch (e: Exception) {
 
         }

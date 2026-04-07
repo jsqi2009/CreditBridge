@@ -36,7 +36,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginTop="@dimen/margin_15"
             android:layout_marginHorizontal="@dimen/margin_20"
             android:background="@mipmap/ic_account_payment_bg"
             android:orientation="vertical">
@@ -113,7 +113,7 @@
         android:layout_height="@dimen/margin_45"
         android:layout_marginHorizontal="@dimen/margin_15"
         android:background="@drawable/shape_order_tips_bg"
-        android:layout_marginTop="@dimen/margin_10"
+        android:layout_marginTop="@dimen/margin_15"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="horizontal"
@@ -133,7 +133,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_20"
-        android:paddingHorizontal="@dimen/margin_10"
+        android:paddingHorizontal="@dimen/margin_15"
         android:layout_marginHorizontal="@dimen/margin_15"
         android:background="@drawable/shape_order_item_bg"
         android:paddingVertical="@dimen/margin_20"
@@ -162,9 +162,11 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/amountPaidTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₹ 1,000"
+                android:textStyle="bold"
                 android:textColor="#ff2e0d05"
                 android:textSize="15sp"
                 />
@@ -193,9 +195,11 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/daysTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Up to 365 days"
+                android:textStyle="bold"
                 android:textColor="#ff2e0d05"
                 android:textSize="15sp"
                 />
@@ -225,9 +229,11 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/rateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Up to 365 days"
+                android:textStyle="bold"
                 android:textColor="#ff2e0d05"
                 android:textSize="15sp"
                 />
@@ -257,10 +263,12 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/serviceChargeTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Up to 365 days"
                 android:textColor="#ff2e0d05"
+                android:textStyle="bold"
                 android:textSize="15sp"
                 />
 

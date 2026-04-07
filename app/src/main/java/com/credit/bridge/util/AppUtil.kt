@@ -30,7 +30,7 @@ object AppUtil {
     fun formatProductId(productList: ArrayList<ProductInfo>): ArrayList<Int> {
         val idList = ArrayList<Int>()
         productList.forEach {
-            idList.add(it.ifbivuyws)
+            idList.add(it.bwhjrtygl)
         }
         return idList
     }
@@ -38,7 +38,7 @@ object AppUtil {
     fun formatAmount(productList: ArrayList<ProductInfo>): ArrayList<Int> {
         val amountList = ArrayList<Int>()
         productList.forEach {
-            amountList.add(it.auaxapvecxrhb)
+            amountList.add(it.qcakyrooudutx)
         }
         return amountList
     }
@@ -46,15 +46,15 @@ object AppUtil {
     fun formatTotalAmount(productList: ArrayList<ProductInfo>): Int {
         var totalAmount = 0
         productList.forEach {
-            totalAmount += it.auaxapvecxrhb
+            totalAmount += it.qcakyrooudutx
         }
         return totalAmount
     }
 
-    fun formatTotalFee(productList: ArrayList<ProductInfo>): Int {
-        var fee = 0
+    fun formatTotalFee(productList: ArrayList<ProductInfo>): Double {
+        var fee = 0.0
         productList.forEach {
-            fee += it.xwnpwazpoz
+            fee += it.pexlzrehos
         }
         return fee
     }

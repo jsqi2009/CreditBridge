@@ -37,7 +37,7 @@ object Contants {
     const val URL_HEADER = "/uuedjbb/dcxtgq"//		/confuse/header
     const val URL_SAVE_CARD_RESULT = "/rhc/roer/zkssugqjcjxvdlqbljfmyv"//		/api/user/saveRecognitionResults
     const val URL_SAVE_PAN_RESULT = "/ysuqsq/eqy/ydwojsvjeul"//	     /credit/ocr/recognition
-    const val URL_GET_PRODUCTION_INFO = "/kpmd/lwovstmqxcsfcx"//		/api/credit/getProductInfo
+    const val URL_GET_PRODUCTION_INFO = "/ofml/hwruysgnlvlvqu"//		/api/credit/getProductInfo
     const val URL_ORDER_DETAIL = "/azq/oxkurim/wnjhzckxknu"//		/api/loanapp/orderDetail
     const val URL_GET_BANK_INFO = "/eot/nyrg/hozucxpjiyft"//		/api/auth/findBankcard
     const val URL_APPLY_DETAIL = "/tyv/hjrtirl/racewnvip/ucedsqldtjh"//		/api/loanapp/extension/applyDetail

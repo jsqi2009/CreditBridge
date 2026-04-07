@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_centerVertical="true"
-            android:text="Credit Option"
+            android:text="Usage option"
             android:textColor="#ff2e0d05"
             android:textSize="13sp"
             />
@@ -65,9 +65,11 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/amountPaidTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="₹ 1,000"
+                android:textStyle="bold"
                 android:textColor="#ff2e0d05"
                 android:textSize="15sp"
                 />
@@ -96,9 +98,11 @@
                 android:layout_weight="1"/>
 
             <TextView
+                android:id="@+id/daysTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Up to 365 days"
+                android:textStyle="bold"
                 android:textColor="#ff2e0d05"
                 android:textSize="15sp"
                 />

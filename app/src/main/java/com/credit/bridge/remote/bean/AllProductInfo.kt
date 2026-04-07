@@ -4,7 +4,7 @@ import java.io.Serializable
 
 
 class AllProductInfo: Serializable {
-    var dsmcbogvwzsgpvkszc: Int = 0
-    var vlwauwwzbwoagx: ArrayList<ProductInfo> = arrayListOf()
+    var lxirhldmgiuuotjldg: Int = 0
+    var fyyqsmiambqdnu: ArrayList<ProductInfo> = arrayListOf()
 
 }

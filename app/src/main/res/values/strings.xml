@@ -51,5 +51,8 @@
     <string name="verify_times_limit">Daily limit reached. Try again tomorrow.</string>
     <string name="verify_face_attempts_left_today">Attempts available today:</string>
 
+    <!--product  -->
+    <string name="product_up_to">Up to</string>
+
 
 </resources>
