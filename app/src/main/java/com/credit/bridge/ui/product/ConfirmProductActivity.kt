@@ -2,6 +2,7 @@ package com.credit.bridge.ui.product
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +17,9 @@ import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
+import com.credit.bridge.util.NumberUtils
 import com.credit.bridge.util.ToastUtil
+import com.google.gson.Gson
 import com.squareup.otto.Subscribe
 
 class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), View.OnClickListener  {
@@ -43,7 +46,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         super.initRes()
 
         try {
-            bindViews.titleLayout.titleTv.text = "CUsage details"
+            bindViews.titleLayout.titleTv.text = "Usage details"
 
             productIdList = intent.getIntegerArrayListExtra("productIdList")!!
             amountList = intent.getIntegerArrayListExtra("productAmountList")!!
@@ -87,9 +90,15 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let {
-                /*views.tvBankName.text = it.djhrpmn
-                views.tvBankId.text = CommonUtils.numberGeneral(it.twnkgc,3,2)*/
-                HttpClient.getOrderLinkBank(this,it.twnkgc)
+                Log.e("Bank Info", Gson().toJson(it))
+                if (!it.rcpqzqrn.isNullOrEmpty()) {
+                    bindViews.ifscTv.text = getString(R.string.product_ifsc) + " " +  NumberUtils.formatNumber(it.rcpqzqrn,3,2)
+                }
+                if (!it.qmtddx.isNullOrEmpty()) {
+                    bindViews.accountTv.text = getString(R.string.product_account) + " " +  NumberUtils.formatNumber(it.qmtddx,3,2)
+                }
+
+                //HttpClient.getOrderLinkBank(this,it.twnkgc)
             }
         }else{
             ToastUtil.showLong(this,event.retMsg)

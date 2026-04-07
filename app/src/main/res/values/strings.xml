@@ -53,6 +53,8 @@
 
     <!--product  -->
     <string name="product_up_to">Up to</string>
+    <string name="product_account">Account: </string>
+    <string name="product_ifsc">IFSC: </string>
 
 
 </resources>

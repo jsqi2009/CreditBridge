@@ -5,10 +5,10 @@ class FetchBankInfoResponse: BResponse (){
 }
 
 class BankInfo{
-    var twnkgc = ""
-    var fehygsjp = ""
-    var djhrpmn = ""
-    var cdvhcqhdbd = ""
+    var qmtddx: String? = ""  //account
+    var rcpqzqrn: String? = ""  //ifsc
+    var xzafqxn: String? = ""  //card name
+    var viqicnncqg : String? = ""
 
    /* "twnkgc": "22344566789",
     "fehygsjp": "22344566788",
