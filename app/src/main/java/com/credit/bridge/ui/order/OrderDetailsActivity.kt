@@ -56,8 +56,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             @Suppress("DEPRECATION")
             intent.getSerializableExtra("info") as? OrderInfo
         }
-        orderId = orderInfo?.qyfqljd ?: 0
-        orderStatus = orderInfo?.fwwluzpnudp
+        orderId = orderInfo?.kcyrbnp ?: 0
+        orderStatus = orderInfo?.xjywdrtdxzt
         if (intent.hasExtra("isExtend")) {
             isExtend = intent.getBooleanExtra("isExtend", false)
         }
@@ -88,7 +88,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     private fun getOrderDetailsInfo() {
 
         val requestBody = RequestOrderDetailsBody()
-        requestBody.bsmweqe = orderInfo?.qyfqljd.toString()
+        requestBody.bsmweqe = orderInfo?.kcyrbnp.toString()
 
         showLoading()
         HttpClient.getOrderDetails(this, requestBody, ConstConfig.ORDER_DETAIL_COMMON)
@@ -103,7 +103,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 orderInfo = event.model?.mtaw
                 initOrderDetailsInfo()
                 if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
-                    val leftTime = AppUtil.getTotalSeconds(orderInfo?.eeymvvicicofnhn ?: "")
+                    val leftTime = AppUtil.getTotalSeconds(orderInfo?.heieiavicbvpq ?: "")
                     if (leftTime > 0) {
                         /*views.rlCountDown.visibility = View.VISIBLE
                         views.tvCancelDesc.visibility = View.GONE*/
@@ -225,7 +225,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     private fun getOrderUpdateInfo() {
         showLoading()
-        HttpClient.getOrderUpdateInfo(this, orderInfo?.vuinurdxypfw ?: 0 ,orderId)
+        HttpClient.getOrderUpdateInfo(this, orderInfo?.ksczvtrzbqru ?: 0 ,orderId)
     }
 
     @SuppressLint("SuspiciousIndentation")

@@ -70,7 +70,7 @@ class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), Vi
 
 
     override fun onOrderItemClick(info: OrderInfo) {
-        if (OrderStatus.getStatusByValue(info.ufzqlyyxash) == OrderStatus.ISSUE_FAILED) {
+        if (info.xjywdrtdxzt == ConstConfig.ORDER_STATUS_ISSUE_FAILED) {
             //val intent = Intent(requireContext(), BillTransferFailActivity::class.java)
             val intent = Intent(this, OrderDetailsActivity::class.java)
             intent.putExtra("orderInfo", info)

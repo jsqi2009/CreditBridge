@@ -13,6 +13,7 @@ import com.credit.bridge.R
 import com.credit.bridge.adapter.OrderListAdapter
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
+import com.credit.bridge.content.ConstConfig.ORDER_STATUS_ISSUE_FAILED
 import com.credit.bridge.databinding.FragmentOrderBinding
 import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.inter.OnOrderItemClickListener
@@ -136,7 +137,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
     }
 
     override fun onOrderItemClick(info: OrderInfo) {
-        if (OrderStatus.getStatusByValue(info.ufzqlyyxash) == OrderStatus.ISSUE_FAILED) {
+        if ( info.xjywdrtdxzt== ORDER_STATUS_ISSUE_FAILED) {
             //val intent = Intent(requireContext(), BillTransferFailActivity::class.java)
             val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
             intent.putExtra("info", info)
@@ -154,7 +155,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
 
     override fun onPaymentClick(info: OrderInfo) {
         showLoading()
-        HttpClient.getPaymentLink(requireContext(), false,info.qyfqljd.toString(), 1)
+        HttpClient.getPaymentLink(requireContext(), false,info.kcyrbnp.toString(), 1)
     }
 
     @Subscribe

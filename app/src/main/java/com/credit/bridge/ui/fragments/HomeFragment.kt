@@ -17,6 +17,7 @@ import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
+import com.credit.bridge.content.ConstConfig.ORDER_STATUS_ISSUE_FAILED
 import com.credit.bridge.databinding.FragmentHomeBinding
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
@@ -114,7 +115,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             R.id.verified_fail -> {
                 if(homeInfo?.zydllhkuuvpqz != null && homeInfo?.zydllhkuuvpqz?.isNotEmpty() == true){
                     val orderInfo = homeInfo?.zydllhkuuvpqz?.firstOrNull { it ->
-                        OrderStatus.getStatusByValue(it.ufzqlyyxash) == OrderStatus.ISSUE_FAILED
+                        it.xjywdrtdxzt== ORDER_STATUS_ISSUE_FAILED
                     }
                     if(orderInfo != null){
                         val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
