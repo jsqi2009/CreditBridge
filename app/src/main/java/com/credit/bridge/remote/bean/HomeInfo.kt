@@ -15,7 +15,7 @@ class HomeUserInfo: Serializable {
 }
 
 class HomeOrderInfo: Serializable {
-    var denzlkevws: Boolean = false
-    var dzgpjajkkttrvjjqi: String = ""
-    var bovcyr: String? = null
+    var lwgdzqyuks: Boolean = false
+    var hxwklbbxhcxyjbfhv: String? = ""
+    var gdcuhe: String? = null
 }

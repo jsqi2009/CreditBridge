@@ -92,12 +92,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.accessAccountIv -> {
-                startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
                 isCreateOrder = true
                 checkUploadStatus()
             }
             R.id.accessManageIv -> {
-                startActivity(Intent(requireActivity(), VerifyInfoActivity::class.java))
                 isCreateOrder = true
                 checkUploadStatus()
             }
@@ -131,10 +129,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (homeInfo == null) {
             return
         }
-        if (homeInfo!!.hahsraev.bovcyr != null) {
+        if (homeInfo!!.hahsraev.gdcuhe != null) {
             bindViews.totalAmountTv.text =
                 context?.getString(R.string.money_symbol) + " " + homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn.toString()
-            val orderStatus = OrderStatus.getStatusByValue(homeInfo?.hahsraev?.bovcyr)
+            val orderStatus = OrderStatus.getStatusByValue(homeInfo?.hahsraev?.gdcuhe)
             when (orderStatus) {
                 OrderStatus.CURRENT -> {
                     bindViews.verifiedNeedPay.visibility = View.VISIBLE
@@ -328,16 +326,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     fun previewProduct(){
         isBackFromVerifyInfoPage = false
-        if (homeInfo?.hahsraev?.denzlkevws == false) {
-            ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.dzgpjajkkttrvjjqi, Toast.LENGTH_SHORT)
+        if (homeInfo?.hahsraev?.lwgdzqyuks == false) {
+            ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
             return
         }
         if (homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == null || homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == 0) {
-            ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.dzgpjajkkttrvjjqi, Toast.LENGTH_SHORT)
+            ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
             return
         }
         val intent = Intent(requireContext(), ProductListActivity::class.java)
-        intent.putExtra("totalAmount", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
+        intent.putExtra("amountLimit", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
         startActivity(intent)
     }
 

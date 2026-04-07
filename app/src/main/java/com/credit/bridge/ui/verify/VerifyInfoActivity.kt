@@ -93,6 +93,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     var faceNumberOfTimes = 0
     var isUseOcePan = false
     var isUseVerifyFace = false
+    var isFacePassed = false
 
     private var step1QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
     private var step2QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
@@ -316,7 +317,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 //verifyPanAction()
             }
             5 -> {
-
+                completeVerify()
             }
         }
     }
@@ -808,6 +809,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun completeVerify(){
+        if(!isFacePassed){
+            ToastUtil.showLong(this, "Face authentication failed. Please try again")
+            return
+        }
+
         showLoading()
         HttpClient.completeVerify(this)
     }
@@ -1187,7 +1193,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let {
-                showVerifySuccessDialog()
+                isFacePassed = true
+                //showVerifySuccessDialog()
             }
         }else {
             if(event.model != null){
