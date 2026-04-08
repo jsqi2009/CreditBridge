@@ -63,8 +63,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             intent.getSerializableExtra("info") as? OrderInfo
         }
         orderId = orderInfo?.kcyrbnp ?: 0
-        //orderStatus = orderInfo?.xjywdrtdxzt
-        orderStatus = ConstConfig.ORDER_STATUS_REJECTED
+        orderStatus = orderInfo?.xjywdrtdxzt
+//        orderStatus = ConstConfig.ORDER_STATUS_ISSUE_FAILED
         if (intent.hasExtra("isExtend")) {
             isExtend = intent.getBooleanExtra("isExtend", false)
         }
@@ -74,8 +74,15 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.editBankTv.setOnClickListener(this)
+        bindViews.continuePaymentTv.setOnClickListener(this)
+        bindViews.viewPaymentOptionsTv.setOnClickListener(this)
+        bindViews.continueTv.setOnClickListener(this)
 
-        initOrderDetailsInfo()
+        if (orderInfo?.gphysdjxvns == true) {
+            initExtendInfo()
+        } else {
+            initOrderDetailsInfo()
+        }
     }
 
     override fun onClick(v: View?) {
@@ -88,6 +95,17 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             }
             R.id.editBankTv -> {
                 startActivity(Intent(this@OrderDetailsActivity, EditCardActivity::class.java))
+            }
+            R.id.viewPaymentOptionsTv -> {
+                if (orderInfo?.umoatyothkt == true) {
+                    getOrderUpdateInfo()
+                }
+            }
+            R.id.continuePaymentTv -> {
+                getPaymentLink()
+            }
+            R.id.continueTv -> {
+
             }
         }
     }
@@ -158,6 +176,48 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         }
     }
 
+    //zhan qi
+    private fun getOrderUpdateInfo() {
+        showLoading()
+        HttpClient.getOrderUpdateInfo(this, orderInfo?.ksczvtrzbqru ?: 0 ,orderId)
+    }
+
+    @SuppressLint("SuspiciousIndentation")
+    @Subscribe
+    fun onOrderUpdateResponseEvent(event: OrderUpdateResponseEvent) {
+        hideLoading()
+        if (event.model == null) return
+        if (event.isSuccess) {
+            initExtendInfo()
+            event.model?.mtaw?.let {
+                //views.tvExtendFee.text = "₹ "+CommonUtils.formatFloatToStr(it.usiyspmxkqopjxmcbbbxijkiag)
+            }
+        }
+    }
+
+    private fun initExtendInfo() {
+        try {
+            bindViews.titleLayout.titleTv.text = "Bill update"
+            bindViews.processingLayout.rootView.visibility = View.GONE
+            bindViews.tipsLayout.visibility = View.GONE
+            bindViews.paidLayout.rootView.visibility = View.GONE
+            bindViews.overdueLayout.rootView.visibility = View.GONE
+            bindViews.cancelLayout.rootView.visibility = View.GONE
+            bindViews.cancelFrozenLayout.rootView.visibility = View.GONE
+            bindViews.dueLayout.rootView.visibility = View.GONE
+            bindViews.failureLayout.rootView.visibility = View.GONE
+            bindViews.extendLayout.rootView.visibility = View.VISIBLE
+
+            bindViews.extendLayout.dueDateTv.text = orderInfo?.vzlwrta
+            bindViews.extendLayout.chargeTv.text = getString(R.string.money_symbol) + " " +
+                    orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
+            bindViews.extendLayout.nextStatementDateTv.text = orderInfo?.vzlwrta
+        } catch (e: Exception) {
+
+        }
+    }
+
+
     @SuppressLint("SetTextI18n")
     private fun initOrderDetailsInfo() {
         if (orderInfo == null) {
@@ -222,11 +282,16 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
-                bindViews.cancelFrozenLayout.rootView.visibility = View.VISIBLE
+                bindViews.failureLayout.rootView.visibility = View.VISIBLE
+                bindViews.editBankTv.visibility = View.VISIBLE
 
-                bindViews.cancelFrozenLayout.dateTv.text = orderInfo?.dhqprsdsv
-                bindViews.cancelFrozenLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
-                bindViews.cancelFrozenLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                bindViews.titleLayout.titleTv.text = "Request Not Completed"
+                bindViews.tipsTv.text = getString(R.string.product_tips_failure)
+                bindViews.failureLayout.ifscTv.text = NumberUtils.formatNumber(orderInfo?.eqzbyofrbkzo,3,2)
+                bindViews.failureLayout.accountTv.text = NumberUtils.formatNumber(orderInfo?.ifhldxjdjt,3,2)
+                bindViews.failureLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.failureLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.failureLayout.amountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
@@ -240,37 +305,17 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.continueTv.visibility = View.GONE
             }
             else -> {
-                bindViews.failureLayout.rootView.visibility = View.VISIBLE
-                bindViews.editBankTv.visibility = View.VISIBLE
+                bindViews.cancelLayout.rootView.visibility = View.VISIBLE
 
-                bindViews.failureLayout.ifscTv.text = NumberUtils.formatNumber(orderInfo?.eqzbyofrbkzo,3,2)
-                bindViews.failureLayout.accountTv.text = NumberUtils.formatNumber(orderInfo?.ifhldxjdjt,3,2)
-                bindViews.failureLayout.dateTv.text = orderInfo?.dhqprsdsv
-                bindViews.failureLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
-                bindViews.failureLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                bindViews.cancelLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.cancelLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.cancelLayout.amountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
 
         }
     }
 
-    //zhan qi
-    private fun getOrderUpdateInfo() {
-        showLoading()
-        HttpClient.getOrderUpdateInfo(this, orderInfo?.ksczvtrzbqru ?: 0 ,orderId)
-    }
-
-    @SuppressLint("SuspiciousIndentation")
-    @Subscribe
-    fun onOrderUpdateResponseEvent(event: OrderUpdateResponseEvent) {
-        hideLoading()
-        if (event.model == null) return
-        if (event.isSuccess) {
-            event.model?.mtaw?.let {
-                //views.tvExtendFee.text = "₹ "+CommonUtils.formatFloatToStr(it.usiyspmxkqopjxmcbbbxijkiag)
-            }
-        }
-    }
 
 
     private fun startCountdownTimer(totalMillis: Long) {

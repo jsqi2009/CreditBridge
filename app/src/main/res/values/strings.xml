@@ -55,6 +55,8 @@
     <string name="product_up_to">Up to</string>
     <string name="product_account">Account: </string>
     <string name="product_ifsc">IFSC: </string>
+    <string name="product_tips">Check the information regarding your current account activity below.</string>
+    <string name="product_tips_failure">We could not complete the transaction. Please confirm your bank account details and proceed again. Your available credit has not been reduced.</string>
 
 
 </resources>

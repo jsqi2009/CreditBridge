@@ -24,6 +24,7 @@
             layout="@layout/layout_title" />
 
         <LinearLayout
+            android:id="@+id/tipsLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_10"
@@ -36,9 +37,10 @@
                 android:src="@mipmap/ic_details_notice" />
 
             <TextView
+                android:id="@+id/tipsTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_5"
+                android:layout_marginStart="@dimen/margin_8"
                 android:text="Check the information regarding your current account activity below."
                 android:textColor="#ff2e0d05"
                 android:includeFontPadding="false"
