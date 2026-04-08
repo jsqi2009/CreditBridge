@@ -115,12 +115,12 @@
                 android:layout_width="@dimen/margin_100"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:text="Usage amount"
+                android:text="Amount paid"
                 android:textColor="#C35712"
                 android:textSize="@dimen/ts_13" />
 
             <TextView
-                android:id="@+id/amountTv"
+                android:id="@+id/amountPaidTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="31-12-2025"
@@ -143,12 +143,12 @@
                 android:layout_width="@dimen/margin_100"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
-                android:text="Amount due"
+                android:text="Payment date"
                 android:textColor="#C35712"
                 android:textSize="@dimen/ts_13" />
 
             <TextView
-                android:id="@+id/amountDueTv"
+                android:id="@+id/paymentDateTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="31-12-2025"

@@ -77,6 +77,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
     private fun backToHome() {
         eventBus.post(UpdateTabIndexEvent(1))
+        finish()
     }
 
     private fun fetchFeedbackConfig() {
