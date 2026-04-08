@@ -9,6 +9,7 @@ class OrderInfo: Serializable {
 
 
     val kcyrbnp: Int = 0   //order id
+    var jerftvqtjkg: String? = ""  //productName
     var xjywdrtdxzt: String = ""  //order status
     val otjjqwdpupp: Int = 0   //order amount
     val pexlzrehos: Int = 0   //serviceFee
@@ -32,25 +33,19 @@ class OrderInfo: Serializable {
     val ksczvtrzbqru: Int = 0   //rolloverDays    zhan qi tian shu
 
 
-    /*val qyfqljd: Int = 0
+    //for order details
+    val hnxgncamxioncawhvzhdas: Int = 0   // remainingDailyInterest    sheng yu li xi
+    val rpstrzkyuypj: Int = 0   // interestRate
+    val vimzxivnoztqbclsxanyxuhx: Int = 0   //remainingPenaltyInterest   fa xi
+    val hzeuawowknl: Int = 0   //  issueAmount
+    val ifhldxjdjt: String? = null   //  bankCardNo
+    val cqanwjggqytg: String? = null   //bankCardName
+    val eqzbyofrbkzo: String? = null   //bankCardCode
+    val rcpqzqrn: String? = null   // bankCode
+    val pujfiulsldnnbtb: String? = null   // productLockTime
+    val qmfjobwwcadygpvarlglcaczwxr: Int = 0   // productLockRemainingSeconds
 
-    var ufzqlyyxash: String = ""
-    val oalkejegtgf: Any = 0
-    val ptnmeqczfpziuorfkxky: Any = 0
-    val tznvtuengiwnrnieyulnqsao: Any = 0
-    val sehkhfhiqkldbcachej: Any = 0L
-    var suibvbw: String = ""
-    val evufmsfjsiyvt: Long = 0L
-    var cofllshoi: String = ""
 
 
-    //for order details: processing
-    val usnpaciycchzkqozptsqht: Int = 0
-    val djriisxgrapiepqtdikbvoza: Any = 0L
-    val xfmocfszxgge: String = ""
-    val rzsmzobusp: String = ""
-    var mjogjwxualoz: String = ""
-    var eeymvvicicofnhn: String? = null
-    var vuinurdxypfw: Int = 0*/
 
 }

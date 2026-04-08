@@ -48,6 +48,11 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        getOrderDetailsInfo()
+    }
+
     override fun initRes() {
         super.initRes()
         orderInfo = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -88,7 +93,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     private fun getOrderDetailsInfo() {
 
         val requestBody = RequestOrderDetailsBody()
-        requestBody.bsmweqe = orderInfo?.kcyrbnp.toString()
+        requestBody.stfexlk = orderInfo?.kcyrbnp.toString()
 
         showLoading()
         HttpClient.getOrderDetails(this, requestBody, ConstConfig.ORDER_DETAIL_COMMON)
