@@ -112,4 +112,17 @@ object NumberUtils {
             num.toString()
         }
     }
+
+    fun formatIntToStr(num: Int): String {
+        return if (num is Double || num is Float) {
+            val doubleValue = num.toDouble()
+            if (doubleValue == doubleValue.toLong().toDouble()) {
+                doubleValue.toLong().toString()
+            } else {
+                num.toString()
+            }
+        } else {
+            num.toString()
+        }
+    }
 }

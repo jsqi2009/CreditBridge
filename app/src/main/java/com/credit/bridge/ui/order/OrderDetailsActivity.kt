@@ -26,6 +26,7 @@ import com.credit.bridge.remote.event.OrderUpdateResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.util.AppUtil
+import com.credit.bridge.util.NumberUtils
 import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
@@ -108,7 +109,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 orderInfo = event.model?.mtaw
                 initOrderDetailsInfo()
                 if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
-                    val leftTime = AppUtil.getTotalSeconds(orderInfo?.heieiavicbvpq ?: "")
+                    val leftTime = AppUtil.getTotalSeconds(orderInfo?.pujfiulsldnnbtb ?: "")
                     if (leftTime > 0) {
                         /*views.rlCountDown.visibility = View.VISIBLE
                         views.tvCancelDesc.visibility = View.GONE*/
@@ -144,6 +145,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private fun initOrderDetailsInfo() {
         if (orderInfo == null) {
             return
@@ -152,65 +154,75 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
                 bindViews.processingLayout.rootView.visibility = View.VISIBLE
 
-                bindViews.processingLayout.dateTv.text = ""
-                bindViews.processingLayout.usageIdTv.text = ""
-                bindViews.processingLayout.amountTv.text = ""
-                bindViews.processingLayout.ifscTv.text = ""
-                bindViews.processingLayout.accountTv.text = ""
+                bindViews.processingLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.processingLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.processingLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+                bindViews.processingLayout.ifscTv.text = NumberUtils.formatNumber(orderInfo?.eqzbyofrbkzo,3,2)
+                bindViews.processingLayout.accountTv.text = NumberUtils.formatNumber(orderInfo?.ifhldxjdjt,3,2)
+
             }
             ConstConfig.ORDER_STATUS_OVERDUE -> {
                 bindViews.overdueLayout.rootView.visibility = View.VISIBLE
                 bindViews.continuePaymentTv.visibility = View.VISIBLE
                 bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
 
-                bindViews.overdueLayout.dateTv.text = ""
-                bindViews.overdueLayout.usageIdTv.text = ""
-                bindViews.overdueLayout.amountTv.text = ""
-                bindViews.overdueLayout.dueDateTv.text = ""
-                bindViews.overdueLayout.dueDurationTv.text = ""
-                bindViews.overdueLayout.durChargesTv.text = ""
-                bindViews.overdueLayout.totalAmountTv.text = ""
+                bindViews.overdueLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.overdueLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.overdueLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+                bindViews.overdueLayout.dueDateTv.text = orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
+                bindViews.overdueLayout.dueDurationTv.text = orderInfo?.qpruccpdjot.toString()
+                bindViews.overdueLayout.durChargesTv.text = orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
+                bindViews.overdueLayout.totalAmountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.kmlwyjhlacigctavsolh?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_CURRENT -> {
                 bindViews.dueLayout.rootView.visibility = View.VISIBLE
                 bindViews.continuePaymentTv.visibility = View.VISIBLE
                 bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
 
-                bindViews.dueLayout.dateTv.text = ""
-                bindViews.dueLayout.usageIdTv.text = ""
-                bindViews.dueLayout.amountTv.text = ""
-                bindViews.dueLayout.dueDateTv.text = ""
-                bindViews.dueLayout.amountDueTv.text = ""
+                bindViews.dueLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.dueLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.dueLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+                bindViews.dueLayout.dueDateTv.text = orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
+                bindViews.dueLayout.amountDueTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.kgchobzqirjuftermzzgajda?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_PAID_OFF -> {
                 bindViews.paidLayout.rootView.visibility = View.VISIBLE
 
-                bindViews.paidLayout.dateTv.text = ""
-                bindViews.paidLayout.usageIdTv.text = ""
-                bindViews.paidLayout.amountTv.text = ""
-                bindViews.paidLayout.amountDueTv.text = ""
+                bindViews.paidLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.paidLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.paidLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+                bindViews.paidLayout.amountDueTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.kgchobzqirjuftermzzgajda?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_REJECTED -> {
                 bindViews.cancelLayout.rootView.visibility = View.VISIBLE
 
-                bindViews.cancelLayout.dateTv.text = ""
-                bindViews.cancelLayout.usageIdTv.text = ""
-                bindViews.cancelLayout.amountTv.text = ""
+                bindViews.cancelLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.cancelLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.cancelLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
                 bindViews.cancelFrozenLayout.rootView.visibility = View.VISIBLE
 
-                bindViews.cancelFrozenLayout.dateTv.text = ""
-                bindViews.cancelFrozenLayout.usageIdTv.text = ""
-                bindViews.cancelFrozenLayout.amountTv.text = ""
+                bindViews.cancelFrozenLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.cancelFrozenLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.cancelFrozenLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
                 bindViews.extendLayout.rootView.visibility = View.VISIBLE
                 bindViews.continueTv.visibility = View.VISIBLE
 
-                bindViews.extendLayout.dueDateTv.text = ""
-                bindViews.extendLayout.chargeTv.text = ""
-                bindViews.extendLayout.nextStatementDateTv.text = ""
+                bindViews.extendLayout.dueDateTv.text = orderInfo?.vzlwrta
+                bindViews.extendLayout.chargeTv.text = orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
+                bindViews.extendLayout.nextStatementDateTv.text = orderInfo?.pujfiulsldnnbtb
                 bindViews.extendLayout.rootView.visibility = View.GONE
                 bindViews.continueTv.visibility = View.GONE
             }
@@ -218,16 +230,18 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.failureLayout.rootView.visibility = View.VISIBLE
                 bindViews.editBankTv.visibility = View.VISIBLE
 
-                bindViews.failureLayout.ifscTv.text = ""
-                bindViews.failureLayout.accountTv.text = ""
-                bindViews.failureLayout.dateTv.text = ""
-                bindViews.failureLayout.usageIdTv.text = ""
-                bindViews.failureLayout.amountTv.text = ""
+                bindViews.failureLayout.ifscTv.text = NumberUtils.formatNumber(orderInfo?.eqzbyofrbkzo,3,2)
+                bindViews.failureLayout.accountTv.text = NumberUtils.formatNumber(orderInfo?.ifhldxjdjt,3,2)
+                bindViews.failureLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.failureLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.failureLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
 
         }
     }
 
+    //zhan qi
     private fun getOrderUpdateInfo() {
         showLoading()
         HttpClient.getOrderUpdateInfo(this, orderInfo?.ksczvtrzbqru ?: 0 ,orderId)
