@@ -2,6 +2,7 @@ package com.credit.bridge.remote
 
 import RequestOrderUpdateBody
 import com.credit.bridge.remote.bean.BaseUserInfo
+import com.credit.bridge.remote.bean.CommonBean
 import com.credit.bridge.remote.body.RequestBankInfoBody
 import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.body.RequestFeedbackBody
@@ -17,6 +18,7 @@ import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.RequestZipDataBody
+import com.credit.bridge.remote.response.CommonResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
 import retrofit2.http.Body
@@ -37,6 +39,10 @@ interface HttpApi {
 
     @POST
     fun requestPostVerifyCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVerifyCodeBody): Call<JsonObject>
+
+    @POST
+    fun requestPostVerifyCode2(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVerifyCodeBody): Call<CommonResponse>
+
 
     @POST
     fun requestPostVoiceCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVoiceCodeBody): Call<JsonObject>

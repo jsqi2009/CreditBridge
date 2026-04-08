@@ -130,9 +130,13 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
     private fun showVerifyBankSheet(ifsc: String, account: String) {
         val verifyBankInfoBottomSheet = VerifyBankInfoBottomSheet(
             this, "", ifsc, account, onConfirm = {
-
+                updateBankInfo()
             })
         verifyBankInfoBottomSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+    private fun updateBankInfo() {
+
     }
 
     private var currentAccountTextWatcher = object : TextWatcher {

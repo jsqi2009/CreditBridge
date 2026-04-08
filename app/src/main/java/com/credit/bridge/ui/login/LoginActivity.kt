@@ -107,7 +107,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                     return
                 }
                 showLoading()
-                HttpClient.sendVerifyCode(this, phone, "login")
+                HttpClient.sendVerifyCode(this, phone, "login", "1")
             }
             R.id.verifyVoiceTv -> {
                 val phone = bindViews.phoneEt.text.toString().trim()

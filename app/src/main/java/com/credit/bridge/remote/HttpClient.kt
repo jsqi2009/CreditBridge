@@ -93,6 +93,8 @@ import com.credit.bridge.ui.App
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.SystemDataUtils
 import com.google.gson.Gson
+import com.google.gson.JsonObject
+import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -220,12 +222,21 @@ object HttpClient {
         return headerMap
     }
 
-    fun sendVerifyCode(mContext: Context, mobile: String, type: String) {
+    fun sendVerifyCode(mContext: Context, mobile: String, type: String, flag: String) {
         val body = RequestVerifyCodeBody()
         body.awja = type
         body.phajox = mobile
         val call = mHttpApi!!.requestPostVerifyCode(getHeaders(mContext), Contants.URL_SEND_SMS, body)
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyCodeResponseEvent::class.java)
+    }
+
+    fun sendVerifyCode2(mContext: Context, mobile: String, type: String, flag: String): retrofit2.Call<CommonResponse> {
+        val body = RequestVerifyCodeBody()
+        body.awja = type
+        body.phajox = mobile
+        val call = mHttpApi!!.requestPostVerifyCode2(getHeaders(mContext), Contants.URL_SEND_SMS, body)
+        return call
+        //dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyCodeResponseEvent::class.java)
     }
 
     fun getVoiceCode(mContext: Context, mobile: String) {
