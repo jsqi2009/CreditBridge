@@ -18,6 +18,7 @@ import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
+import com.credit.bridge.ui.order.EditCardActivity
 import com.credit.bridge.util.NumberUtils
 import com.credit.bridge.util.ToastUtil
 import com.google.gson.Gson
@@ -67,6 +68,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
         bindViews.confirmUseTv.setOnClickListener(this)
+        bindViews.editBankIv.setOnClickListener(this)
     }
 
 
@@ -77,6 +79,9 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
             }
             R.id.confirmUseTv -> {
                 submitOrder()
+            }
+            R.id.editBankIv -> {
+                startActivity(Intent(this@ConfirmProductActivity, EditCardActivity::class.java))
             }
         }
     }

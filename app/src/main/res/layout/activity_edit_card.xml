@@ -39,6 +39,7 @@
 
 
             <TextView
+                android:id="@+id/ifscTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -48,6 +49,7 @@
                 />
 
             <TextView
+                android:id="@+id/accountTv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_10"
@@ -111,11 +113,13 @@
                 />
 
             <EditText
+                android:id="@+id/currentAccountEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"
                 android:background="@null"
                 android:hint="@string/hint_enter"
+                android:enabled="false"
                 android:textColorHint="@color/hint_text"
                 android:textColor="@color/theme_color"
                 android:textSize="@dimen/margin_15" />
@@ -135,6 +139,7 @@
                 />
 
             <EditText
+                android:id="@+id/newAccountEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"
@@ -159,6 +164,7 @@
                 />
 
             <EditText
+                android:id="@+id/confirmNewAccountEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"
@@ -183,6 +189,7 @@
                 />
 
             <EditText
+                android:id="@+id/newIfscEt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_20"

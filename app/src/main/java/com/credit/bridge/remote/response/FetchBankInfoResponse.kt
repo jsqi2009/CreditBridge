@@ -10,8 +10,4 @@ class BankInfo{
     var xzafqxn: String? = ""  //card name
     var viqicnncqg : String? = ""
 
-   /* "twnkgc": "22344566789",
-    "fehygsjp": "22344566788",
-    "djhrpmn": "ccct",
-    "cdvhcqhdbd": "13-01-2026"*/
 }
