@@ -5,6 +5,8 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -30,9 +32,9 @@ import kotlinx.coroutines.launch
 class VerifyBankInfoBottomSheet(
     val mContext: Context,
     var title: String,
-    var dataList: ArrayList<CommonBean>?,
-    var selectIndex: Int,
-    var onSelectListener: OnSelectListener
+    var ifsc: String,
+    var account: String,
+    var onConfirm: () -> Unit
 ) : BaseBottomSheet<BottomSheetVerifyBankInfoBinding>(), View.OnClickListener {
     private var mAdapter: CommonListAdapter? = null
 
@@ -49,16 +51,21 @@ class VerifyBankInfoBottomSheet(
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        bindViews.dismissIv.setOnClickListener(this)
 
-        if (!dataList.isNullOrEmpty()) {
-            initAdapter()
-        }
+        bindViews.dismissIv.setOnClickListener(this)
+        bindViews.cancelTv.setOnClickListener(this)
+        bindViews.confirmTv.setOnClickListener(this)
+
+        initRes()
     }
 
-    private fun initAdapter() {
+    private fun initRes() {
         bindViews.sendTv.paint.isUnderlineText = true
         bindViews.verifyVoiceTv.paint.isUnderlineText = true
+
+        bindViews.accountTv.text = formatValue(account)
+        bindViews.ifscTv.text = formatValue(ifsc)
+
     }
 
     override fun onClick(v: View?) {
@@ -66,7 +73,24 @@ class VerifyBankInfoBottomSheet(
             R.id.dismissIv -> {
                 dismiss()
             }
+            R.id.cancelTv -> {
+                dismiss()
+            }
+            R.id.confirmTv -> {
+                if (bindViews.codeEt.toString().isEmpty()) {
+                    ToastUtil.showLong(requireContext(), "Verification code cannot be empty")
+                    return
+                }
+                onConfirm.invoke()
+                dismiss()
+            }
         }
     }
+
+    private fun formatValue(text: String): String{
+        val newValue = text.replace("(\\d{4})(?=\\d)".toRegex(), "$1 ")
+        return newValue
+    }
+
 
 }

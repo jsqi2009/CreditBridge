@@ -48,6 +48,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         bindViews.currentAccountEt.addTextChangedListener(currentAccountTextWatcher)
         bindViews.newAccountEt.addTextChangedListener(newAccountTextWatcher)
         bindViews.confirmNewAccountEt.addTextChangedListener(confirmNewAccountTextWatcher)
+        bindViews.newIfscEt.addTextChangedListener(newIfscTextWatcher)
 
         getBankInfo()
     }
@@ -118,21 +119,18 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
             ToastUtil.showLong(this, "Account number and re-entered account number must match")
             return
         }
-        if (newIfsc.length != 11) {
+        if (newIfsc.replace(" ","").length != 11) {
             ToastUtil.showLong(this, "IFSC code must be 11 characters")
             return
         }
 
-        showVerifyBankSheet()
+        showVerifyBankSheet(newIfsc, newAccount)
     }
 
-    private fun showVerifyBankSheet() {
+    private fun showVerifyBankSheet(ifsc: String, account: String) {
         val verifyBankInfoBottomSheet = VerifyBankInfoBottomSheet(
-            this, "Employment Status", VerifyInfoUtil.getWorkTypeList(),
-            -1, object : OnSelectListener {
-                override fun onSelect(index: Int) {
-                    ToastUtil.showShort(this@EditCardActivity, "Select: $index")
-                }
+            this, "", ifsc, account, onConfirm = {
+
             })
         verifyBankInfoBottomSheet.show(supportFragmentManager, "workTypeSheet")
     }
@@ -181,6 +179,22 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
             if (formatted != text) {
                 bindViews.confirmNewAccountEt.setText(formatted)
                 bindViews.confirmNewAccountEt.setSelection(bindViews.confirmNewAccountEt.text.toString().length)
+            }
+        }
+    }
+
+    private var newIfscTextWatcher = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {
+        }
+
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            val text = s.toString()
+            val formatted = text.replace("(\\d{4})(?=\\d)".toRegex(), "$1 ")
+            if (formatted != text) {
+                bindViews.newIfscEt.setText(formatted)
+                bindViews.newIfscEt.setSelection(bindViews.newIfscEt.text.toString().length)
             }
         }
     }
