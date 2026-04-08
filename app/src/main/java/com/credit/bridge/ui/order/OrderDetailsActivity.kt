@@ -64,7 +64,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         }
         orderId = orderInfo?.kcyrbnp ?: 0
         //orderStatus = orderInfo?.xjywdrtdxzt
-        orderStatus = ConstConfig.ORDER_STATUS_PAID_OFF
+        orderStatus = ConstConfig.ORDER_STATUS_REJECTED
         if (intent.hasExtra("isExtend")) {
             isExtend = intent.getBooleanExtra("isExtend", false)
         }
@@ -109,17 +109,29 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             if (event.isSuccess) {
                 orderInfo = event.model?.mtaw
                 initOrderDetailsInfo()
-                if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
-                    val leftTime = AppUtil.getTotalSeconds(orderInfo?.pujfiulsldnnbtb ?: "")
-                    if (leftTime > 0) {
-                        /*views.rlCountDown.visibility = View.VISIBLE
-                        views.tvCancelDesc.visibility = View.GONE*/
-                        startCountdownTimer(leftTime)
-                    } else {
-                        /*views.rlCountDown.visibility = View.GONE
-                        views.tvCancelDesc.visibility = View.VISIBLE*/
-                    }
-                }
+                handelRejectedOrder()
+            }
+        }
+    }
+
+    private fun handelRejectedOrder() {
+        if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
+            val leftTime = AppUtil.getTotalSeconds(orderInfo?.vzlwrta ?: "")
+            if (leftTime > 0) {
+                bindViews.cancelFrozenLayout.rootView.visibility = View.VISIBLE
+                bindViews.cancelLayout.rootView.visibility = View.GONE
+                bindViews.cancelFrozenLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.cancelFrozenLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.cancelFrozenLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+                startCountdownTimer(leftTime)
+            } else {
+                bindViews.cancelLayout.rootView.visibility = View.VISIBLE
+                bindViews.cancelFrozenLayout.rootView.visibility = View.GONE
+                bindViews.cancelLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.cancelLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.cancelLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
         }
     }
@@ -265,15 +277,27 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         myCountDownTimer = object : CountDownTimer(totalMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val totalSeconds = millisUntilFinished / 1000
-                val days = totalSeconds / 86400
-                val hours = (totalSeconds % 86400) / 3600
+                var days = totalSeconds / 86400
+                var hours = (totalSeconds % 86400) / 3600
                 val minutes = (totalSeconds % 3600) / 60
                 val seconds = totalSeconds % 60
 
-                /*updateTwoDigits(views.tvDayTens, views.tvDayOnes, days)
-                updateTwoDigits(views.tvHourTens, views.tvHourOnes, hours)
-                updateTwoDigits(views.tvMinuteTens, views.tvMinuteOnes, minutes)
-                updateTwoDigits(views.tvSecondTens, views.tvSecondOnes, seconds)*/
+                var targetDay = ""
+                var targetHours = ""
+                if (days < 10) {
+                    targetDay = "0$days"
+                }
+                if (hours < 10) {
+                    if (minutes > 0 || seconds > 0) {
+                        targetHours = "0${hours + 1}"
+                    } else {
+                        targetHours = "0$hours"
+                    }
+                }
+
+                bindViews.cancelFrozenLayout.daysTv.text = targetDay
+                bindViews.cancelFrozenLayout.hoursTv.text = targetHours
+
             }
 
             override fun onFinish() {
@@ -282,11 +306,4 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
         myCountDownTimer.start()
     }
-
-    private fun updateLeftTimeText(tens: TextView, ones: TextView, value: Long) {
-        val str = value.toString().padStart(2, '0')
-        tens.text = str[0].toString()
-        ones.text = str[1].toString()
-    }
-
 }
