@@ -46,8 +46,8 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         bindViews.submitTv.setOnClickListener(this)
 
         bindViews.currentAccountEt.addTextChangedListener(currentAccountTextWatcher)
-        bindViews.newAccountEt.addTextChangedListener(currentAccountTextWatcher)
-        bindViews.confirmNewAccountEt.addTextChangedListener(currentAccountTextWatcher)
+        bindViews.newAccountEt.addTextChangedListener(newAccountTextWatcher)
+        bindViews.confirmNewAccountEt.addTextChangedListener(confirmNewAccountTextWatcher)
 
         getBankInfo()
     }
@@ -58,7 +58,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
                 finish()
             }
             R.id.submitTv -> {
-                showVerifyBankSheet()
+                saveBankInfo()
             }
         }
     }
@@ -85,6 +85,45 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         }else{
             ToastUtil.showLong(this,event.networkError.toString())
         }
+    }
+
+    private fun saveBankInfo() {
+
+        val currentAccount = bindViews.currentAccountEt.text.toString()
+        val newAccount = bindViews.newAccountEt.text.toString()
+        val confirmNewAccount = bindViews.confirmNewAccountEt.text.toString()
+        val newIfsc = bindViews.newIfscEt.text.toString()
+
+        if (currentAccount.isEmpty()) {
+            ToastUtil.showLong(this, "Current account number cannot be empty")
+            return
+        }
+        if (newAccount.isEmpty()) {
+            ToastUtil.showLong(this, "New bank account number cannot be empty")
+            return
+        }
+        if (confirmNewAccount.isEmpty()) {
+            ToastUtil.showLong(this, "Please re-enter the new bank account number")
+            return
+        }
+        if (newIfsc.isEmpty()) {
+            ToastUtil.showLong(this, "IFSC code cannot be empty")
+            return
+        }
+        if (currentAccount.replace(" ","") != bankInfo?.qmtddx) {
+            ToastUtil.showLong(this, "Please enter your current bank account number")
+            return
+        }
+        if (newAccount.replace(" ","") != confirmNewAccount.replace(" ","")) {
+            ToastUtil.showLong(this, "Account number and re-entered account number must match")
+            return
+        }
+        if (newIfsc.length != 11) {
+            ToastUtil.showLong(this, "IFSC code must be 11 characters")
+            return
+        }
+
+        showVerifyBankSheet()
     }
 
     private fun showVerifyBankSheet() {
