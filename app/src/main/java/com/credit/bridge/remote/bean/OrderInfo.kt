@@ -7,7 +7,6 @@ class OrderInfo: Serializable {
         this.xjywdrtdxzt = fwwluzpnudp
     }
 
-
     val kcyrbnp: Int = 0   //order id
     var jerftvqtjkg: String? = ""  //productName
     var xjywdrtdxzt: String = ""  //order status

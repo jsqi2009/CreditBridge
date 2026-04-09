@@ -100,7 +100,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             R.id.accessManageIv -> {
                 isCreateOrder = true
                 //checkUploadStatus()
-                previewProduct()
+                homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn?.let {
+                    if (it > 0) {
+                        previewProduct()
+                    } else {
+                        
+                    }
+                }
             }
             R.id.startVerifyLl -> {
                 isCreateOrder = false
@@ -141,21 +147,29 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     bindViews.verifiedNeedPay.visibility = View.VISIBLE
                     bindViews.verifiedNeedPayDue.visibility = View.GONE
                     bindViews.verifiedFail.visibility = View.GONE
+                    bindViews.llVer.visibility = View.GONE
+                    bindViews.llHor.visibility = View.VISIBLE
                 }
                 ConstConfig.ORDER_STATUS_OVERDUE -> {
                     bindViews.verifiedNeedPay.visibility = View.GONE
                     bindViews.verifiedNeedPayDue.visibility = View.VISIBLE
                     bindViews.verifiedFail.visibility = View.GONE
+                    bindViews.llVer.visibility = View.GONE
+                    bindViews.llHor.visibility = View.VISIBLE
                 }
                 ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
                     bindViews.verifiedNeedPay.visibility = View.GONE
                     bindViews.verifiedNeedPayDue.visibility = View.GONE
                     bindViews.verifiedFail.visibility = View.VISIBLE
+                    bindViews.llVer.visibility = View.GONE
+                    bindViews.llHor.visibility = View.VISIBLE
                 }
                 else -> {
                     bindViews.verifiedNeedPay.visibility = View.GONE
                     bindViews.verifiedNeedPayDue.visibility = View.GONE
                     bindViews.verifiedFail.visibility = View.GONE
+                    bindViews.llVer.visibility = View.VISIBLE
+                    bindViews.llHor.visibility = View.GONE
                 }
             }
 
@@ -163,6 +177,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             bindViews.verifiedNeedPay.visibility = View.GONE
             bindViews.verifiedNeedPayDue.visibility = View.GONE
             bindViews.verifiedFail.visibility = View.GONE
+            bindViews.llVer.visibility = View.VISIBLE
+            bindViews.llHor.visibility = View.GONE
         }
     }
 
