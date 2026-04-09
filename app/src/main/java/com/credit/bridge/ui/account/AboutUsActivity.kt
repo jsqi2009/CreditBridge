@@ -25,6 +25,9 @@ class AboutUsActivity : BaseActivity<ActivityAboutUsBinding>(), View.OnClickList
 
     override fun initRes() {
         super.initRes()
+
+        bindViews.titleLayout.titleTv.text = "About Us"
+
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backIv.setOnClickListener(this)
     }

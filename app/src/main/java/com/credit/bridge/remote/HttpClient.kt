@@ -417,7 +417,7 @@ object HttpClient {
     fun getPolicyLink(mContext: Context) {
 
         val formMap: HashMap<String, Any> = HashMap()
-        formMap["alfekfdvov"] = "policy"
+        formMap["qxcndlgiiu"] = "policy"
         val call = mHttpApi!!.requestGetQueryMap(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
         dispatchClient?.enqueue(call, CommonResponse::class.java, PolicyLinkResponseEvent::class.java)
     }
