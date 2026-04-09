@@ -58,6 +58,7 @@
                         />
 
                     <ImageView
+                        android:id="@+id/editIv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/ic_edit"/>
@@ -73,6 +74,7 @@
                     android:background="#56362E"/>
 
                 <TextView
+                    android:id="@+id/ifscTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
@@ -82,6 +84,7 @@
                     />
 
                 <TextView
+                    android:id="@+id/accountTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/margin_15"
@@ -106,11 +109,51 @@
         android:scaleType="fitXY"
         android:src="@mipmap/ic_bill_link_account"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/orderRv"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_marginHorizontal="@dimen/margin_15"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_height="wrap_content"/>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_marginTop="12dp"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/orderRv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/defaultView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_30"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@mipmap/ic_default_empty"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/margin_25"
+                    android:gravity="center"
+                    android:text="  No billing records available yet."
+                    android:textSize="@dimen/ts_12"
+                    android:textColor="#FFD29F"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

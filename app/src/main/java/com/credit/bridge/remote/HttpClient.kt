@@ -392,7 +392,7 @@ object HttpClient {
     fun getOrderLinkBank(mContext: Context, cardNo: String) {
 
         val orderBody = RequestOrderLinkBankBody()
-        orderBody.aosqii = cardNo
+        orderBody.jmxiec = cardNo
         val call = mHttpApi!!.requestPostOrderLinkBank(getHeaders(mContext), Contants.URL_ORDER_BANK, orderBody)
         dispatchClient!!.enqueue(call, OrderListResponse::class.java, OrderLinkBankResponseEvent::class.java)
     }
