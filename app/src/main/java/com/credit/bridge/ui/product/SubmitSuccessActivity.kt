@@ -42,7 +42,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         bindViews.titleLayout.titleTv.text = "Usage details"
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.submitTv.setOnClickListener(this)
         bindViews.backToHomeLayout1.setOnClickListener(this)
         bindViews.backToHomeLayout2.setOnClickListener(this)
@@ -59,7 +59,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.submitTv -> {

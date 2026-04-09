@@ -57,7 +57,7 @@ class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), Vi
 
         bindViews.titleLayout.titleTv.text = "Payment account"
         bindViews.titleLayout.titleTv.setOnClickListener(this)
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.editIv.setOnClickListener(this)
 
         initListAdapter()
@@ -114,7 +114,7 @@ class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.editIv -> {

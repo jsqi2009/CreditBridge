@@ -66,7 +66,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         }
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.confirmUseTv.setOnClickListener(this)
         bindViews.editBankIv.setOnClickListener(this)
     }
@@ -74,7 +74,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.confirmUseTv -> {

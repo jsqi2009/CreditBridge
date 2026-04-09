@@ -48,6 +48,10 @@ interface HttpApi {
     fun requestPostVoiceCode(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVoiceCodeBody): Call<JsonObject>
 
     @POST
+    fun requestPostVoiceCode2(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestVoiceCodeBody): Call<CommonResponse>
+
+
+    @POST
     fun requestPostHomeInfo(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String, @Body body: RequestHomeInfoBody): Call<JsonObject>
 
     @POST

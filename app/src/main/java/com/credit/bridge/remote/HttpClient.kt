@@ -239,12 +239,24 @@ object HttpClient {
         //dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyCodeResponseEvent::class.java)
     }
 
-    fun getVoiceCode(mContext: Context, mobile: String) {
+    fun getVoiceCode(mContext: Context, mobile: String, type: String) {
 
         val body = RequestVoiceCodeBody()
-        body.sucbzl = mobile
+        body.awja = type
+        body.phajox = mobile
         val call = mHttpApi!!.requestPostVoiceCode(getHeaders(mContext), Contants.URL_GET_VOICE, body)
         dispatchClient?.enqueue(call, CommonResponse::class.java, VoiceCodeResponseEvent::class.java)
+    }
+
+
+    fun getVoiceCode2(mContext: Context, mobile: String, type: String) :retrofit2.Call<CommonResponse>{
+
+        val body = RequestVoiceCodeBody()
+        body.awja = type
+        body.phajox = mobile
+        val call = mHttpApi!!.requestPostVoiceCode2(getHeaders(mContext), Contants.URL_GET_VOICE, body)
+        return call
+        //dispatchClient?.enqueue(call, CommonResponse::class.java, VoiceCodeResponseEvent::class.java)
     }
 
     fun login(mContext: Context, mobile: String) {

@@ -71,7 +71,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
         bindViews.titleLayout.titleTv.text = "Details"
 
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.editBankTv.setOnClickListener(this)
         bindViews.continuePaymentTv.setOnClickListener(this)
@@ -87,7 +87,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.titleTv -> {

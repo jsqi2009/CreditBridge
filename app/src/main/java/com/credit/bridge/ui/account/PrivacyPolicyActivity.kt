@@ -28,7 +28,7 @@ class PrivacyPolicyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), View
 
         bindViews.titleLayout.titleTv.text = "Privacy Policy"
 
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
 
         getPolicyLink()
     }
@@ -40,7 +40,7 @@ class PrivacyPolicyActivity : BaseActivity<ActivityPrivacyPolicyBinding>(), View
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
         }

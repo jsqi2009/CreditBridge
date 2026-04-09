@@ -41,7 +41,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
     override fun initRes() {
         super.initRes()
 
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.titleTv.text = "Edit Bank Details"
 
@@ -57,7 +57,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.submitTv -> {

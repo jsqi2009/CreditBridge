@@ -208,7 +208,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         currentStep++
         refreshUI()
 
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
         bindViews.verify1.workStatusLl.setOnClickListener(this)
@@ -241,7 +241,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 showVerifyTipsDialog()
             }
             R.id.titleTv -> {

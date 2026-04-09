@@ -47,6 +47,7 @@ class VerifyBankInfoBottomSheet(
 
     private var total = 60
     private var verifyCodeTimeRemain = total
+    private var verifyVoiceTimeRemain = total
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -92,6 +93,7 @@ class VerifyBankInfoBottomSheet(
                 sendCode()
             }
             R.id.verifyVoiceTv -> {
+                sendVoiceCode()
             }
             R.id.confirmTv -> {
                 if (bindViews.codeEt.toString().isEmpty()) {
@@ -128,6 +130,30 @@ class VerifyBankInfoBottomSheet(
         })
     }
 
+    private fun sendVoiceCode() {
+        showLoading()
+        val call = HttpClient.getVoiceCode2(mContext, CacheManager.mobile, "CHANGE_BANK")
+        call.enqueue(object : retrofit2.Callback<CommonResponse> {
+            override fun onResponse(
+                call: retrofit2.Call<CommonResponse?>,
+                response: Response<CommonResponse?>
+            ) {
+                hideLoading()
+                if (response.body()?.fzpn == 200) {
+                    verifyVoiceCountdown()
+                }
+            }
+
+            override fun onFailure(
+                call: retrofit2.Call<CommonResponse?>,
+                t: Throwable
+            ) {
+                hideLoading()
+            }
+
+        })
+    }
+
     private fun verifyCodeCountdown() {
         bindViews.sendTv.isClickable = false
         verifyCodeTimeRemain = total
@@ -145,6 +171,25 @@ class VerifyBankInfoBottomSheet(
                 bindViews.sendTv.isClickable = true
             } catch (e: Exception) {
                 bindViews.sendTv.isClickable = true
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun verifyVoiceCountdown() {
+        bindViews.verifyVoiceTv.isClickable = false
+        verifyVoiceTimeRemain = total
+        lifecycleScope.launch {
+            try {
+                repeat(verifyVoiceTimeRemain) {
+                    bindViews.verifyVoiceTv.text = "Resend ($verifyVoiceTimeRemain) S"
+                    delay(1000)
+                    verifyVoiceTimeRemain--
+                }
+                bindViews.verifyVoiceTv.text = getString(R.string.login_verify_voice)
+                bindViews.verifyVoiceTv.isClickable = true
+            } catch (e: Exception) {
+                bindViews.verifyVoiceTv.isClickable = true
             }
         }
     }

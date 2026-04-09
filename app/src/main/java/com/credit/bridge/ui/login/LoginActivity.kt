@@ -120,7 +120,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                     return
                 }
                 DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
-                    HttpClient.getVoiceCode(this, phone)
+                    HttpClient.getVoiceCode(this, phone, "login")
                 }, onCancel = {
 
                 })

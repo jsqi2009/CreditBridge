@@ -39,14 +39,14 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
 
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.logoutTv.setOnClickListener(this)
     }
 
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.logoutTv -> {

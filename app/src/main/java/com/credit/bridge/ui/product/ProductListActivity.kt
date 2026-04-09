@@ -64,7 +64,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
         bindViews.viewDetailsTv.paint.isUnderlineText = true
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
-        bindViews.titleLayout.backIv.setOnClickListener(this)
+        bindViews.titleLayout.backLl.setOnClickListener(this)
         bindViews.viewDetailsTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
 
@@ -105,7 +105,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            R.id.backIv -> {
+            R.id.backLl -> {
                 finish()
             }
             R.id.viewDetailsTv -> {
