@@ -2,8 +2,8 @@
 
 class RequestOrderUpdateBody() {
 
-    var tcxjwmpdlhudlcu : Int = 0
-    var nhtfrspjg : Int = 0
+    var rtzielufwivlvyp : Int = 0
+    var ixuakjuez : Int = 0
 
 }
 

@@ -1255,7 +1255,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showVerifyTipsDialog() {
         DialogUtil.showVerifyTipsDialog(this, onConfirm = {
-
         }, onCancel = {
             finish()
         })

@@ -135,19 +135,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (homeInfo!!.hahsraev.gdcuhe != null) {
             bindViews.totalAmountTv.text =
                 context?.getString(R.string.money_symbol) + " " + homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn.toString()
-            val orderStatus = OrderStatus.getStatusByValue(homeInfo?.hahsraev?.gdcuhe)
+            val orderStatus = homeInfo?.hahsraev?.gdcuhe
             when (orderStatus) {
-                OrderStatus.CURRENT -> {
+                ConstConfig.ORDER_STATUS_CURRENT -> {
                     bindViews.verifiedNeedPay.visibility = View.VISIBLE
                     bindViews.verifiedNeedPayDue.visibility = View.GONE
                     bindViews.verifiedFail.visibility = View.GONE
                 }
-                OrderStatus.OVERDUE -> {
+                ConstConfig.ORDER_STATUS_OVERDUE -> {
                     bindViews.verifiedNeedPay.visibility = View.GONE
                     bindViews.verifiedNeedPayDue.visibility = View.VISIBLE
                     bindViews.verifiedFail.visibility = View.GONE
                 }
-                OrderStatus.ISSUE_FAILED -> {
+                ConstConfig.ORDER_STATUS_ISSUE_FAILED -> {
                     bindViews.verifiedNeedPay.visibility = View.GONE
                     bindViews.verifiedNeedPayDue.visibility = View.GONE
                     bindViews.verifiedFail.visibility = View.VISIBLE

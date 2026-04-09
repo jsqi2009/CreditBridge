@@ -56,8 +56,6 @@ object Contants {
     const val URL_FEEDBACK  = "/yqd/ldhdllly/ioouiu"//	/api/feedback/submit
     const val URL_FEEDBACK_RATING  = "/nez/kcvhiceh/nvifwq/lzdslb"//	/api/feedback/rating/submit
     const val URL_FEEDBACK_CONFIG  = "/saj/acidhwmt/ixehnb/ltkwjr"//	/api/feedback/rating/config
-
-
     const val URL_QUESTION_BY_STEP  = "/wxuxki/jhsuvrkhtcwlrt"//	/credit/questionByStep
     const val URL_SAVE_QUESTION_INFO  = "/lxvwvw/mmmibgyvfzkmozmuigrapkw"//	//credit/saveCollectQuestionInfo
     const val URL_COMPLETE_VERIFY  = "/qzvfkh/kwuevxeg/qsfsdmbvmrstw"//	/credit/complete/certification
@@ -66,54 +64,10 @@ object Contants {
 
     const val file = "kpar" //
     const val name = "jhov" //
-    const val relation = "mngspckl" //
-    const val imei_b = "gefl" // body
     const val type = "qfve" //
-    const val appPackageName= "dfnqeykgifxvaz" //		param
-    const val virtualMachine	= "ghquezkftxktsz" //		body
-    const val rootPermission= "	yxyemrayyinyhk" //
-    const val useVpn	= "zgtjlc" //
-    const val code_b	= "kutc" //
     const val imei_param	= "nigt"
-    const val code_p	= "ptgf"
-    const val orderId	= "bsmweqe"
-    const val mobile_login	= "hcqane"
-    const val loanAppId	= "oenghohyj"
-    const val credentialType= "	ezfllrptsekqxq"
-    const val panNumber	= "gscxhjjfy"
-    const val fullName	= "bcikobrx"
-    const val birthday	= "zcpoxpzb"
-    const val credentialNo	= "bkdwcmcftmep"
-    const val gender	= "ticgsg"
-    const val address	= "bjiersz"
-    const val employmentStatues= "uhynjkkijdcmdvhvl"
-    const val monthlyIcome	= "utmytmlcmuso"
-    const val companyName	= "stthrjndidj"
-    const val lastEducation	= "ufhjanixbqltq"
-    const val maritalStatus	= "wrxrgcbckiewb"
-    const val childrenNumber	= "hkalauhobxroaq"
-    const val email	= "zztal" //
-    const val whatsAppAccount	= "egwgclynecudnbh"
-    const val recordBankcardOthersId	= "wyaidkwtgdkuwimwxenkwp"
-    const val cardNo	= "aosqii"
-    const val cardNoSecond	= "pxcvycbjwxnn"
-    const val bankCode	= "wqumwrph"
-    const val banName	= "fikvylg"
-    const val productId	= "ypwqmbzol"
     const val  amount	= "bbxpqv"
-    const val serviceFee	= "pmctuuiuca"
-    const val extensionPeriod	= "tcxjwmpdlhudlcu"
-    const val dirPrefix	= "ilpaqvwhu"
-    const val expireSeconds	= "kpdoiegdryqzn"
-    const val reportType	= "tgmixdndqs"
-    const val actionType	= "pcruapeebw" //
-    const val comment	= "vbvwswy" //
     const val content	= "xjevovy" //
-    const val answers	= "skrxpwi" //
-    const val questionId	= "fwpnethyww"
-    const val answer	= "edjrwl"
-    const val mobile_b	= "sucbzl"
-    const val extension	= "japmputgy"
 
 
 

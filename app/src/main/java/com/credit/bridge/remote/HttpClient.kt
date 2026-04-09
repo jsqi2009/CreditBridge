@@ -354,8 +354,8 @@ object HttpClient {
     fun getPaymentLink(mContext: Context, extensionStatus : Boolean,orderId : String, type : Int) {
 
         val formMap: HashMap<String, Any> = HashMap()
-        formMap[Contants.extension] = extensionStatus
-        formMap[Contants.loanAppId] = orderId
+        formMap["qfzppvoue"] = extensionStatus
+        formMap["scbtlsfgx"] = orderId
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_GET_DEPOSIT,formMap)
         if (type == 1) {
             dispatchClient!!.enqueue(call, CommonResponse::class.java, PaymentLinkResponseEvent::class.java)
@@ -375,8 +375,8 @@ object HttpClient {
     fun getOrderUpdateInfo(mContext: Context, extensionPeriod: Int, loanAppId: Int) {
 
         val body = RequestOrderUpdateBody()
-        body.nhtfrspjg = loanAppId
-        body.tcxjwmpdlhudlcu = extensionPeriod
+        body.ixuakjuez = loanAppId
+        body.rtzielufwivlvyp = extensionPeriod
 
         val call = mHttpApi!!.requestPostOrderUpdate(getHeaders(mContext), Contants.URL_APPLY_DETAIL, body)
         dispatchClient!!.enqueue(call, OrderUpdateResponse::class.java, OrderUpdateResponseEvent::class.java)
