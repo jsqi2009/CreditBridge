@@ -14,7 +14,9 @@ import com.credit.bridge.databinding.ActivityEditCardBinding
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
+import com.credit.bridge.remote.body.RequestBankInfoBody
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
+import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.response.BankInfo
 import com.credit.bridge.util.NumberUtils
 import com.credit.bridge.util.ToastUtil
@@ -130,13 +132,36 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
     private fun showVerifyBankSheet(ifsc: String, account: String) {
         val verifyBankInfoBottomSheet = VerifyBankInfoBottomSheet(
             this, "", ifsc, account, onConfirm = {
-                updateBankInfo()
+                updateBankInfo(it, ifsc, account)
             })
         verifyBankInfoBottomSheet.show(supportFragmentManager, "workTypeSheet")
     }
 
-    private fun updateBankInfo() {
+    private fun updateBankInfo(code: String,ifsc: String,account: String) {
 
+        val body = RequestBankInfoBody()
+        body.jmxiec = account
+        body.htwvejg = bankInfo?.xzafqxn.toString()
+        body.bgsyfqdi = ifsc
+        body.lifmsxnfvsgu = account
+        body.fzxl = code
+
+        HttpClient.updateBankInfo(this, body)
+
+    }
+
+    @Subscribe
+    fun onVerifyBankInfoResponseEvent(event: VerifyBankInfoResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            finish()
+        } else {
+            if(event.model != null && event.model?.fzpn == 500){
+                ToastUtil.showLong(this,event.model?.dvusonb)
+            }else{
+                ToastUtil.showLong(this,event.networkError.toString())
+            }
+        }
     }
 
     private var currentAccountTextWatcher = object : TextWatcher {

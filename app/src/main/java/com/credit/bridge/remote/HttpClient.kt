@@ -490,14 +490,9 @@ object HttpClient {
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyContactInfoResponseEvent::class.java)
     }
 
-    fun verifyBankInfo(mContext: Context, bankName: String, cardNo: String,cardNoSecond: String ,bankCode: String,code: String) {
-        val body = RequestBankInfoBody()
-        body.aosqii = cardNo
-        body.fikvylg = bankName
-        body.wqumwrph = bankCode
-        body.pxcvycbjwxnn = cardNoSecond
-        body.kutc = code
-        val call = mHttpApi!!.requestPostBankInfo(getHeaders(mContext), Contants.URL_CHANGE_BACK, body)
+    fun updateBankInfo(mContext: Context, body : RequestBankInfoBody) {
+
+        val call = mHttpApi!!.requestPostBankInfo(getHeaders(mContext), Contants.URL_CHANGE_BANK, body)
         dispatchClient?.enqueue(call, CommonResponse::class.java, VerifyBankInfoResponseEvent::class.java)
     }
 
@@ -565,6 +560,14 @@ object HttpClient {
 
         val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_COMPLETE_VERIFY)
         dispatchClient?.enqueue(call, BResponse::class.java, CompleteVerifyResponseEvent::class.java)
+    }
+
+    fun updateBankInfo(mContext: Context) {
+
+        val body = RequestOcrPanNumberBody()
+        body.awja = "PAN"
+        val call = mHttpApi!!.requestPostOcrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
+        dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrPanNumberResponseEvent::class.java)
     }
 
 

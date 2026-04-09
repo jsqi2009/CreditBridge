@@ -42,7 +42,7 @@ class VerifyBankInfoBottomSheet(
     var title: String,
     var ifsc: String,
     var account: String,
-    var onConfirm: () -> Unit
+    var onConfirm: (code: String) -> Unit
 ) : BaseBottomSheet<BottomSheetVerifyBankInfoBinding>(), View.OnClickListener {
 
     private var total = 60
@@ -98,7 +98,7 @@ class VerifyBankInfoBottomSheet(
                     ToastUtil.showLong(requireContext(), "Verification code cannot be empty")
                     return
                 }
-                onConfirm.invoke()
+                onConfirm.invoke(bindViews.codeEt.toString())
                 dismiss()
             }
         }

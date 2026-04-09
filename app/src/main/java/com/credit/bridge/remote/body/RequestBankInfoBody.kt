@@ -2,10 +2,10 @@ package com.credit.bridge.remote.body
 import java.io.Serializable
 
 class RequestBankInfoBody: Serializable {
-    var fikvylg: String = "" //banName
-    var aosqii: String = "" //cardNo
-    var wqumwrph: String = "" //bankCode
-    var pxcvycbjwxnn: String = "" //cardNoSecond
+    var htwvejg: String = "" //banName
+    var jmxiec: String = "" //cardNo
+    var bgsyfqdi: String = "" //bankCode
+    var lifmsxnfvsgu: String = "" //cardNoSecond
 
-    var kutc: String = ""//code
+    var fzxl: String = ""//code
 }

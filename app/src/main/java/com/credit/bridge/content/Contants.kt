@@ -23,7 +23,7 @@ object Contants {
     const val URL_GZIP = "/jem/jssmrvo/jldlbg/bgsisv/wwdq"//	(GZIP)	/api/harvest/xtrace/upload/gzip
     const val URL_CHECK_UPLOAD_STATUS = "/pdp/udkudlt/zctjus/jykawqsaivnoajcis"//		/api/harvest/xtrace/checkUploadStatus
     const val URL_GET_DEPOSIT = "/dbr/qiiwoue/buzjrns"//		/api/loanapp/deposit
-    const val URL_CHANGE_BACK = "/oweago/aifhkarcczhgaj"//	/	/credit/updateBankcard
+    const val URL_CHANGE_BANK = "/oweago/aifhkarcczhgaj"//	/	/credit/updateBankcard
     const val URL_NOTICE_LIST = "/mcn/ipmdiqzku/vrbj"//		/api/appNotice/list
     const val URL_PRESONAL_INFO = "/zty/jnal/lyzxhzmljrzhuftfwjj"//		/api/user/processPersonalInfo
     const val URL_COLLECT_DATA_INTEGRITY = "/zpwj/snyxergatnyqdluzjils"//		/home/collectDataIntegrity
