@@ -134,8 +134,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                     initExtendInfo()
                 } else {
                     initOrderDetailsInfo()
+                    handelRejectedOrder()
                 }
-                handelRejectedOrder()
             }
         }
     }
@@ -308,14 +308,22 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
-                bindViews.extendLayout.rootView.visibility = View.VISIBLE
+
+                bindViews.cancelLayout.rootView.visibility = View.VISIBLE
+
+                bindViews.cancelLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.cancelLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
+                bindViews.cancelLayout.amountTv.text = getString(R.string.money_symbol) + " " +
+                        orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+
+                /*bindViews.extendLayout.rootView.visibility = View.VISIBLE
                 bindViews.continueTv.visibility = View.VISIBLE
 
                 bindViews.extendLayout.dueDateTv.text = orderInfo?.vzlwrta
                 bindViews.extendLayout.chargeTv.text = orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
                 bindViews.extendLayout.nextStatementDateTv.text = orderInfo?.pujfiulsldnnbtb
                 bindViews.extendLayout.rootView.visibility = View.GONE
-                bindViews.continueTv.visibility = View.GONE
+                bindViews.continueTv.visibility = View.GONE*/
             }
             else -> {
                 bindViews.cancelLayout.rootView.visibility = View.VISIBLE
