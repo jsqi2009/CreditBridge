@@ -51,7 +51,9 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     override fun onResume() {
         super.onResume()
-        getOrderDetailsInfo()
+        if (!isExtend) {
+            getOrderDetailsInfo()
+        }
     }
 
     override fun initRes() {
@@ -67,6 +69,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 //        orderStatus = ConstConfig.ORDER_STATUS_ISSUE_FAILED
         if (intent.hasExtra("isExtend")) {
             isExtend = intent.getBooleanExtra("isExtend", false)
+            getOrderUpdateInfo()
         }
 
         bindViews.titleLayout.titleTv.text = "Details"
@@ -78,7 +81,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.viewPaymentOptionsTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
 
-        if (orderInfo?.gphysdjxvns == true) {
+        if (orderInfo?.gphysdjxvns == true || isExtend) {
             initExtendInfo()
         } else {
             initOrderDetailsInfo()
@@ -126,7 +129,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         if (event.model?.flag == ConstConfig.ORDER_DETAIL_COMMON) {
             if (event.isSuccess) {
                 orderInfo = event.model?.mtaw
-                initOrderDetailsInfo()
+                //initOrderDetailsInfo()
+                if (orderInfo?.gphysdjxvns == true || isExtend) {
+                    initExtendInfo()
+                } else {
+                    initOrderDetailsInfo()
+                }
                 handelRejectedOrder()
             }
         }
@@ -190,7 +198,10 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         if (event.isSuccess) {
             initExtendInfo()
             event.model?.mtaw?.let {
-                //views.tvExtendFee.text = "₹ "+CommonUtils.formatFloatToStr(it.usiyspmxkqopjxmcbbbxijkiag)
+
+                bindViews.extendLayout.dueDateTv.text = it.nbnkkcnyigtwzm
+                bindViews.extendLayout.chargeTv.text = getString(R.string.money_symbol) + " " + NumberUtils.formatIntToStr(it.cmjrzfchjdqfyqdadyoxqlurcf)
+                bindViews.extendLayout.nextStatementDateTv.text = it.wdtuvzvegzujzpwa
             }
         }
     }
@@ -207,6 +218,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             bindViews.dueLayout.rootView.visibility = View.GONE
             bindViews.failureLayout.rootView.visibility = View.GONE
             bindViews.extendLayout.rootView.visibility = View.VISIBLE
+            bindViews.continuePaymentTv.visibility = View.GONE
+            bindViews.viewPaymentOptionsTv.visibility = View.GONE
 
             bindViews.extendLayout.dueDateTv.text = orderInfo?.vzlwrta
             bindViews.extendLayout.chargeTv.text = getString(R.string.money_symbol) + " " +

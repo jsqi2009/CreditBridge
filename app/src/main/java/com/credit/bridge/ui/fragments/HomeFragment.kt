@@ -83,6 +83,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         bindViews.accessAccountIv.setOnClickListener(this)
         bindViews.accessManageIv.setOnClickListener(this)
         bindViews.startVerifyLl.setOnClickListener(this)
+        bindViews.verifiedNeedPayDue.setOnClickListener(this)
+        bindViews.verifiedNeedPay.setOnClickListener(this)
+        bindViews.verifiedFail.setOnClickListener(this)
 
         HttpClient.eventReport(requireActivity(),ConstConfig.POINT_HOME_SCREEN,
             ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_HOME_SCREEN)
@@ -104,7 +107,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     if (it > 0) {
                         previewProduct()
                     } else {
-                        
+
                     }
                 }
             }
@@ -214,7 +217,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
             event.model?.mtaw?.let {
                 currentStep = it.lrksnnsd
-                if (it.rvazxrtziwtcvrfrkzczx) {
+                //if (it.rvazxrtziwtcvrfrkzczx) {
+                if (it.masxqgkeptyuo) {
                     bindViews.accessAccountIv.visibility = View.VISIBLE
                     bindViews.startVerifyLl.visibility = View.GONE
                     isAuthed = true
