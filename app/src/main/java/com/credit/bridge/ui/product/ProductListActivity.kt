@@ -29,6 +29,8 @@ import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.AppUtil
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
+import java.text.NumberFormat
+import java.util.Locale
 import kotlin.compareTo
 
 class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnClickListener {
@@ -59,7 +61,7 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
 
         totalLimit = intent.getIntExtra("amountLimit", 0)
 
-        bindViews.availableLimitTv.text =  getString(R.string.money_symbol) + " $totalLimit"
+        bindViews.availableLimitTv.text =  getString(R.string.money_symbol) + " " +  String.format("%,d", totalLimit)
         bindViews.titleLayout.titleTv.text = "Credit usage options"
         bindViews.viewDetailsTv.paint.isUnderlineText = true
 

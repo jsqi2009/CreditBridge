@@ -143,7 +143,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }
         if (homeInfo!!.hahsraev.gdcuhe != null) {
             bindViews.totalAmountTv.text =
-                context?.getString(R.string.money_symbol) + " " + homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn.toString()
+                context?.getString(R.string.money_symbol) + " " + String.format("%,d", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
             val orderStatus = homeInfo?.hahsraev?.gdcuhe
             when (orderStatus) {
                 ConstConfig.ORDER_STATUS_CURRENT -> {

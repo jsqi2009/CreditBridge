@@ -314,7 +314,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 verifyBankAction()
             }
             4 -> {
-                //verifyPanAction()
+                verifyPanAction()
             }
             5 -> {
                 completeVerify()
@@ -380,6 +380,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
+                bindViews.stepBtn4.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
                 bindViews.step5Line.root.visibility = View.VISIBLE
                 bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_5)
@@ -1106,7 +1107,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     bindViews.stepBtn4.visibility = View.VISIBLE
                     bindViews.continueTv.visibility = View.GONE
                     bindViews.attemptLeftTv.visibility = View.GONE
-                    bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + numberOfChildIndex
+                    bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
                     bindViews.verify4.fullNameTv.text = it.ynyj
                     bindViews.verify4.panNumberTv.text = it.fwrcjkq
                     bindViews.verify4.birthDateTv.text = it.bzumerxb

@@ -5,7 +5,7 @@ import java.io.Serializable
 
 class ProductInfo: Serializable {
 
-    var ifhldxjdjt: Int = 0     //bank card no
+    var ifhldxjdjt: String? = ""     //bank card no
     var lcfruodn: String? = ""   //bank name
     var rcpqzqrn: String? = ""   //bankCode
     var ezacrqucwsapvx: String? = ""   //bankUpdateTime

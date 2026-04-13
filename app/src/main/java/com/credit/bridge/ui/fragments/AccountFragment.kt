@@ -15,6 +15,7 @@ import com.credit.bridge.databinding.FragmentHomeBinding
 import com.credit.bridge.databinding.FragmentOrderBinding
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
+import com.credit.bridge.remote.response.BankInfo
 import com.credit.bridge.ui.account.AboutUsActivity
 import com.credit.bridge.ui.account.PaymentAccountActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
@@ -31,6 +32,9 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
         inflater: LayoutInflater,
         container: ViewGroup?
     ) = FragmentAccountBinding.inflate(inflater, container, false)
+
+
+    private var bankInfo: BankInfo? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -63,6 +67,10 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.paymentAccountLl -> {
+                if (bankInfo?.rcpqzqrn == null) {
+                    ToastUtil.showLong(requireActivity(), "Please complete identify verification first")
+                    return
+                }
                 startActivity(Intent(requireActivity(), PaymentAccountActivity::class.java))
             }
             R.id.paymentAccountIv -> {
@@ -90,12 +98,21 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
     fun onFetchBankInfoResponseEvent(event: FetchBankInfoResponseEvent) {
         hideLoading()
         if(event.isSuccess){
+            bankInfo = event.model?.mtaw
+            if (bankInfo?.rcpqzqrn != null) {
+                bindViews.paymentAccountLl.visibility = View.GONE
+                bindViews.paymentAccountLl2.visibility = View.VISIBLE
+            } else {
+                bindViews.paymentAccountLl.visibility = View.VISIBLE
+                bindViews.paymentAccountLl2.visibility = View.GONE
+            }
             event.model?.mtaw?.let {
                 if (!it.rcpqzqrn.isNullOrEmpty()) {
                     bindViews.ifscTv.text = getString(R.string.product_ifsc) + " " +  NumberUtils.formatNumber(it.rcpqzqrn,3,2)
                 }
                 if (!it.qmtddx.isNullOrEmpty()) {
-                    bindViews.accountTv.text = getString(R.string.product_account) + " " +  NumberUtils.formatNumber(it.qmtddx,3,2)
+                    //bindViews.accountTv.text = getString(R.string.product_account) + " " +  NumberUtils.formatNumber(it.qmtddx,3,2)
+                    bindViews.accountTv.text = NumberUtils.formatNumber(it.qmtddx,3,2)
                 }
             }
         }else{
