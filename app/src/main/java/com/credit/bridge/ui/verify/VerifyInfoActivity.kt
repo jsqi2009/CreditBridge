@@ -483,7 +483,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
 
         HttpClient.eventReport(this,ConstConfig.EVENT_INFO_SUBMIT,
-            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_INFO_SUBMIT)
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_INFO_SUBMIT)
 
 
         val questionList = VerifyInfoUtil.getStep1RequestBody(workTypeIndex, monthlyIncomeIndex,
@@ -576,7 +576,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             return
         }
         HttpClient.eventReport(this,ConstConfig.EVENT_CONTACT_SUBMIT,
-            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_CONTACT_SUBMIT)
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_CONTACT_SUBMIT)
 
         val questionList = VerifyInfoUtil.getStep2RequestBody(VerifyInfoUtil.contact1FormatList[contact1Index] ,
             VerifyInfoUtil.contact2FormatList[contact2Index],
@@ -649,7 +649,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
 
         HttpClient.eventReport(this,ConstConfig.EVENT_BANKCARD_SUBMIT,
-            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_BANKCARD_SUBMIT)
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_BANKCARD_SUBMIT)
 
         val questionList = VerifyInfoUtil.getStep3RequestBody(accountNumber.replace(" ", ""),
             confirmAccountNumber.replace(" ", ""), ifscCode, step3QuestionInfo)
@@ -729,7 +729,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
 
         HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_SUNMIT,
-            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_IDCARD_SUNMIT)
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_IDCARD_SUNMIT)
 
         val questionList = VerifyInfoUtil.getStep4RequestBody(panNumber, fullName, birthDate,
             VerifyInfoUtil.genderFormatList[genderIndex], step4QuestionInfo)
@@ -1170,7 +1170,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             liveFaceLauncher.launch(intent)
 
             HttpClient.eventReport(this,ConstConfig.EVENT_START_LIVENESS,
-                ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_START_LIVENESS)
+                ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_START_LIVENESS)
 
         } else {
             EasyPermissions.requestPermissions(

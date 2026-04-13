@@ -123,7 +123,7 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
         }
 
         HttpClient.eventReport(this,ConstConfig.EVENT_LOAN_SUBMIT,
-            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_LOAN_SUBMIT)
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_LOAN_SUBMIT)
 
         showLoading()
         HttpClient.submitOrder(this, bodyList, "2")

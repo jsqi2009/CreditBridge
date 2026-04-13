@@ -43,7 +43,7 @@ object ConstConfig {
     const val EVENT_INTO_LOANAMOUNT = "loanamount_info"	//
     const val EVENT_LOAN_SUBMIT = "loan_info_submit"	//
     const val EVENT_CLICK_CAMERA = "click_camera"	//
-    const val EVENT_ACTION_TYPE_CLICK="click"
+    const val EVENT_ACTION_CLICK="click"
     const val EVENT_ACTION_TYPE_HOLD="hold"
 
 }
