@@ -3,23 +3,18 @@ package com.credit.bridge.ui.fragments
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresPermission
-import androidx.appcompat.app.AppCompatActivity
-import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.content.ConstConfig.ORDER_STATUS_ISSUE_FAILED
 import com.credit.bridge.databinding.FragmentHomeBinding
-import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.HomeInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
@@ -34,9 +29,7 @@ import com.credit.bridge.ui.order.OrderDetailsActivity
 import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
-import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
-import com.credit.bridge.util.VerifyInfoUtil
 import com.credit.bridge.widget.PermissionBottomSheet
 import com.squareup.otto.Subscribe
 import pub.devrel.easypermissions.EasyPermissions
@@ -87,8 +80,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         bindViews.verifiedNeedPay.setOnClickListener(this)
         bindViews.verifiedFail.setOnClickListener(this)
 
-        HttpClient.eventReport(requireActivity(),ConstConfig.POINT_HOME_SCREEN,
-            ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_HOME_SCREEN)
+        HttpClient.eventReport(requireActivity(),ConstConfig.EVENT_HOME_SCREEN,
+            ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_HOME_SCREEN)
 
 
     }

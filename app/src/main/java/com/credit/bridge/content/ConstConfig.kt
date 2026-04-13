@@ -27,15 +27,15 @@ object ConstConfig {
 
     //point page
     const val EVENT_REGISTER_COMPLETE = "register_complete"	//
-    const val POINT_HOME_SCREEN = "home_screen"	//
-    const val POINT_IDCARD_INPUT = "idcard_input"	//
-    const val POINT_IDCARD_SUNMIT = "idcard_submit"	//
-    const val POINT_INTO_INFO = "personal_info_input"	//
-    const val POINT_INFO_SUBMIT = "personal_info_submit"	//
-    const val POINT_CONTACT_INPUT = "contact_input"	//
-    const val POINT_CONTACT_SUBMIT = "contact_submit"	//
-    const val POINT_BANKCARD_INPUT = "bankcard_input"	//
-    const val POINT_BANKCARD_SUBMIT = "bankcard_submit"	//
+    const val EVENT_HOME_SCREEN = "home_screen"	//
+    const val EVENT_IDCARD_INPUT = "idcard_input"	//
+    const val EVENT_IDCARD_SUNMIT = "idcard_submit"	//
+    const val EVENT_INTO_INFO = "personal_info_input"	//
+    const val EVENT_INFO_SUBMIT = "personal_info_submit"	//
+    const val EVENT_CONTACT_INPUT = "contact_input"	//
+    const val EVENT_CONTACT_SUBMIT = "contact_submit"	//
+    const val EVENT_BANKCARD_INPUT = "bankcard_input"	//
+    const val EVENT_BANKCARD_SUBMIT = "bankcard_submit"	//
     const val POINT_START_LIVENESS = "liveness_start"	//
 
     const val POINT_INPUT_LIVENESS = "liveness_input"	//

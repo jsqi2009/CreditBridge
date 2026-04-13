@@ -26,7 +26,6 @@ import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.CommonBean
 import com.credit.bridge.remote.bean.QuestionInfoResponse
-import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.event.CompleteVerifyResponseEvent
 import com.credit.bridge.remote.event.OcrFaceNumberResponseEvent
 import com.credit.bridge.remote.event.OcrPanNumberResponseEvent
@@ -334,8 +333,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
                 HttpClient.getQuestionByStep(this, currentStep)
 
-                HttpClient.eventReport(this,ConstConfig.POINT_INTO_INFO,
-                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_INTO_INFO)
+                HttpClient.eventReport(this,ConstConfig.EVENT_INTO_INFO,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_INTO_INFO)
             }
             2 -> {
                 bindViews.verify1.root.visibility = View.GONE
@@ -346,8 +345,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
                 HttpClient.getQuestionByStep(this, currentStep)
 
-                HttpClient.eventReport(this,ConstConfig.POINT_CONTACT_INPUT,
-                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_CONTACT_INPUT)
+                HttpClient.eventReport(this,ConstConfig.EVENT_CONTACT_INPUT,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_CONTACT_INPUT)
             }
             3 -> {
                 bindViews.verify2.root.visibility = View.GONE
@@ -359,8 +358,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
                 HttpClient.getQuestionByStep(this, currentStep)
 
-                HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_INPUT,
-                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_BANKCARD_INPUT)
+                HttpClient.eventReport(this,ConstConfig.EVENT_BANKCARD_INPUT,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_BANKCARD_INPUT)
             }
             4 -> {
                 bindViews.verify3.root.visibility = View.GONE
@@ -375,8 +374,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
                 HttpClient.getQuestionByStep(this, currentStep)
 
-                HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_INPUT,
-                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_IDCARD_INPUT)
+                HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_INPUT,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_IDCARD_INPUT)
             }
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
@@ -483,8 +482,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             return
         }
 
-        HttpClient.eventReport(this,ConstConfig.POINT_INFO_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_INFO_SUBMIT)
+        HttpClient.eventReport(this,ConstConfig.EVENT_INFO_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.EVENT_INFO_SUBMIT)
 
 
         val questionList = VerifyInfoUtil.getStep1RequestBody(workTypeIndex, monthlyIncomeIndex,
@@ -576,8 +575,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             ToastUtil.showLong(this, "Please make sure the contact details are different")
             return
         }
-        HttpClient.eventReport(this,ConstConfig.POINT_CONTACT_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_CONTACT_SUBMIT)
+        HttpClient.eventReport(this,ConstConfig.EVENT_CONTACT_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.EVENT_CONTACT_SUBMIT)
 
         val questionList = VerifyInfoUtil.getStep2RequestBody(VerifyInfoUtil.contact1FormatList[contact1Index] ,
             VerifyInfoUtil.contact2FormatList[contact2Index],
@@ -649,8 +648,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             return
         }
 
-        HttpClient.eventReport(this,ConstConfig.POINT_BANKCARD_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_BANKCARD_SUBMIT)
+        HttpClient.eventReport(this,ConstConfig.EVENT_BANKCARD_SUBMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.EVENT_BANKCARD_SUBMIT)
 
         val questionList = VerifyInfoUtil.getStep3RequestBody(accountNumber.replace(" ", ""),
             confirmAccountNumber.replace(" ", ""), ifscCode, step3QuestionInfo)
@@ -729,8 +728,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
 
 
-        HttpClient.eventReport(this,ConstConfig.POINT_IDCARD_SUNMIT,
-            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_IDCARD_SUNMIT)
+        HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_SUNMIT,
+            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.EVENT_IDCARD_SUNMIT)
 
         val questionList = VerifyInfoUtil.getStep4RequestBody(panNumber, fullName, birthDate,
             VerifyInfoUtil.genderFormatList[genderIndex], step4QuestionInfo)
