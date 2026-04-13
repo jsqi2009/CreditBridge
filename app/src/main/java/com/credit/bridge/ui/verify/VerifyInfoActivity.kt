@@ -165,12 +165,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }else{
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_FAIL_LIVENESS,
-                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_FAIL_LIVENESS)
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_FAIL_LIVENESS)
             }
         } else {
 
             HttpClient.eventReport(this,ConstConfig.EVENT_FAIL_LIVENESS,
-                ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_FAIL_LIVENESS)
+                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_FAIL_LIVENESS)
 
             if (result.data != null) {
                 val errorCode = data!!.getIntExtra(DFActionLivenessActivity.KEY_RESULT_ERROR_CODE, -10000);
@@ -334,7 +334,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_INTO_INFO,
-                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_INTO_INFO)
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_INTO_INFO)
             }
             2 -> {
                 bindViews.verify1.root.visibility = View.GONE
@@ -346,7 +346,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_CONTACT_INPUT,
-                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_CONTACT_INPUT)
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_CONTACT_INPUT)
             }
             3 -> {
                 bindViews.verify2.root.visibility = View.GONE
@@ -359,7 +359,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_BANKCARD_INPUT,
-                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_BANKCARD_INPUT)
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_BANKCARD_INPUT)
             }
             4 -> {
                 bindViews.verify3.root.visibility = View.GONE
@@ -375,7 +375,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_INPUT,
-                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_IDCARD_INPUT)
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_INPUT)
             }
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
@@ -392,7 +392,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_INPUT_LIVENESS,
-                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_INPUT_LIVENESS)
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_INPUT_LIVENESS)
 
                 HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
             }
@@ -1117,12 +1117,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     ToastUtil.showLong(this, it.dvusonb)
 
                     HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
-                        ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
+                        ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
                 }
             }
         } else {
             HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
-                ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
+                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
 
             if(event.model != null){
                 hideLoading()

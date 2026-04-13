@@ -81,7 +81,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         bindViews.verifiedFail.setOnClickListener(this)
 
         HttpClient.eventReport(requireActivity(),ConstConfig.EVENT_HOME_SCREEN,
-            ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_HOME_SCREEN)
+            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_HOME_SCREEN)
 
 
     }
