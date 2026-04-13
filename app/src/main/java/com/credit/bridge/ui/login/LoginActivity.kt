@@ -152,7 +152,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
 
                 //upload event
                 HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REGISTER_COMPLETE,
-                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_REGISTER_COMPLETE)
+                    ConstConfig.EVENT_ACTION_TYPE_HOLD,ConstConfig.EVENT_REGISTER_COMPLETE)
 
                 val intent = Intent(this, RootActivity::class.java)
                 startActivity(intent)

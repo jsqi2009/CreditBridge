@@ -5,14 +5,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityConfirmProductBinding
-import com.credit.bridge.databinding.ActivityProductListBinding
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
@@ -126,8 +122,8 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
             }
         }
 
-        HttpClient.eventReport(this,ConstConfig.POINT_LOAN_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)
+        HttpClient.eventReport(this,ConstConfig.EVENT_LOAN_SUBMIT,
+            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_LOAN_SUBMIT)
 
         showLoading()
         HttpClient.submitOrder(this, bodyList, "2")

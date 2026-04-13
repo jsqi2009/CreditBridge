@@ -6,20 +6,15 @@ import android.util.Log
 import android.view.Surface
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
-import com.credit.bridge.databinding.ActivityConfirmProductBinding
 import com.credit.bridge.databinding.ActivityTakePhotoBinding
 import com.credit.bridge.remote.HttpClient
 import kotlinx.coroutines.launch
@@ -103,8 +98,8 @@ class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClick
                         }
                     })
 
-                HttpClient.eventReport(this,ConstConfig.POINT_CLICK_CAMERA,
-                    ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_CLICK_CAMERA)
+                HttpClient.eventReport(this,ConstConfig.EVENT_CLICK_CAMERA,
+                    ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_CLICK_CAMERA)
             }
             R.id.flashIv -> {
                 if(imageCapture?.flashMode == ImageCapture.FLASH_MODE_ON){

@@ -36,21 +36,14 @@ object ConstConfig {
     const val EVENT_CONTACT_SUBMIT = "contact_submit"	//
     const val EVENT_BANKCARD_INPUT = "bankcard_input"	//
     const val EVENT_BANKCARD_SUBMIT = "bankcard_submit"	//
-    const val POINT_START_LIVENESS = "liveness_start"	//
-
-    const val POINT_INPUT_LIVENESS = "liveness_input"	//
-
-    const val POINT_TOUCH_LIVENESS = "liveness_touch"	//
-
-    const val POINT_FAIL_LIVENESS = "liveness_fail"	//
-
-    const val POINT_IDCARD_FAIL = "idcard_fail"	//
-    const val POINT_INTO_LOANAMOUNT = "loanamount_info"	//
-    const val POINT_LOAN_SUBMIT = "loan_info_submit"	//
-    const val POINT_CLICK_CAMERA = "click_camera"	//
-
-
-    const val POINT_ACTION_TYPE_CLICK="click"
-    const val POINT_ACTION_TYPE_HOLD="hold"
+    const val EVENT_START_LIVENESS = "liveness_start"	//
+    const val EVENT_INPUT_LIVENESS = "liveness_input"	//
+    const val EVENT_FAIL_LIVENESS = "liveness_fail"	//
+    const val EVENT_IDCARD_FAIL = "idcard_fail"	//
+    const val EVENT_INTO_LOANAMOUNT = "loanamount_info"	//
+    const val EVENT_LOAN_SUBMIT = "loan_info_submit"	//
+    const val EVENT_CLICK_CAMERA = "click_camera"	//
+    const val EVENT_ACTION_TYPE_CLICK="click"
+    const val EVENT_ACTION_TYPE_HOLD="hold"
 
 }

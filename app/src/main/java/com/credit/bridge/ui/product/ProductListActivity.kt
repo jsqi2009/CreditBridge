@@ -5,33 +5,22 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.adapter.ProductListAdapter
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
-import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.databinding.ActivityProductListBinding
-import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.inter.OnProductItemClickListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.AllProductInfo
-import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
-import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.AppUtil
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
-import java.text.NumberFormat
-import java.util.Locale
-import kotlin.compareTo
 
 class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnClickListener {
 
@@ -86,6 +75,10 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
     }
 
     private fun getAllProductList() {
+
+        HttpClient.eventReport(this,ConstConfig.EVENT_INTO_LOANAMOUNT,
+            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_INTO_LOANAMOUNT)
+
         showLoading()
         HttpClient.getAllProductList(this)
     }
@@ -169,8 +162,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             bodyList.add(item)
         }
 
-        HttpClient.eventReport(this,ConstConfig.POINT_LOAN_SUBMIT,
-            ConstConfig.POINT_ACTION_TYPE_CLICK,ConstConfig.POINT_LOAN_SUBMIT)
+        HttpClient.eventReport(this,ConstConfig.EVENT_LOAN_SUBMIT,
+            ConstConfig.EVENT_ACTION_TYPE_CLICK,ConstConfig.EVENT_LOAN_SUBMIT)
 
         showLoading()
         HttpClient.submitOrder(this, bodyList, "1")
