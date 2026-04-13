@@ -3,7 +3,6 @@ package com.credit.bridge.ui.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.content.ConstConfig.ORDER_STATUS_ISSUE_FAILED
 import com.credit.bridge.databinding.FragmentOrderBinding
-import com.credit.bridge.inter.OnItemClickListener
 import com.credit.bridge.inter.OnOrderItemClickListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.OrderInfo
@@ -23,7 +21,6 @@ import com.credit.bridge.remote.event.OrderListResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.ViewPaymentOptionsEvent
 import com.credit.bridge.ui.order.OrderDetailsActivity
-import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
 
@@ -35,7 +32,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
     ) = FragmentOrderBinding.inflate(inflater, container, false)
 
 
-    private var orderType = ConstConfig.ORDER_TYPE_CURRENT
+    private var orderType = ConstConfig.ORDER_CURRENT
     private var orderList: ArrayList<OrderInfo> =  ArrayList()
     private var mAdapter: OrderListAdapter? = null
 
@@ -101,7 +98,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
                 bindViews.historyIv.visibility = View.GONE
                 bindViews.currentIv.visibility = View.VISIBLE
 
-                orderType = ConstConfig.ORDER_TYPE_CURRENT
+                orderType = ConstConfig.ORDER_CURRENT
                 fetchOrderList()
             }
             R.id.historyLayout -> {
@@ -114,7 +111,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
                 bindViews.currentIv.visibility = View.GONE
                 bindViews.historyIv.visibility = View.VISIBLE
 
-                orderType = ConstConfig.ORDER_TYPE_HISTORY
+                orderType = ConstConfig.ORDER_HISTORY
                 fetchOrderList()
             }
         }

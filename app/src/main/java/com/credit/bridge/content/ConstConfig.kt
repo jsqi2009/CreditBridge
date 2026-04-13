@@ -16,17 +16,17 @@ object ConstConfig {
 
 
     //order type
-    const val ORDER_TYPE_CURRENT = "CURRENT"
-    const val ORDER_TYPE_HISTORY = "HISTORY"
+    const val ORDER_CURRENT = "CURRENT"
+    const val ORDER_HISTORY = "HISTORY"
 
-    const val ORDER_TYPE_FAILED = "FAILED"
+
 
     //order details page index
     const val ORDER_DETAIL_COMMON = "common"
-    const val ORDER_DETAIL_TRANSFER = "transfer"
 
 
-    const val POINT_REGISTER_COMPLETE = "register_complete"	//
+    //point page
+    const val EVENT_REGISTER_COMPLETE = "register_complete"	//
     const val POINT_HOME_SCREEN = "home_screen"	//
     const val POINT_IDCARD_INPUT = "idcard_input"	//
     const val POINT_IDCARD_SUNMIT = "idcard_submit"	//

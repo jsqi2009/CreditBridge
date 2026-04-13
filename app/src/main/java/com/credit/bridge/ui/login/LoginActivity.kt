@@ -1,9 +1,7 @@
 package com.credit.bridge.ui.login
 
 import android.annotation.SuppressLint
-import android.app.Dialog
 import android.content.Intent
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.Spanned
@@ -11,25 +9,13 @@ import android.text.TextPaint
 import android.text.method.LinkMovementMethod
 import android.text.style.ClickableSpan
 import android.text.style.LeadingMarginSpan
-import android.view.Gravity
 import android.view.View
-import android.view.Window
-import android.view.WindowManager
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
-import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityLoginBinding
-import com.credit.bridge.databinding.ActivitySplashBinding
-import com.credit.bridge.inter.OnConfirmListener
-import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.event.LoginResponseEvent
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
@@ -38,14 +24,9 @@ import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
 import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ToastUtil
-import com.credit.bridge.util.VerifyInfoUtil
-import com.credit.bridge.widget.CommonBottomSheet
-import com.credit.bridge.widget.PermissionBottomSheet
-import com.credit.bridge.widget.VerifyBankBottomSheet
 import com.squareup.otto.Subscribe
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.collections.get
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener {
 
@@ -170,8 +151,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 CacheManager.isAuth = true
 
                 //upload event
-                HttpClient.eventReport(this@LoginActivity,ConstConfig.POINT_REGISTER_COMPLETE,
-                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.POINT_REGISTER_COMPLETE)
+                HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REGISTER_COMPLETE,
+                    ConstConfig.POINT_ACTION_TYPE_HOLD,ConstConfig.EVENT_REGISTER_COMPLETE)
 
                 val intent = Intent(this, RootActivity::class.java)
                 startActivity(intent)
