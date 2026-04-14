@@ -1257,7 +1257,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         perms: List<String?>
     ) {
         if (requestCode == REQUEST_CODE_PERMISSION) {
-            ToastUtil.showLong(this, "Please grant the required permissions to continue.")
+            ToastUtil.showLong(this, "Required permissions must be enabled to proceed.")
         }
     }
 

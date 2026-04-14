@@ -98,27 +98,27 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         val newIfsc = bindViews.newIfscEt.text.toString()
 
         if (currentAccount.isEmpty()) {
-            ToastUtil.showLong(this, "Current account number cannot be empty")
+            ToastUtil.showLong(this, "Enter your current account number")
             return
         }
         if (newAccount.isEmpty()) {
-            ToastUtil.showLong(this, "New bank account number cannot be empty")
+            ToastUtil.showLong(this, "Enter your new account number")
             return
         }
         if (confirmNewAccount.isEmpty()) {
-            ToastUtil.showLong(this, "Please re-enter the new bank account number")
+            ToastUtil.showLong(this, "Confirm your new account number")
             return
         }
         if (newIfsc.isEmpty()) {
-            ToastUtil.showLong(this, "IFSC code cannot be empty")
+            ToastUtil.showLong(this, "Enter IFSC code")
             return
         }
         if (currentAccount.replace(" ","") != bankInfo?.qmtddx) {
-            ToastUtil.showLong(this, "Please enter your current bank account number")
+            ToastUtil.showLong(this, "Enter your current account number")
             return
         }
         if (newAccount.replace(" ","") != confirmNewAccount.replace(" ","")) {
-            ToastUtil.showLong(this, "Account number and re-entered account number must match")
+            ToastUtil.showLong(this, "Account numbers do not match")
             return
         }
         if (newIfsc.replace(" ","").length != 11) {
