@@ -32,6 +32,12 @@
         android:name="com.appsflyer.GAID_DISABLED"
         android:value="false" />
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
     <application
         android:name=".ui.App"
         android:allowBackup="true"

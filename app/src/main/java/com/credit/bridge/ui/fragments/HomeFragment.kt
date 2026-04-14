@@ -369,7 +369,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         perms: List<String?>
     ) {
         if (requestCode == REQUEST_CODE) {
-            ToastUtil.showLong(requireContext(),"Please grant the required permissions to continue.")
+            ToastUtil.showLong(requireContext(),"Please allow permissions to continue")
         }
     }
 

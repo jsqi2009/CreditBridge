@@ -2,6 +2,7 @@ package com.credit.bridge.ui.verify
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -101,36 +102,45 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private var step5QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
 
     private val contact1Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
         val contactUri = result.data?.data ?: return@registerForActivityResult
-        contentResolver.query(
-            contactUri,
-            arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER),
-            null, null, null
-        )?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phone = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    ?.replace(" ", "")?.replace("-", "")
-                bindViews.verify2.contact1Tv.text = name ?: ""
-                bindViews.verify2.phone1Tv.text = phone ?: ""
+        try {
+            contentResolver.query(
+                contactUri,
+                arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER),
+                null, null, null
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val phone = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        ?.replace(" ", "")?.replace("-", "")
+                    bindViews.verify2.contact1Tv.text = name ?: ""
+                    bindViews.verify2.phone1Tv.text = phone ?: ""
+                }
             }
+        } catch (e: Exception) {
+
         }
     }
 
     private val contact2Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
         val contactUri = result.data?.data ?: return@registerForActivityResult
-        contentResolver.query(
-            contactUri,
-            arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER),
-            null, null, null
-        )?.use { cursor ->
-            if (cursor.moveToFirst()) {
-                val name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
-                val phone = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
-                    ?.replace(" ", "")?.replace("-", "")
-                bindViews.verify2.contact2Tv.text = name ?: ""
-                bindViews.verify2.phone2Tv.text = phone ?: ""
+        try {
+            contentResolver.query(
+                contactUri,
+                arrayOf(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.NUMBER),
+                null, null, null
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) {
+                    val name = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME))
+                    val phone = cursor.getString(cursor.getColumnIndexOrThrow(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                        ?.replace(" ", "")?.replace("-", "")
+                    bindViews.verify2.contact2Tv.text = name ?: ""
+                    bindViews.verify2.phone2Tv.text = phone ?: ""
+                }
             }
+        } catch (e: Exception) {
         }
     }
 
@@ -462,23 +472,23 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             return
         }
         if (educationIndex == -1) {
-            ToastUtil.showLong(this, "Please select your highest education level")
+            ToastUtil.showLong(this, "Select your education level")
             return
         }
         if (maritalIndex == -1) {
-            ToastUtil.showLong(this, "Please select your marital status")
+            ToastUtil.showLong(this, "Select your marital status")
             return
         }
         if (numberOfChildIndex == -1) {
-            ToastUtil.showLong(this, "Please select the number of dependents")
+            ToastUtil.showLong(this, "Select number of children")
             return
         }
         if (bindViews.verify1.emailEt.text.isEmpty() || !bindViews.verify1.emailEt.text.contains("@")) {
-            ToastUtil.showLong(this, "Please enter a valid email address")
+            ToastUtil.showLong(this, "Enter a valid email")
             return
         }
         if (bindViews.verify1.whatsappEt.text.isEmpty()) {
-            ToastUtil.showLong(this, "Please enter your WhatsApp number")
+            ToastUtil.showLong(this, "Enter your WhatsApp number")
             return
         }
 
@@ -531,7 +541,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private fun verifyContactAction() {
 
         if (contact1Index == -1) {
-            ToastUtil.showLong(this, "Please select the relationship for Contact 1")
+            ToastUtil.showLong(this, "Select relationship for Contact 1")
             return
         }
         val contact1Value = bindViews.verify2.contact1Tv.text.toString()
@@ -542,23 +552,23 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val relation2 = bindViews.verify2.relationship2Tv.text.toString()
 
         if (contact1Value.isEmpty()) {
-            ToastUtil.showLong(this, "Contact 1 name cannot be empty")
+            ToastUtil.showLong(this, "Enter Contact 1 name")
             return
         }
         if (phone1Value.isEmpty()) {
-            ToastUtil.showLong(this, "Contact 1 phone number cannot be empty")
+            ToastUtil.showLong(this, "Enter Contact 1 phone number")
             return
         }
         if (contact2Index == -1) {
-            ToastUtil.showLong(this, "Please select the relationship for Contact 2")
+            ToastUtil.showLong(this, "Select relationship for Contact 2")
             return
         }
         if (contact2Value.isEmpty()) {
-            ToastUtil.showLong(this, "Contact 2 name cannot be empty")
+            ToastUtil.showLong(this, "Enter Contact 2 name")
             return
         }
         if (phone2Value.isEmpty()) {
-            ToastUtil.showLong(this, "Contact 2 phone number cannot be empty")
+            ToastUtil.showLong(this, "Enter Contact 2 phone number")
             return
         }
         var totalCount = 3
@@ -937,11 +947,20 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private fun chooseContact1() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
         contact1Launcher.launch(intent)
+        if (intent.resolveActivity(packageManager) != null) {
+            contact1Launcher.launch(intent)
+        } else {
+            ToastUtil.showLong(this,"No Contact app")
+        }
     }
 
     private fun chooseContact2() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
-        contact2Launcher.launch(intent)
+        if (intent.resolveActivity(packageManager) != null) {
+            contact2Launcher.launch(intent)
+        } else {
+            ToastUtil.showLong(this,"No Contact app")
+        }
     }
 
     private var accountTextWatcher = object : TextWatcher {
