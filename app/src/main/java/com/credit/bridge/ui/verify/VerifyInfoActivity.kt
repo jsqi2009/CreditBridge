@@ -571,6 +571,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             ToastUtil.showLong(this, "Enter Contact 2 phone number")
             return
         }
+        if (relation1 == relation2) {
+            ToastUtil.showLong(this, "Contacts must have different relationships")
+            return
+        }
+        if (contact1Value == contact2Value) {
+            ToastUtil.showLong(this, "Contacts must be different")
+            return
+        }
         var totalCount = 3
         if(relation1.toString().trim() == relation2.toString().trim()){
             totalCount--
@@ -638,19 +646,19 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val ifscCode = bindViews.verify3.ifscCodeEt.text.toString()
 
         if (accountNumber.toString().isEmpty()) {
-            ToastUtil.showLong(this, "Account number cannot be empty")
+            ToastUtil.showLong(this, "Enter account number")
             return
         }
         if (confirmAccountNumber.toString().isEmpty()) {
-            ToastUtil.showLong(this, "Please re-enter your account number")
+            ToastUtil.showLong(this, "Confirm your account number")
             return
         }
         if (ifscCode.toString().isEmpty()) {
-            ToastUtil.showLong(this, "IFSC code cannot be empty")
+            ToastUtil.showLong(this, "Enter IFSC code")
             return
         }
         if (accountNumber.toString().replace(" ","") != confirmAccountNumber.toString().replace(" ","")) {
-            ToastUtil.showLong(this, "Account number and re-entered account number must match")
+            ToastUtil.showLong(this, "Account numbers do not match")
             return
         }
         if (ifscCode.toString().length != 11) {
@@ -721,19 +729,19 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val birthDate = bindViews.verify4.birthDateTv.text.toString()
 
         if (panNumber.isEmpty()) {
-            ToastUtil.showLong(this, "PAN number cannot be empty")
+            ToastUtil.showLong(this, "Enter PAN number")
             return
         }
         if (fullName.isEmpty()) {
-            ToastUtil.showLong(this, "Full name cannot be empty")
+            ToastUtil.showLong(this, "Enter full name")
             return
         }
         if (birthDate.isEmpty()) {
-            ToastUtil.showLong(this, "Date of birth cannot be empty")
+            ToastUtil.showLong(this, "Select your date of birth")
             return
         }
         if (genderIndex == -1) {
-            ToastUtil.showLong(this, "Please select your gender")
+            ToastUtil.showLong(this, "Select your gender")
             return
         }
 
