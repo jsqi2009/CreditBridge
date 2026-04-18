@@ -30,8 +30,10 @@ import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
+import com.credit.bridge.remote.event.CheckRecreditNeededResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.CompleteVerifyResponseEvent
+import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.FeedbackResponseEvent
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
@@ -580,6 +582,17 @@ object HttpClient {
         body.awja = "PAN"
         val call = mHttpApi!!.requestPostOcrPanNumber(getHeaders(mContext), Contants.URL_OCR_NUMBER, body)
         dispatchClient?.enqueue(call, CommonIntResponse::class.java, OcrPanNumberResponseEvent::class.java)
+    }
+
+    fun checkRecreditNeeded(mContext: Context) {
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_CHECK_RECREDIT_NEEDED)
+        dispatchClient?.enqueue(call, CommonBoolResponse::class.java,
+            CheckRecreditNeededResponseEvent::class.java)
+    }
+
+    fun executeRecredit(mContext: Context) {
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_EXECUTE_RECREDIT)
+        dispatchClient?.enqueue(call, BResponse::class.java, ExecuteRecreditResponseEvent::class.java)
     }
 
 

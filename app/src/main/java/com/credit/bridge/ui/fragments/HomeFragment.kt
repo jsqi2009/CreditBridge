@@ -19,7 +19,9 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.HomeInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
+import com.credit.bridge.remote.event.CheckRecreditNeededResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
+import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
@@ -90,15 +92,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         when (v?.id) {
             R.id.accessAccountIv -> {
                 isCreateOrder = true
-                //checkUploadStatus()
-                previewProduct()
+                homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn?.let {
+                    if (it > 0) {
+                        //previewProduct()
+                        checkRecreditNeeded()
+                    }
+                }
             }
             R.id.accessManageIv -> {
                 isCreateOrder = true
                 //checkUploadStatus()
                 homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn?.let {
                     if (it > 0) {
-                        previewProduct()
+                        //previewProduct()
+                        checkRecreditNeeded()
                     } else {
 
                     }
@@ -339,6 +346,40 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }else{
             ToastUtil.showLong(requireContext(),event.networkError.toString())}
     }
+
+    private fun checkRecreditNeeded() {
+        showLoading()
+        HttpClient.checkRecreditNeeded(requireContext())
+    }
+
+    @Subscribe
+    fun onCheckRecreditNeededResponseEvent(event: CheckRecreditNeededResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if (event.model?.mtaw == true) {
+                executeRecredit()
+                checkUploadStatus()
+            } else {
+                previewProduct()
+            }
+        }else{
+            ToastUtil.showLong(requireContext(),event.networkError.toString())}
+    }
+
+    private fun executeRecredit() {
+        showLoading()
+        HttpClient.executeRecredit(requireContext())
+    }
+
+    @Subscribe
+    fun onExecuteRecreditResponseEvent(event: ExecuteRecreditResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+
+        }else{
+            ToastUtil.showLong(requireContext(),event.networkError.toString())}
+    }
+
 
     fun previewProduct(){
         isBackFromVerifyInfoPage = false
