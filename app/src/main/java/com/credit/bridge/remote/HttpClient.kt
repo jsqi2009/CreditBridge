@@ -31,6 +31,7 @@ import com.credit.bridge.remote.event.AllProductListResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckRecreditNeededResponseEvent
+import com.credit.bridge.remote.event.CheckUploadStatus2ResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.CompleteVerifyResponseEvent
 import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
@@ -301,6 +302,15 @@ object HttpClient {
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_CHECK_UPLOAD_STATUS, formMap)
         dispatchClient!!.enqueue(call, CommonBoolResponse::class.java,
             CheckUploadStatusResponseEvent::class.java)
+    }
+
+    @SuppressLint("HardwareIds")
+    fun checkUploadStatus2(mContext: Context) {
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap[Contants.imei_param] = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_CHECK_UPLOAD_STATUS, formMap)
+        dispatchClient!!.enqueue(call, CommonBoolResponse::class.java,
+            CheckUploadStatus2ResponseEvent::class.java)
     }
 
     fun getPrivacyPolicyUrl(mContext: Context) {

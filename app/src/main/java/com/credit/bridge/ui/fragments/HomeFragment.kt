@@ -20,6 +20,7 @@ import com.credit.bridge.remote.bean.HomeInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckRecreditNeededResponseEvent
+import com.credit.bridge.remote.event.CheckUploadStatus2ResponseEvent
 import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
@@ -31,6 +32,7 @@ import com.credit.bridge.ui.order.OrderDetailsActivity
 import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
+import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.widget.PermissionBottomSheet
 import com.squareup.otto.Subscribe
@@ -54,6 +56,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private var privacyPolicyUrl = ""
     private val REQUEST_CODE = 1000
     var zipDone = false
+    private var isRecreditNeeded = false
 
 
     private val verifyInfoLauncher =
@@ -188,6 +191,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private fun checkUploadStatus() {
         showLoading()
         HttpClient.checkUploadStatus(requireContext())
+    }
+
+    private fun checkUploadStatus2() {
+        showLoading()
+        HttpClient.checkUploadStatus2(requireContext())
     }
 
     private fun checkCollectDataStatus() {
@@ -356,14 +364,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onCheckRecreditNeededResponseEvent(event: CheckRecreditNeededResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
+
             if (event.model?.mtaw == true) {
-                executeRecredit()
-                checkUploadStatus()
+                isRecreditNeeded = true
+                //executeRecredit()
+                showRecreditNeededDialog()
+                checkUploadStatus2()
             } else {
-                previewProduct()
+                isRecreditNeeded = false
+                //previewProduct()
+                checkUploadStatus2()
             }
         }else{
             ToastUtil.showLong(requireContext(),event.networkError.toString())}
+    }
+
+    @Subscribe
+    fun onCheckUploadStatusResponseEvent2(event: CheckUploadStatus2ResponseEvent) {
+        hideLoading()
+        if (event.isSuccess) {
+            if(event.model?.mtaw != true){
+                if(privacyPolicyUrl.isEmpty()) {
+                    requestPermissions()
+                    //HttpClient.getPrivacyPolicyUrl(requireContext())
+                }else{
+                    requestPermissions()
+                    //showPermissionSheet()
+                }
+            }else{
+                if(isCreateOrder){
+                    previewProduct()
+                }else {
+                    var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                    intent.putExtra("currentStep", currentStep)
+                    verifyInfoLauncher.launch(intent)
+                }
+            }
+        }else{
+            ToastUtil.showLong(requireContext(),event.networkError.toString())
+        }
     }
 
     private fun executeRecredit() {
@@ -431,6 +470,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 requestPermissions()
         })
         permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
+    }
+
+    private fun showRecreditNeededDialog() {
+        DialogUtil.showRecreditNeededDialog(requireContext(), onConfirm = {
+
+        }, onCancel = {
+        })
     }
 
     companion object {
