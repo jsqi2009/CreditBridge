@@ -605,6 +605,11 @@ object HttpClient {
         dispatchClient?.enqueue(call, BResponse::class.java, ExecuteRecreditResponseEvent::class.java)
     }
 
+    fun executeRecredit2(mContext: Context):retrofit2.Call<BResponse> {
+        val call = mHttpApi!!.requestPost2(getHeaders(mContext), Contants.URL_EXECUTE_RECREDIT)
+        return call
+    }
+
 
 
 

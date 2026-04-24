@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.drawable.ColorDrawable
 import android.os.Build
 import android.os.CountDownTimer
+import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -13,7 +14,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.credit.bridge.R
 import androidx.core.graphics.drawable.toDrawable
+import androidx.core.os.postDelayed
 import com.bumptech.glide.Glide
+import com.credit.bridge.remote.HttpClient
+import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
+import com.credit.bridge.remote.response.BResponse
+import com.credit.bridge.remote.response.CommonResponse
+import com.squareup.otto.Subscribe
+import retrofit2.Response
+import java.util.Timer
+import java.util.TimerTask
+import java.util.logging.Handler
 
 /**
  * author : Jason
@@ -142,6 +153,7 @@ object DialogUtil {
         customPopup.requestWindowFeature(Window.FEATURE_NO_TITLE)
         customPopup.setContentView(R.layout.dialog_recredit_needed)
         val countdownTv = customPopup.findViewById<TextView>(R.id.countdownTv)
+        val descTv = customPopup.findViewById<TextView>(R.id.descTv)
         val tvConfirm = customPopup.findViewById<TextView>(R.id.tvConfirm)
         val tvCancel = customPopup.findViewById<TextView>(R.id.tvCancel)
         val ivGif = customPopup.findViewById<ImageView>(R.id.ivGif)
@@ -167,10 +179,35 @@ object DialogUtil {
             }
 
             override fun onFinish() {
-                tvConfirm.text = "Continue"
-                tvConfirm.isEnabled = true
+                countdownTv.visibility = View.GONE
+                descTv.text = "Credit limit refreshed. It will be available in a moment."
                 // customPopup.dismiss()
                 // onConfirm()
+
+                Timer().schedule(object : TimerTask() {
+                    override fun run() {
+                        val call = HttpClient.executeRecredit2(mContext)
+                        call.enqueue(object : retrofit2.Callback<BResponse> {
+                            override fun onResponse(
+                                call: retrofit2.Call<BResponse?>,
+                                response: Response<BResponse?>
+                            ) {
+                                if (response.body()?.fzpn == 200) {
+                                    customPopup.dismiss()
+                                    onConfirm.invoke()
+                                }
+                            }
+
+                            override fun onFailure(
+                                call: retrofit2.Call<BResponse?>,
+                                t: Throwable
+                            ) {
+                            }
+
+                        })
+                    }
+                }, 2000)
+
             }
         }
 

@@ -474,7 +474,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun showRecreditNeededDialog() {
         DialogUtil.showRecreditNeededDialog(requireContext(), onConfirm = {
-
+            previewProduct()
         }, onCancel = {
         })
     }

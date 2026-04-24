@@ -18,6 +18,7 @@ import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.RequestZipDataBody
+import com.credit.bridge.remote.response.BResponse
 import com.credit.bridge.remote.response.CommonResponse
 import com.google.gson.JsonObject
 import retrofit2.Call
@@ -68,6 +69,9 @@ interface HttpApi {
 
     @POST
     fun requestPost(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String): Call<JsonObject>
+
+    @POST
+    fun requestPost2(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String): Call<BResponse>
 
     @POST
     fun requestPostSubmitOrder(@HeaderMap headerMap: MutableMap<String, String>, @Url url: String,
