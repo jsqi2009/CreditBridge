@@ -171,7 +171,7 @@ object DialogUtil {
             attributes = params
         }
 
-        val timer = object : CountDownTimer(5000,1000) {
+        val timer = object : CountDownTimer(6000,1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 val sec = millisUntilFinished / 1000

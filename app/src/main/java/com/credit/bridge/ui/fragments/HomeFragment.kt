@@ -345,7 +345,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
             zipDone = true
             if(isCreateOrder){
-                previewProduct()
+                if (!isRecreditNeeded) {
+                    previewProduct()
+                }
             }else {
                 var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
                 intent.putExtra("currentStep", currentStep)
