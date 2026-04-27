@@ -2,10 +2,7 @@ package com.credit.bridge.util
 
 import android.app.Dialog
 import android.content.Context
-import android.graphics.drawable.ColorDrawable
-import android.os.Build
 import android.os.CountDownTimer
-import android.os.Looper
 import android.view.Gravity
 import android.view.View
 import android.view.Window
@@ -14,17 +11,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.credit.bridge.R
 import androidx.core.graphics.drawable.toDrawable
-import androidx.core.os.postDelayed
 import com.bumptech.glide.Glide
 import com.credit.bridge.remote.HttpClient
-import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.response.BResponse
-import com.credit.bridge.remote.response.CommonResponse
-import com.squareup.otto.Subscribe
 import retrofit2.Response
 import java.util.Timer
 import java.util.TimerTask
-import java.util.logging.Handler
 
 /**
  * author : Jason
@@ -159,7 +151,7 @@ object DialogUtil {
         val ivGif = customPopup.findViewById<ImageView>(R.id.ivGif)
         Glide.with(mContext)
             .asGif()
-            .load(R.raw.ic_puroair)
+            .load(R.raw.gif_process)
             .into(ivGif)
         customPopup.window?.apply {
             decorView.setBackgroundResource(android.R.color.transparent)
@@ -179,6 +171,10 @@ object DialogUtil {
             }
 
             override fun onFinish() {
+                Glide.with(mContext)
+                    .asGif()
+                    .load(R.raw.gif_success)
+                    .into(ivGif)
                 countdownTv.visibility = View.GONE
                 descTv.text = "Credit limit refreshed. It will be available in a moment."
                 // customPopup.dismiss()
@@ -206,7 +202,7 @@ object DialogUtil {
 
                         })
                     }
-                }, 2000)
+                }, 3000)
 
             }
         }
