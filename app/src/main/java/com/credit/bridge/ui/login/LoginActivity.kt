@@ -80,11 +80,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 //showPermissionSheet()
                 val phone = bindViews.phoneEt.text.toString().trim()
                 if (phone.isEmpty()) {
-                    ToastUtil.showLong(this,"Mobile number cannot be empty")
+                    ToastUtil.showLong(this,"Please enter your mobile number")
                     return
                 }
                 if(phone.length != 10){
-                    ToastUtil.showLong(this,"Please enter a correct phone number")
+                    ToastUtil.showLong(this,"Invalid mobile number. Please check and try again")
                     return
                 }
                 showLoading()
@@ -93,11 +93,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             R.id.verifyVoiceTv -> {
                 val phone = bindViews.phoneEt.text.toString().trim()
                 if (phone.isEmpty()) {
-                    ToastUtil.showLong(this,"Mobile number cannot be empty")
+                    ToastUtil.showLong(this,"Please enter your mobile number")
                     return
                 }
                 if(phone.length != 10){
-                    ToastUtil.showLong(this,"Please enter a correct phone number")
+                    ToastUtil.showLong(this,"Invalid mobile number. Please check and try again")
                     return
                 }
                 DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
@@ -114,23 +114,23 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         val code = bindViews.codeEt.text.toString().trim()
 
         if (phone.isEmpty()) {
-            ToastUtil.showLong(this,"Mobile number cannot be empty")
+            ToastUtil.showLong(this,"Please enter your mobile number")
             return
         }
         if (code.isEmpty()) {
-            ToastUtil.showLong(this,"Verification code cannot be empty")
+            ToastUtil.showLong(this,"Please enter the verification code")
             return
         }
         if(phone.length != 10){
-            ToastUtil.showLong(this,"Please enter a correct phone number")
+            ToastUtil.showLong(this,"Invalid mobile number. Please check and try again")
             return
         }
         if(code.length != 4){
-            ToastUtil.showLong(this,"Please enter a valid verification code")
+            ToastUtil.showLong(this,"Invalid verification code. Please try again")
             return
         }
         if(!isChecked){
-            ToastUtil.showLong(this,"Please agree to the terms and conditions")
+            ToastUtil.showLong(this,"Please accept the Privacy Policy to continue")
             return
         }
         CacheManager.smsCode = code

@@ -98,31 +98,31 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         val newIfsc = bindViews.newIfscEt.text.toString()
 
         if (currentAccount.isEmpty()) {
-            ToastUtil.showLong(this, "Enter your current account number")
+            ToastUtil.showLong(this, "Please enter your current bank account number")
             return
         }
         if (newAccount.isEmpty()) {
-            ToastUtil.showLong(this, "Enter your new account number")
+            ToastUtil.showLong(this, "Please enter your new bank account number")
             return
         }
         if (confirmNewAccount.isEmpty()) {
-            ToastUtil.showLong(this, "Confirm your new account number")
+            ToastUtil.showLong(this, "Please confirm your new bank account number")
             return
         }
         if (newIfsc.isEmpty()) {
-            ToastUtil.showLong(this, "Enter IFSC code")
+            ToastUtil.showLong(this, "Please provide a valid IFSC code")
             return
         }
         if (currentAccount.replace(" ","") != bankInfo?.qmtddx) {
-            ToastUtil.showLong(this, "Enter your current account number")
+            ToastUtil.showLong(this, "Please enter your current bank account number")
             return
         }
         if (newAccount.replace(" ","") != confirmNewAccount.replace(" ","")) {
-            ToastUtil.showLong(this, "Account numbers do not match")
+            ToastUtil.showLong(this, "The account numbers entered do not match")
             return
         }
         if (newIfsc.replace(" ","").length != 11) {
-            ToastUtil.showLong(this, "IFSC code must be 11 characters")
+            ToastUtil.showLong(this, "IFSC code should contain 11 characters")
             return
         }
 

@@ -464,31 +464,31 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private fun verifyBaseUserAction() {
 
         if (workTypeIndex == -1) {
-            ToastUtil.showLong(this, "Please select your employment status")
+            ToastUtil.showLong(this, "Please choose your employment type")
             return
         }
         if (monthlyIncomeIndex == -1) {
-            ToastUtil.showLong(this, "Please select your monthly disposable income")
+            ToastUtil.showLong(this, "Please select your monthly available income")
             return
         }
         if (educationIndex == -1) {
-            ToastUtil.showLong(this, "Select your education level")
+            ToastUtil.showLong(this, "Please choose your education qualification")
             return
         }
         if (maritalIndex == -1) {
-            ToastUtil.showLong(this, "Select your marital status")
+            ToastUtil.showLong(this, "Please select your marital status")
             return
         }
         if (numberOfChildIndex == -1) {
-            ToastUtil.showLong(this, "Select number of children")
+            ToastUtil.showLong(this, "Please select the number of dependents")
             return
         }
         if (bindViews.verify1.emailEt.text.isEmpty() || !bindViews.verify1.emailEt.text.contains("@")) {
-            ToastUtil.showLong(this, "Enter a valid email")
+            ToastUtil.showLong(this, "Please enter a valid email address")
             return
         }
         if (bindViews.verify1.whatsappEt.text.isEmpty()) {
-            ToastUtil.showLong(this, "Enter your WhatsApp number")
+            ToastUtil.showLong(this, "Please enter your WhatsApp mobile number")
             return
         }
 
@@ -541,7 +541,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private fun verifyContactAction() {
 
         if (contact1Index == -1) {
-            ToastUtil.showLong(this, "Select relationship for Contact 1")
+            ToastUtil.showLong(this, "Please select the relationship for Emergency Contact 1")
             return
         }
         val contact1Value = bindViews.verify2.contact1Tv.text.toString()
@@ -552,31 +552,31 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val relation2 = bindViews.verify2.relationship2Tv.text.toString()
 
         if (contact1Value.isEmpty()) {
-            ToastUtil.showLong(this, "Enter Contact 1 name")
+            ToastUtil.showLong(this, "Please enter the name of Emergency Contact 1")
             return
         }
         if (phone1Value.isEmpty()) {
-            ToastUtil.showLong(this, "Enter Contact 1 phone number")
+            ToastUtil.showLong(this, "Please enter the phone number of Emergency Contact 1")
             return
         }
         if (contact2Index == -1) {
-            ToastUtil.showLong(this, "Select relationship for Contact 2")
+            ToastUtil.showLong(this, "Please select the relationship for Emergency Contact 2")
             return
         }
         if (contact2Value.isEmpty()) {
-            ToastUtil.showLong(this, "Enter Contact 2 name")
+            ToastUtil.showLong(this, "Please enter the name of Emergency Contact 2")
             return
         }
         if (phone2Value.isEmpty()) {
-            ToastUtil.showLong(this, "Enter Contact 2 phone number")
+            ToastUtil.showLong(this, "Please enter the phone number of Emergency Contact 2")
             return
         }
         if (relation1 == relation2) {
-            ToastUtil.showLong(this, "Contacts must have different relationships")
+            ToastUtil.showLong(this, "Emergency contacts must have different relationships")
             return
         }
         if (contact1Value == contact2Value) {
-            ToastUtil.showLong(this, "Contacts must be different")
+            ToastUtil.showLong(this, "Please provide two different emergency contacts")
             return
         }
         var totalCount = 3
@@ -590,7 +590,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             totalCount--
         }
         if(totalCount < 3){
-            ToastUtil.showLong(this, "Please make sure the contact details are different")
+            ToastUtil.showLong(this, "Contact details cannot be duplicated")
             return
         }
         HttpClient.eventReport(this,ConstConfig.EVENT_CONTACT_SUBMIT,
@@ -646,23 +646,23 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val ifscCode = bindViews.verify3.ifscCodeEt.text.toString()
 
         if (accountNumber.toString().isEmpty()) {
-            ToastUtil.showLong(this, "Enter account number")
+            ToastUtil.showLong(this, "Please enter your bank account number")
             return
         }
         if (confirmAccountNumber.toString().isEmpty()) {
-            ToastUtil.showLong(this, "Confirm your account number")
+            ToastUtil.showLong(this, "Please confirm your bank account number")
             return
         }
         if (ifscCode.toString().isEmpty()) {
-            ToastUtil.showLong(this, "Enter IFSC code")
+            ToastUtil.showLong(this, "Please provide the IFSC code")
             return
         }
         if (accountNumber.toString().replace(" ","") != confirmAccountNumber.toString().replace(" ","")) {
-            ToastUtil.showLong(this, "Account numbers do not match")
+            ToastUtil.showLong(this, "The account numbers do not match")
             return
         }
         if (ifscCode.toString().length != 11) {
-            ToastUtil.showLong(this, "IFSC code must be 11 characters")
+            ToastUtil.showLong(this, "IFSC code must be exactly 11 characters")
             return
         }
 
@@ -717,9 +717,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         if (bindViews.verify4.panInfoLl.isGone) {
             if(isUseOcePan){
-                ToastUtil.showLong(this, "Recognition failed. Please retake the photo.")
+                ToastUtil.showLong(this, "Unable to recognize the image. Please retake the photo")
             }else{
-                ToastUtil.showLong(this, "Please take the photo.")
+                ToastUtil.showLong(this, "Please capture a photo to continue")
             }
             return
         }
@@ -729,19 +729,19 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         val birthDate = bindViews.verify4.birthDateTv.text.toString()
 
         if (panNumber.isEmpty()) {
-            ToastUtil.showLong(this, "Enter PAN number")
+            ToastUtil.showLong(this, "Please enter your PAN number")
             return
         }
         if (fullName.isEmpty()) {
-            ToastUtil.showLong(this, "Enter full name")
+            ToastUtil.showLong(this, "Please enter your full legal name")
             return
         }
         if (birthDate.isEmpty()) {
-            ToastUtil.showLong(this, "Select your date of birth")
+            ToastUtil.showLong(this, "Please select your birth date")
             return
         }
         if (genderIndex == -1) {
-            ToastUtil.showLong(this, "Select your gender")
+            ToastUtil.showLong(this, "Please select your gender")
             return
         }
 
@@ -828,7 +828,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun completeVerify(){
         if(!isFacePassed){
-            ToastUtil.showLong(this, "Face authentication failed. Please try again")
+            ToastUtil.showLong(this, "Face verification was unsuccessful. Please try again")
             return
         }
 

@@ -97,7 +97,7 @@ class VerifyBankInfoBottomSheet(
             }
             R.id.confirmTv -> {
                 if (bindViews.codeEt.toString().isEmpty()) {
-                    ToastUtil.showLong(requireContext(), "Enter verification code")
+                    ToastUtil.showLong(requireContext(), "Verification code is required")
                     return
                 }
                 onConfirm.invoke(bindViews.codeEt.toString())

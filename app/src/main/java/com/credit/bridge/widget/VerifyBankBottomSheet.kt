@@ -48,7 +48,7 @@ class VerifyBankBottomSheet (val mContext: Context, val confirmListener: OnConfi
             }
             R.id.tv_confirm -> {
                 if (bindViews.etCode.text.toString().isEmpty()) {
-                    ToastUtil.showLong(requireContext(), "Verification code cannot be empty")
+                    ToastUtil.showLong(requireContext(), "Please enter the OTP code")
                     return
                 }
                 confirmListener.onClick(bindViews.etCode.text.toString())

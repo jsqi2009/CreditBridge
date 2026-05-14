@@ -105,7 +105,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
         val feedback = bindViews.feedbackEt.text.toString()
         if (feedback.isEmpty()) {
-            ToastUtil.showLong(this, "Comment content cannot be empty")
+            ToastUtil.showLong(this, "Please enter your feedback or comment")
             return
         }
 
