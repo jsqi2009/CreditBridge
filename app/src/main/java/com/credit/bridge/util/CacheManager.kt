@@ -13,6 +13,9 @@ object CacheManager {
 
     var mobile by SPCache("")
 
+    var isNeedShowPermissionSheet by SPCache(true, mobile + "permission_sheet")
+
+
     var afChannel by SPCache("")
 
     var historyCacheData by SPCache<Set<String>>(setOf())

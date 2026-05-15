@@ -52,12 +52,14 @@
 
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/margin_60"
                 android:paddingHorizontal="@dimen/margin_20"
                 android:layout_gravity="center_horizontal"
                 android:orientation="vertical">
