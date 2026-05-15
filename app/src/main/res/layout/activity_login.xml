@@ -25,6 +25,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_10"
             android:src="@mipmap/ic_logo_text" />
 
     </LinearLayout>
@@ -73,7 +74,7 @@
                 android:background="@null"
                 android:hint="@string/hint_enter"
                 android:textColorHint="@color/text_99"
-                android:inputType="phone"
+                android:inputType="number"
                 android:maxLength="10"
                 android:paddingLeft="15dp"
                 android:textColor="@color/theme_color"
