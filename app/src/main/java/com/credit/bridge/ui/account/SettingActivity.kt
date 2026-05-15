@@ -34,7 +34,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
     override fun initRes() {
         super.initRes()
 
-        bindViews.titleLayout.titleTv.text = "Setting"
+        bindViews.titleLayout.titleTv.text = "Settings"
         bindViews.mobileTv.text = "+91" + NumberUtils.formatNumber(CacheManager.mobile, 3, 2)
 
 
