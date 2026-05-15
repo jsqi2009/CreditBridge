@@ -247,35 +247,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         bindViews.retryTv.paint.isUnderlineText = true
 
-        setupVerifyStep1KeyboardScroll()
-
-    }
-
-    private fun setupVerifyStep1KeyboardScroll() {
-        val scroll = bindViews.verifyScrollView
-        ViewCompat.setOnApplyWindowInsetsListener(scroll) { v, insets ->
-            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
-            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, imeBottom)
-            insets
-        }
-        ViewCompat.requestApplyInsets(scroll)
-
-        val focusScroll = View.OnFocusChangeListener { _, hasFocus ->
-            if (hasFocus && bindViews.verify1.root.visibility == View.VISIBLE) {
-                scrollVerifyStep1ToBottom(scroll)
-            }
-        }
-        bindViews.verify1.emailEt.onFocusChangeListener = focusScroll
-        bindViews.verify1.whatsappEt.onFocusChangeListener = focusScroll
-    }
-
-    private fun scrollVerifyStep1ToBottom(scrollView: android.widget.ScrollView) {
-        scrollView.post {
-            scrollView.postDelayed({
-                if (bindViews.verify1.root.visibility != View.VISIBLE) return@postDelayed
-                scrollView.fullScroll(View.FOCUS_DOWN)
-            }, 120)
-        }
     }
 
     override fun onClick(v: View?) {
@@ -436,6 +407,42 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
                 HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
             }
+        }
+        syncVerifyStep1KeyboardScroll()
+    }
+
+    private fun syncVerifyStep1KeyboardScroll() {
+        val scroll = bindViews.verifyScrollView
+        if (currentStep == 1) {
+            ViewCompat.setOnApplyWindowInsetsListener(scroll) { v, insets ->
+                val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+                v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, imeBottom)
+                insets
+            }
+            ViewCompat.requestApplyInsets(scroll)
+
+            val focusScroll = View.OnFocusChangeListener { _, hasFocus ->
+                if (hasFocus && bindViews.verify1.root.visibility == View.VISIBLE) {
+                    scrollVerifyStep1ToBottom(scroll)
+                }
+            }
+            bindViews.verify1.emailEt.onFocusChangeListener = focusScroll
+            bindViews.verify1.whatsappEt.onFocusChangeListener = focusScroll
+        } else {
+            ViewCompat.setOnApplyWindowInsetsListener(scroll, null)
+            scroll.setPadding(0, 0, 0, 0)
+            bindViews.verify1.emailEt.onFocusChangeListener = null
+            bindViews.verify1.whatsappEt.onFocusChangeListener = null
+            ViewCompat.requestApplyInsets(scroll)
+        }
+    }
+
+    private fun scrollVerifyStep1ToBottom(scrollView: android.widget.ScrollView) {
+        scrollView.post {
+            scrollView.postDelayed({
+                if (bindViews.verify1.root.visibility != View.VISIBLE) return@postDelayed
+                scrollView.fullScroll(View.FOCUS_DOWN)
+            }, 120)
         }
     }
 
@@ -984,7 +991,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun chooseContact1() {
         val intent = Intent(Intent.ACTION_PICK, ContactsContract.CommonDataKinds.Phone.CONTENT_URI)
-        contact1Launcher.launch(intent)
         if (intent.resolveActivity(packageManager) != null) {
             contact1Launcher.launch(intent)
         } else {
