@@ -57,7 +57,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private val REQUEST_CODE = 1000
     var zipDone = false
     private var isRecreditNeeded = false
-
+    private var isAccountCreditPipelineBusy = false
 
     private val verifyInfoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -365,6 +365,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun checkRecreditNeeded() {
+        if (isAccountCreditPipelineBusy) return
+        isAccountCreditPipelineBusy = true
         showLoading()
         HttpClient.checkRecreditNeeded(requireContext())
     }
@@ -385,32 +387,37 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 checkUploadStatus2()
             }
         }else{
+            isAccountCreditPipelineBusy = false
             ToastUtil.showLong(requireContext(),event.networkError.toString())}
     }
 
     @Subscribe
     fun onCheckUploadStatusResponseEvent2(event: CheckUploadStatus2ResponseEvent) {
         hideLoading()
-        if (event.isSuccess) {
-            if(event.model?.mtaw != true){
-                if(privacyPolicyUrl.isEmpty()) {
-                    requestPermissions()
-                    //HttpClient.getPrivacyPolicyUrl(requireContext())
+        try {
+            if (event.isSuccess) {
+                if(event.model?.mtaw != true){
+                    if(privacyPolicyUrl.isEmpty()) {
+                        requestPermissions()
+                        //HttpClient.getPrivacyPolicyUrl(requireContext())
+                    }else{
+                        requestPermissions()
+                        //showPermissionSheet()
+                    }
                 }else{
-                    requestPermissions()
-                    //showPermissionSheet()
+                    if(isCreateOrder){
+                        previewProduct()
+                    }else {
+                        var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                        intent.putExtra("currentStep", currentStep)
+                        verifyInfoLauncher.launch(intent)
+                    }
                 }
             }else{
-                if(isCreateOrder){
-                    previewProduct()
-                }else {
-                    var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
-                    intent.putExtra("currentStep", currentStep)
-                    verifyInfoLauncher.launch(intent)
-                }
+                ToastUtil.showLong(requireContext(),event.networkError.toString())
             }
-        }else{
-            ToastUtil.showLong(requireContext(),event.networkError.toString())
+        } finally {
+            isAccountCreditPipelineBusy = false
         }
     }
 
