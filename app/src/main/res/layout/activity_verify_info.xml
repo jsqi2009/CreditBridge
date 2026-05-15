@@ -61,11 +61,13 @@
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/verifyScrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginVertical="@dimen/margin_15"
         android:layout_weight="1"
-        android:fillViewport="true">
+        android:fillViewport="false"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"

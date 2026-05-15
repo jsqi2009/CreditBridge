@@ -63,12 +63,14 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
     }
 
     private fun fetchOrderList() {
+        showLoading()
         HttpClient.fetchOrderList(requireContext(), orderType,"bill")
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onFetchOrderListEvent(event: OrderListResponseEvent) {
+        hideLoading()
         if (event.isSuccess) {
             if (event.model?.flag == "bill") {
 

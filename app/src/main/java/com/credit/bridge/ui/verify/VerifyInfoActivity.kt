@@ -16,6 +16,8 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.view.isGone
 import com.bumptech.glide.Glide
@@ -245,7 +247,35 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         bindViews.retryTv.paint.isUnderlineText = true
 
+        setupVerifyStep1KeyboardScroll()
 
+    }
+
+    private fun setupVerifyStep1KeyboardScroll() {
+        val scroll = bindViews.verifyScrollView
+        ViewCompat.setOnApplyWindowInsetsListener(scroll) { v, insets ->
+            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            v.setPadding(v.paddingLeft, v.paddingTop, v.paddingRight, imeBottom)
+            insets
+        }
+        ViewCompat.requestApplyInsets(scroll)
+
+        val focusScroll = View.OnFocusChangeListener { _, hasFocus ->
+            if (hasFocus && bindViews.verify1.root.visibility == View.VISIBLE) {
+                scrollVerifyStep1ToBottom(scroll)
+            }
+        }
+        bindViews.verify1.emailEt.onFocusChangeListener = focusScroll
+        bindViews.verify1.whatsappEt.onFocusChangeListener = focusScroll
+    }
+
+    private fun scrollVerifyStep1ToBottom(scrollView: android.widget.ScrollView) {
+        scrollView.post {
+            scrollView.postDelayed({
+                if (bindViews.verify1.root.visibility != View.VISIBLE) return@postDelayed
+                scrollView.fullScroll(View.FOCUS_DOWN)
+            }, 120)
+        }
     }
 
     override fun onClick(v: View?) {
