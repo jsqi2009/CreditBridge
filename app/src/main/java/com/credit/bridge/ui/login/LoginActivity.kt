@@ -1,15 +1,19 @@
 package com.credit.bridge.ui.login
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.TextPaint
 import android.text.method.LinkMovementMethod
+import android.text.TextWatcher
 import android.text.style.ClickableSpan
 import android.text.style.LeadingMarginSpan
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.credit.bridge.R
@@ -27,6 +31,7 @@ import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.toString
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener {
 
@@ -58,8 +63,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         bindViews.phoneEt.setText("")
         bindViews.codeEt.setText("")
 
-        configPrivacyPolicy()
+        bindViews.phoneEt.addTextChangedListener(phoneTextWatcher)
+        bindViews.codeEt.addTextChangedListener(codeTextWatcher)
 
+        configPrivacyPolicy()
     }
 
     override fun onClick(view: View) {
@@ -260,16 +267,31 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         }
     }
 
-    /*fun showPermissionSheet() {
-        val permissionSheet = PermissionBottomSheet(
-            this,"Employment Status",VerifyInfoUtil.getWorkTypeList(),
-            workTypeIndex, object : OnSelectListener {
-                override fun onSelect(index: Int) {
-                    ToastUtil.showShort(this@LoginActivity, "Select: $index")
-                }
-            })
-        permissionSheet.show(supportFragmentManager, "workTypeSheet")
-    }*/
+    private fun hideKeyboard() {
+        val token = (currentFocus ?: bindViews.root).windowToken
+        (getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager)
+            .hideSoftInputFromWindow(token, 0)
+    }
+
+    private var phoneTextWatcher = object : TextWatcher{
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun afterTextChanged(s: Editable?) {
+            if (bindViews.phoneEt.text.toString().trim().length == 10) {
+                hideKeyboard()
+            }
+        }
+    }
+
+    private var codeTextWatcher = object : TextWatcher{
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        override fun afterTextChanged(s: Editable?) {
+            if (bindViews.codeEt.text.toString().trim().length != 4) return
+            hideKeyboard()
+            handleLogin()
+        }
+    }
 
 
 
