@@ -144,7 +144,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (homeInfo == null) {
             return
         }
-        if (homeInfo!!.hahsraev.gdcuhe != null) {
+        if (homeInfo!!.hahsraev != null && homeInfo!!.hahsraev?.gdcuhe != null) {
             bindViews.totalAmountTv.text =
                 context?.getString(R.string.money_symbol) + " " + String.format("%,d", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
             val orderStatus = homeInfo?.hahsraev?.gdcuhe
@@ -179,6 +179,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }
 
+        } else if (homeInfo!!.hahsraev == null){
+            bindViews.accessAccountIv.visibility = View.GONE
+            bindViews.startVerifyLl.visibility = View.VISIBLE
+            isAuthed = false
+            bindViews.verifiedNeedPayDue.visibility = View.GONE
+            bindViews.verifiedNeedPay.visibility = View.GONE
+            bindViews.verifiedFail.visibility = View.GONE
         } else {
             bindViews.verifiedNeedPay.visibility = View.GONE
             bindViews.verifiedNeedPayDue.visibility = View.GONE

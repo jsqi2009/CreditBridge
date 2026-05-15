@@ -4,7 +4,7 @@ import java.io.Serializable
 
 class HomeInfo: Serializable {
     var otytwlcq: HomeUserInfo = HomeUserInfo()  //user info
-    var hahsraev: HomeOrderInfo = HomeOrderInfo()  //home page info
+    var hahsraev: HomeOrderInfo? = null  //home page info
     var zydllhkuuvpqz: ArrayList<OrderInfo>? = null   //order info
 
 }
