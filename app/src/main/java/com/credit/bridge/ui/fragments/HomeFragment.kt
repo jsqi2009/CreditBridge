@@ -99,6 +99,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     if (it > 0) {
                         //previewProduct()
                         checkRecreditNeeded()
+                    } else {
+                        homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv?.let {
+                            ToastUtil.showLong(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv)
+                        }
                     }
                 }
             }
