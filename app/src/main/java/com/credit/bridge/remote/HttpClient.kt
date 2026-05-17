@@ -28,6 +28,7 @@ import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.body.RequestVerifyCodeBody
 import com.credit.bridge.remote.body.RequestVoiceCodeBody
 import com.credit.bridge.remote.event.AllProductListResponseEvent
+import com.credit.bridge.remote.event.AppInfoResponseEvent
 import com.credit.bridge.remote.event.BResponseEvent
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckRecreditNeededResponseEvent
@@ -77,6 +78,7 @@ import com.credit.bridge.remote.event.VerifyOcrFaceResponseEvent
 import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.AllProductListResponse
+import com.credit.bridge.remote.response.AppInfoResponse
 import com.credit.bridge.remote.response.BResponse
 import com.credit.bridge.remote.response.CheckCollectDataStatusResponse
 import com.credit.bridge.remote.response.CommonBoolResponse
@@ -608,6 +610,11 @@ object HttpClient {
     fun executeRecredit2(mContext: Context):retrofit2.Call<BResponse> {
         val call = mHttpApi!!.requestPost2(getHeaders(mContext), Contants.URL_EXECUTE_RECREDIT)
         return call
+    }
+
+    fun getAppInfo(mContext: Context) {
+        val call = mHttpApi!!.requestPost(getHeaders(mContext), Contants.URL_GET_APP_INFO)
+        dispatchClient?.enqueue(call, AppInfoResponse::class.java, AppInfoResponseEvent::class.java)
     }
 
 

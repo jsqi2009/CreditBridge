@@ -48,6 +48,7 @@ object Contants {
     const val URL_COMPLETE_VERIFY  = "/qzvfkh/kwuevxeg/qsfsdmbvmrstw"//	/credit/complete/certification
     const val URL_CHECK_RECREDIT_NEEDED  = "/mept/wgzmmlbkizzvifaxjeq"//	/home/checkRecreditNeeded
     const val URL_EXECUTE_RECREDIT  = "/qsje/ggbululclkrwmnn"//	/home/executeRecredit
+    const val URL_GET_APP_INFO  = "/lda/ptzi/satvwjcskwcub"//	//api/auth/appSystemInfo
 
 
 

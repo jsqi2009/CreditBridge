@@ -70,7 +70,13 @@
         android:text="Customer services"
         android:textColor="#FFD29F"
         android:textSize="16sp"
+        android:visibility="gone"
         />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>
