@@ -218,6 +218,46 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/customerServiceLl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_25"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_5"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_customer_services"/>
+
+        <TextView
+            android:id="@+id/customerServiceTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="Customer services"
+            android:textColor="#FFD29F"
+            android:textSize="16sp"
+            />
+
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@mipmap/ic_account_right2"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/settingLl"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -17,6 +17,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.response.BankInfo
 import com.credit.bridge.ui.account.AboutUsActivity
+import com.credit.bridge.ui.account.CustomerServicesActivity
 import com.credit.bridge.ui.account.PaymentAccountActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
 import com.credit.bridge.ui.account.SettingActivity
@@ -55,6 +56,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
         bindViews.aboutUsLl.setOnClickListener(this)
         bindViews.settingLl.setOnClickListener(this)
         bindViews.paymentAccountIv.setOnClickListener(this)
+        bindViews.customerServiceLl.setOnClickListener(this)
 
         if (CacheManager.isAuth) {
             bindViews.loginTv.visibility = View.GONE
@@ -84,6 +86,9 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
             }
             R.id.settingLl -> {
                 startActivity(Intent(requireActivity(), SettingActivity::class.java))
+            }
+            R.id.customerServiceLl -> {
+                startActivity(Intent(requireActivity(), CustomerServicesActivity::class.java))
             }
         }
     }

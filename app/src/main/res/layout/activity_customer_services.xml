@@ -8,8 +8,7 @@
     android:paddingBottom="@dimen/bottom_menu_height_64"
     android:background="@color/order_bg"
     android:orientation="vertical"
-    tools:context=".ui.account.AboutUsActivity">
-
+    tools:context=".ui.account.CustomerServicesActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -50,8 +49,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_100"
-            android:layout_marginHorizontal="@dimen/margin_15"
             android:gravity="center_horizontal"
+            android:layout_marginHorizontal="@dimen/margin_15"
             android:lineHeight="@dimen/margin_25"
             android:text="Rupee Cycle follows an “assess first, use when needed” approach. This model provides flexibility while helping users maintain better control over their personal financial planning and credit usage."
             android:textColor="#ffffebd3"
@@ -61,5 +60,17 @@
 
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/customerServiceTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:includeFontPadding="false"
+        android:text="Customer services"
+        android:textColor="#FFD29F"
+        android:textSize="16sp"
+        />
+
 
 </LinearLayout>
