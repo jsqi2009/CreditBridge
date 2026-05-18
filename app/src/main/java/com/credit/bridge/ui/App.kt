@@ -12,6 +12,7 @@ import com.credit.bridge.util.GoogleAdUtils
 import com.credit.bridge.util.SPUtil
 import com.liveness.dflivenesslibrary.DFProductResult
 import com.liveness.dflivenesslibrary.DFTransferResultInterface
+import com.tencent.bugly.crashreport.CrashReport
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -37,6 +38,7 @@ class App : Application() , DFTransferResultInterface {
 
         initFlyer()
         getGoogleAd()
+        initBugly()
     }
 
     private fun initFlyer() {
@@ -87,6 +89,15 @@ class App : Application() , DFTransferResultInterface {
 
     public override fun getResult(): DFProductResult {
         return mResult
+    }
+
+    private fun initBugly() {
+
+        CrashReport.initCrashReport(
+            applicationContext,
+            "0a8a7c1296",
+            false
+        )
     }
 
     companion object {
