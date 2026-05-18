@@ -166,7 +166,7 @@
                 android:id="@+id/checkPolicyIv"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
-                android:src="@mipmap/ic_unselected" />
+                android:src="@mipmap/ic_selected" />
 
             <TextView
                 android:id="@+id/policyTv"

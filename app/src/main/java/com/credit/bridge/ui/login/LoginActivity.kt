@@ -41,7 +41,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
     private var total = 60
     private var verifyCodeTimeRemain = total
     private var verifyVoiceTimeRemain = total
-    private var isChecked = false
+    private var isChecked = true
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
