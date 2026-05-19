@@ -314,22 +314,41 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }
     }
 
-    private fun requestPermissions() {
+    private fun requestNeedPermissions() {
         try {
 
             if (EasyPermissions.hasPermissions(requireActivity(), *permissions)) {
                 uploadInstalledPackageList()
             } else {
-                EasyPermissions.requestPermissions(
+                /*EasyPermissions.requestPermissions(
                     PermissionRequest.Builder(this, REQUEST_CODE, *permissions)
                         .setRationale("Device Permission Required To help identify your device and protect your account, Rupee Cycle requires access to device status information.") //
                         .setPositiveButtonText("Allow")
                         .setNegativeButtonText("Deny")
                         .build()
-                )
+                )*/
+
+                showRequestPermissionDialog()
             }
         } catch (e: Exception) {
         }
+    }
+
+    private fun showRequestPermissionDialog() {
+        DialogUtil.showRequestPermissionDialog(
+            requireContext(),
+            onConfirm = { requestSystemPermissions() },
+            onCancel = {
+                ToastUtil.showLong(requireContext(), "Please allow permissions to continue")
+            }
+        )
+    }
+
+    private fun requestSystemPermissions() {
+        requestPermissions(permissions, REQUEST_CODE)
+        /*EasyPermissions.requestPermissions(
+            PermissionRequest.Builder(this, REQUEST_CODE, *permissions).build()
+        )*/
     }
 
     private fun uploadInstalledPackageList() {
@@ -473,9 +492,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             if (event.isSuccess) {
                 if (event.model?.mtaw != true) {
                     if (privacyPolicyUrl.isEmpty()) {
-                        requestPermissions()
+                        requestNeedPermissions()
                     } else {
-                        requestPermissions()
+                        requestNeedPermissions()
                     }
                 } else {
                     if (isCreateOrder) {
@@ -557,15 +576,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (CacheManager.isNeedShowPermissionSheet) {
             val permissionSheet = PermissionBottomSheet( requireActivity(),
                 onRefuseListener = {
-                    requestPermissions()
+                    requestNeedPermissions()
                     CacheManager.isNeedShowPermissionSheet = false
                 }, onAgreeListener = {
-                    requestPermissions()
+                    requestNeedPermissions()
                     CacheManager.isNeedShowPermissionSheet = false
                 })
             permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
         }else{
-            requestPermissions()
+            requestNeedPermissions()
         }
     }
 
