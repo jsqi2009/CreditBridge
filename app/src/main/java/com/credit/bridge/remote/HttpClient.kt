@@ -11,7 +11,9 @@ import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
 import com.credit.bridge.content.Contants
+import com.credit.bridge.remote.bean.BaseDeviceInfo
 import com.credit.bridge.remote.bean.BaseUserInfo
+import com.credit.bridge.remote.bean.SystemInfo
 import com.credit.bridge.remote.body.RequestBankInfoBody
 import com.credit.bridge.remote.body.RequestContactBody
 import com.credit.bridge.remote.body.RequestFeedbackBody
@@ -324,11 +326,10 @@ object HttpClient {
     }
 
     @SuppressLint("HardwareIds")
-    fun uploadInstalledPackageList(mContext: Context) {
-
+    fun uploadInstalledPackageList(mContext: Context, data: Array<BaseDeviceInfo>) {
         val installedPackageBody = RequestInstalledPackageBody(
             protocolName = "INSTALLED_APP",
-            data = SystemDataUtils.getInstalledAppList(mContext)
+            data = data
         )
         val jsonList = Gson().toJson(installedPackageBody)
         val zipString = SystemDataUtils.getZipData(jsonList)
@@ -344,11 +345,11 @@ object HttpClient {
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
     @SuppressLint("HardwareIds")
-    fun uploadSystemInfo(mContext: Context) {
-        var messageBody = RequestInstalledPackageBody(protocolName = "DEVICE_INFO" , data = SystemDataUtils.getDeviceInfo(mContext))
+    fun uploadSystemInfo(mContext: Context, data: Array<SystemInfo>) {
+        val messageBody = RequestInstalledPackageBody(protocolName = "DEVICE_INFO", data = data)
         val json = Gson().toJson(messageBody)
         val zipString = SystemDataUtils.getZipData(json)
-        var requestZipBody = RequestZipDataBody()
+        val requestZipBody = RequestZipDataBody()
         requestZipBody.phajox = CacheManager.mobile
         requestZipBody.guawnoc = zipString
         requestZipBody.guxf = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)

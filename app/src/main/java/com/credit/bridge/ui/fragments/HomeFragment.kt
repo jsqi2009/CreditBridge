@@ -4,6 +4,8 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,11 +35,13 @@ import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.SystemDataUtils
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.widget.PermissionBottomSheet
 import com.squareup.otto.Subscribe
 import pub.devrel.easypermissions.EasyPermissions
 import pub.devrel.easypermissions.PermissionRequest
+import java.util.concurrent.Executors
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, EasyPermissions.PermissionCallbacks{
     override fun getBinding(
@@ -58,6 +62,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     var zipDone = false
     private var isRecreditNeeded = false
     private var isAccountCreditPipelineBusy = false
+    private var isCollectingOrUploadingApps = false
+    private var skipHomeUploadEvents = false
 
     private val verifyInfoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -72,6 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     override fun onResume() {
         super.onResume()
+        skipHomeUploadEvents = false
         if (isVisible) {
             checkCollectDataStatus()
         }
@@ -326,46 +333,109 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun uploadInstalledPackageList() {
+        if (!isAdded || skipHomeUploadEvents) return
+        if (isCollectingOrUploadingApps) return
+        isCollectingOrUploadingApps = true
         showLoading()
-        HttpClient.uploadInstalledPackageList(requireContext())
+        val appContext = requireContext().applicationContext
+        uploadIoExecutor.execute {
+            val installedList = try {
+                SystemDataUtils.getInstalledAppList(appContext)
+            } catch (e: Exception) {
+                null
+            }
+            mainHandler.post {
+                if (!isAdded) {
+                    finishAppUploadPipeline()
+                    return@post
+                }
+                if (installedList == null) {
+                    finishAppUploadPipeline()
+                    ToastUtil.showLong(requireContext(), "Failed to collect app list")
+                    return@post
+                }
+                HttpClient.uploadInstalledPackageList(appContext, installedList)
+            }
+        }
+    }
+
+    private fun finishAppUploadPipeline() {
+        isCollectingOrUploadingApps = false
+        hideLoading()
     }
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
     @Subscribe
     fun onUploadInstalledPackageListResponseEvent(event: UploadInstalledPackageListResponseEvent) {
-        hideLoading()
+        if (!isAdded || skipHomeUploadEvents) {
+            finishAppUploadPipeline()
+            return
+        }
         if (event.isSuccess) {
             uploadSystemInfo()
-        }else{
-            if(event.model?.fzpn == 500){
-                ToastUtil.showLong(requireContext(),event.model?.dvusonb.toString())
-            }else{
-                ToastUtil.showLong(requireContext(),event.networkError.toString())
+        } else {
+            finishAppUploadPipeline()
+            if (event.model?.fzpn == 500) {
+                ToastUtil.showLong(requireContext(), event.model?.dvusonb.toString())
+            } else {
+                ToastUtil.showLong(requireContext(), event.networkError.toString())
             }
         }
     }
 
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
     private fun uploadSystemInfo() {
-        HttpClient.uploadSystemInfo(requireContext())
+        if (!isAdded || skipHomeUploadEvents) {
+            finishAppUploadPipeline()
+            return
+        }
+        val appContext = requireContext().applicationContext
+        uploadIoExecutor.execute {
+            val deviceInfo = try {
+                SystemDataUtils.getDeviceInfo(appContext)
+            } catch (e: Exception) {
+                null
+            }
+            mainHandler.post {
+                if (!isAdded) {
+                    finishAppUploadPipeline()
+                    return@post
+                }
+                if (deviceInfo == null) {
+                    finishAppUploadPipeline()
+                    ToastUtil.showLong(requireContext(), "Failed to collect device info")
+                    return@post
+                }
+                HttpClient.uploadSystemInfo(appContext, deviceInfo)
+            }
+        }
     }
 
     @Subscribe
     fun onUploadSystemResponseEvent(event: UploadSystemResponseEvent) {
-        hideLoading()
-        if (event.isSuccess) {
-            zipDone = true
-            if(isCreateOrder){
-                if (!isRecreditNeeded) {
-                    previewProduct()
+        if (!isAdded || skipHomeUploadEvents) {
+            finishAppUploadPipeline()
+            return
+        }
+        try {
+            if (event.isSuccess) {
+                zipDone = true
+                if (isCreateOrder) {
+                    if (!isRecreditNeeded) {
+                        previewProduct()
+                    }
+                } else {
+                    skipHomeUploadEvents = true
+                    val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                    intent.putExtra("currentStep", currentStep)
+                    verifyInfoLauncher.launch(intent)
                 }
-            }else {
-                var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
-                intent.putExtra("currentStep", currentStep)
-                verifyInfoLauncher.launch(intent)
+            } else {
+                ToastUtil.showLong(requireContext(), event.networkError.toString())
             }
-        }else{
-            ToastUtil.showLong(requireContext(),event.networkError.toString())}
+        } finally {
+            finishAppUploadPipeline()
+        }
     }
 
     private fun checkRecreditNeeded() {
@@ -397,28 +467,28 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     @Subscribe
     fun onCheckUploadStatusResponseEvent2(event: CheckUploadStatus2ResponseEvent) {
+        if (!isAdded || skipHomeUploadEvents) return
         hideLoading()
         try {
             if (event.isSuccess) {
-                if(event.model?.mtaw != true){
-                    if(privacyPolicyUrl.isEmpty()) {
+                if (event.model?.mtaw != true) {
+                    if (privacyPolicyUrl.isEmpty()) {
                         requestPermissions()
-                        //HttpClient.getPrivacyPolicyUrl(requireContext())
-                    }else{
+                    } else {
                         requestPermissions()
-                        //showPermissionSheet()
                     }
-                }else{
-                    if(isCreateOrder){
+                } else {
+                    if (isCreateOrder) {
                         previewProduct()
-                    }else {
-                        var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                    } else {
+                        skipHomeUploadEvents = true
+                        val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
                         intent.putExtra("currentStep", currentStep)
                         verifyInfoLauncher.launch(intent)
                     }
                 }
-            }else{
-                ToastUtil.showLong(requireContext(),event.networkError.toString())
+            } else {
+                ToastUtil.showLong(requireContext(), event.networkError.toString())
             }
         } finally {
             isAccountCreditPipelineBusy = false
@@ -440,7 +510,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
 
-    fun previewProduct(){
+    fun previewProduct() {
         isBackFromVerifyInfoPage = false
         if (homeInfo?.hahsraev?.lwgdzqyuks == false) {
             ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
@@ -450,6 +520,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
             return
         }
+        skipHomeUploadEvents = true
         val intent = Intent(requireContext(), ProductListActivity::class.java)
         intent.putExtra("amountLimit", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
         startActivity(intent)
@@ -506,6 +577,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     companion object {
+        private val uploadIoExecutor = Executors.newSingleThreadExecutor()
+        private val mainHandler = Handler(Looper.getMainLooper())
+
         @JvmStatic
         fun newInstance(): HomeFragment {
             val args = Bundle()

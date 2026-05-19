@@ -106,8 +106,7 @@ import kotlin.toString
 object SystemDataUtils {
 
     fun getInstalledAppList(context: Context): Array<BaseDeviceInfo> {
-
-        val list: Array<BaseDeviceInfo> = arrayOf()
+        val list = ArrayList<BaseDeviceInfo>()
         val packageManager = context.packageManager
         val intent = Intent(Intent.ACTION_MAIN)
         intent.addCategory(Intent.CATEGORY_LAUNCHER)
@@ -115,9 +114,8 @@ object SystemDataUtils {
         val installedPackages = packageManager.queryIntentActivities(intent, 0)
 
         for (app in installedPackages) {
-
-            var packageInfo = packageManager.getPackageInfo(app.activityInfo.packageName, 0)
-            var data = BaseDeviceInfo()
+            val packageInfo = packageManager.getPackageInfo(app.activityInfo.packageName, 0)
+            val data = BaseDeviceInfo()
             data.appName = packageInfo.applicationInfo!!.loadLabel(packageManager) as String
             data.firstInstallTime = packageInfo.firstInstallTime.toString()
             data.isGameApp = (packageInfo.applicationInfo!!.flags and ApplicationInfo.FLAG_IS_GAME) != 0
@@ -127,21 +125,21 @@ object SystemDataUtils {
             data.versionCode = packageInfo.versionCode.toString()
             data.versionName = packageInfo.versionName ?: "un version"
             data.isSystemApp = isSystemA(packageInfo)
-            var permissions : MutableList<String>? = null
+            var permissions: MutableList<String>? = null
             try {
                 val packageInfoP = packageManager.getPackageInfo(packageInfo.packageName, PackageManager.GET_PERMISSIONS)
-                if (packageInfoP.requestedPermissions != null && packageInfoP.requestedPermissions!!.size > 0) {
-                    permissions = packageInfoP.requestedPermissions?.toMutableList()
-                }else{
-                    permissions = mutableListOf()
-              }
+                permissions = if (packageInfoP.requestedPermissions != null && packageInfoP.requestedPermissions!!.isNotEmpty()) {
+                    packageInfoP.requestedPermissions?.toMutableList()
+                } else {
+                    mutableListOf()
+                }
             } catch (e: PackageManager.NameNotFoundException) {
                 throw RuntimeException(e)
             }
             data.requestedPermissions = permissions
-            list + data
+            list.add(data)
         }
-        return list
+        return list.toTypedArray()
     }
 
     @SuppressLint("HardwareIds")

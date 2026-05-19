@@ -172,12 +172,15 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
     @Subscribe
     fun onSubmitOrderResponseEvent(event: SubmitOrderResponseEvent) {
         hideLoading()
-        if (event.isSuccess) {
-            if (event.model?.flag == "1") {
+        if (event.model == null)  return
+        if (event.model?.flag == "1"){
+            if (event.isSuccess) {
                 val intent = Intent(this, SubmitSuccessActivity::class.java)
                 startActivity(intent)
+                finish()
+            } else {
+                ToastUtil.showLong(this@ProductListActivity,event.retMsg)
             }
-            finish()
         }
     }
 
