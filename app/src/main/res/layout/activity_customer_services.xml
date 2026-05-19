@@ -51,8 +51,8 @@
             android:layout_marginTop="@dimen/margin_100"
             android:gravity="center_horizontal"
             android:layout_marginHorizontal="@dimen/margin_15"
-            android:lineHeight="@dimen/margin_25"
-            android:text="Rupee Cycle follows an “assess first, use when needed” approach. This model provides flexibility while helping users maintain better control over their personal financial planning and credit usage."
+            android:lineHeight="@dimen/margin_28"
+            android:text="If you experience any issue while using the app, please reach out to our customer support team on WhatsApp. Our dedicated support team will review your concern carefully and do our best to assist you within 1 hour."
             android:textColor="#ffffebd3"
             android:textSize="15sp"
             />
