@@ -38,7 +38,7 @@ class AppInfoListAdapter(
     ) {
         val itemInfo = items[position]
 
-        holder.bindView.appInfoTv.text = itemInfo.ntwf + ": " + itemInfo.qnhoa
+        holder.bindView.appInfoTv.text = "Email: " + itemInfo.qnhoa
 
     }
 

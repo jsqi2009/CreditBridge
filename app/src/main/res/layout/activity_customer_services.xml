@@ -12,54 +12,88 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="225dp"
+        android:layout_height="88dp"
         android:paddingTop="@dimen/status_bar_height_37"
-        android:background="@mipmap/ic_pro_details_top"
+        android:background="@drawable/shape_details_top_bg"
         android:orientation="vertical">
 
         <include
             android:id="@+id/titleLayout"
             layout="@layout/layout_title" />
 
-        <Space
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_40"
+        android:src="@mipmap/ic_logo_image" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:layout_marginTop="@dimen/margin_30"
+        android:paddingHorizontal="@dimen/margin_15"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:background="@mipmap/ic_custom_service_bg">
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_marginEnd="@dimen/margin_3"
+            android:scaleType="fitXY"
+            android:src="@mipmap/ic_wa_logo"/>
 
-        <ImageView
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/nameTv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_logo_image" />
+            android:layout_weight="1"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="@dimen/ts_16"
+            />
 
-        <ImageView
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/valueTv"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="@dimen/margin_15"
-            android:src="@mipmap/ic_account_app_name" />
+            android:gravity="center"
+            android:text=""
+            android:textColor="#333333"
+            android:textSize="@dimen/ts_17"
+            android:clickable="true"
+            />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/ic_account_content_bg"
-        android:layout_weight="1">
+        android:layout_marginTop="@dimen/margin_30"
+        android:layout_marginHorizontal="@dimen/margin_20"
+        android:gravity="center_vertical"
+        android:background="@mipmap/ic_custom_service_bg">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_100"
-            android:gravity="center_horizontal"
+            android:gravity="center"
             android:layout_marginHorizontal="@dimen/margin_15"
             android:lineHeight="@dimen/margin_28"
             android:text="If you experience any issue while using the app, please reach out to our customer support team on WhatsApp. Our dedicated support team will review your concern carefully and do our best to assist you within 1 hour."
-            android:textColor="#ffffebd3"
+            android:textColor="#351003"
             android:textSize="15sp"
             />
 
-
-
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
 
     <TextView
         android:id="@+id/customerServiceTv"
@@ -73,10 +107,42 @@
         android:visibility="gone"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_30"
+        android:paddingHorizontal="@dimen/margin_15"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/emailTitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#FFD29F"
+            android:textSize="@dimen/ts_16"
+            />
+
+        <TextView
+            android:id="@+id/emailTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#FFD29F"
+            android:textSize="@dimen/ts_16"
+            android:clickable="true"
+            />
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="@dimen/margin_15"/>
 
 
 </LinearLayout>

@@ -46,6 +46,8 @@ class CustomerServicesActivity : BaseActivity<ActivityCustomerServicesBinding>()
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backLl.setOnClickListener(this)
+        bindViews.valueTv.setOnClickListener(this)
+        bindViews.emailTV.setOnClickListener(this)
     }
 
 
@@ -62,6 +64,12 @@ class CustomerServicesActivity : BaseActivity<ActivityCustomerServicesBinding>()
             R.id.titleTv -> {
                 startActivity(Intent(this, SubmitSuccessActivity::class.java))
             }
+            R.id.valueTv -> {
+                copyText(bindViews.valueTv.text.toString())
+            }
+            R.id.emailTV -> {
+                copyText(bindViews.emailTV.text.toString())
+            }
         }
     }
 
@@ -71,7 +79,24 @@ class CustomerServicesActivity : BaseActivity<ActivityCustomerServicesBinding>()
             hideLoading()
             if (event.isSuccess) {
                 itemList = event.model?.mtaw ?: ArrayList()
-                mAdapter?.setData(itemList)
+                val filterList: ArrayList<AppItemInfo> =  ArrayList()
+                if (itemList.isNotEmpty()) {
+                    itemList.forEach { it ->
+                        if (it.ntwf == "WA") {
+                            bindViews.nameTv.text = it.ntwf + ": "
+                            bindViews.valueTv.text = it.qnhoa
+                        }
+                        if (it.ntwf == "EMAIL") {
+                            bindViews.emailTitleTv.text = "Email: "
+                            bindViews.emailTV.text = it.qnhoa
+                        }
+                        if (it.ntwf == "EMAIL") {
+                            filterList.add(it)
+                        }
+                    }
+                }
+
+                mAdapter?.setData(filterList)
             } else {
                 ToastUtil.showLong(this,event.retMsg)
             }
@@ -86,4 +111,15 @@ class CustomerServicesActivity : BaseActivity<ActivityCustomerServicesBinding>()
         bindViews.recyclerView.adapter = mAdapter
         mAdapter?.notifyDataSetChanged()
     }
+
+
+    private fun copyText(copyText: String){
+        if (copyText.isNotEmpty()) {
+            val clipboard = getSystemService(CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip = android.content.ClipData.newPlainText("Email", copyText)
+            clipboard.setPrimaryClip(clip)
+            ToastUtil.showLong(this,"Copied")
+        }
+    }
+
 }
