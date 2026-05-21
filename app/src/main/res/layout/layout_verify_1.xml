@@ -257,6 +257,10 @@
                     android:textColor="#ffb8a58e"
                     android:textSize="14sp"
                     android:hint="Enter email"
+                    android:inputType="textEmailAddress"
+                    android:imeOptions="actionNext"
+                    android:nextFocusDown="@+id/whatsappEt"
+                    android:nextFocusForward="@+id/whatsappEt"
                     android:background="@null"/>
 
 
@@ -293,6 +297,8 @@
                     android:textColor="#ffb8a58e"
                     android:textSize="14sp"
                     android:hint="Enter WhatsApp"
+                    android:inputType="phone"
+                    android:imeOptions="actionDone"
                     android:background="@null"/>
 
             </LinearLayout>
