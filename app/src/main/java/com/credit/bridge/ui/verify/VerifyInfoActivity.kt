@@ -887,6 +887,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                             if (response.isSuccessful) {
                                 val fileName = File(real_path).name
                                 val ossImageUrl = "${it.fev}$fileName"
+                                showLoading()
                                 HttpClient.verifyOcrFace(this@VerifyInfoActivity,ossImageUrl.formatSubString())
 
                             } else {
