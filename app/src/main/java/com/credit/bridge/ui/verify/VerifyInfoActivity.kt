@@ -396,12 +396,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.stepBtn4.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
                 bindViews.step5Line.root.visibility = View.VISIBLE
+                bindViews.verifyTipsTv.visibility = View.GONE
                 bindViews.verifyTopImg.background = getDrawable(R.mipmap.ic_verify_top_5)
                 bindViews.attemptLeftTv.visibility = View.VISIBLE
                 bindViews.attemptLeftTv.text = getString(R.string.verify_face_attempts_left_today) + faceNumberOfTimes
                 bindViews.titleLayout.titleTv.text = "Liveness Verification"
                 bindViews.titleLayout.rightTv.text = "5/5"
                 bindViews.continueTv.text = "Submit"
+                bindViews.continueTv.visibility = View.VISIBLE
 
                 HttpClient.getQuestionByStep(this, currentStep)
 

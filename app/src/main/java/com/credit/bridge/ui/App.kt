@@ -38,7 +38,7 @@ class App : Application() , DFTransferResultInterface {
 
         initFlyer()
         getGoogleAd()
-        initBugly()
+        //initBugly()
     }
 
     private fun initFlyer() {

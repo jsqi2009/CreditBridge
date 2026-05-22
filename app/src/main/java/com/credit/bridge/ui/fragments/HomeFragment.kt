@@ -373,6 +373,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     ToastUtil.showLong(requireContext(), "Failed to collect app list")
                     return@post
                 }
+                showLoading()
                 HttpClient.uploadInstalledPackageList(appContext, installedList)
             }
         }
@@ -390,6 +391,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             finishAppUploadPipeline()
             return
         }
+        hideLoading()
         if (event.isSuccess) {
             uploadSystemInfo()
         } else {
@@ -425,6 +427,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     ToastUtil.showLong(requireContext(), "Failed to collect device info")
                     return@post
                 }
+                showLoading()
                 HttpClient.uploadSystemInfo(appContext, deviceInfo)
             }
         }
@@ -437,6 +440,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             return
         }
         try {
+            hideLoading()
             if (event.isSuccess) {
                 zipDone = true
                 if (isCreateOrder) {
