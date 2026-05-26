@@ -298,6 +298,7 @@
                     android:textSize="14sp"
                     android:hint="Enter WhatsApp"
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:imeOptions="actionDone"
                     android:background="@null"/>
 
