@@ -299,6 +299,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.failureLayout.rootView.visibility = View.VISIBLE
                 bindViews.editBankTv.visibility = View.VISIBLE
 
+                bindViews.titleImage.setImageResource(R.mipmap.ic_fail_title)
+
                 bindViews.titleLayout.titleTv.text = "Request Not Completed"
                 bindViews.tipsTv.text = getString(R.string.product_tips_failure)
                 bindViews.failureLayout.ifscTv.text = NumberUtils.formatNumber(orderInfo?.eqzbyofrbkzo,3,2)

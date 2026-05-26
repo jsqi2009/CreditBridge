@@ -197,7 +197,6 @@
                 android:layout_marginTop="@dimen/margin_20"
                 android:background="@null"
                 android:hint="@string/hint_enter"
-                android:inputType="number"
                 android:textColorHint="@color/hint_text"
                 android:textColor="@color/theme_color"
                 android:textSize="@dimen/margin_15" />

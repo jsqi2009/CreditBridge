@@ -24,8 +24,9 @@
     </LinearLayout>
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="@dimen/margin_70"
+        android:layout_gravity="center_horizontal"
         android:layout_marginTop="@dimen/margin_40"
         android:src="@mipmap/ic_logo_image" />
 
