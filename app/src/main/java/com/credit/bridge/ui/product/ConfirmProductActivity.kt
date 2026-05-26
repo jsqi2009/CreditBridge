@@ -13,6 +13,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
+import com.credit.bridge.remote.event.FinishActivityEvent
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.ui.order.EditCardActivity
 import com.credit.bridge.util.NumberUtils
@@ -143,6 +144,14 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
             }
         }
 
+    }
+
+    @Subscribe
+    fun onFinishActivityEvent(event: FinishActivityEvent) {
+        try {
+            finish()
+        } catch (e: Exception) {
+        }
     }
 
 

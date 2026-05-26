@@ -259,7 +259,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             }
             getHomeData()
         } else {
-            ToastUtil.showLong(requireContext(), event.networkError.toString())
+            ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }
     }
 
@@ -297,7 +297,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }
         }else{
-            ToastUtil.showLong(requireContext(),event.networkError.toString())
+            ToastUtil.showLong(requireContext(),event.errorMessage.toString())
         }
     }
 
@@ -310,7 +310,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 showPermissionSheet()
             }
         } else {
-            ToastUtil.showLong(requireContext(), event.networkError.toString())
+            ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }
     }
 
@@ -399,7 +399,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             if (event.model?.fzpn == 500) {
                 ToastUtil.showLong(requireContext(), event.model?.dvusonb.toString())
             } else {
-                ToastUtil.showLong(requireContext(), event.networkError.toString())
+                ToastUtil.showLong(requireContext(), event.errorMessage.toString())
             }
         }
     }
@@ -454,7 +454,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     verifyInfoLauncher.launch(intent)
                 }
             } else {
-                ToastUtil.showLong(requireContext(), event.networkError.toString())
+                ToastUtil.showLong(requireContext(), event.errorMessage.toString())
             }
         } finally {
             finishAppUploadPipeline()
@@ -485,7 +485,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             }
         }else{
             isAccountCreditPipelineBusy = false
-            ToastUtil.showLong(requireContext(),event.networkError.toString())}
+            ToastUtil.showLong(requireContext(),event.errorMessage.toString())}
     }
 
     @Subscribe
@@ -511,7 +511,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     }
                 }
             } else {
-                ToastUtil.showLong(requireContext(), event.networkError.toString())
+                ToastUtil.showLong(requireContext(), event.errorMessage.toString())
             }
         } finally {
             isAccountCreditPipelineBusy = false
@@ -529,7 +529,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (event.isSuccess) {
 
         }else{
-            ToastUtil.showLong(requireContext(),event.networkError.toString())}
+            ToastUtil.showLong(requireContext(),event.errorMessage.toString())}
     }
 
 

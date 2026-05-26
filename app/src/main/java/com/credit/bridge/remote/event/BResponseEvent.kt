@@ -43,11 +43,13 @@ open class BResponseEvent<T : BResponse> {
 
     constructor(error: Throwable) {
         this.networkError = error
+        this.errorMessage = "Network error"
     }
 
     constructor(error: Throwable, errorMessage: String) {
         this.networkError = error
-        this.errorMessage = errorMessage
+        //this.errorMessage = errorMessage
+        this.errorMessage = "Network error"
     }
 
     constructor(error: Throwable, position: Any?, flag: Any?) {

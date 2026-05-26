@@ -17,6 +17,7 @@ import com.credit.bridge.remote.bean.AllProductInfo
 import com.credit.bridge.remote.bean.ProductInfo
 import com.credit.bridge.remote.body.RequestSubmitOrderBody
 import com.credit.bridge.remote.event.AllProductListResponseEvent
+import com.credit.bridge.remote.event.FinishActivityEvent
 import com.credit.bridge.remote.event.SubmitOrderResponseEvent
 import com.credit.bridge.util.AppUtil
 import com.credit.bridge.util.ToastUtil
@@ -181,6 +182,14 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             } else {
                 ToastUtil.showLong(this@ProductListActivity,event.retMsg)
             }
+        }
+    }
+
+    @Subscribe
+    fun onFinishActivityEvent(event: FinishActivityEvent) {
+        try {
+            finish()
+        } catch (e: Exception) {
         }
     }
 

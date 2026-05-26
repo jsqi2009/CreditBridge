@@ -397,6 +397,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             5 -> {
                 bindViews.verify4.root.visibility = View.GONE
                 bindViews.stepBtn4.visibility = View.GONE
+                bindViews.verifyTipsLayout.visibility = View.GONE
                 bindViews.verify5.root.visibility = View.VISIBLE
                 bindViews.step5Line.root.visibility = View.VISIBLE
                 bindViews.verifyTipsTv.visibility = View.GONE

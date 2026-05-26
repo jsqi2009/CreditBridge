@@ -17,6 +17,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestFeedbackBody
 import com.credit.bridge.remote.event.FeedbackResponseEvent
 import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
+import com.credit.bridge.remote.event.FinishActivityEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.remote.response.JumpConfig
 import com.credit.bridge.util.ToastUtil
@@ -47,7 +48,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         bindViews.backToHomeLayout1.setOnClickListener(this)
         bindViews.backToHomeLayout2.setOnClickListener(this)
 
-        bindViews.starView.setRating(3)
+        bindViews.starView.setRating(0)
         bindViews.starView.onRatingChange = { rating ->
             Log.d("Star", "Current Star Rating: $rating")
             currentStarRating = rating
@@ -76,6 +77,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
 
     private fun backToHome() {
+        eventBus.post(FinishActivityEvent())
         eventBus.post(UpdateTabIndexEvent(1))
         finish()
     }
@@ -103,10 +105,11 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
     private fun submitFeedback() {
 
-        val feedback = bindViews.feedbackEt.text.toString()
+        var feedback = bindViews.feedbackEt.text.toString()
         if (feedback.isEmpty()) {
-            ToastUtil.showLong(this, "Please enter your feedback or comment")
-            return
+            feedback = ""
+            /*ToastUtil.showLong(this, "Please enter your feedback or comment")
+            return*/
         }
 
         val body = RequestFeedbackBody()
@@ -122,7 +125,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
     fun onFeedbackEvent(event: FeedbackResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            if (starCount == 5) {
+            if (currentStarRating == 5) {
                 try {
                     val uri = jumpConfig?.ocuerrncq?.toUri()
                     val intent = Intent(Intent.ACTION_VIEW, uri)
