@@ -43,6 +43,7 @@
                 android:layout_marginStart="@dimen/margin_8"
                 android:text="Check the information regarding your current account activity below."
                 android:textColor="#ff2e0d05"
+                android:textStyle="bold"
                 android:includeFontPadding="false"
                 android:textSize="14sp"
                 />

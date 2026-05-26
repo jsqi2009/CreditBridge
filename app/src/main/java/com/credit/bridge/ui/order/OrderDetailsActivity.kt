@@ -30,6 +30,7 @@ import com.credit.bridge.util.NumberUtils
 import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
 import com.squareup.otto.Subscribe
+import java.util.Locale
 
 class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.OnClickListener {
 
@@ -343,27 +344,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         myCountDownTimer = object : CountDownTimer(totalMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val totalSeconds = millisUntilFinished / 1000
-                var days = totalSeconds / 86400
-                var hours = (totalSeconds % 86400) / 3600
-                val minutes = (totalSeconds % 3600) / 60
-                val seconds = totalSeconds % 60
-
-                var targetDay = ""
-                var targetHours = ""
-                if (days < 10) {
-                    targetDay = "0$days"
-                }
-                if (hours < 10) {
-                    if (minutes > 0 || seconds > 0) {
-                        targetHours = "0${hours + 1}"
-                    } else {
-                        targetHours = "0$hours"
-                    }
-                }
-
-                bindViews.cancelFrozenLayout.daysTv.text = targetDay
-                bindViews.cancelFrozenLayout.hoursTv.text = targetHours
-
+                val days = totalSeconds / 86400
+                val hours = (totalSeconds % 86400) / 3600
+                bindViews.cancelFrozenLayout.daysTv.text =
+                    String.format(Locale.getDefault(), "%02d", days)
+                bindViews.cancelFrozenLayout.hoursTv.text =
+                    String.format(Locale.getDefault(), "%02d", hours)
             }
 
             override fun onFinish() {
