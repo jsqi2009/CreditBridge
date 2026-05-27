@@ -81,8 +81,29 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     override fun getBinding() = ActivityVerifyInfoBinding.inflate(layoutInflater)
 
     private var currentStep = 0
-    /** True while step-1-only keyboard/inset handling is active on the page root. */
-    private var verifyStep1KeyboardHandlingActive = false
+    private var verifyKeyboardHandlingActive = false
+    private var lastVerifyKeyboardField: View? = null
+    private val verifyKeyboardScrollIntoViewRunnable = Runnable {
+        val focused = currentFocus ?: lastVerifyKeyboardField ?: return@Runnable
+        if (currentStep != 1 && currentStep != 3) return@Runnable
+        when (currentStep) {
+            1 -> {
+                if (bindViews.verify1.root.visibility != View.VISIBLE) return@Runnable
+                if (focused != bindViews.verify1.emailEt && focused != bindViews.verify1.whatsappEt) return@Runnable
+            }
+            3 -> {
+                if (bindViews.verify3.root.visibility != View.VISIBLE) return@Runnable
+                if (focused != bindViews.verify3.accountNumberEt &&
+                    focused != bindViews.verify3.confirmAccountNumberEt &&
+                    focused != bindViews.verify3.ifscCodeEt
+                ) {
+                    return@Runnable
+                }
+            }
+            else -> return@Runnable
+        }
+        scrollVerifyKeyboardFieldIntoView(focused)
+    }
     private var isPanVerifySuccess = false
     private var workTypeIndex = -1
     private var monthlyIncomeIndex = -1
@@ -417,72 +438,121 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
             }
         }
-        syncVerifyStep1KeyboardScroll()
+        syncVerifyKeyboardScroll()
     }
 
-    private fun syncVerifyStep1KeyboardScroll() {
-        if (currentStep == 1) {
-            enableVerifyStep1KeyboardHandling()
-        } else if (verifyStep1KeyboardHandlingActive) {
-            disableVerifyStep1KeyboardHandling()
+    private fun syncVerifyKeyboardScroll() {
+        disableVerifyKeyboardHandling()
+        when (currentStep) {
+            1 -> enableVerifyStep1KeyboardHandling()
+            3 -> enableVerifyStep3KeyboardHandling()
+            else -> { }
         }
     }
 
-    private fun enableVerifyStep1KeyboardHandling() {
-        if (verifyStep1KeyboardHandlingActive) return
-        verifyStep1KeyboardHandlingActive = true
-
+    private fun applyVerifyKeyboardRootWindowInsets() {
         val root = bindViews.main
         val defaultBottom = resources.getDimensionPixelSize(R.dimen.bottom_menu_height_64)
         ViewCompat.setOnApplyWindowInsetsListener(root) { v, insets ->
-            if (currentStep != 1) {
+            if (currentStep != 1 && currentStep != 3) {
                 return@setOnApplyWindowInsetsListener insets
             }
             val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
             val navBottom = insets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom
             v.setPadding(0, 0, 0, maxOf(imeBottom, navBottom, defaultBottom))
-            scheduleVerifyStep1FocusedFieldScroll()
+            scheduleVerifyKeyboardFocusedScroll()
             insets
         }
         ViewCompat.requestApplyInsets(root)
+    }
+
+    private fun enableVerifyStep1KeyboardHandling() {
+        if (verifyKeyboardHandlingActive) return
+        verifyKeyboardHandlingActive = true
+
+        applyVerifyKeyboardRootWindowInsets()
 
         val focusScroll = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) lastVerifyKeyboardField = v
             if (hasFocus && currentStep == 1 && bindViews.verify1.root.visibility == View.VISIBLE) {
-                scrollVerifyStep1FieldIntoView(v)
+                scrollVerifyKeyboardFieldIntoView(v)
             }
         }
         bindViews.verify1.emailEt.onFocusChangeListener = focusScroll
         bindViews.verify1.whatsappEt.onFocusChangeListener = focusScroll
     }
 
-    private fun disableVerifyStep1KeyboardHandling() {
-        if (!verifyStep1KeyboardHandlingActive) return
-        verifyStep1KeyboardHandlingActive = false
+    private fun enableVerifyStep3KeyboardHandling() {
+        if (verifyKeyboardHandlingActive) return
+        verifyKeyboardHandlingActive = true
+
+        applyVerifyKeyboardRootWindowInsets()
+
+        val focusScroll = View.OnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) lastVerifyKeyboardField = v
+            if (hasFocus && currentStep == 3 && bindViews.verify3.root.visibility == View.VISIBLE) {
+                scrollVerifyKeyboardFieldIntoView(v)
+            }
+        }
+        bindViews.verify3.accountNumberEt.onFocusChangeListener = focusScroll
+        bindViews.verify3.confirmAccountNumberEt.onFocusChangeListener = focusScroll
+        bindViews.verify3.ifscCodeEt.onFocusChangeListener = focusScroll
+    }
+
+    private fun disableVerifyKeyboardHandling() {
+        if (!verifyKeyboardHandlingActive) return
+        verifyKeyboardHandlingActive = false
 
         val root = bindViews.main
         ViewCompat.setOnApplyWindowInsetsListener(root, null)
         root.setPadding(0, 0, 0, resources.getDimensionPixelSize(R.dimen.bottom_menu_height_64))
         bindViews.verify1.emailEt.onFocusChangeListener = null
         bindViews.verify1.whatsappEt.onFocusChangeListener = null
+        bindViews.verify3.accountNumberEt.onFocusChangeListener = null
+        bindViews.verify3.confirmAccountNumberEt.onFocusChangeListener = null
+        bindViews.verify3.ifscCodeEt.onFocusChangeListener = null
+        lastVerifyKeyboardField = null
+        bindViews.verifyScrollView.removeCallbacks(verifyKeyboardScrollIntoViewRunnable)
         ViewCompat.requestApplyInsets(root)
     }
 
-    private fun scheduleVerifyStep1FocusedFieldScroll() {
-        if (currentStep != 1 || bindViews.verify1.root.visibility != View.VISIBLE) return
-        val focused = currentFocus ?: return
-        if (focused != bindViews.verify1.emailEt && focused != bindViews.verify1.whatsappEt) return
-        bindViews.verifyScrollView.postDelayed({
-            if (currentStep == 1) {
-                scrollVerifyStep1FieldIntoView(focused)
+    private fun scheduleVerifyKeyboardFocusedScroll() {
+        val focused = currentFocus ?: lastVerifyKeyboardField ?: return
+        when (currentStep) {
+            1 -> {
+                if (bindViews.verify1.root.visibility != View.VISIBLE) return
+                if (focused != bindViews.verify1.emailEt && focused != bindViews.verify1.whatsappEt) return
             }
-        }, 80)
+            3 -> {
+                if (bindViews.verify3.root.visibility != View.VISIBLE) return
+                if (focused != bindViews.verify3.accountNumberEt &&
+                    focused != bindViews.verify3.confirmAccountNumberEt &&
+                    focused != bindViews.verify3.ifscCodeEt
+                ) {
+                    return
+                }
+            }
+            else -> return
+        }
+        val sv = bindViews.verifyScrollView
+        sv.removeCallbacks(verifyKeyboardScrollIntoViewRunnable)
+        sv.postDelayed(verifyKeyboardScrollIntoViewRunnable, 80)
+        sv.postDelayed(verifyKeyboardScrollIntoViewRunnable, 220)
     }
 
-    private fun scrollVerifyStep1FieldIntoView(focused: View) {
-        if (currentStep != 1) return
+    private fun scrollVerifyKeyboardFieldIntoView(focused: View) {
+        when (currentStep) {
+            1 -> if (bindViews.verify1.root.visibility != View.VISIBLE) return
+            3 -> if (bindViews.verify3.root.visibility != View.VISIBLE) return
+            else -> return
+        }
         val scrollView = bindViews.verifyScrollView
         scrollView.post {
-            if (currentStep != 1 || bindViews.verify1.root.visibility != View.VISIBLE) return@post
+            when (currentStep) {
+                1 -> if (bindViews.verify1.root.visibility != View.VISIBLE) return@post
+                3 -> if (bindViews.verify3.root.visibility != View.VISIBLE) return@post
+                else -> return@post
+            }
             val content = scrollView.getChildAt(0) ?: return@post
             val rect = Rect()
             focused.getDrawingRect(rect)

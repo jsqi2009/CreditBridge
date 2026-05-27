@@ -6,8 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/order_bg"
+    android:clipChildren="false"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/bottom_menu_height_64"
     tools:context=".ui.verify.VerifyInfoActivity">
 
     <LinearLayout
@@ -23,56 +23,66 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/verifyTopImg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/margin_16"
-        android:layout_marginTop="-80dp"
-        android:background="@mipmap/ic_verify_top_1"
-        android:orientation="horizontal">
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/verifyTipsLayout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/margin_45"
-        android:layout_marginHorizontal="@dimen/margin_15"
-        android:background="@drawable/shape_order_tips_bg"
-        android:layout_marginTop="@dimen/margin_10"
-        android:layout_gravity="center"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:paddingHorizontal="@dimen/margin_15"
-        android:visibility="gone">
-
-        <TextView
-            android:id="@+id/verifyTipsTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="Kindly confirm that your bank information is correct to validate your account."
-            android:textColor="#ffffebd3"
-            android:textSize="12sp"
-            />
-
-    </LinearLayout>
-
-    <ScrollView
-        android:id="@+id/verifyScrollView"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/margin_15"
+        android:layout_marginBottom="@dimen/margin_15"
         android:layout_weight="1"
-        android:fillViewport="false"
-        android:scrollbars="vertical">
+        android:clipChildren="false"
+        android:translationY="@dimen/verify_top_img_overlap_pull">
+
+        <ScrollView
+            android:id="@+id/verifyScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:fillViewport="false"
+            android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/verifyTopImg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_16"
+                android:background="@mipmap/ic_verify_top_1"
+                android:orientation="horizontal">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/verifyTipsLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/margin_15"
+                android:layout_marginTop="@dimen/margin_10"
+                android:layout_marginBottom="@dimen/margin_10"
+                android:layout_gravity="center"
+                android:background="@drawable/shape_order_tips_bg"
+                android:gravity="center"
+                android:minHeight="@dimen/margin_45"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/margin_15"
+                android:paddingVertical="@dimen/margin_8"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/verifyTipsTv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="Kindly confirm that your bank information is correct to validate your account."
+                    android:textColor="#ffffebd3"
+                    android:textSize="12sp"
+                    />
+
+            </LinearLayout>
 
             <include
                 android:id="@+id/verify1"
@@ -103,6 +113,8 @@
 
 
     </ScrollView>
+
+    </FrameLayout>
 
     <include
         android:id="@+id/step5Line"
