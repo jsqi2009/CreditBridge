@@ -144,7 +144,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     }
                     if(orderInfo != null){
                         val intent = Intent(requireContext(), OrderDetailsActivity::class.java)
-                        intent.putExtra("orderInfo", orderInfo)
+                        intent.putExtra("info", orderInfo)
                         startActivity(intent)
                     }
                 }
