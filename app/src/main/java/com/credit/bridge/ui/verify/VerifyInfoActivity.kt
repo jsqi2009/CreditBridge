@@ -1146,25 +1146,50 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun showStartOcrPanNumberSheet() {
-        val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", panNumberOfTimes, takePhoto = {
-            val permission = arrayOf(Manifest.permission.CAMERA)
-            if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
-                takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
-            } else {
-                EasyPermissions.requestPermissions(
-                    PermissionRequest.Builder(
-                        this@VerifyInfoActivity,
-                        REQUEST_CODE_PERMISSION,
-                        *permission
+        if (CacheManager.isAlreadyShowPanNumberSheet) {
+            takePhotoDirectly()
+        } else {
+            val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", panNumberOfTimes, takePhoto = {
+                CacheManager.isAlreadyShowPanNumberSheet = true
+                val permission = arrayOf(Manifest.permission.CAMERA)
+                if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
+                    takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
+                } else {
+                    EasyPermissions.requestPermissions(
+                        PermissionRequest.Builder(
+                            this@VerifyInfoActivity,
+                            REQUEST_CODE_PERMISSION,
+                            *permission
+                        )
+                            .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
+                            .setPositiveButtonText("Allow")
+                            .setNegativeButtonText("Deny")
+                            .build()
                     )
-                        .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
-                        .setPositiveButtonText("Allow")
-                        .setNegativeButtonText("Deny")
-                        .build()
+                }
+            } )
+            startOcrPanNumberSheet.show(supportFragmentManager, "startOcrPanNumberSheet")
+        }
+
+    }
+
+    private fun takePhotoDirectly() {
+        val permission = arrayOf(Manifest.permission.CAMERA)
+        if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
+            takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
+        } else {
+            EasyPermissions.requestPermissions(
+                PermissionRequest.Builder(
+                    this@VerifyInfoActivity,
+                    REQUEST_CODE_PERMISSION,
+                    *permission
                 )
-            }
-        } )
-        startOcrPanNumberSheet.show(supportFragmentManager, "startOcrPanNumberSheet")
+                    .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
+                    .setPositiveButtonText("Allow")
+                    .setNegativeButtonText("Deny")
+                    .build()
+            )
+        }
     }
 
     private fun identifyOcrPanCardInfo(imagePath: Uri? = null) {
