@@ -503,6 +503,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     val workTypeList: ArrayList<CommonBean?> = originalList
                         .map { CommonBean(name = it.ufpowipd)}
                         .toCollection(ArrayList())
+                    showWorkTypeSheet()
                 }
             }
         }
@@ -515,6 +516,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             if (event.model != null) {
                 event.model?.mtaw.let {
                     step2QuestionInfo = event.model!!.mtaw!!
+                    showRelationship1Sheet()
                 }
             }
         }
@@ -930,7 +932,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showWorkTypeSheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getWorkTypeList(),
+            this,step1QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq ,VerifyInfoUtil.getWorkTypeList(),
             workTypeIndex, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     workTypeIndex = index
@@ -945,7 +947,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showMonthlyIncomeSheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getMonthlyIncomeList(),
+            this,step1QuestionInfo.ffuyqtcgfw[1].qpwjbrdvuq,VerifyInfoUtil.getMonthlyIncomeList(),
             monthlyIncomeIndex, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     monthlyIncomeIndex = index
@@ -960,7 +962,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showEducationSheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getEducationList(),
+            this,step1QuestionInfo.ffuyqtcgfw[2].qpwjbrdvuq,VerifyInfoUtil.getEducationList(),
             educationIndex, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     educationIndex = index
@@ -975,7 +977,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showMaritalSheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getMaritalList(),
+            this,step1QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq,VerifyInfoUtil.getMaritalList(),
             maritalIndex, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     maritalIndex = index
@@ -990,7 +992,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showNumberSheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getNumOfChildrenList(),
+            this,step1QuestionInfo.ffuyqtcgfw[4].qpwjbrdvuq,VerifyInfoUtil.getNumOfChildrenList(),
             numberOfChildIndex, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     numberOfChildIndex = index
@@ -1002,7 +1004,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showRelationship1Sheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getContact1List(),
+            this,step2QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq,VerifyInfoUtil.getContact1List(),
             contact1Index, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     contact1Index = index
@@ -1014,7 +1016,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showRelationship2Sheet() {
         val workTypeSheet = CommonBottomSheet(
-            this,"Please select",VerifyInfoUtil.getContact2List(),
+            this,step2QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq,VerifyInfoUtil.getContact2List(),
             contact2Index, object : OnSelectListener {
                 override fun onSelect(index: Int) {
                     contact2Index = index
