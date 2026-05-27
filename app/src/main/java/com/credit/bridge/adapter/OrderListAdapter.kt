@@ -73,8 +73,8 @@ class OrderListAdapter(
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_overdue))
                 holder.bindView.dateTv.text = itemInfo.dhqprsdsv
-                holder.bindView.paymentOptionsTv.visibility = View.GONE
-                holder.bindView.rightArrowIv.visibility = View.GONE
+                holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
+                holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
             }
             ConstConfig.ORDER_STATUS_CURRENT -> {

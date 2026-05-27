@@ -17,8 +17,8 @@
 
     <ImageView
         android:id="@+id/verifyFaceIv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginVertical="@dimen/margin_20"
         android:layout_marginEnd="@dimen/margin_8"

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingBottom="@dimen/bottom_menu_height_64"
+    android:paddingBottom="@dimen/bottom_menu_height_56"
     android:background="@color/order_bg"
     tools:context=".ui.order.OrderDetailsActivity">
 
@@ -60,51 +60,60 @@
         android:src="@mipmap/ic_details_usage_option" />
 
 
-    <include
-        android:id="@+id/processingLayout"
-        layout="@layout/layout_details_processing"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/dueLayout"
-        layout="@layout/layout_details_due"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/paidLayout"
-        layout="@layout/layout_details_paid"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/overdueLayout"
-        layout="@layout/layout_details_overdue"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/cancelFrozenLayout"
-        layout="@layout/layout_details_canceled_frozen"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/cancelLayout"
-        layout="@layout/layout_details_canceled"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/extendLayout"
-        layout="@layout/layout_details_extend"
-        android:visibility="gone"/>
-
-    <include
-        android:id="@+id/failureLayout"
-        layout="@layout/layout_details_failure"
-        android:visibility="gone"/>
-
-
-    <Space
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"/>
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/processingLayout"
+                layout="@layout/layout_details_processing"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/dueLayout"
+                layout="@layout/layout_details_due"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/paidLayout"
+                layout="@layout/layout_details_paid"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/overdueLayout"
+                layout="@layout/layout_details_overdue"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/cancelFrozenLayout"
+                layout="@layout/layout_details_canceled_frozen"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/cancelLayout"
+                layout="@layout/layout_details_canceled"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/extendLayout"
+                layout="@layout/layout_details_extend"
+                android:visibility="gone"/>
+
+            <include
+                android:id="@+id/failureLayout"
+                layout="@layout/layout_details_failure"
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+
+    </androidx.core.widget.NestedScrollView>
 
 
     <TextView

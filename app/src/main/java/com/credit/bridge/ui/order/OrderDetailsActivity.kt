@@ -277,7 +277,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.dueLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
                 bindViews.dueLayout.amountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
-                bindViews.dueLayout.dueDateTv.text = orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
+                bindViews.dueLayout.dueDateTv.text = orderInfo?.vzlwrta.toString()
                 bindViews.dueLayout.amountDueTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.kgchobzqirjuftermzzgajda?.let { NumberUtils.formatIntToStr(it) }
             }
