@@ -69,8 +69,11 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         orderStatus = orderInfo?.xjywdrtdxzt
 //        orderStatus = ConstConfig.ORDER_STATUS_ISSUE_FAILED
         if (intent.hasExtra("isExtend")) {
+            bindViews.continueTv.visibility = View.VISIBLE
             isExtend = intent.getBooleanExtra("isExtend", false)
             getOrderUpdateInfo()
+        } else {
+            bindViews.continueTv.visibility = View.GONE
         }
 
         bindViews.titleLayout.titleTv.text = "Details"
@@ -109,7 +112,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 getPaymentLink()
             }
             R.id.continueTv -> {
-
+                getPaymentLink()
             }
         }
     }
