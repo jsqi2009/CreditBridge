@@ -30,6 +30,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
     private  var starCount = 4
     var jumpConfig: JumpConfig? = null
     private var currentStarRating = 3
+    private var serverJumpRateCount = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +53,9 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         bindViews.starView.onRatingChange = { rating ->
             Log.d("Star", "Current Star Rating: $rating")
             currentStarRating = rating
+            runOnUiThread {
+                checkRatingCount()
+            }
         }
 
         fetchFeedbackConfig()
@@ -75,6 +79,33 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         }
     }
 
+    private fun checkRatingCount() {
+        if (currentStarRating >= serverJumpRateCount) {
+            submitFeedback2()
+            try {
+                val uri = jumpConfig?.ocuerrncq?.toUri()
+                val intent = Intent(Intent.ACTION_VIEW, uri)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+            } catch (e: Exception) {
+                Log.e("==onResponse==", e.toString())
+            }
+            backToHome()
+        }
+    }
+
+    private fun submitFeedback2() {
+
+        var feedback = bindViews.feedbackEt.text.toString()
+
+        val body = RequestFeedbackBody()
+        body.guawnoc = feedback
+        body.feedType = "RATING"
+        body.qvyjt = currentStarRating
+
+        HttpClient.submitFeedback2(this, body)
+    }
+
 
     private fun backToHome() {
         eventBus.post(FinishActivityEvent())
@@ -93,6 +124,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         if (event.isSuccess) {
             val response = event.model?.mtaw
             jumpConfig = response?.whhdieyt
+            serverJumpRateCount = jumpConfig?.opyujqohzmf ?: 0
             if (response?.wigmxieideltelq == true) {
                 bindViews.defaultLayout.visibility = View.GONE
                 bindViews.starLayout.visibility = View.VISIBLE
@@ -106,10 +138,9 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
     private fun submitFeedback() {
 
         var feedback = bindViews.feedbackEt.text.toString()
-        if (feedback.isEmpty()) {
-            feedback = ""
-            /*ToastUtil.showLong(this, "Please enter your feedback or comment")
-            return*/
+        if (feedback.isEmpty() && currentStarRating == 0) {
+            ToastUtil.showLong(this, "Please enter your feedback or comment")
+            return
         }
 
         val body = RequestFeedbackBody()
@@ -123,20 +154,23 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
     @Subscribe
     fun onFeedbackEvent(event: FeedbackResponseEvent) {
-        hideLoading()
-        if (event.isSuccess) {
-            if (currentStarRating == 5) {
-                try {
-                    val uri = jumpConfig?.ocuerrncq?.toUri()
-                    val intent = Intent(Intent.ACTION_VIEW, uri)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                } catch (e: Exception) {
-                    Log.e("==onResponse==", e.toString())
+        try {
+            hideLoading()
+            if (event.isSuccess) {
+                if (currentStarRating >= serverJumpRateCount) {
+                    try {
+                        val uri = jumpConfig?.ocuerrncq?.toUri()
+                        val intent = Intent(Intent.ACTION_VIEW, uri)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                    } catch (e: Exception) {
+                        Log.e("==onResponse==", e.toString())
+                    }
+                } else {
+                    backToHome()
                 }
-            } else {
-                backToHome()
             }
+        } catch (e: Exception) {
         }
     }
 

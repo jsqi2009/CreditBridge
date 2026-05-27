@@ -39,6 +39,7 @@ import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.CompleteVerifyResponseEvent
 import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.FeedbackResponseEvent
+import com.credit.bridge.remote.event.FeedbackResponseEvent2
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
 import com.credit.bridge.remote.event.FetchFeedbackConfigResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
@@ -441,6 +442,11 @@ object HttpClient {
         dispatchClient!!.enqueue(call, BResponse::class.java, FeedbackResponseEvent::class.java)
     }
 
+    fun submitFeedback2(mContext: Context,body: RequestFeedbackBody) {
+
+        val call = mHttpApi!!.requestPostFeedback(getHeaders(mContext), Contants.URL_FEEDBACK, body)
+        dispatchClient!!.enqueue(call, BResponse::class.java, FeedbackResponseEvent2::class.java)
+    }
     fun getPolicyLink(mContext: Context) {
 
         val formMap: HashMap<String, Any> = HashMap()

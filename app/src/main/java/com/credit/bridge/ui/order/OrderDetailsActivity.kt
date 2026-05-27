@@ -354,7 +354,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.cancelFrozenLayout.daysTv.text =
                     String.format(Locale.getDefault(), "%02d", days)
                 bindViews.cancelFrozenLayout.hoursTv.text =
-                    String.format(Locale.getDefault(), "%02d", hours)
+                    String.format(Locale.getDefault(), "%d", hours)
             }
 
             override fun onFinish() {

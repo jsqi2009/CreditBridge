@@ -152,7 +152,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
             if (!bankInfo?.qmtddx.isNullOrEmpty()) {
                 bindViews.accountTv.text = getString(R.string.product_account) + " " +
                     NumberUtils.formatNumber(bankInfo?.qmtddx, 3, 2)
-                bindViews.currentAccountEt.setText(bankInfo?.qmtddx)
+                //bindViews.currentAccountEt.setText(bankInfo?.qmtddx)
             }
         } else {
             ToastUtil.showLong(this, event.networkError.toString())
