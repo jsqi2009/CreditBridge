@@ -345,7 +345,7 @@
                     android:layout_weight="1"
                     android:paddingEnd="@dimen/margin_20"
                     android:layout_marginHorizontal="@dimen/margin_50"
-                    android:text="Complete identity verification to proceed."
+                    android:text="Complete verification to continue."
                     android:textColor="#ECDECE"
                     android:textSize="12sp"
                     />

@@ -95,6 +95,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         HttpClient.eventReport(requireActivity(),ConstConfig.EVENT_HOME_SCREEN,
             ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_HOME_SCREEN)
 
+        autoShowPermissionSheet()
+
 
     }
 
@@ -597,6 +599,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             previewProduct()
         }, onCancel = {
         })
+    }
+
+    private fun autoShowPermissionSheet() {
+        if (CacheManager.isNeedShowPermissionSheet) {
+            val permissionSheet = PermissionBottomSheet( requireActivity(),
+                onRefuseListener = {
+
+                }, onAgreeListener = {
+                    showRequestPermissionDialog()
+                    CacheManager.isNeedShowPermissionSheet = false
+                })
+            permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
+        }
     }
 
     companion object {
