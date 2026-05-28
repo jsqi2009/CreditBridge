@@ -26,7 +26,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_120"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Original due date"
@@ -54,7 +54,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_120"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Update charge"
@@ -82,7 +82,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_120"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Next Statement Date"

@@ -212,6 +212,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     private fun initExtendInfo() {
         try {
+            bindViews.continueTv.visibility = View.VISIBLE
+
             bindViews.titleLayout.titleTv.text = "Bill update"
             bindViews.processingLayout.rootView.visibility = View.GONE
             bindViews.tipsLayout.visibility = View.GONE
