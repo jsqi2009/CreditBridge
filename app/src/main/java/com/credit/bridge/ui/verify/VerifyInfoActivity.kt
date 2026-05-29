@@ -96,6 +96,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     var cardImgPath = ""
     private val REQUEST_CODE_PERMISSION = 1002
     var panNumberOfTimes = 0
+    var panNumberFailTimes = 0
     var faceNumberOfTimes = 0
     var isUseOcePan = false
     var isUseVerifyFace = false
@@ -208,6 +209,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
+        panNumberFailTimes = 0
     }
 
     override fun initRes() {
@@ -1269,12 +1271,16 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 }else{
                     hideLoading()
                     ToastUtil.showLong(this, it.dvusonb)
+                    panNumberFailTimes  = panNumberFailTimes + 1
+                    enableManualInputOcrPanInfo()
 
                     HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
                         ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
                 }
             }
         } else {
+            panNumberFailTimes  = panNumberFailTimes + 1
+            enableManualInputOcrPanInfo()
             HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
                 ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
 
@@ -1285,6 +1291,22 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 hideLoading()
                 ToastUtil.showLong(this, "Network Error")
             }
+        }
+        startOcrPanNumber()
+    }
+
+    private fun enableManualInputOcrPanInfo() {
+        if (panNumberFailTimes >= 2) {
+            bindViews.verify4.panInfoLl.visibility = View.VISIBLE
+            bindViews.verify4.panTips.visibility = View.GONE
+            bindViews.stepBtn4.visibility = View.VISIBLE
+            bindViews.continueTv.visibility = View.GONE
+            bindViews.attemptLeftTv.visibility = View.GONE
+            bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
+            bindViews.verify4.fullNameTv.text = ""
+            bindViews.verify4.panNumberTv.text = ""
+            bindViews.verify4.birthDateTv.text = ""
+            bindViews.verify4.birthDateTv.text = ""
         }
     }
 
