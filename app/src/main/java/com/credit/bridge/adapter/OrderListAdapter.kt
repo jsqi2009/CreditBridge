@@ -72,7 +72,7 @@ class OrderListAdapter(
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_overdue)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_overdue))
-                holder.bindView.dateTv.text = itemInfo.dhqprsdsv
+                holder.bindView.dateTv.text = itemInfo.vzlwrta
                 holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
                 holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
@@ -80,13 +80,13 @@ class OrderListAdapter(
             ConstConfig.ORDER_STATUS_CURRENT -> {
                 holder.bindView.statusTv.text = itemInfo.xjywdrtdxzt
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
-                        " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
+                        " " + DataFormatUtils.float2Str(itemInfo.kgchobzqirjuftermzzgajda)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_due)
                 holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_due)
                 holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_due))
-                holder.bindView.dateTv.text = itemInfo.dhqprsdsv
+                holder.bindView.dateTv.text = itemInfo.vzlwrta
                 holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
                 holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
