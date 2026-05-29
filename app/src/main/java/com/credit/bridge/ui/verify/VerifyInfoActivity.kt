@@ -81,7 +81,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     override fun getBinding() = ActivityVerifyInfoBinding.inflate(layoutInflater)
 
     private var currentStep = 0
-    /** True while step-1-only keyboard/inset handling is active on the page root. */
     private var verifyStep1KeyboardHandlingActive = false
     private var isPanVerifySuccess = false
     private var workTypeIndex = -1

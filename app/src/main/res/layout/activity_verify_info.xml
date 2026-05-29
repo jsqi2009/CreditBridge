@@ -22,10 +22,6 @@
             android:orientation="vertical"
             android:paddingTop="@dimen/status_bar_height_37">
 
-            <include
-                android:id="@+id/titleLayout"
-                layout="@layout/layout_title" />
-
         </LinearLayout>
 
         <ScrollView
@@ -109,14 +105,22 @@
 
         </ScrollView>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="@dimen/status_bar_height_37">
+
+            <include
+                android:id="@+id/titleLayout"
+                layout="@layout/layout_title" />
+
+        </LinearLayout>
+
+
     </RelativeLayout>
 
-
-
-
-
-
-
+    
     <include
         android:id="@+id/step5Line"
         layout="@layout/layout_verify_line"
