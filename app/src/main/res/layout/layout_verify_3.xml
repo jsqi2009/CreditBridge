@@ -134,6 +134,8 @@
                     android:textColorHint="#ffb8a58e"
                     android:textColor="#FFEBD3"
                     android:textSize="14sp"
+                    android:maxLength="11"
+                    android:singleLine="true"
                     android:hint="Enter IFSC code"
                     android:background="@null"/>
 
