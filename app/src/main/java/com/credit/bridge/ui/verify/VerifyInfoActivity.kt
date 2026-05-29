@@ -1272,6 +1272,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     hideLoading()
                     ToastUtil.showLong(this, it.dvusonb)
                     panNumberFailTimes  = panNumberFailTimes + 1
+                    bindViews.verify4.fullNameTv.text = ""
+                    bindViews.verify4.panNumberTv.text = ""
+                    bindViews.verify4.birthDateTv.text = ""
+                    bindViews.verify4.birthDateTv.text = ""
                     enableManualInputOcrPanInfo()
 
                     HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
