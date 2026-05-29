@@ -3,10 +3,13 @@ package com.credit.bridge.ui.verify
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.MotionEvent
 import android.view.Surface
 import android.view.View
 import androidx.activity.enableEdgeToEdge
+import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.FocusMeteringAction
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
@@ -21,6 +24,7 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 import kotlin.use
 
 class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClickListener{
@@ -28,6 +32,7 @@ class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClick
     override fun getBinding() = ActivityTakePhotoBinding.inflate(layoutInflater)
 
     private var processCameraProvider: ProcessCameraProvider? = null
+    private var camera: Camera? = null
     private var img_path = ""
     private val cameraExecutor by lazy {
         Executors.newSingleThreadExecutor()
@@ -45,6 +50,7 @@ class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClick
         bindViews.takePhotoIv.setOnClickListener(this)
         bindViews.flashIv.setOnClickListener(this)
         bindViews.chooseIv.setOnClickListener(this)
+        setupTapToFocus()
 
         bindViews.takePhotoIv.post {
             lifecycleScope.launch {
@@ -61,7 +67,7 @@ class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClick
                         .setFlashMode(ImageCapture.FLASH_MODE_ON).build()
                     try {
                         processCameraProvider?.unbindAll()
-                        processCameraProvider?.bindToLifecycle(
+                        camera = processCameraProvider?.bindToLifecycle(
                             this@TakePhotoActivity, cameraSelector, preview, imageCapture
                         )
                     } catch (e: Exception) {
@@ -74,6 +80,39 @@ class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClick
                 }
             }
         }
+    }
+
+    private fun setupTapToFocus() {
+        val tapListener = View.OnTouchListener { source, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                focusAtTapInPreview(source, event.x, event.y)
+            }
+            true
+        }
+        bindViews.viewCamera.setOnTouchListener(tapListener)
+        bindViews.ivUp.setOnTouchListener(tapListener)
+    }
+
+    private fun focusAtTapInPreview(source: View, localX: Float, localY: Float) {
+        val preview = bindViews.viewCamera
+        val srcLoc = IntArray(2)
+        val previewLoc = IntArray(2)
+        source.getLocationOnScreen(srcLoc)
+        preview.getLocationOnScreen(previewLoc)
+        val x = localX + srcLoc[0] - previewLoc[0]
+        val y = localY + srcLoc[1] - previewLoc[1]
+        if (x < 0f || y < 0f || x > preview.width || y > preview.height) return
+        focusAtTap(x, y)
+    }
+
+    private fun focusAtTap(x: Float, y: Float) {
+        val cam = camera ?: return
+        val factory = bindViews.viewCamera.meteringPointFactory
+        val point = factory.createPoint(x, y)
+        val action = FocusMeteringAction.Builder(point, FocusMeteringAction.FLAG_AF or FocusMeteringAction.FLAG_AE)
+            .setAutoCancelDuration(3, TimeUnit.SECONDS)
+            .build()
+        cam.cameraControl.startFocusAndMetering(action)
     }
 
     override fun onClick(v: View?) {
