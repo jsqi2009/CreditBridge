@@ -13,7 +13,7 @@ object CacheManager {
 
     var mobile by SPCache("")
 
-    var isNeedShowPermissionSheet by SPCache(true, mobile + "permission_sheet")
+    var isNeedShowPermissionSheet by SPCache(true )
 
     var isAlreadyShowPanNumberSheet by SPCache(false)
 

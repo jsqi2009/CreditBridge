@@ -605,10 +605,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (CacheManager.isNeedShowPermissionSheet) {
             val permissionSheet = PermissionBottomSheet( requireActivity(),
                 onRefuseListener = {
-
-                }, onAgreeListener = {
-                    showRequestPermissionDialog()
                     CacheManager.isNeedShowPermissionSheet = false
+                    requestSystemPermissions()
+                }, onAgreeListener = {
+                    CacheManager.isNeedShowPermissionSheet = false
+                    requestSystemPermissions()
+                    /*showRequestPermissionDialog()
+                    CacheManager.isNeedShowPermissionSheet = false*/
                 })
             permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
         }
