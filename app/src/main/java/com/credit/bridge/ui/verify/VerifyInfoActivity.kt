@@ -97,6 +97,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private val REQUEST_CODE_PERMISSION = 1002
     var panNumberOfTimes = 0
     var panNumberFailTimes = 0
+    var isOcrNumberPassed = false
     var faceNumberOfTimes = 0
     var isUseOcePan = false
     var isUseVerifyFace = false
@@ -1144,6 +1145,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         if(event.isSuccess){
             event.model?.mtaw?.let {
                 panNumberOfTimes = it
+                bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
                 bindViews.attemptLeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
                 //showStartOcrPanNumberSheet()
             }
@@ -1261,6 +1263,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             event.model?.mtaw?.let {
                 isUseOcePan = true
                 if(it.mazcrn == "PASS"){
+                    isOcrNumberPassed = true
                     bindViews.verify4.panInfoLl.visibility = View.VISIBLE
                     bindViews.verify4.panTips.visibility = View.GONE
                     bindViews.stepBtn4.visibility = View.VISIBLE
@@ -1270,25 +1273,26 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     bindViews.verify4.fullNameTv.setText(it.ynyj)
                     bindViews.verify4.panNumberTv.setText(it.fwrcjkq)
                     bindViews.verify4.birthDateTv.text = it.bzumerxb
-                    bindViews.verify4.birthDateTv.text = it.bzumerxb
                     hideLoading()
                 }else{
                     hideLoading()
                     ToastUtil.showLong(this, it.dvusonb)
                     panNumberFailTimes  = panNumberFailTimes + 1
-                    bindViews.verify4.fullNameTv.setText(it.ynyj)
-                    bindViews.verify4.panNumberTv.setText(it.fwrcjkq)
+                    bindViews.verify4.fullNameTv.setText("")
+                    bindViews.verify4.panNumberTv.setText("")
                     bindViews.verify4.birthDateTv.text = ""
-                    bindViews.verify4.birthDateTv.text = ""
+
                     enableManualInputOcrPanInfo()
+                    isOcrNumberPassed = false
 
                     HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
                         ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
                 }
             }
         } else {
-            panNumberFailTimes  = panNumberFailTimes + 1
+            panNumberFailTimes = panNumberFailTimes + 1
             enableManualInputOcrPanInfo()
+            isOcrNumberPassed = false
             HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_FAIL,
                 ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_IDCARD_FAIL)
 
@@ -1304,7 +1308,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun enableManualInputOcrPanInfo() {
-        if (panNumberFailTimes >= 2) {
+        if (panNumberFailTimes >= 2 || isOcrNumberPassed) {
             bindViews.verify4.panInfoLl.visibility = View.VISIBLE
             bindViews.verify4.panTips.visibility = View.GONE
             bindViews.stepBtn4.visibility = View.VISIBLE
@@ -1313,7 +1317,6 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
             bindViews.verify4.fullNameTv.setText("")
             bindViews.verify4.panNumberTv.setText("")
-            bindViews.verify4.birthDateTv.text = ""
             bindViews.verify4.birthDateTv.text = ""
         }
     }
