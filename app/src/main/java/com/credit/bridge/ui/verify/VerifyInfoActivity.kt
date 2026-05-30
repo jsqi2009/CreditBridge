@@ -52,11 +52,14 @@ import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyOcrFaceResponseEvent
 import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.ui.product.SubmitSuccessActivity
+import com.credit.bridge.util.BirthdayDateHelper
 import com.credit.bridge.util.AppUtil.formatSubString
 import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
+import com.credit.bridge.inter.OnBirthdaySelectListener
+import com.credit.bridge.widget.BirthdayPickerBottomSheet
 import com.credit.bridge.widget.CommonBottomSheet
 import com.credit.bridge.widget.StartVerifyBottomSheet
 import com.liveness.dflivenesslibrary.DFTransferResultInterface
@@ -247,6 +250,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.verify3.confirmAccountNumberEt.addTextChangedListener(confirmAccountTextWatcher)
 
         bindViews.verify4.panNumberIv.setOnClickListener(this)
+        bindViews.verify4.birthDateLl.setOnClickListener(this)
         bindViews.verify4.genderLl.setOnClickListener(this)
         bindViews.retryTv.setOnClickListener(this)
         bindViews.step4ContinueTv.setOnClickListener(this)
@@ -301,6 +305,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             R.id.panNumberIv -> {
                 //startOcrPanNumber()
                 showStartOcrPanNumberSheet()
+            }
+            R.id.birthDateLl -> {
+                showBirthdayPickerSheet()
             }
             R.id.genderLl -> {
                 showGenderSheet()
@@ -813,7 +820,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
         val fullName = bindViews.verify4.fullNameTv.text.toString()
         val panNumber = bindViews.verify4.panNumberTv.text.toString()
-        val birthDate = bindViews.verify4.birthDateTv.text.toString()
+        val birthDate = BirthdayDateHelper.toFormValue(bindViews.verify4.birthDateTv.text.toString())
+            ?: bindViews.verify4.birthDateTv.text.toString()
 
         if (panNumber.isEmpty()) {
             ToastUtil.showLong(this, "Please enter your PAN number")
@@ -1030,6 +1038,20 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 }
             })
         workTypeSheet.show(supportFragmentManager, "workTypeSheet")
+    }
+
+    private fun showBirthdayPickerSheet() {
+        val initial = bindViews.verify4.birthDateTv.text?.toString()
+        val sheet = BirthdayPickerBottomSheet(
+            this,
+            initialFormValue = if (initial.isNullOrBlank()) null else initial,
+            onBirthdaySelectListener = object : OnBirthdaySelectListener {
+                override fun onSelect(formValue: String, displayText: String) {
+                    bindViews.verify4.birthDateTv.text = displayText
+                }
+            }
+        )
+        sheet.show(supportFragmentManager, "birthdayPickerSheet")
     }
 
     private fun showGenderSheet() {
@@ -1272,7 +1294,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
                     bindViews.verify4.fullNameTv.setText(it.ynyj)
                     bindViews.verify4.panNumberTv.setText(it.fwrcjkq)
-                    bindViews.verify4.birthDateTv.text = it.bzumerxb
+                    bindViews.verify4.birthDateTv.text =
+                        BirthdayDateHelper.toDisplayText(it.bzumerxb) ?: it.bzumerxb
                     hideLoading()
                 }else{
                     hideLoading()
