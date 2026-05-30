@@ -15,6 +15,8 @@ object CacheManager {
 
     var isNeedShowPermissionSheet by SPCache(true )
 
+    var hasRequestedRuntimePermissions by SPCache(false)
+
     var isAlreadyShowPanNumberSheet by SPCache(false)
 
 

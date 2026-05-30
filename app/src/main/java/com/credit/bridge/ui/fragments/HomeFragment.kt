@@ -3,7 +3,9 @@ package com.credit.bridge.ui.fragments
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.Settings
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
@@ -12,6 +14,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresPermission
+import androidx.core.app.ActivityCompat
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseFragment
 import com.credit.bridge.content.ConstConfig
@@ -40,7 +43,6 @@ import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.widget.PermissionBottomSheet
 import com.squareup.otto.Subscribe
 import pub.devrel.easypermissions.EasyPermissions
-import pub.devrel.easypermissions.PermissionRequest
 import java.util.concurrent.Executors
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, EasyPermissions.PermissionCallbacks{
@@ -64,6 +66,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private var isAccountCreditPipelineBusy = false
     private var isCollectingOrUploadingApps = false
     private var skipHomeUploadEvents = false
+    private var pendingUploadAfterPermission = false
 
     private val verifyInfoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -81,6 +84,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         skipHomeUploadEvents = false
         if (isVisible) {
             checkCollectDataStatus()
+            tryResumeUploadAfterPermissionFromSettings()
         }
     }
     override fun initRes() {
@@ -316,41 +320,74 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }
     }
 
-    private fun requestNeedPermissions() {
-        try {
+    private fun hasAllRequiredPermissions(): Boolean {
+        return EasyPermissions.hasPermissions(requireActivity(), *permissions)
+    }
 
-            if (EasyPermissions.hasPermissions(requireActivity(), *permissions)) {
-                uploadInstalledPackageList()
-            } else {
-                /*EasyPermissions.requestPermissions(
-                    PermissionRequest.Builder(this, REQUEST_CODE, *permissions)
-                        .setRationale("Device Permission Required To help identify your device and protect your account, Rupee Cycle requires access to device status information.") //
-                        .setPositiveButtonText("Allow")
-                        .setNegativeButtonText("Deny")
-                        .build()
-                )*/
-
-                showRequestPermissionDialog()
+    private fun hasAnyPermanentlyDeniedPermission(): Boolean {
+        if (!CacheManager.hasRequestedRuntimePermissions) return false
+        val activity = requireActivity()
+        for (permission in permissions) {
+            if (!EasyPermissions.hasPermissions(activity, permission)
+                && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
+            ) {
+                return true
             }
-        } catch (e: Exception) {
+        }
+        return false
+    }
+
+    private fun ensurePermissionsThenUpload() {
+        try {
+            pendingUploadAfterPermission = true
+            if (hasAllRequiredPermissions()) {
+                pendingUploadAfterPermission = false
+                uploadInstalledPackageList()
+                return
+            }
+            if (hasAnyPermanentlyDeniedPermission()) {
+                showPermissionGuideDialog()
+                return
+            }
+            requestSystemPermissions()
+        } catch (_: Exception) {
+            pendingUploadAfterPermission = false
         }
     }
 
-    private fun showRequestPermissionDialog() {
+    private fun showPermissionGuideDialog() {
         DialogUtil.showRequestPermissionDialog(
             requireContext(),
-            onConfirm = { requestSystemPermissions() },
+            onConfirm = { openAppSettings() },
             onCancel = {
                 ToastUtil.showLong(requireContext(), "Please allow permissions to continue")
             }
         )
     }
 
+    private fun openAppSettings() {
+        val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+            data = Uri.fromParts("package", requireContext().packageName, null)
+        }
+        startActivity(intent)
+    }
+
+    private fun tryResumeUploadAfterPermissionFromSettings() {
+        if (!pendingUploadAfterPermission || !isAdded) return
+        if (hasAllRequiredPermissions()) {
+            pendingUploadAfterPermission = false
+            uploadInstalledPackageList()
+        }
+    }
+
+    private fun onDeclarationSheetClosed(requestUploadAfterGrant: Boolean) {
+        CacheManager.isNeedShowPermissionSheet = false
+        pendingUploadAfterPermission = requestUploadAfterGrant
+        requestSystemPermissions()
+    }
+
     private fun requestSystemPermissions() {
         requestPermissions(permissions, REQUEST_CODE)
-        /*EasyPermissions.requestPermissions(
-            PermissionRequest.Builder(this, REQUEST_CODE, *permissions).build()
-        )*/
     }
 
     private fun uploadInstalledPackageList() {
@@ -497,11 +534,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         try {
             if (event.isSuccess) {
                 if (event.model?.mtaw != true) {
-                    if (privacyPolicyUrl.isEmpty()) {
-                        requestNeedPermissions()
-                    } else {
-                        requestNeedPermissions()
-                    }
+                    ensurePermissionsThenUpload()
                 } else {
                     if (isCreateOrder) {
                         previewProduct()
@@ -555,17 +588,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         requestCode: Int,
         perms: List<String?>
     ) {
-        if (requestCode == REQUEST_CODE) {
-            uploadInstalledPackageList()
-        }
+        if (requestCode != REQUEST_CODE) return
+        handlePermissionResultAfterRequest()
     }
 
     override fun onPermissionsDenied(
         requestCode: Int,
         perms: List<String?>
     ) {
-        if (requestCode == REQUEST_CODE) {
-            ToastUtil.showLong(requireContext(),"Please allow permissions to continue")
+        if (requestCode != REQUEST_CODE) return
+        handlePermissionResultAfterRequest()
+    }
+
+    private fun handlePermissionResultAfterRequest() {
+        CacheManager.hasRequestedRuntimePermissions = true
+        if (!hasAllRequiredPermissions()) {
+            ToastUtil.showLong(requireContext(), "Please allow permissions to continue")
+            if (hasAnyPermanentlyDeniedPermission()) {
+                showPermissionGuideDialog()
+            }
+            return
+        }
+        if (pendingUploadAfterPermission) {
+            pendingUploadAfterPermission = false
+            uploadInstalledPackageList()
         }
     }
 
@@ -580,17 +626,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     fun showPermissionSheet() {
         if (CacheManager.isNeedShowPermissionSheet) {
-            val permissionSheet = PermissionBottomSheet( requireActivity(),
-                onRefuseListener = {
-                    //requestNeedPermissions()
-                    //CacheManager.isNeedShowPermissionSheet = false
-                }, onAgreeListener = {
-                    requestNeedPermissions()
-                    CacheManager.isNeedShowPermissionSheet = false
-                })
-            permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
-        }else{
-            requestNeedPermissions()
+            showPermissionDeclarationSheet(requestUploadAfterGrant = true)
+        } else {
+            ensurePermissionsThenUpload()
         }
     }
 
@@ -603,18 +641,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun autoShowPermissionSheet() {
         if (CacheManager.isNeedShowPermissionSheet) {
-            val permissionSheet = PermissionBottomSheet( requireActivity(),
-                onRefuseListener = {
-                    CacheManager.isNeedShowPermissionSheet = false
-                    requestSystemPermissions()
-                }, onAgreeListener = {
-                    CacheManager.isNeedShowPermissionSheet = false
-                    requestSystemPermissions()
-                    /*showRequestPermissionDialog()
-                    CacheManager.isNeedShowPermissionSheet = false*/
-                })
-            permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
+            showPermissionDeclarationSheet(requestUploadAfterGrant = false)
         }
+    }
+
+    private fun showPermissionDeclarationSheet(requestUploadAfterGrant: Boolean) {
+        val onClose = { onDeclarationSheetClosed(requestUploadAfterGrant) }
+        val permissionSheet = PermissionBottomSheet(
+            requireActivity(),
+            onRefuseListener = onClose,
+            onAgreeListener = onClose
+        )
+        permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
     }
 
     companion object {

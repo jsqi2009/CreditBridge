@@ -145,7 +145,6 @@ object SystemDataUtils {
     @SuppressLint("HardwareIds")
     @RequiresPermission(allOf = [ Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION])
     fun getDeviceInfo(context: Context): Array<SystemInfo>{
-        var list: Array<SystemInfo> = arrayOf()
         val deviceInfo = SystemInfo()
         deviceInfo.appSign = getAppSign()
         deviceInfo.baseBandVersion = Build.getRadioVersion()
@@ -258,8 +257,7 @@ object SystemDataUtils {
         )+ getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         )}"
-        list + deviceInfo
-        return list
+        return arrayOf(deviceInfo)
     }
 
 

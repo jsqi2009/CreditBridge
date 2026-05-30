@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.provider.Settings
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
@@ -347,6 +348,7 @@ object HttpClient {
     @RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.READ_PHONE_STATE])
     @SuppressLint("HardwareIds")
     fun uploadSystemInfo(mContext: Context, data: Array<SystemInfo>) {
+        Log.e("uploadSystemInfo", Gson().toJson(data))
         val messageBody = RequestInstalledPackageBody(protocolName = "DEVICE_INFO", data = data)
         val json = Gson().toJson(messageBody)
         val zipString = SystemDataUtils.getZipData(json)

@@ -39,6 +39,7 @@ class PermissionBottomSheet(
         when (v?.id) {
             R.id.dismissIv -> {
                 dismiss()
+                onRefuseListener.invoke()
             }
             R.id.refuseTv -> {
                 dismiss()
