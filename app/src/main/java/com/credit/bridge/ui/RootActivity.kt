@@ -167,6 +167,11 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
             tabItemSelected(bindViews.tabHome.tabItem, false, 0)
             tabItemSelected(bindViews.tabOrder.tabItem, true, 1)
             tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
+        } else if (event.pageIndex == 0) {
+            bindViews.viewPager.currentItem = 0
+            tabItemSelected(bindViews.tabHome.tabItem, true, 0)
+            tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
+            tabItemSelected(bindViews.tabAccount.tabItem, false, 2)
         }
     }
 

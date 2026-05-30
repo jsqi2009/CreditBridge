@@ -10,6 +10,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
+import android.provider.Settings
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -19,6 +20,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
@@ -51,7 +53,6 @@ import com.credit.bridge.remote.event.VerifyBaseUserInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyContactInfoResponseEvent
 import com.credit.bridge.remote.event.VerifyOcrFaceResponseEvent
 import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
-import com.credit.bridge.ui.product.SubmitSuccessActivity
 import com.credit.bridge.util.BirthdayDateHelper
 import com.credit.bridge.util.AppUtil.formatSubString
 import com.credit.bridge.util.DialogUtil
@@ -71,7 +72,6 @@ import okhttp3.Callback
 import okhttp3.Response
 import okio.IOException
 import pub.devrel.easypermissions.EasyPermissions
-import pub.devrel.easypermissions.PermissionRequest
 import top.zibin.luban.Luban
 import top.zibin.luban.OnCompressListener
 import java.io.File
@@ -113,6 +113,14 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private var step5QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
 
     private val permissions = arrayOf(Manifest.permission.CAMERA)
+
+    private var hasRequestedCameraPermission = false
+
+    private enum class PendingCameraAction {
+        NONE, PAN_PHOTO, VERIFY_FACE
+    }
+
+    private var pendingCameraAction = PendingCameraAction.NONE
 
     private val contact1Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
@@ -217,6 +225,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         enableEdgeToEdge()
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         panNumberFailTimes = 0
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tryResumeCameraActionAfterSettings()
     }
 
     override fun initRes() {
@@ -1179,53 +1192,113 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }
     }
 
+    private fun hasCameraPermission(): Boolean {
+        return EasyPermissions.hasPermissions(this, *permissions)
+    }
+
+    private fun isCameraPermanentlyDenied(): Boolean {
+        if (!hasRequestedCameraPermission) return false
+        return !hasCameraPermission()
+            && !ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)
+    }
+
+    private fun showCameraPermissionGuideDialog() {
+        DialogUtil.showRequestPermissionDialog(
+            this,
+            onConfirm = { openAppSettings() },
+            onCancel = {
+                ToastUtil.showLong(this, "Required permissions must be enabled to proceed.")
+            }
+        )
+    }
+
+    private fun openAppSettings() {
+        startActivity(
+            Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                data = Uri.fromParts("package", packageName, null)
+            }
+        )
+    }
+
+    private fun ensureCameraPermission(action: PendingCameraAction) {
+        pendingCameraAction = action
+        if (hasCameraPermission()) {
+            pendingCameraAction = PendingCameraAction.NONE
+            executePendingCameraAction(action)
+            return
+        }
+        if (isCameraPermanentlyDenied()) {
+            showCameraPermissionGuideDialog()
+            return
+        }
+        requestPermissions(permissions, REQUEST_CODE_PERMISSION)
+    }
+
+    private fun executePendingCameraAction(action: PendingCameraAction) {
+        when (action) {
+            PendingCameraAction.PAN_PHOTO -> launchTakePhoto()
+            PendingCameraAction.VERIFY_FACE -> launchVerifyFace()
+            PendingCameraAction.NONE -> {}
+        }
+    }
+
+    private fun launchTakePhoto() {
+        takePhoto.launch(Intent(this, TakePhotoActivity::class.java))
+    }
+
+    private fun launchVerifyFace() {
+        isUseVerifyFace = true
+        val bundle = Bundle()
+        bundle.putString(DFActionLivenessActivity.OUTTYPE, Constants.MULTIIMG)
+        bundle.putString(DFActionLivenessActivity.EXTRA_MOTION_SEQUENCE, "STILL BLINK MOUTH NOD YAW")
+        val intent = Intent(this, DFActionLivenessActivity::class.java)
+        intent.putExtras(bundle)
+        intent.putExtra(DFActionLivenessActivity.KEY_DETECT_IMAGE_RESULT, true)
+        liveFaceLauncher.launch(intent)
+        HttpClient.eventReport(
+            this,
+            ConstConfig.EVENT_START_LIVENESS,
+            ConstConfig.EVENT_ACTION_CLICK,
+            ConstConfig.EVENT_START_LIVENESS
+        )
+    }
+
+    private fun tryResumeCameraActionAfterSettings() {
+        if (pendingCameraAction == PendingCameraAction.NONE) return
+        if (!hasCameraPermission()) return
+        val action = pendingCameraAction
+        pendingCameraAction = PendingCameraAction.NONE
+        executePendingCameraAction(action)
+    }
+
+    private fun handleCameraPermissionResult() {
+        hasRequestedCameraPermission = true
+        if (!hasCameraPermission()) {
+            ToastUtil.showLong(this, "Required permissions must be enabled to proceed.")
+            if (isCameraPermanentlyDenied()) {
+                showCameraPermissionGuideDialog()
+            }
+            return
+        }
+        val action = pendingCameraAction
+        pendingCameraAction = PendingCameraAction.NONE
+        executePendingCameraAction(action)
+    }
+
     private fun showStartOcrPanNumberSheet() {
         if (CacheManager.isAlreadyShowPanNumberSheet) {
             takePhotoDirectly()
         } else {
             val startOcrPanNumberSheet = StartVerifyBottomSheet(this, "", panNumberOfTimes, takePhoto = {
                 CacheManager.isAlreadyShowPanNumberSheet = true
-                val permission = arrayOf(Manifest.permission.CAMERA)
-                if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
-                    takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
-                } else {
-                    requestPermissions(permissions, REQUEST_CODE_PERMISSION)
-
-                    /*EasyPermissions.requestPermissions(
-                        PermissionRequest.Builder(
-                            this@VerifyInfoActivity,
-                            REQUEST_CODE_PERMISSION,
-                            *permission
-                        )
-                            .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
-                            .setPositiveButtonText("Allow")
-                            .setNegativeButtonText("Deny")
-                            .build()
-                    )*/
-                }
-            } )
+                ensureCameraPermission(PendingCameraAction.PAN_PHOTO)
+            })
             startOcrPanNumberSheet.show(supportFragmentManager, "startOcrPanNumberSheet")
         }
-
     }
 
     private fun takePhotoDirectly() {
-        val permission = arrayOf(Manifest.permission.CAMERA)
-        if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
-            takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
-        } else {
-            EasyPermissions.requestPermissions(
-                PermissionRequest.Builder(
-                    this@VerifyInfoActivity,
-                    REQUEST_CODE_PERMISSION,
-                    *permission
-                )
-                    .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
-                    .setPositiveButtonText("Allow")
-                    .setNegativeButtonText("Deny")
-                    .build()
-            )
-        }
+        ensureCameraPermission(PendingCameraAction.PAN_PHOTO)
     }
 
     private fun identifyOcrPanCardInfo(imagePath: Uri? = null) {
@@ -1372,34 +1445,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             return
         }
 
-        isUseVerifyFace = true
-        val permission = arrayOf(Manifest.permission.CAMERA)
-        if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
-            val bundle = Bundle()
-            bundle.putString(DFActionLivenessActivity.OUTTYPE, Constants.MULTIIMG)
-            bundle.putString(DFActionLivenessActivity.EXTRA_MOTION_SEQUENCE, "STILL BLINK MOUTH NOD YAW")
-            val intent = Intent()
-            intent.setClass(this, DFActionLivenessActivity::class.java)
-            intent.putExtras(bundle)
-            intent.putExtra(DFActionLivenessActivity.KEY_DETECT_IMAGE_RESULT, true)
-            liveFaceLauncher.launch(intent)
-
-            HttpClient.eventReport(this,ConstConfig.EVENT_START_LIVENESS,
-                ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_START_LIVENESS)
-
-        } else {
-            EasyPermissions.requestPermissions(
-                PermissionRequest.Builder(
-                    this@VerifyInfoActivity,
-                    REQUEST_CODE_PERMISSION,
-                    *permission
-                )
-                    .setRationale("Camera Permission Required To capture and upload verification photos, Rupee Cycle requires access to your camera.")
-                    .setPositiveButtonText("Allow")
-                    .setNegativeButtonText("Deny")
-                    .build()
-            )
-        }
+        ensureCameraPermission(PendingCameraAction.VERIFY_FACE)
     }
 
     @SuppressLint("SetTextI18n")
@@ -1426,18 +1472,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         perms: List<String?>
     ) {
         if (requestCode == REQUEST_CODE_PERMISSION) {
-            if(isUseVerifyFace){
-                val bundle = Bundle()
-                bundle.putString(DFActionLivenessActivity.OUTTYPE, Constants.MULTIIMG)
-                bundle.putString(DFActionLivenessActivity.EXTRA_MOTION_SEQUENCE, "STILL BLINK MOUTH NOD YAW")
-                val intent = Intent()
-                intent.setClass(this, DFActionLivenessActivity::class.java)
-                intent.putExtras(bundle)
-                intent.putExtra(DFActionLivenessActivity.KEY_DETECT_IMAGE_RESULT, true)
-                liveFaceLauncher.launch(intent)
-            }else{
-                takePhoto.launch(Intent(this@VerifyInfoActivity, SubmitSuccessActivity::class.java).apply {})
-            }
+            handleCameraPermissionResult()
         }
     }
 
@@ -1446,7 +1481,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         perms: List<String?>
     ) {
         if (requestCode == REQUEST_CODE_PERMISSION) {
-            ToastUtil.showLong(this, "Required permissions must be enabled to proceed.")
+            handleCameraPermissionResult()
         }
     }
 

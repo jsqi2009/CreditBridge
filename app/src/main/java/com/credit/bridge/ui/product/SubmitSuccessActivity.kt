@@ -109,7 +109,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
 
     private fun backToHome() {
         eventBus.post(FinishActivityEvent())
-        eventBus.post(UpdateTabIndexEvent(1))
+        eventBus.post(UpdateTabIndexEvent(0))
         finish()
     }
 
