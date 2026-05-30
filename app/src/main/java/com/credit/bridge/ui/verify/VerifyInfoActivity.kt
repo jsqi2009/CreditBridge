@@ -112,6 +112,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private var step4QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
     private var step5QuestionInfo: QuestionInfoResponse = QuestionInfoResponse()
 
+    private val permissions = arrayOf(Manifest.permission.CAMERA)
+
     private val contact1Launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode != Activity.RESULT_OK) return@registerForActivityResult
         val contactUri = result.data?.data ?: return@registerForActivityResult
@@ -158,7 +160,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private val liveFaceLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data = result.data
         val resultCode = result.resultCode
-        HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
+        //HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
         if (resultCode == RESULT_OK ) {
             val mResult =  (this.application as DFTransferResultInterface).result
             if (mResult != null) {
@@ -166,6 +168,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 if (imageResultArr != null) {
                     val size = imageResultArr.size
                     if (size > 0) {
+                        showLoading()
                         var imageResult = imageResultArr[0]
                         var imageBitmap = BitmapFactory.decodeByteArray(
                             imageResult.image,
@@ -179,7 +182,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                         )
                         FileOutputStream(tempFile).use { it.write(imageResult.image) }
                         real_path = tempFile.absolutePath
-                        showLoading()
+                        //showLoading()
                         HttpClient.getOssInfo(this@VerifyInfoActivity, 2)
                     }
                 }
@@ -1186,7 +1189,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 if (EasyPermissions.hasPermissions(this@VerifyInfoActivity, *permission)) {
                     takePhoto.launch(Intent(this@VerifyInfoActivity, TakePhotoActivity::class.java).apply {})
                 } else {
-                    EasyPermissions.requestPermissions(
+                    requestPermissions(permissions, REQUEST_CODE_PERMISSION)
+
+                    /*EasyPermissions.requestPermissions(
                         PermissionRequest.Builder(
                             this@VerifyInfoActivity,
                             REQUEST_CODE_PERMISSION,
@@ -1196,7 +1201,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                             .setPositiveButtonText("Allow")
                             .setNegativeButtonText("Deny")
                             .build()
-                    )
+                    )*/
                 }
             } )
             startOcrPanNumberSheet.show(supportFragmentManager, "startOcrPanNumberSheet")
@@ -1413,6 +1418,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 ToastUtil.showLong(this, "Network Error")
             }
         }
+        HttpClient.verifyOcrFaceNumber(this)
     }
 
     override fun onPermissionsGranted(

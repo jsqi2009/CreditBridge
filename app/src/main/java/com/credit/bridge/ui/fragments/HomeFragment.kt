@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         container: ViewGroup?
     ) = FragmentHomeBinding.inflate(inflater, container, false)
 
-    private val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,Manifest.permission.CAMERA,
+    private val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
         Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
 
     private var isAuthed = false
