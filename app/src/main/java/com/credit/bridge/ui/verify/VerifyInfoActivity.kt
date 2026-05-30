@@ -914,8 +914,12 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun completeVerify(){
-        if(!isFacePassed){
+        /*if(!isFacePassed){
             ToastUtil.showLong(this, "Face verification was unsuccessful. Please try again")
+            return
+        }*/
+        if(!isFacePassed){
+            startVerifyFace()
             return
         }
 
@@ -1263,8 +1267,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     bindViews.continueTv.visibility = View.GONE
                     bindViews.attemptLeftTv.visibility = View.GONE
                     bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
-                    bindViews.verify4.fullNameTv.text = it.ynyj
-                    bindViews.verify4.panNumberTv.text = it.fwrcjkq
+                    bindViews.verify4.fullNameTv.setText(it.ynyj)
+                    bindViews.verify4.panNumberTv.setText(it.fwrcjkq)
                     bindViews.verify4.birthDateTv.text = it.bzumerxb
                     bindViews.verify4.birthDateTv.text = it.bzumerxb
                     hideLoading()
@@ -1272,8 +1276,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     hideLoading()
                     ToastUtil.showLong(this, it.dvusonb)
                     panNumberFailTimes  = panNumberFailTimes + 1
-                    bindViews.verify4.fullNameTv.text = ""
-                    bindViews.verify4.panNumberTv.text = ""
+                    bindViews.verify4.fullNameTv.setText(it.ynyj)
+                    bindViews.verify4.panNumberTv.setText(it.fwrcjkq)
                     bindViews.verify4.birthDateTv.text = ""
                     bindViews.verify4.birthDateTv.text = ""
                     enableManualInputOcrPanInfo()
@@ -1307,8 +1311,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             bindViews.continueTv.visibility = View.GONE
             bindViews.attemptLeftTv.visibility = View.GONE
             bindViews.step4LeftTv.text = getString(R.string.verify_photo_attempts_left_today) + " " + panNumberOfTimes
-            bindViews.verify4.fullNameTv.text = ""
-            bindViews.verify4.panNumberTv.text = ""
+            bindViews.verify4.fullNameTv.setText("")
+            bindViews.verify4.panNumberTv.setText("")
             bindViews.verify4.birthDateTv.text = ""
             bindViews.verify4.birthDateTv.text = ""
         }

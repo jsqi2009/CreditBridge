@@ -78,17 +78,17 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/margin_10"
                     android:orientation="horizontal">
 
-                    <TextView
+                    <EditText
                         android:id="@+id/panNumberTv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="AJOPM5087G"
                         android:textColor="#ffffebd3"
                         android:textSize="14sp"
-                        />
+                        android:hint="Plesae Enter"
+                        android:background="@null"/>
 
                 </LinearLayout>
 
@@ -112,17 +112,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/margin_15"
+                    android:layout_marginTop="@dimen/margin_10"
                     android:orientation="horizontal">
 
-                    <TextView
+
+                    <EditText
                         android:id="@+id/fullNameTv"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="ASHISH JEETENDRA MEH"
                         android:textColor="#ffffebd3"
                         android:textSize="14sp"
-                        />
+                        android:hint="Plesae Enter"
+                        android:background="@null"/>
 
                 </LinearLayout>
 
