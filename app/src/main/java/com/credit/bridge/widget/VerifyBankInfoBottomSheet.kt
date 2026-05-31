@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.coroutineScope
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
@@ -30,9 +29,7 @@ import com.credit.bridge.remote.bean.CommonBean
 import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.util.ToastUtil
-import com.google.android.gms.common.internal.service.Common
-import com.google.gson.JsonObject
-import com.squareup.otto.Subscribe
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -155,11 +152,13 @@ class VerifyBankInfoBottomSheet(
     }
 
     private fun verifyCodeCountdown() {
+        if (!isAdded) return
         bindViews.sendTv.isClickable = false
         verifyCodeTimeRemain = total
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 repeat(verifyCodeTimeRemain) {
+                    if (!isAdded) return@launch
                     bindViews.sendTv.text = "${verifyCodeTimeRemain} S"
                     if (verifyCodeTimeRemain == 55) {
                         bindViews.verifyVoiceTv.visibility = View.VISIBLE
@@ -167,29 +166,41 @@ class VerifyBankInfoBottomSheet(
                     delay(1000)
                     verifyCodeTimeRemain--
                 }
+                if (!isAdded) return@launch
                 bindViews.sendTv.text = "Send"
                 bindViews.sendTv.isClickable = true
-            } catch (e: Exception) {
-                bindViews.sendTv.isClickable = true
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                if (isAdded) {
+                    bindViews.sendTv.isClickable = true
+                }
             }
         }
     }
 
     @SuppressLint("SetTextI18n")
     private fun verifyVoiceCountdown() {
+        if (!isAdded) return
         bindViews.verifyVoiceTv.isClickable = false
         verifyVoiceTimeRemain = total
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 repeat(verifyVoiceTimeRemain) {
+                    if (!isAdded) return@launch
                     bindViews.verifyVoiceTv.text = "Resend ($verifyVoiceTimeRemain) S"
                     delay(1000)
                     verifyVoiceTimeRemain--
                 }
+                if (!isAdded) return@launch
                 bindViews.verifyVoiceTv.text = getString(R.string.login_verify_voice)
                 bindViews.verifyVoiceTv.isClickable = true
-            } catch (e: Exception) {
-                bindViews.verifyVoiceTv.isClickable = true
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                if (isAdded) {
+                    bindViews.verifyVoiceTv.isClickable = true
+                }
             }
         }
     }
