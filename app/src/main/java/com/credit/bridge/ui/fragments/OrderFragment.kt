@@ -85,7 +85,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
                 }
             }
         } else {
-            ToastUtil.showLong(requireActivity(),event.retMsg)
+            ToastUtil.showLong(requireActivity(),event.errorMessage)
         }
     }
 

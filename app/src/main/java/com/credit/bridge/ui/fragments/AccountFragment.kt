@@ -121,7 +121,7 @@ class AccountFragment : BaseFragment<FragmentAccountBinding>(),View.OnClickListe
                 }
             }
         }else{
-            ToastUtil.showLong(requireActivity(),event.retMsg)
+            ToastUtil.showLong(requireActivity(),event.errorMessage)
         }
     }
 
