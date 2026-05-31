@@ -54,6 +54,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         super.onResume()
         if (!isExtend) {
             getOrderDetailsInfo()
+        }else{
+            getOrderUpdateInfo()
         }
     }
 
@@ -105,6 +107,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             }
             R.id.viewPaymentOptionsTv -> {
                 if (orderInfo?.umoatyothkt == true) {
+                    isExtend =  true
                     getOrderUpdateInfo()
                 }
             }
