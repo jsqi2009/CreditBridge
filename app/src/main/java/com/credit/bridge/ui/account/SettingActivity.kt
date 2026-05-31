@@ -73,6 +73,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
         hideLoading()
         if (event.isSuccess) {
             CacheManager.isAuth = false
+            CacheManager.token = ""
             AppActivityManager.appManager.finishAllActivity()
             startActivity(Intent(this, LoginActivity::class.java))
         }

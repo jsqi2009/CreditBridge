@@ -3,6 +3,11 @@ package com.credit.bridge.remote
 
 
 import com.credit.bridge.remote.event.BResponseEvent
+import com.credit.bridge.remote.event.LoginResponseEvent
+import com.credit.bridge.remote.event.LogoutResponseEvent
+import com.credit.bridge.remote.event.UnauthorizedEvent
+import com.credit.bridge.remote.event.VerifyCodeResponseEvent
+import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.remote.response.BResponse
 import com.squareup.otto.Bus
 
@@ -105,6 +110,10 @@ class DispatchCallbackBusAdapter : DispatchCallback<BResponse> {
     }
 
     override fun onDispatchSuccess(dispatchResponse: BResponse, response: Response<*>) {
+        if (dispatchResponse.fzpn == 401) {
+            onDispatchLogout()
+            return
+        }
         if (mRequestCallParameter != null) {
             this.mEventBus!!.post(createResponseEvent(dispatchResponse, response, mRequestCallParameter!!))
         } else {
@@ -113,7 +122,16 @@ class DispatchCallbackBusAdapter : DispatchCallback<BResponse> {
     }
 
     override fun onDispatchLogout() {
+        if (shouldSkipUnauthorizedEvent()) return
+        mEventBus!!.post(UnauthorizedEvent())
+    }
 
+    private fun shouldSkipUnauthorizedEvent(): Boolean {
+        val eventClass = mEventClass ?: return false
+        return eventClass == LogoutResponseEvent::class.java
+            || eventClass == LoginResponseEvent::class.java
+            || eventClass == VerifyCodeResponseEvent::class.java
+            || eventClass == VoiceCodeResponseEvent::class.java
     }
 
     override fun onDispatchNetworkError(error: Throwable, index: Any, flag: Any) {

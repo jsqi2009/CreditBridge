@@ -89,17 +89,16 @@ class DispatchClient(var mContext: Context, internal var mBus: AndroidBus) {
                 var bResponse = BResponse()
                 bResponse.position = position
                 callback!!.onDispatchSuccess(bResponse, response)
-            }else if( response.code() == 400 || response.code() == 401 || response.code() == 403
+            } else if (response.code() == 401) {
+                callback!!.onDispatchLogout()
+            } else if (response.code() == 400 || response.code() == 403
                 || response.code() == 422 || response.code() == 404 || response.code() == 442
             ) {
                 try {
-                    val bResponse = BResponse()
-                    bResponse.fzpn = response.code()
-                    callback!!.onDispatchNetworkError( Throwable(response.code().toString()))
+                    callback!!.onDispatchNetworkError(Throwable(response.code().toString()))
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }
-                //callback!!.onDispatchLogout()
             } else {
                 callback!!.onDispatchNetworkError(Throwable("network_error"))
             }
