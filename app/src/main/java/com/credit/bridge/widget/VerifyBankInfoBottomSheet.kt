@@ -2,16 +2,12 @@ package com.credit.bridge.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.Rect
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.telecom.Call
-import android.text.Editable
-import android.text.TextWatcher
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
@@ -67,6 +63,34 @@ class VerifyBankInfoBottomSheet(
         bindViews.verifyVoiceTv.setOnClickListener(this)
 
         initRes()
+        enableKeyboardScroll()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
+
+    private fun enableKeyboardScroll() {
+        bindViews.codeEt.setOnFocusChangeListener { v, hasFocus ->
+            if (hasFocus) {
+                scrollFieldIntoView(v)
+            }
+        }
+    }
+
+    private fun scrollFieldIntoView(focused: View) {
+        bindViews.verifyBankScrollView.postDelayed({
+            val scrollView = bindViews.verifyBankScrollView
+            scrollView.post {
+                val content = scrollView.getChildAt(0) ?: return@post
+                val rect = Rect()
+                focused.getDrawingRect(rect)
+                scrollView.offsetDescendantRectToMyCoords(focused, rect)
+                rect.bottom += resources.getDimensionPixelSize(R.dimen.margin_20)
+                scrollView.requestChildRectangleOnScreen(content, rect, true)
+            }
+        }, 80)
     }
 
     private fun initRes() {
