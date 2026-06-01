@@ -336,6 +336,7 @@ object HttpClient {
         installedPackageBody.totalNumber = data.size.toLong()
         Log.e("uploadInstalledPackageList", "count=${data.size}")
         val jsonList = Gson().toJson(installedPackageBody)
+        Log.e("uploadInstalledPackageList：", jsonList)
         val zipString = SystemDataUtils.getZipData(jsonList)
         val requestZipBody = RequestZipDataBody()
         requestZipBody.phajox = CacheManager.mobile

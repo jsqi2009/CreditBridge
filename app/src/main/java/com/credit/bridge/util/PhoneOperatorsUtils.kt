@@ -61,8 +61,10 @@ object PhoneOperatorsUtils {
     @SuppressLint("ServiceCast")
     fun getDualSimCarrier(context: Context): Pair<String, String> {
         val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
-        var sim1Carrier = "No SIM Card 1"
-        var sim2Carrier = "No SIM Card 2"
+        /*var sim1Carrier = "No SIM Card 1"
+        var sim2Carrier = "No SIM Card 2"*/
+        var sim1Carrier = ""
+        var sim2Carrier = ""
             val subscriptionList: List<SubscriptionInfo>? =
                 subscriptionManager.activeSubscriptionInfoList
             subscriptionList?.forEachIndexed { index, info ->

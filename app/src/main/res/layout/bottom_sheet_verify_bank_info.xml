@@ -125,7 +125,8 @@
                     android:hint="@string/hint_enter"
                     android:textColorHint="#B8A58E"
                     android:inputType="number"
-                    android:maxLength="1"
+                    android:maxLines="1"
+                    android:maxLength="4"
                     android:textColor="#ffffebd3"
                     android:textSize="14sp" />
 

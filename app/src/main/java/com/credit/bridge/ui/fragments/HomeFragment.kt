@@ -107,6 +107,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.accessAccountIv -> {
+                if (homeInfo?.hahsraev?.lwgdzqyuks == false) {
+                    ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
+                    return
+                }
+                if (homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == null || homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == 0) {
+                    ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
+                    return
+                }
                 isCreateOrder = true
                 homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn?.let {
                     if (it > 0) {
@@ -120,6 +128,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }
             R.id.accessManageIv -> {
+                if (homeInfo?.hahsraev?.lwgdzqyuks == false) {
+                    ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
+                    return
+                }
+                if (homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == null || homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn == 0) {
+                    ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
+                    return
+                }
                 isCreateOrder = true
                 //checkUploadStatus()
                 homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn?.let {
