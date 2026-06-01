@@ -108,36 +108,46 @@ object SystemDataUtils {
     fun getInstalledAppList(context: Context): Array<BaseDeviceInfo> {
         val list = ArrayList<BaseDeviceInfo>()
         val packageManager = context.packageManager
-        val intent = Intent(Intent.ACTION_MAIN)
-        intent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val intent = Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER)
+        val installedPackages = packageManager.queryIntentActivities(intent, 0) ?: return emptyArray()
 
-        val installedPackages = packageManager.queryIntentActivities(intent, 0)
-
-        for (app in installedPackages) {
-            val packageInfo = packageManager.getPackageInfo(app.activityInfo.packageName, 0)
-            val data = BaseDeviceInfo()
-            data.appName = packageInfo.applicationInfo!!.loadLabel(packageManager) as String
-            data.firstInstallTime = packageInfo.firstInstallTime.toString()
-            data.isGameApp = (packageInfo.applicationInfo!!.flags and ApplicationInfo.FLAG_IS_GAME) != 0
-            data.uninstalled = (packageInfo.applicationInfo!!.flags and ApplicationInfo.FLAG_SYSTEM) != 0
-            data.packageName = packageInfo.packageName
-            data.lastUpdateTime = packageInfo.lastUpdateTime.toString()
-            data.versionCode = packageInfo.versionCode.toString()
-            data.versionName = packageInfo.versionName ?: "un version"
-            data.isSystemApp = isSystemA(packageInfo)
-            var permissions: MutableList<String>? = null
+        for (resolveInfo in installedPackages) {
+            val packageName = resolveInfo.activityInfo?.packageName ?: continue
             try {
-                val packageInfoP = packageManager.getPackageInfo(packageInfo.packageName, PackageManager.GET_PERMISSIONS)
-                permissions = if (packageInfoP.requestedPermissions != null && packageInfoP.requestedPermissions!!.isNotEmpty()) {
-                    packageInfoP.requestedPermissions?.toMutableList()
+                val packageInfo = packageManager.getPackageInfo(packageName, 0)
+                val appInfo = packageInfo.applicationInfo ?: continue
+                val data = BaseDeviceInfo()
+                data.appName = appInfo.loadLabel(packageManager)?.toString() ?: packageName
+                data.firstInstallTime = packageInfo.firstInstallTime.toString()
+                data.isGameApp = (appInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
+                data.uninstalled = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                data.packageName = packageName
+                data.lastUpdateTime = packageInfo.lastUpdateTime.toString()
+                data.versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                    packageInfo.longVersionCode.toString()
                 } else {
+                    @Suppress("DEPRECATION")
+                    packageInfo.versionCode.toString()
+                }
+                data.versionName = packageInfo.versionName ?: "un version"
+                data.isSystemApp = isSystemA(packageInfo)
+                data.requestedPermissions = try {
+                    val permInfo = packageManager.getPackageInfo(
+                        packageName,
+                        PackageManager.GET_PERMISSIONS
+                    )
+                    if (permInfo.requestedPermissions.isNullOrEmpty()) {
+                        mutableListOf()
+                    } else {
+                        permInfo.requestedPermissions!!.toMutableList()
+                    }
+                } catch (_: Exception) {
                     mutableListOf()
                 }
-            } catch (e: PackageManager.NameNotFoundException) {
-                throw RuntimeException(e)
+                list.add(data)
+            } catch (_: Exception) {
+                // 单个包失败不影响其余应用采集
             }
-            data.requestedPermissions = permissions
-            list.add(data)
         }
         return list.toTypedArray()
     }
@@ -556,44 +566,34 @@ object SystemDataUtils {
     }
 
     @SuppressLint("NewApi")
-    fun getSimNetworkInfo(networkInfo : PhoneNetworkInfo) {
+    fun getSimNetworkInfo(target: PhoneNetworkInfo) {
         val context = App.instance
         val telephonyManager = context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
-        val networkInfo = PhoneNetworkInfo()
-
-        val hasPermission = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_NUMBERS) == PackageManager.PERMISSION_GRANTED
-        } else {
-            ContextCompat.checkSelfPermission(context, Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED
-        }
         try {
             val subscriptionManager = context.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
             val activeSubs = subscriptionManager.activeSubscriptionInfoList
             if (!activeSubs.isNullOrEmpty()) {
                 val firstSub = activeSubs[0]
-                networkInfo.simCountryIso = firstSub.countryIso ?: ""
-                networkInfo.simOperator = "${firstSub.mccString ?: ""}${firstSub.mncString ?: ""}"
-                networkInfo.simOperatorName = firstSub.carrierName?.toString() ?: ""
-                networkInfo.simSerialNumber = ""
+                target.simCountryIso = firstSub.countryIso ?: ""
+                target.simOperator = "${firstSub.mccString ?: ""}${firstSub.mncString ?: ""}"
+                target.simOperatorName = firstSub.carrierName?.toString() ?: ""
+                target.simSerialNumber = ""
                 return
             }
 
-            networkInfo.simCountryIso = telephonyManager.simCountryIso ?: ""
-            networkInfo.simOperator = telephonyManager.simOperator ?: ""
-            networkInfo.simOperatorName = telephonyManager.simOperatorName ?: ""
-            networkInfo.simSerialNumber = ""
+            target.simCountryIso = telephonyManager.simCountryIso ?: ""
+            target.simOperator = telephonyManager.simOperator ?: ""
+            target.simOperatorName = telephonyManager.simOperatorName ?: ""
+            target.simSerialNumber = ""
 
-            if (networkInfo.simOperator?.isBlank() == true) {
-                networkInfo.simOperator = telephonyManager.networkOperator ?: ""
+            if (target.simOperator.isNullOrBlank()) {
+                target.simOperator = telephonyManager.networkOperator ?: ""
             }
-            if (networkInfo.simCountryIso?.isBlank() == true) {
-                networkInfo.simCountryIso = telephonyManager.networkCountryIso ?: ""
+            if (target.simCountryIso.isNullOrBlank()) {
+                target.simCountryIso = telephonyManager.networkCountryIso ?: ""
             }
-        } catch (e: Exception) {
-            networkInfo.simCountryIso = ""
-            networkInfo.simOperator = ""
-            networkInfo.simOperatorName = ""
-            networkInfo.simSerialNumber = ""
+        } catch (_: Exception) {
+            // 保留 getNetworkInfo 中已写入的 SIM 字段
         }
     }
     fun netmaskMY(): String {

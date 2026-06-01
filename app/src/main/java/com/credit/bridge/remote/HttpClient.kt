@@ -333,6 +333,8 @@ object HttpClient {
             protocolName = "INSTALLED_APP",
             data = data
         )
+        installedPackageBody.totalNumber = data.size.toLong()
+        Log.e("uploadInstalledPackageList", "count=${data.size}")
         val jsonList = Gson().toJson(installedPackageBody)
         val zipString = SystemDataUtils.getZipData(jsonList)
         val requestZipBody = RequestZipDataBody()
