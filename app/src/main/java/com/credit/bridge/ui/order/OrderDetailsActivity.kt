@@ -115,7 +115,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 getPaymentLink()
             }
             R.id.continueTv -> {
-                getPaymentLink()
+                getPaymentLink2()
             }
         }
     }
@@ -171,7 +171,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     private fun getPaymentLink() {
         showLoading()
-        HttpClient.getPaymentLink(this, false,orderId.toString(), 2)
+        HttpClient.getPaymentLink(this, false, orderId.toString(), 2)
+    }
+
+    private fun getPaymentLink2() {
+        showLoading()
+        HttpClient.getPaymentLink(this, true, orderId.toString(), 2)
     }
 
     @Subscribe
