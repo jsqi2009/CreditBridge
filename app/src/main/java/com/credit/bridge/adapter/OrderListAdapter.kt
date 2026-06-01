@@ -76,6 +76,13 @@ class OrderListAdapter(
                 holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
                 holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
+
+                itemInfo.qpruccpdjot?.let {
+                    if (it.toInt() > 7) {
+                        holder.bindView.paymentOptionsTv.visibility = View.GONE
+                        holder.bindView.rightArrowIv.visibility = View.GONE
+                    }
+                }
             }
             ConstConfig.ORDER_STATUS_CURRENT -> {
                 holder.bindView.statusTv.text = itemInfo.xjywdrtdxzt

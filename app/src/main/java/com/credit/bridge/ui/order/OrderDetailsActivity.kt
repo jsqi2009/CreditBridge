@@ -272,6 +272,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                         orderInfo?.vimzxivnoztqbclsxanyxuhx?.let { NumberUtils.formatIntToStr(it) }
                 bindViews.overdueLayout.totalAmountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.kmlwyjhlacigctavsolh?.let { NumberUtils.formatIntToStr(it) }
+
+                orderInfo?.qpruccpdjot?.let {
+                    if (it.toInt() > 7) {
+                        bindViews.viewPaymentOptionsTv.visibility = View.GONE
+                    }
+                }
             }
             ConstConfig.ORDER_STATUS_CURRENT -> {
                 bindViews.dueLayout.rootView.visibility = View.VISIBLE
