@@ -45,7 +45,6 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         bindViews.currentAccountEt.addTextChangedListener(currentAccountTextWatcher)
         bindViews.newAccountEt.addTextChangedListener(newAccountTextWatcher)
         bindViews.confirmNewAccountEt.addTextChangedListener(confirmNewAccountTextWatcher)
-        bindViews.newIfscEt.addTextChangedListener(newIfscTextWatcher)
 
         enableEditCardKeyboardHandling()
         getBankInfo()
@@ -280,19 +279,4 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
         }
     }
 
-    private var newIfscTextWatcher = object : TextWatcher {
-        override fun afterTextChanged(s: Editable?) {
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            val text = s.toString()
-            val formatted = text.replace("(\\d{4})(?=\\d)".toRegex(), "$1 ")
-            if (formatted != text) {
-                bindViews.newIfscEt.setText(formatted)
-                bindViews.newIfscEt.setSelection(bindViews.newIfscEt.text.toString().length)
-            }
-        }
-    }
 }

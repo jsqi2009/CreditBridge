@@ -136,6 +136,7 @@
                     android:textSize="14sp"
                     android:maxLength="11"
                     android:singleLine="true"
+                    android:inputType="text"
                     android:hint="Enter IFSC code"
                     android:background="@null"/>
 
