@@ -107,6 +107,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.accessAccountIv -> {
+
+                /*val intent = Intent(requireContext(), ProductListActivity::class.java)
+                intent.putExtra("amountLimit", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
+                startActivity(intent)*/
+
                 if (homeInfo?.hahsraev?.lwgdzqyuks == false) {
                     ToastUtil.customToastView(requireContext(), homeInfo?.hahsraev?.hxwklbbxhcxyjbfhv, Toast.LENGTH_SHORT)
                     return

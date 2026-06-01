@@ -13,8 +13,8 @@ class FeedbackConfig{
 
 class JumpConfig{
     var xhanuoewoy: String = ""  //jump market
-    var opyujqohzmf: Int = 0    //jumpMinStar
-    var ocuerrncq: String = ""   //marketUrl
+    var ocwnfelryjm: Int = 0    //jumpMinStar
+    var plpzzomjx: String = ""   //marketUrl
 }
 
 

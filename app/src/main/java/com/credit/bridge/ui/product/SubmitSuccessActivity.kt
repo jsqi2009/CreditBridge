@@ -83,7 +83,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         if (currentStarRating >= serverJumpRateCount) {
             submitFeedback2()
             try {
-                val uri = jumpConfig?.ocuerrncq?.toUri()
+                val uri = jumpConfig?.plpzzomjx?.toUri()
                 val intent = Intent(Intent.ACTION_VIEW, uri)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 startActivity(intent)
@@ -124,7 +124,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
         if (event.isSuccess) {
             val response = event.model?.mtaw
             jumpConfig = response?.whhdieyt
-            serverJumpRateCount = jumpConfig?.opyujqohzmf ?: 0
+            serverJumpRateCount = jumpConfig?.ocwnfelryjm ?: 0
             if (response?.wigmxieideltelq == true) {
                 bindViews.defaultLayout.visibility = View.GONE
                 bindViews.starLayout.visibility = View.VISIBLE
@@ -159,7 +159,7 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
             if (event.isSuccess) {
                 if (currentStarRating >= serverJumpRateCount) {
                     try {
-                        val uri = jumpConfig?.ocuerrncq?.toUri()
+                        val uri = jumpConfig?.plpzzomjx?.toUri()
                         val intent = Intent(Intent.ACTION_VIEW, uri)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         startActivity(intent)
