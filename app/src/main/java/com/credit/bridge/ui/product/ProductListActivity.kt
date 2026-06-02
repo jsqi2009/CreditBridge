@@ -96,6 +96,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
                 mAdapter?.setData(productList)
             }
             filterProductList(targetValue.toInt())
+        }else{
+            ToastUtil.showLong(this@ProductListActivity, event.retMsg)
         }
     }
 
@@ -161,6 +163,10 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             item.venwcxziy = it.bwhjrtygl
             item.elkqdr = it.qcakyrooudutx
             bodyList.add(item)
+        }
+        if (bodyList.isEmpty()) {
+            ToastUtil.showLong(this@ProductListActivity,"Please select a suitable limit.")
+            return
         }
 
         HttpClient.eventReport(this,ConstConfig.EVENT_LOAN_SUBMIT,

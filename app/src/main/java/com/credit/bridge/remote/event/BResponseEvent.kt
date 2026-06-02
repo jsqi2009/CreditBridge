@@ -17,7 +17,7 @@ open class BResponseEvent<T : BResponse> {
     var pageIndex: Int? = -1
     var flagContent: String? = null
 
-    val retMsg: String
+    var retMsg: String = ""
         get() = if (model != null) {
             this.model!!.dvusonb!!
         } else {
@@ -39,17 +39,20 @@ open class BResponseEvent<T : BResponse> {
         this.model = t
         this.response = response
         this.errorMessage = errorMessage
+        this.retMsg = errorMessage
     }
 
     constructor(error: Throwable) {
         this.networkError = error
         this.errorMessage = "Network error"
+        this.retMsg = errorMessage
     }
 
     constructor(error: Throwable, errorMessage: String) {
         this.networkError = error
         //this.errorMessage = errorMessage
         this.errorMessage = "Network error"
+        this.retMsg = errorMessage
     }
 
     constructor(error: Throwable, position: Any?, flag: Any?) {

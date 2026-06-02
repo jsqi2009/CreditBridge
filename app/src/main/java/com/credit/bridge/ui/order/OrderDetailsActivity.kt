@@ -192,7 +192,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             } catch (e: Exception) {
             }
         }else{
-            ToastUtil.showLong(this,event.networkError.toString())
+            ToastUtil.showLong(this,event.retMsg.toString())
         }
     }
 

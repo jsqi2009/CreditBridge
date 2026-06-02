@@ -83,6 +83,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.onResume()
         skipHomeUploadEvents = false
         if (isVisible) {
+            showLoading()
             checkCollectDataStatus()
             tryResumeUploadAfterPermissionFromSettings()
         }
