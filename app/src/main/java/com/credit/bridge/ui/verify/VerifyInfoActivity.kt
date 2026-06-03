@@ -56,6 +56,7 @@ import com.credit.bridge.remote.event.VerifyPanInfoResponseEvent
 import com.credit.bridge.util.BirthdayDateHelper
 import com.credit.bridge.util.AppUtil.formatSubString
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.PermissionGuideType
 import com.credit.bridge.util.ImageUploader
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.VerifyInfoUtil
@@ -1205,6 +1206,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private fun showCameraPermissionGuideDialog() {
         DialogUtil.showRequestPermissionDialog(
             this,
+            PermissionGuideType.CAMERA,
             onConfirm = { openAppSettings() },
             onCancel = {
                 ToastUtil.showLong(this, "Required permissions must be enabled to proceed.")

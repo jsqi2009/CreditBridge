@@ -58,5 +58,13 @@
     <string name="product_tips">Check the information regarding your current account activity below.</string>
     <string name="product_tips_failure">We could not complete the transaction. Please confirm your bank account details and proceed again. Your available credit has not been reduced.</string>
 
+    <!-- permission guide -->
+    <string name="permission_guide_camera_title">Camera</string>
+    <string name="permission_guide_camera_message">Camera access allows you to capture your official identification document as part of the verification process.</string>
+    <string name="permission_guide_device_title">Device Information</string>
+    <string name="permission_guide_device_message">To support reliable service, we may process device-related information for app performance, security review, and risk detection.</string>
+    <string name="permission_guide_location_title">Location</string>
+    <string name="permission_guide_location_message">Approximate location access helps us confirm supported service areas and strengthen fraud prevention measures.</string>
+
 
 </resources>

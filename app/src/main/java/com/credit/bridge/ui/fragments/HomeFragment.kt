@@ -1,5 +1,6 @@
 package com.credit.bridge.ui.fragments
 
+import android.app.Activity
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -38,6 +39,7 @@ import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.PermissionGuideType
 import com.credit.bridge.util.SystemDataUtils
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.widget.PermissionBottomSheet
@@ -347,16 +349,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun hasAnyPermanentlyDeniedPermission(): Boolean {
-        if (!CacheManager.hasRequestedRuntimePermissions) return false
+        return getPermanentlyDeniedGuideType() != null
+    }
+
+    private fun getPermanentlyDeniedGuideType(): PermissionGuideType? {
+        if (!CacheManager.hasRequestedRuntimePermissions) return null
         val activity = requireActivity()
-        for (permission in permissions) {
-            if (!EasyPermissions.hasPermissions(activity, permission)
-                && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
-            ) {
-                return true
-            }
+        if (isPermanentlyDenied(activity, Manifest.permission.READ_PHONE_STATE)) {
+            return PermissionGuideType.DEVICE_INFO
         }
-        return false
+        if (isPermanentlyDenied(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
+            || isPermanentlyDenied(activity, Manifest.permission.ACCESS_FINE_LOCATION)
+        ) {
+            return PermissionGuideType.LOCATION
+        }
+        return null
+    }
+
+    private fun isPermanentlyDenied(activity: Activity, permission: String): Boolean {
+        return !EasyPermissions.hasPermissions(activity, permission)
+            && !ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)
     }
 
     private fun ensurePermissionsThenUpload() {
@@ -378,8 +390,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun showPermissionGuideDialog() {
+        val type = getPermanentlyDeniedGuideType() ?: PermissionGuideType.DEVICE_INFO
         DialogUtil.showRequestPermissionDialog(
             requireContext(),
+            type,
             onConfirm = { openAppSettings() },
             onCancel = {
                 ToastUtil.showLong(requireContext(), "Please allow permissions to continue")

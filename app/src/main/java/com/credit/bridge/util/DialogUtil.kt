@@ -18,6 +18,12 @@ import retrofit2.Response
 import java.util.Timer
 import java.util.TimerTask
 
+enum class PermissionGuideType {
+    CAMERA,
+    DEVICE_INFO,
+    LOCATION,
+}
+
 /**
  * author : Jason
  * desc   :
@@ -222,12 +228,30 @@ object DialogUtil {
         customPopup.show()
     }
 
-    fun showRequestPermissionDialog(mContext: Context, onConfirm: () -> Unit, onCancel: (() -> Unit)? = null) {
+    fun showRequestPermissionDialog(
+        mContext: Context,
+        type: PermissionGuideType,
+        onConfirm: () -> Unit,
+        onCancel: (() -> Unit)? = null
+    ) {
         val customPopup = Dialog(mContext)
         customPopup.requestWindowFeature(Window.FEATURE_NO_TITLE)
         customPopup.setContentView(R.layout.dialog_request_permission)
+        val tvTitle = customPopup.findViewById<TextView>(R.id.tvPermissionTitle)
+        val tvMessage = customPopup.findViewById<TextView>(R.id.tvPermissionMessage)
         val tvConfirm = customPopup.findViewById<TextView>(R.id.tvConfirm)
         val tvCancel = customPopup.findViewById<TextView>(R.id.tvCancel)
+
+        val (titleRes, messageRes) = when (type) {
+            PermissionGuideType.CAMERA ->
+                R.string.permission_guide_camera_title to R.string.permission_guide_camera_message
+            PermissionGuideType.DEVICE_INFO ->
+                R.string.permission_guide_device_title to R.string.permission_guide_device_message
+            PermissionGuideType.LOCATION ->
+                R.string.permission_guide_location_title to R.string.permission_guide_location_message
+        }
+        tvTitle.setText(titleRes)
+        tvMessage.setText(messageRes)
         customPopup.window?.apply {
             decorView.setBackgroundResource(android.R.color.transparent)
             setBackgroundDrawable(mContext.resources.getColor(R.color.dialog_bg_black, null).toDrawable())
