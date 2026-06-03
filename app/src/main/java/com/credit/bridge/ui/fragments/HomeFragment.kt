@@ -69,6 +69,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private var isCollectingOrUploadingApps = false
     private var skipHomeUploadEvents = false
     private var pendingUploadAfterPermission = false
+    private var pendingOrderNavigation = false
 
     private val verifyInfoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -302,7 +303,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 refreshView()
             }
             if(isBackFromVerifyInfoPage){
-                previewProduct()
+                tryNavigateToOrderPage()
             }
         }
     }
@@ -319,7 +320,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }else{
                 if(isCreateOrder){
-                    previewProduct()
+                    tryNavigateToOrderPage()
                 }else {
                     var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
                     intent.putExtra("currentStep", currentStep)
@@ -342,6 +343,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         } else {
             ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }
+    }
+
+    private fun tryNavigateToOrderPage() {
+        if (!isAdded) return
+        if (isRecreditNeeded) return
+        if (!hasAllRequiredPermissions()) {
+            pendingOrderNavigation = true
+            if (hasAnyPermanentlyDeniedPermission()) {
+                showPermissionGuideDialog()
+            } else {
+                requestSystemPermissions()
+            }
+            return
+        }
+        pendingOrderNavigation = false
+        previewProduct()
     }
 
     private fun hasAllRequiredPermissions(): Boolean {
@@ -409,11 +426,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun tryResumeUploadAfterPermissionFromSettings() {
-        if (!pendingUploadAfterPermission || !isAdded) return
-        if (hasAllRequiredPermissions()) {
-            pendingUploadAfterPermission = false
-            uploadInstalledPackageList()
+        if (!isAdded) return
+        if (!hasAllRequiredPermissions()) return
+        if (pendingOrderNavigation) {
+            pendingOrderNavigation = false
+            previewProduct()
+            return
         }
+        if (!pendingUploadAfterPermission) return
+        pendingUploadAfterPermission = false
+        uploadInstalledPackageList()
     }
 
     private fun onDeclarationSheetClosed(requestUploadAfterGrant: Boolean) {
@@ -519,9 +541,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             if (event.isSuccess) {
                 zipDone = true
                 if (isCreateOrder) {
-                    if (!isRecreditNeeded) {
-                        previewProduct()
-                    }
+                    tryNavigateToOrderPage()
                 } else {
                     skipHomeUploadEvents = true
                     val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
@@ -573,7 +593,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     ensurePermissionsThenUpload()
                 } else {
                     if (isCreateOrder) {
-                        previewProduct()
+                        tryNavigateToOrderPage()
                     } else {
                         skipHomeUploadEvents = true
                         val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
@@ -645,6 +665,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             }
             return
         }
+        if (pendingOrderNavigation) {
+            pendingOrderNavigation = false
+            previewProduct()
+            return
+        }
         if (pendingUploadAfterPermission) {
             pendingUploadAfterPermission = false
             uploadInstalledPackageList()
@@ -670,7 +695,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun showRecreditNeededDialog() {
         DialogUtil.showRecreditNeededDialog(requireContext(), onConfirm = {
-            previewProduct()
+            isRecreditNeeded = false
+            tryNavigateToOrderPage()
         }, onCancel = {
         })
     }
