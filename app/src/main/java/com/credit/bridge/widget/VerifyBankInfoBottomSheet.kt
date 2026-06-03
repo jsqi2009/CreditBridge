@@ -121,7 +121,7 @@ class VerifyBankInfoBottomSheet(
                     ToastUtil.showLong(requireContext(), "Verification code is required")
                     return
                 }
-                onConfirm.invoke(bindViews.codeEt.toString())
+                onConfirm.invoke(bindViews.codeEt.text.toString())
                 dismiss()
             }
         }

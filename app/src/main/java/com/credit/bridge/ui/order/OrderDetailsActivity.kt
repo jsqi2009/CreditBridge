@@ -278,6 +278,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.overdueLayout.totalAmountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.kmlwyjhlacigctavsolh?.let { NumberUtils.formatIntToStr(it) }
 
+                if (orderInfo?.umoatyothkt == true) {
+                    bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
+                }else{
+                    bindViews.viewPaymentOptionsTv.visibility = View.GONE
+                }
+
                 orderInfo?.qpruccpdjot?.let {
                     if (it.toInt() > 7) {
                         bindViews.viewPaymentOptionsTv.visibility = View.GONE
@@ -296,6 +302,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.dueLayout.dueDateTv.text = orderInfo?.vzlwrta.toString()
                 bindViews.dueLayout.amountDueTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.kgchobzqirjuftermzzgajda?.let { NumberUtils.formatIntToStr(it) }
+
+                if (orderInfo?.umoatyothkt == true) {
+                    bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
+                }else{
+                    bindViews.viewPaymentOptionsTv.visibility = View.GONE
+                }
             }
             ConstConfig.ORDER_STATUS_PAID_OFF -> {
                 bindViews.paidLayout.rootView.visibility = View.VISIBLE

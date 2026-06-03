@@ -77,6 +77,14 @@ class OrderListAdapter(
                 holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
 
+                if (itemInfo.umoatyothkt) {
+                    holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
+                    holder.bindView.rightArrowIv.visibility = View.VISIBLE
+                }else{
+                    holder.bindView.paymentOptionsTv.visibility = View.GONE
+                    holder.bindView.rightArrowIv.visibility = View.GONE
+                }
+
                 itemInfo.qpruccpdjot?.let {
                     if (it.toInt() > 7) {
                         holder.bindView.paymentOptionsTv.visibility = View.GONE
@@ -97,6 +105,14 @@ class OrderListAdapter(
                 holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
                 holder.bindView.rightArrowIv.visibility = View.VISIBLE
                 holder.bindView.continuePaymentTv.visibility = View.VISIBLE
+
+                if (itemInfo.umoatyothkt) {
+                    holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
+                    holder.bindView.rightArrowIv.visibility = View.VISIBLE
+                }else{
+                    holder.bindView.paymentOptionsTv.visibility = View.GONE
+                    holder.bindView.rightArrowIv.visibility = View.GONE
+                }
             }
             ConstConfig.ORDER_STATUS_PAID_OFF -> {
                 holder.bindView.statusTv.text = itemInfo.xjywdrtdxzt
