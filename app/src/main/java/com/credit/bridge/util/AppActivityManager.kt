@@ -32,11 +32,19 @@ class AppActivityManager private constructor() {
     /**
      *
      */
+    fun removeActivity(activity: Activity?) {
+        if (activity != null) {
+            activityStack?.remove(activity)
+        }
+    }
+
     fun finishActivity(activity: Activity?) {
         var activity = activity
         if (activity != null) {
-            activityStack!!.remove(activity)
-            activity.finish()
+            activityStack?.remove(activity)
+            if (!activity.isFinishing) {
+                activity.finish()
+            }
             activity = null
         }
     }
@@ -55,15 +63,13 @@ class AppActivityManager private constructor() {
 
     fun finishAllActivity() {
         try {
-            var i = 0
-            val size: Int = activityStack!!.size
-            while (i < size) {
-                if (null != activityStack!!.get(i)) {
-                    activityStack!!.get(i).finish()
+            val activities = activityStack?.toList().orEmpty()
+            activityStack?.clear()
+            activities.forEach { activity ->
+                if (!activity.isFinishing) {
+                    activity.finish()
                 }
-                i++
             }
-            activityStack!!.clear()
         } catch (e: Exception) {
             e.printStackTrace()
         }

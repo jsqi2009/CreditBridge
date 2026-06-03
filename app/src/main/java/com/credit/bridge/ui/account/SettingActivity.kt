@@ -16,7 +16,6 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.event.LogoutResponseEvent
 import com.credit.bridge.ui.login.LoginActivity
 import com.credit.bridge.ui.product.SubmitSuccessActivity
-import com.credit.bridge.util.AppActivityManager
 import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.NumberUtils
 import com.squareup.otto.Subscribe
@@ -70,12 +69,16 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
 
     @Subscribe
     fun onLogoutEvent(event: LogoutResponseEvent) {
+        if (isFinishing || isDestroyed) return
         hideLoading()
-        if (event.isSuccess) {
-            CacheManager.isAuth = false
-            CacheManager.token = ""
-            AppActivityManager.appManager.finishAllActivity()
-            startActivity(Intent(this, LoginActivity::class.java))
-        }
+        if (!event.isSuccess) return
+
+        CacheManager.isAuth = false
+        CacheManager.token = ""
+        startActivity(
+            Intent(applicationContext, LoginActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            }
+        )
     }
 }

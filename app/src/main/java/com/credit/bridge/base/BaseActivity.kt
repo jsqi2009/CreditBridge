@@ -116,9 +116,9 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
 
     override fun onDestroy() {
-        super.onDestroy()
         eventBus.unregister(this)
-        AppActivityManager.appManager.finishActivity(this);
+        AppActivityManager.appManager.removeActivity(this)
+        super.onDestroy()
     }
 
 

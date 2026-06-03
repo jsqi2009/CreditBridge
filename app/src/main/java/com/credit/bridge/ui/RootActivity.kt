@@ -21,7 +21,6 @@ import com.credit.bridge.databinding.ActivityRootBinding
 import com.credit.bridge.remote.event.UnauthorizedEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.ui.login.LoginActivity
-import com.credit.bridge.util.AppActivityManager
 import com.squareup.otto.Subscribe
 
 class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
@@ -166,12 +165,11 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
 
     @Subscribe
     fun onUnauthorizedEvent(event: UnauthorizedEvent) {
-        if (!CacheManager.isAuth) return
+        if (!CacheManager.isAuth || isFinishing || isDestroyed) return
         CacheManager.isAuth = false
         CacheManager.token = ""
-        AppActivityManager.appManager.finishAllActivity()
         startActivity(
-            Intent(this, LoginActivity::class.java).apply {
+            Intent(applicationContext, LoginActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
             }
         )
