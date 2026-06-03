@@ -2,12 +2,14 @@ package com.credit.bridge.widget
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Rect
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
@@ -69,6 +71,20 @@ class VerifyBankInfoBottomSheet(
     override fun onStart() {
         super.onStart()
         dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+    }
+
+    override fun onDismiss(dialog: DialogInterface) {
+        hideKeyboard()
+        super.onDismiss(dialog)
+    }
+
+    private fun hideKeyboard() {
+        val imm = requireContext().getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        dialog?.window?.decorView?.windowToken?.let { imm.hideSoftInputFromWindow(it, 0) }
+        activity?.let { host ->
+            host.currentFocus?.clearFocus()
+            imm.hideSoftInputFromWindow(host.window.decorView.windowToken, 0)
+        }
     }
 
     private fun enableKeyboardScroll() {

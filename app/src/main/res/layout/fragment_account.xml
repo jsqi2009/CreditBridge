@@ -40,6 +40,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:minHeight="@dimen/margin_130"
             android:layout_marginHorizontal="@dimen/margin_20"
             android:background="@mipmap/ic_account_payment_bg"
@@ -114,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
-                    android:text="IFSC：123*******A0"
+                    android:text=""
                     android:textColor="#FFD29F"
                     android:textSize="14sp"
                     />
@@ -125,7 +126,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
                     android:layout_gravity="center_horizontal"
-                    android:text="123*************12"
+                    android:text=""
                     android:textColor="#FFD29F"
                     android:textSize="24sp"
                     />
