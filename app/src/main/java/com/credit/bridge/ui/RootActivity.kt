@@ -167,6 +167,7 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
     fun onUnauthorizedEvent(event: UnauthorizedEvent) {
         if (!CacheManager.isAuth || isFinishing || isDestroyed) return
         CacheManager.isAuth = false
+        HomeSessionState.clear()
         CacheManager.token = ""
         startActivity(
             Intent(applicationContext, LoginActivity::class.java).apply {

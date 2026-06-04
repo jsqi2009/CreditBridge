@@ -16,11 +16,27 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     var eventBus: AndroidBus? = null
     private var loadingDialog: GlobalLoading? = null
+    private var isBusRegistered = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         eventBus = App[requireActivity()].eventBus
-        eventBus!!.register(this)
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!isBusRegistered) {
+            eventBus?.register(this)
+            isBusRegistered = true
+        }
+    }
+
+    override fun onStop() {
+        if (isBusRegistered) {
+            eventBus?.unregister(this)
+            isBusRegistered = false
+        }
+        super.onStop()
     }
 
     final override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -33,7 +49,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
 
     override fun onDestroyView() {
         //_binding = null
-        eventBus!!.unregister(this)
         if (loadingDialog != null) {
             loadingDialog?.safeDismiss();
         }

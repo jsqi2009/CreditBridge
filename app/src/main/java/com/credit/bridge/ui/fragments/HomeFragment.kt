@@ -82,8 +82,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.onViewCreated(view, savedInstanceState)
     }
 
+    private fun syncFromSession() {
+        HomeSessionState.restoreFromCache()
+        isAuthed = HomeSessionState.isAuthed
+        currentStep = HomeSessionState.currentStep
+        homeInfo = HomeSessionState.homeInfo
+        applyAuthUi()
+        homeInfo?.let { refreshView() }
+    }
+
     override fun onResume() {
         super.onResume()
+        syncFromSession()
         skipHomeUploadEvents = false
         if (isVisible) {
             showLoading()
@@ -104,8 +114,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_HOME_SCREEN)
 
         autoShowPermissionSheet()
+        syncFromSession()
+    }
 
-
+    private fun applyAuthUi() {
+        if (!isAdded) return
+        if (isAuthed) {
+            bindViews.accessAccountIv.visibility = View.VISIBLE
+            bindViews.startVerifyLl.visibility = View.GONE
+        } else {
+            bindViews.accessAccountIv.visibility = View.GONE
+            bindViews.startVerifyLl.visibility = View.VISIBLE
+            bindViews.verifiedNeedPayDue.visibility = View.GONE
+            bindViews.verifiedNeedPay.visibility = View.GONE
+            bindViews.verifiedFail.visibility = View.GONE
+        }
     }
 
     override fun onClick(v: View?) {
@@ -186,9 +209,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (homeInfo == null) {
             return
         }
-        if (homeInfo!!.hahsraev != null && homeInfo!!.hahsraev?.gdcuhe != null) {
+        val amount = homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn
+        if (amount != null && amount > 0) {
             bindViews.totalAmountTv.text =
-                context?.getString(R.string.money_symbol) + " " + String.format("%,d", homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn)
+                context?.getString(R.string.money_symbol) + " " + String.format("%,d", amount)
+        }
+        if (homeInfo!!.hahsraev != null && homeInfo!!.hahsraev?.gdcuhe != null) {
             val orderStatus = homeInfo?.hahsraev?.gdcuhe
             when (orderStatus) {
                 ConstConfig.ORDER_STATUS_CURRENT -> {
@@ -221,13 +247,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }
 
-        } else if (homeInfo!!.hahsraev == null){
-            bindViews.accessAccountIv.visibility = View.GONE
-            bindViews.startVerifyLl.visibility = View.VISIBLE
-            isAuthed = false
+        } else if (homeInfo!!.hahsraev == null) {
             bindViews.verifiedNeedPayDue.visibility = View.GONE
             bindViews.verifiedNeedPay.visibility = View.GONE
             bindViews.verifiedFail.visibility = View.GONE
+            if (isAuthed) {
+                bindViews.llVer.visibility = View.VISIBLE
+                bindViews.llHor.visibility = View.GONE
+            }
         } else {
             bindViews.verifiedNeedPay.visibility = View.GONE
             bindViews.verifiedNeedPayDue.visibility = View.GONE
@@ -235,6 +262,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             bindViews.llVer.visibility = View.VISIBLE
             bindViews.llHor.visibility = View.GONE
         }
+        applyAuthUi()
     }
 
     private fun checkUploadStatus() {
@@ -272,24 +300,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onCheckCollectDataStatusResponseEvent(event: CheckCollectDataStatusResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            event.model?.mtaw?.let {
-                currentStep = it.lrksnnsd
-                //if (it.rvazxrtziwtcvrfrkzczx) {
-                if (it.masxqgkeptyuo) {
-                    bindViews.accessAccountIv.visibility = View.VISIBLE
-                    bindViews.startVerifyLl.visibility = View.GONE
-                    isAuthed = true
-                } else {
-                    bindViews.accessAccountIv.visibility = View.GONE
-                    bindViews.startVerifyLl.visibility = View.VISIBLE
-                    isAuthed = false
-                    bindViews.verifiedNeedPayDue.visibility = View.GONE
-                    bindViews.verifiedNeedPay.visibility = View.GONE
-                    bindViews.verifiedFail.visibility = View.GONE
-                }
-            }
+            event.model?.mtaw?.let { HomeSessionState.updateCollectInfo(it) }
+            syncFromSession()
             getHomeData()
         } else {
+            syncFromSession()
             ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }
     }
@@ -299,6 +314,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     fun onHomeInfoEvent(event: HomeInfoResponseEvent) {
         if (event.isSuccess) {
             homeInfo = event.model?.mtaw
+            HomeSessionState.homeInfo = homeInfo
             if (homeInfo != null) {
                 refreshView()
             }

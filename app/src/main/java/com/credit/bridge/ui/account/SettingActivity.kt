@@ -74,6 +74,7 @@ class SettingActivity : BaseActivity<ActivitySettingBinding>(), View.OnClickList
         if (!event.isSuccess) return
 
         CacheManager.isAuth = false
+        HomeSessionState.clear()
         CacheManager.token = ""
         startActivity(
             Intent(applicationContext, LoginActivity::class.java).apply {

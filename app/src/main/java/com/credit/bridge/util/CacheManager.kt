@@ -6,6 +6,7 @@ object CacheManager {
 
     var isAgree by SPCache(false)
     var isAuth by SPCache(false)
+    var isUserVerified by SPCache(false)
     var isNewCustomer by SPCache(false)
 
     var smsCode by SPCache("")
