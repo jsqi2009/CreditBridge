@@ -14,6 +14,8 @@ import com.credit.bridge.databinding.ActivityEditCardBinding
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.body.RequestBankInfoBody
 import com.credit.bridge.remote.event.FetchBankInfoResponseEvent
+import com.credit.bridge.remote.event.FinishActivityEvent
+import com.credit.bridge.remote.event.UpdateCardEvent
 import com.credit.bridge.remote.event.VerifyBankInfoResponseEvent
 import com.credit.bridge.remote.response.BankInfo
 import com.credit.bridge.util.NumberUtils
@@ -221,6 +223,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
     fun onVerifyBankInfoResponseEvent(event: VerifyBankInfoResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
+            eventBus.post(UpdateCardEvent())
             finish()
         } else {
             if (event.model != null && event.model?.fzpn == 500) {

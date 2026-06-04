@@ -31,6 +31,7 @@ import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
+import com.credit.bridge.remote.event.UpdateCardEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
 import com.credit.bridge.remote.event.UploadSystemResponseEvent
@@ -731,6 +732,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             onAgreeListener = onClose
         )
         permissionSheet.show(requireActivity().supportFragmentManager, "permissionSheet")
+    }
+
+    @Subscribe
+    fun onUpdateCardEvent(event: UpdateCardEvent) {
+        try {
+            showLoading()
+            checkCollectDataStatus()
+            tryResumeUploadAfterPermissionFromSettings()
+        } catch (e: Exception) {
+        }
     }
 
     companion object {

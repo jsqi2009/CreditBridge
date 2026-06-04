@@ -21,9 +21,11 @@ import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
+import com.credit.bridge.remote.event.FinishActivityEvent
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
 import com.credit.bridge.remote.event.OrderUpdateResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
+import com.credit.bridge.remote.event.UpdateCardEvent
 import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.util.AppUtil
 import com.credit.bridge.util.NumberUtils
@@ -390,5 +392,13 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         }
 
         myCountDownTimer.start()
+    }
+
+    @Subscribe
+    fun onUpdateCardEvent(event: UpdateCardEvent) {
+        try {
+            finish()
+        } catch (e: Exception) {
+        }
     }
 }
