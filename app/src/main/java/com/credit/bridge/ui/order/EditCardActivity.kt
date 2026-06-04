@@ -181,7 +181,7 @@ class EditCardActivity : BaseActivity<ActivityEditCardBinding>(), View.OnClickLi
             ToastUtil.showLong(this, "Please provide a valid IFSC code")
             return
         }
-        if (currentAccount.replace(" ", "") != bankInfo?.qmtddx) {
+        if (currentAccount.replace(" ", "") != bankInfo?.qmtddx?.replace(" ", "")) {
             ToastUtil.showLong(this, "Please enter your current bank account number")
             return
         }

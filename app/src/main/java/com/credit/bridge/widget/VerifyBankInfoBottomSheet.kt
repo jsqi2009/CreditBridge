@@ -151,9 +151,14 @@ class VerifyBankInfoBottomSheet(
                 call: retrofit2.Call<CommonResponse?>,
                 response: Response<CommonResponse?>
             ) {
-                hideLoading()
-                if (response.body()?.fzpn == 200) {
-                    verifyCodeCountdown()
+                try {
+                    hideLoading()
+                    if (response.body()?.fzpn == 200) {
+                        verifyCodeCountdown()
+                    } else {
+                        ToastUtil.showLong(requireContext(), response.body()?.dvusonb)
+                    }
+                } catch (e: Exception) {
                 }
             }
 
@@ -175,9 +180,15 @@ class VerifyBankInfoBottomSheet(
                 call: retrofit2.Call<CommonResponse?>,
                 response: Response<CommonResponse?>
             ) {
-                hideLoading()
-                if (response.body()?.fzpn == 200) {
-                    verifyVoiceCountdown()
+                try {
+                    hideLoading()
+                    if (response.body()?.fzpn == 200) {
+                        verifyVoiceCountdown()
+                    }else{
+                        ToastUtil.showLong(requireContext(), response.body()?.dvusonb)
+
+                    }
+                } catch (e: Exception) {
                 }
             }
 
