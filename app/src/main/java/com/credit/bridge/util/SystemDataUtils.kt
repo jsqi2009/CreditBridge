@@ -6,6 +6,7 @@ import android.app.ActivityManager
 import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
+import android.content.Context.WIFI_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
@@ -193,7 +194,7 @@ object SystemDataUtils {
         deviceInfo.isSimulator = isDeviceEmulator()
         deviceInfo.kernelVersion = System.getProperty("os.version")
         deviceInfo.language = Locale.getDefault().language
-        deviceInfo.macAddress = macFromHardware()
+        deviceInfo.macAddress = getSsidInfo(context, 2)
         deviceInfo.manufacturer = Build.MANUFACTURER
         deviceInfo.modelNo = Build.MODEL
         deviceInfo.networkCountryIso = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkCountryIso
@@ -228,9 +229,9 @@ object SystemDataUtils {
         deviceInfo.wifiSsid = (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.ssid
         deviceInfo.wifiRssi = "${(App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.rssi}"
         deviceInfo.deviceNo = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
-        deviceInfo.keyboard = getKeyb()
-        deviceInfo.memorySpace = memoryInfo.availMem.toString()
-        deviceInfo.memoryUseSpace = "${memoryInfo.totalMem - memoryInfo.availMem}"
+        deviceInfo.keyboard = getSysKeyboard().toString()
+        deviceInfo.memorySpace = getMemberSpace(0).toString()
+        deviceInfo.memoryUseSpace = getMemberSpace(1).toString()
         deviceInfo.imagesInternal = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
@@ -238,7 +239,7 @@ object SystemDataUtils {
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
         deviceInfo.audioInternal = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.Images.Media.DATA)
+            arrayOf(MediaStore.Audio.Media.DATA)
         ).toString()
         deviceInfo.audioExternal = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
@@ -253,17 +254,17 @@ object SystemDataUtils {
         deviceInfo.wifi = wifiB()
         deviceInfo.lastBootTime = "${SystemClock.elapsedRealtimeNanos()}"
         deviceInfo.productionDate = Build.TIME.toString()
-        deviceInfo.wifiCount = null
-        deviceInfo.configuredWifi = null
+        deviceInfo.wifiCount = 0.toString()
+        deviceInfo.configuredWifi = DeviceInfoUtil.getWifiConfigure(context)
         deviceInfo.cores = cor()
         deviceInfo.deviceHeight = height()
         deviceInfo.deviceWidth = width()
         deviceInfo.inphysicalSize = screenS()
         deviceInfo.phoneType = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
-        deviceInfo.memoryCardSize = memoryInfo.totalMem.toString()
-        deviceInfo.memoryCardUsableSize = memoryInfo.availMem.toString()
-        deviceInfo.memoryCardSizeUse = "${memoryInfo.totalMem - memoryInfo.availMem}"
-        deviceInfo.memoryCardFreeSize = memoryInfo.availMem.toString()
+        deviceInfo.memoryCardSize = DeviceInfoUtil.getMemberMounted(0).toString()
+        deviceInfo.memoryCardUsableSize = DeviceInfoUtil.getMemberMounted(1).toString()
+        deviceInfo.memoryCardSizeUse = DeviceInfoUtil.getMemberMounted(2).toString()
+        deviceInfo.memoryCardFreeSize = DeviceInfoUtil.getMemberMounted(3).toString()
         deviceInfo.picCount = "${getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         )+ getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -293,15 +294,11 @@ object SystemDataUtils {
         info.deviceSdkInt = Build.VERSION.SDK_INT.toString()
         info.deviceManufacturer = Build.MANUFACTURER ?: "unknow"
         info.deviceBootloader = Build.BOOTLOADER ?: "unknow"
-        info.deviceCpuAbi = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Build.SUPPORTED_ABIS.firstOrNull() ?: "unknow"
-            } else {
-                Build.CPU_ABI ?: "unknow"
-            }
+        info.deviceCpuAbi = Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
         info.deviceCpuAbi2 = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Build.SUPPORTED_ABIS.getOrNull(1) ?: "no two"
+                Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
             } else {
-                Build.CPU_ABI2 ?: "no two"
+                Build.CPU_ABI2 ?: ""
             }
         info.deviceHardware = Build.HARDWARE ?: "unknow"
         info.deviceSerial = getDeviceSerial(App.instance)
@@ -383,10 +380,10 @@ object SystemDataUtils {
         info.wwapCached = memInfo["swapcached"] ?: 0
         info.active = memInfo["active"] ?: 0
         info.inactive = memInfo["inactive"] ?: 0
-        info.activeAnon = memInfo["active_anon"] ?: 0
-        info.inactiveAnon = memInfo["inactive_anon"] ?: 0
-        info.activeFile = memInfo["active_file"] ?: 0
-        info.inactiveFile = memInfo["inactive_file"] ?: 0
+        info.activeAnon = DeviceInfoUtil.getActiveAnon() ?: 0
+        info.inactiveAnon = DeviceInfoUtil.getInactiveAnon() ?: 0
+        info.activeFile = DeviceInfoUtil.getActiveFile() ?: 0
+        info.inactiveFile = DeviceInfoUtil.getInactiveFile() ?: 0
         info.unevictable = memInfo["unevictable"] ?: 0
         info.mlocked = memInfo["mlocked"] ?: 0
         info.highTotal = memInfo["hightotal"] ?: 0
@@ -432,7 +429,7 @@ object SystemDataUtils {
                 ) {
                     Build.getSerial() ?: "Unknow"
                 } else {
-                    "NO Permisstion"
+                    "Unknow"
                 }
             } else {
                 Build.SERIAL ?: "Unknow"
@@ -1239,6 +1236,87 @@ object SystemDataUtils {
             return 0
         }
     }
+
+    fun getSsidInfo(context: Context, type: Int): String {
+        return try {
+            val wifiManager = context.getSystemService(WIFI_SERVICE) as WifiManager
+            if (wifiManager.isWifiEnabled) {
+                val connectionInfo = wifiManager.connectionInfo
+                if (type == 0) {
+                    connectionInfo.ssid
+                } else if (type == 1) {
+                    connectionInfo.bssid
+                } else if (type == 2) {
+                    connectionInfo.macAddress
+                } else if (type == 3) {
+                    connectionInfo.rssi.toString()
+                } else if (type == 4) {
+                    connectionInfo.networkId.toString()
+                } else if (type == 5) {
+                    connectionInfo.linkSpeed.toString()
+                } else if (type == 6) {
+                    connectionInfo.hiddenSSID.toString()
+                } else if (type == 7) {
+                    connectionInfo.supplicantState.toString()
+                } else if (type == 8) {
+                    connectionInfo.frequency.toString()
+                } else if (type == 9) {
+                    wifiManager.dhcpInfo.dns1.toString()
+                } else if (type == 10) {
+                    wifiManager.dhcpInfo.dns2.toString()
+                } else if (type == 11) {
+                    wifiManager.dhcpInfo.netmask.toString()
+                } else if (type == 12) {
+                    wifiManager.dhcpInfo.gateway.toString()
+                } else if (type == 13) {
+                    wifiManager.dhcpInfo.serverAddress.toString()
+                } else if (type == 14) {
+                    wifiManager.dhcpInfo.ipAddress.toString()
+                } else {
+                    ""
+                }
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
+            ""
+        }
+    }
+
+    fun getSysKeyboard(): Int {
+        val hasPermanentMenuKey = ViewConfiguration.get(App.instance).hasPermanentMenuKey()
+        val hasBack = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
+        if (!hasPermanentMenuKey && !hasBack) {
+            return 0
+        }
+        return 1
+    }
+
+    fun getMemberSpace(type: Int): Long {
+        try {
+            if (Environment.getExternalStorageState() == Environment.MEDIA_MOUNTED) {
+                val statFs = StatFs(Environment.getExternalStorageDirectory().absolutePath)
+                val blockCount = statFs.blockCountLong
+                val blockSize = statFs.blockSizeLong
+                val availableBlocks = statFs.availableBlocksLong
+                val freeBlocks = statFs.freeBlocksLong
+                if (type == 0) {
+                    return blockSize * blockCount
+                } else if (type == 1) {
+                    return availableBlocks * blockSize
+                } else if (type == 2) {
+                    return blockSize * blockCount - freeBlocks * blockSize
+                } else if (type == 3) {
+                    return freeBlocks * blockSize
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return 0
+    }
+
+
 
 
 }
