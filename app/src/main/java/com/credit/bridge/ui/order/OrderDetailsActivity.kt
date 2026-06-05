@@ -139,6 +139,20 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             if (event.isSuccess) {
                 orderInfo = event.model?.mtaw
                 orderStatus = orderInfo?.xjywdrtdxzt
+
+                bindViews.processingLayout.rootView.visibility = View.GONE
+                bindViews.paidLayout.rootView.visibility = View.GONE
+                bindViews.overdueLayout.rootView.visibility = View.GONE
+                bindViews.cancelLayout.rootView.visibility = View.GONE
+                bindViews.cancelFrozenLayout.rootView.visibility = View.GONE
+                bindViews.dueLayout.rootView.visibility = View.GONE
+                bindViews.failureLayout.rootView.visibility = View.GONE
+                bindViews.extendLayout.rootView.visibility = View.GONE
+                bindViews.continuePaymentTv.visibility = View.GONE
+                bindViews.viewPaymentOptionsTv.visibility = View.GONE
+                bindViews.editBankTv.visibility = View.GONE
+                bindViews.continueTv.visibility = View.GONE
+
                 //initOrderDetailsInfo()
                 if (orderInfo?.gphysdjxvns == true || isExtend) {
                     initExtendInfo()

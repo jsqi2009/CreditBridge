@@ -6,12 +6,16 @@ import android.content.Context
 import android.content.Context.WIFI_SERVICE
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import android.net.Network
 import android.net.NetworkCapabilities
 import android.net.wifi.WifiManager
+import android.os.BatteryManager
 import android.os.Build
 import android.os.Environment
 import android.os.StatFs
 import android.provider.Settings
+import android.telephony.SubscriptionManager
+import android.telephony.TelephonyManager
 import androidx.annotation.RequiresPermission
 import androidx.core.app.ActivityCompat
 import com.credit.bridge.ui.App
@@ -21,6 +25,7 @@ import java.io.BufferedReader
 import java.io.File
 import java.io.FileReader
 import java.io.InputStreamReader
+import java.net.Inet4Address
 import kotlin.text.contains
 import kotlin.text.lowercase
 import kotlin.text.startsWith
@@ -256,6 +261,181 @@ object DeviceInfoUtil {
             0
         }
     }
+
+    fun formatBatteryStatus(type: Int, status: Int): String {
+        return (if (type == 0) {
+            when (status) {
+                BatteryManager.BATTERY_STATUS_CHARGING -> "charging"
+                BatteryManager.BATTERY_STATUS_DISCHARGING -> "discharging"
+                BatteryManager.BATTERY_STATUS_FULL -> "full"
+                BatteryManager.BATTERY_STATUS_NOT_CHARGING -> "not_charging"
+                BatteryManager.BATTERY_STATUS_UNKNOWN -> "unknown"
+                else -> "unknown"
+            }
+        } else {
+            when (status) {
+                BatteryManager.BATTERY_HEALTH_GOOD -> "good"
+                BatteryManager.BATTERY_HEALTH_OVERHEAT -> "overheat"
+                BatteryManager.BATTERY_HEALTH_DEAD -> "dead"
+                BatteryManager.BATTERY_HEALTH_OVER_VOLTAGE -> "over_voltage"
+                BatteryManager.BATTERY_HEALTH_COLD -> "cold"
+                BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE ->
+                    "unspecified_failure"
+
+                BatteryManager.BATTERY_HEALTH_UNKNOWN -> "unknown"
+                else -> "unknown"
+            }
+        })
+    }
+
+    @SuppressLint("MissingPermission")
+    fun isDualSim(): Boolean {
+        val subscriptionManager = App.instance.getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE) as SubscriptionManager
+        val subscriptionInfoList = subscriptionManager.activeSubscriptionInfoList
+        return subscriptionInfoList != null && subscriptionInfoList.size > 1
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getOperatorInfo(mContext: Context, type: Int): String {
+        return try {
+            val telephonyManager =
+                mContext.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            if (type == 0) {
+                telephonyManager.networkOperator
+            } else if (type == 1) {
+                telephonyManager.networkOperatorName
+            } else if (type == 2) {
+                telephonyManager.simCountryIso
+            } else if (type == 3) {
+                telephonyManager.simOperator
+            } else if (type == 4) {
+                telephonyManager.simOperatorName
+            } else if (type == 5) {
+                telephonyManager.networkCountryIso
+            } else if (type == 6) {
+                telephonyManager.subscriberId
+            } else {
+                ""
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ""
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getSysNetworkType(context: Context): Int {
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val network: Network? = connectivityManager.activeNetwork
+        val capabilities = network?.let {
+            connectivityManager.getNetworkCapabilities(it)
+        }
+        if (capabilities == null) return 0
+
+        return when {
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> 2
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> 1
+            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> 3
+            else -> 0
+        }
+    }
+
+
+    fun getCommonMccAndMncInfo(context: Context, type: Int): Int {
+        return try {
+            val telephonyManager =
+                context.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+            val networkOperator = telephonyManager.networkOperator
+            if (networkOperator != null && networkOperator.length >= 5) {
+                if (type == 0) {
+                    networkOperator.substring(0, 3).toInt()
+                }
+                networkOperator.substring(3).toInt()
+            } else {
+                0
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            0
+        }
+    }
+
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
+    fun fetchRadioType(): String {
+        val connectivityManager =
+            App.instance.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        if (networkInfo!!.isConnected) {
+            if (networkInfo.type == ConnectivityManager.TYPE_WIFI) {
+                return "WIFI"
+            }
+            if (networkInfo.type == ConnectivityManager.TYPE_MOBILE) {
+                val telephonyManager =
+                    App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager
+                return when (telephonyManager.networkType) {
+                    TelephonyManager.NETWORK_TYPE_GPRS,
+                    TelephonyManager.NETWORK_TYPE_EDGE,
+                    TelephonyManager.NETWORK_TYPE_CDMA,
+                    TelephonyManager.NETWORK_TYPE_1xRTT,
+                    TelephonyManager.NETWORK_TYPE_IDEN,
+                        -> "2G"
+
+                    TelephonyManager.NETWORK_TYPE_UMTS,
+                    TelephonyManager.NETWORK_TYPE_EVDO_0,
+                    TelephonyManager.NETWORK_TYPE_EVDO_A,
+                    TelephonyManager.NETWORK_TYPE_HSDPA,
+                    TelephonyManager.NETWORK_TYPE_HSUPA,
+                    TelephonyManager.NETWORK_TYPE_HSPA,
+                    TelephonyManager.NETWORK_TYPE_EVDO_B,
+                    TelephonyManager.NETWORK_TYPE_EHRPD,
+                    TelephonyManager.NETWORK_TYPE_HSPAP,
+                        -> "3G"
+
+                    TelephonyManager.NETWORK_TYPE_LTE -> "4G"
+                    TelephonyManager.NETWORK_TYPE_NR -> "5G"
+                    else -> ""
+                }
+            }
+
+        }
+        return ""
+    }
+
+    fun getCommonNetworkInfo(context: Context, type: Int): String {
+        var ipAddress = ""
+        var netmask = ""
+        var gateway = ""
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val activeNetwork = connectivityManager.activeNetwork ?: return ""
+        val linkProperties = connectivityManager.getLinkProperties(activeNetwork) ?: return ""
+        if (type == 0) {
+            for (address in linkProperties.linkAddresses) {
+                val inetAddress = address.address
+                if (inetAddress is Inet4Address) {
+                    ipAddress = inetAddress.hostAddress ?: ""
+                    netmask = ""
+                    break
+                }
+            }
+        } else {
+            for (routeInfo in linkProperties.routes) {
+                if (routeInfo.hasGateway() && routeInfo.isDefaultRoute) {
+                    gateway = routeInfo.gateway?.hostAddress ?: ""
+                    break
+                }
+            }
+        }
+        if (type == 0) {
+            return ipAddress
+        } else if (type == 1) {
+            return netmask
+        } else if (type == 2) {
+            return gateway
+        }
+        return ""
+    }
+
 
 
 

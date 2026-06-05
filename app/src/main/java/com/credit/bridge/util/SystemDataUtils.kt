@@ -482,11 +482,7 @@ object SystemDataUtils {
             IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         ) ?: return batteryInfo
 
-        batteryInfo.batteryStatus = if (batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1) == 3) {
-            "charging"
-        } else {
-            "not charging"
-        }
+        batteryInfo.batteryStatus = DeviceInfoUtil.formatBatteryStatus(0, batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1))
         batteryInfo.batteryHealth = if (batteryIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1) == 2) {
             "good"
         } else {
@@ -514,11 +510,11 @@ object SystemDataUtils {
     fun getNetworkInfo():String{
         var networkInfo = PhoneNetworkInfo()
         networkInfo.ip = getLocalIp()
-        networkInfo.localMobile = ""
+        networkInfo.localMobile = 0.toString()
         networkInfo.isEmulator = isDeviceEmulator()
         networkInfo.isMod = false
         networkInfo.isRoot =  checkR1() || checkR2() || checkR3()
-        networkInfo.isDualSim = true
+        networkInfo.isDualSim = DeviceInfoUtil.isDualSim()
         networkInfo.imeiSim1 = ""
         networkInfo.imeiSim2 =  ""
         networkInfo.imsiSim1 = ""
@@ -526,9 +522,9 @@ object SystemDataUtils {
         networkInfo.isSim1Ready = getSimState(0) == TelephonyManager.SIM_STATE_READY
         networkInfo.isSim2Ready = getSimState(1) == TelephonyManager.SIM_STATE_READY
         networkInfo.networkCountryIso = network1()
-        networkInfo.networkOperator = network2()
-        networkInfo.networkOperatorName = network3()
-        networkInfo.networkType = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkType.toString()
+        networkInfo.networkOperator = DeviceInfoUtil.getOperatorInfo(App.instance.applicationContext, 0)
+        networkInfo.networkOperatorName = DeviceInfoUtil.getOperatorInfo(App.instance.applicationContext, 1)
+        networkInfo.networkType = DeviceInfoUtil.getSysNetworkType(App.instance.applicationContext).toString()
         networkInfo.phoneType = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
         networkInfo.simCountryIso = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso.toString()
         networkInfo.simOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator.toString()
@@ -539,17 +535,17 @@ object SystemDataUtils {
         networkInfo.subscriberId = ""
         networkInfo.voiceMailNumber = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).voiceMailNumber?.toString()
         val operator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperator
-        networkInfo.mcc = if (operator.length >= 3) operator.substring(0, 3) else ""
+        networkInfo.mcc = DeviceInfoUtil.getCommonMccAndMncInfo(App.instance.applicationContext, 0).toString()
         networkInfo.mnc = if (operator.length > 3) operator.substring(3) else ""
         networkInfo.lac = ""
         networkInfo.cell = ""
         networkInfo.systemId = ""
-        networkInfo.networkId = ""
-        networkInfo.radioType = radioTypeMY()
+        networkInfo.networkId = getSsidInfo(App.instance.applicationContext, 4)
+        networkInfo.radioType = DeviceInfoUtil.fetchRadioType()
         networkInfo.wifiState = wifiStateMY()
         networkInfo.ssid = ssidMY()
         networkInfo.bssid = bssidMY()
-        networkInfo.macAddress = macFromHardware()
+        networkInfo.macAddress = getSsidInfo(App.instance.applicationContext, 2)
         networkInfo.linkSpeed = linkSpeedMY()
         networkInfo.rssi = my_rssi()
         networkInfo.supplicantState = my_supplicantState()
@@ -558,9 +554,9 @@ object SystemDataUtils {
         networkInfo.dns1 = getDnsServers().firstOrNull() ?: ""
         networkInfo.dns2 = getDnsServers().getOrNull(1) ?: ""
         networkInfo.ipAddress = ipAddressmy()
-        networkInfo.netmask = netmaskMY()
-        networkInfo.gateway = gatewayMY()
-        networkInfo.dhcp = dhcpMY()
+        networkInfo.netmask = DeviceInfoUtil.getCommonNetworkInfo(App.instance.applicationContext, 1)
+        networkInfo.gateway = DeviceInfoUtil.getCommonNetworkInfo(App.instance.applicationContext, 2)
+        networkInfo.dhcp = getSsidInfo(App.instance.applicationContext, 13)
         return Gson().toJson(networkInfo)
     }
 
@@ -592,7 +588,6 @@ object SystemDataUtils {
                 target.simCountryIso = telephonyManager.networkCountryIso ?: ""
             }
         } catch (_: Exception) {
-            // 保留 getNetworkInfo 中已写入的 SIM 字段
         }
     }
     fun netmaskMY(): String {
@@ -672,7 +667,7 @@ object SystemDataUtils {
         return if (wifiInfo.hiddenSSID) "1" else "0"
     }
     fun ssidMY(): String {
-        val wifiManager = App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager
+        val wifiManager = App.instance.getSystemService(WIFI_SERVICE) as WifiManager
         val wifiInfo = wifiManager.connectionInfo
         return wifiInfo.ssid?.replace("\"", "") ?: ""
     }
@@ -689,12 +684,12 @@ object SystemDataUtils {
         return wifiInfo.linkSpeed.toString()
     }
     fun wifiStateMY(): String {
-        val wifiManager = App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager
-        return when (wifiManager.wifiState) {
-            WifiManager.WIFI_STATE_DISABLING -> "0"
-            WifiManager.WIFI_STATE_ENABLED -> "1"
-            WifiManager.WIFI_STATE_ENABLING -> "2"
-            else -> "3"
+        try {
+            val wifiManager = App.instance.getSystemService(WIFI_SERVICE) as WifiManager
+            return wifiManager.wifiState.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return "0"
         }
     }
     fun radioTypeMY(): String {
@@ -840,12 +835,12 @@ object SystemDataUtils {
                 val addresses = geocoder.getFromLocation(location.latitude.toDouble(), location.longitude.toDouble(), 1)
                 if (addresses != null && !addresses.isEmpty()) {
                     val address = addresses[0]
-                    loc.adminArea = address.adminArea
-                    loc.countryCode = address.countryCode
-                    loc.countryName = address.countryName
-                    loc.locality = address.locality
-                    loc.featureName = address.featureName
-                    loc.gpsAddress = address.getAddressLine(0)
+                    loc.adminArea = address.adminArea ?: ""
+                    loc.countryCode = address.countryCode ?: ""
+                    loc.countryName = address.countryName ?: ""
+                    loc.locality = address.locality ?: ""
+                    loc.featureName = address.featureName ?: ""
+                    loc.gpsAddress = address.getAddressLine(0) ?: ""
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -856,6 +851,7 @@ object SystemDataUtils {
             return ""
         }
     }
+
 
     @SuppressLint("HardwareIds")
     fun macFromHardware(): String {
