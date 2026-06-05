@@ -138,6 +138,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         if (event.model?.flag == ConstConfig.ORDER_DETAIL_COMMON) {
             if (event.isSuccess) {
                 orderInfo = event.model?.mtaw
+                orderStatus = orderInfo?.xjywdrtdxzt
                 //initOrderDetailsInfo()
                 if (orderInfo?.gphysdjxvns == true || isExtend) {
                     initExtendInfo()

@@ -44,9 +44,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
 
     override fun onResume() {
         super.onResume()
-        if (isVisible) {
-            fetchOrderList()
-        }
+        fetchOrderList()
     }
 
     override fun initRes() {

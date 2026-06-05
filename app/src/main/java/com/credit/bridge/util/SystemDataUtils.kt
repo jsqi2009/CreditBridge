@@ -3,6 +3,7 @@ package com.credit.bridge.util
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.ActivityManager
+import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Intent
@@ -10,8 +11,10 @@ import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.graphics.ImageFormat
 import android.graphics.Point
 import android.hardware.camera2.CameraAccessException
+import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
 import android.location.Geocoder
 import android.location.Location
@@ -146,7 +149,6 @@ object SystemDataUtils {
                 }
                 list.add(data)
             } catch (_: Exception) {
-                // 单个包失败不影响其余应用采集
             }
         }
         return list.toTypedArray()
@@ -162,15 +164,15 @@ object SystemDataUtils {
         val level = batteryIntent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
         val scale = batteryIntent?.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
         val batteryPct = level?.div(scale?.toFloat() ?: 1.0f)
-        deviceInfo.battery = batteryPct?.toInt()
-        deviceInfo.bluetooth = null
+        deviceInfo.battery = getBatteryPercentage(context)
+        deviceInfo.bluetooth = getBluetoothMacAddress()
         deviceInfo.board = Build.BOARD
         deviceInfo.brand = Build.BRAND
         deviceInfo.buildId = Build.ID
         deviceInfo.cameraNum = cameraNumber()
-        deviceInfo.cameraSize = cameraNumber()
+        deviceInfo.cameraSize = getSystemCameraConfig( context).toString()
         deviceInfo.city = TimeZone.getDefault().id
-        deviceInfo.country = Locale.getDefault().country
+        deviceInfo.country = getCurrentCountry(context)
         deviceInfo.cpuAbi = Build.SUPPORTED_ABIS[0]
         deviceInfo.device = Build.DEVICE
         deviceInfo.display = Build.DISPLAY
@@ -179,7 +181,7 @@ object SystemDataUtils {
         deviceInfo.displayCountry = Locale.getDefault().displayCountry
         deviceInfo.displayName = Locale.getDefault().displayName
         deviceInfo.displayLanguage = Locale.getDefault().displayLanguage
-        deviceInfo.freeMemory = null
+        deviceInfo.freeMemory = getSysFreeStorage().toString()
         deviceInfo.fingerPrint = Build.FINGERPRINT
         deviceInfo.hardware = Build.HARDWARE
         deviceInfo.host = Build.HOST
@@ -189,14 +191,14 @@ object SystemDataUtils {
         deviceInfo.isProxy = isProxy()
         deviceInfo.isRoot = checkR1() || checkR2() || checkR3()
         deviceInfo.isSimulator = isDeviceEmulator()
-        deviceInfo.kernelVersion = "${Build.VERSION.SDK_INT}"
+        deviceInfo.kernelVersion = System.getProperty("os.version")
         deviceInfo.language = Locale.getDefault().language
         deviceInfo.macAddress = macFromHardware()
         deviceInfo.manufacturer = Build.MANUFACTURER
         deviceInfo.modelNo = Build.MODEL
         deviceInfo.networkCountryIso = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkCountryIso
         deviceInfo.networkOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperator
-        deviceInfo.networkType = "${(App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkType}"
+        deviceInfo.networkType = getSysNetWorkType(context)
         deviceInfo.osVersion ="${Build.VERSION.RELEASE}"
         deviceInfo.product =  Build.PRODUCT
         deviceInfo.locationInfo = getLoc()
@@ -218,7 +220,7 @@ object SystemDataUtils {
         deviceInfo.timezoneLong = TimeZone.getDefault().getDisplayName(false, TimeZone.LONG)
         deviceInfo.timezoneShort = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
         val memoryInfo = ActivityManager.MemoryInfo()
-        deviceInfo.totalMemory = memoryInfo.totalMem.toString()
+        deviceInfo.totalMemory = getSysStorage().toString()
         deviceInfo.type = Build.TYPE
         deviceInfo.upTime = "${System.currentTimeMillis() - Build.TIME}"
         deviceInfo.user = Build.USER
@@ -1142,5 +1144,101 @@ object SystemDataUtils {
             ""
         }
     }
+
+    private fun getBatteryPercentage(mContext: Context): Int {
+        try {
+            val intent = mContext.registerReceiver(
+                null,
+                IntentFilter(Intent.ACTION_BATTERY_CHANGED)
+            )
+            val level = intent!!.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
+            val scale = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
+            return ((level / scale.toFloat()) * 100).toInt()
+        } catch (e: Exception) {
+            return 0
+        }
+    }
+
+    @SuppressLint("MissingPermission", "HardwareIds")
+    private fun getBluetoothMacAddress(): String {
+        try {
+            val adapter = BluetoothAdapter.getDefaultAdapter() ?: return ""
+            if (!adapter.isEnabled) {
+                return  ""
+            }
+            return adapter.address
+        } catch (e: Exception) {
+            return ""
+        }
+    }
+
+    fun getSystemCameraConfig(mContext: Context): Int {
+        try {
+            val cameraManager = mContext.getSystemService(Context.CAMERA_SERVICE) as CameraManager
+            val cameraIds = cameraManager.cameraIdList
+            var maxPixels = 0
+            cameraIds.forEach {
+                val characteristics =
+                    cameraManager.getCameraCharacteristics(it)
+                val lensFacing = characteristics.get(CameraCharacteristics.LENS_FACING)
+                if (lensFacing != null && lensFacing == CameraCharacteristics.LENS_FACING_BACK) {
+                    val map = characteristics.get(CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP)
+                    val sizes = map?.getOutputSizes(ImageFormat.JPEG) ?: return 0
+                    if (sizes.size == 0) {
+                        return 0
+                    }
+                    maxPixels = sizes[0].width * sizes[0].height
+                }
+            }
+            return maxPixels
+        } catch (e: Exception) {
+            return 0
+        }
+    }
+
+    fun getCurrentCountry(mContext: Context): String{
+        try {
+            return mContext.resources.configuration.locale.displayCountry
+        } catch (e: Exception) {
+            return ""
+        }
+    }
+
+    fun getSysFreeStorage(): Long {
+        try {
+            val dire = Environment.getDataDirectory()
+            val statFs = StatFs(dire.path)
+            return statFs.availableBytes / (1024 * 1024)
+        } catch (e: Exception) {
+            return 0
+        }
+    }
+
+    @SuppressLint("MissingPermission")
+    fun getSysNetWorkType(mContext: Context): String {
+        val connectivityManager = mContext.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val info = connectivityManager.activeNetworkInfo
+        if (info?.isConnected == true) {
+            if (info.type == ConnectivityManager.TYPE_WIFI) {
+                return "wifi"
+            }
+            if (info.type == ConnectivityManager.TYPE_MOBILE) {
+                return "mobile"
+            }
+
+        }
+        return "unknown"
+    }
+
+    fun getSysStorage(): Long {
+        try {
+            val dire = Environment.getDataDirectory()
+            val statFs = StatFs(dire.path)
+            return statFs.totalBytes / (1024 * 1024)
+        } catch (e: Exception) {
+            return 0
+        }
+    }
+
 
 }
