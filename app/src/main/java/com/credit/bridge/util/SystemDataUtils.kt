@@ -534,7 +534,7 @@ object SystemDataUtils {
         getSimNetworkInfo(networkInfo)
         networkInfo.getSimState = if(getSimState(0) == TelephonyManager.SIM_STATE_READY) "1" else "0"
         networkInfo.subscriberId = ""
-        networkInfo.voiceMailNumber = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).voiceMailNumber?.toString()
+        networkInfo.voiceMailNumber = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).voiceMailNumber ?: ""
         val operator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperator
         networkInfo.mcc = DeviceInfoUtil.getCommonMccAndMncInfo(App.instance.applicationContext, 0).toString()
         networkInfo.mnc = if (operator.length > 3) operator.substring(3) else ""
@@ -573,7 +573,12 @@ object SystemDataUtils {
                 val firstSub = activeSubs[0]
                 target.simCountryIso = firstSub.countryIso ?: ""
                 target.simOperator = "${firstSub.mccString ?: ""}${firstSub.mncString ?: ""}"
-                target.simOperatorName = firstSub.carrierName?.toString() ?: ""
+                val rawName = firstSub.carrierName?.toString() ?: ""
+                val pureName = rawName.indexOf("-").let { idx ->
+                    if (idx > 0) rawName.substring(idx + 1).trim() else rawName.trim()
+                }
+                target.simOperatorName = pureName
+                //target.simOperatorName = firstSub.carrierName?.toString() ?: ""
                 target.simSerialNumber = ""
                 return
             }
