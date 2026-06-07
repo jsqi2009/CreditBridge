@@ -87,7 +87,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="#ffffebd3"
                         android:textSize="14sp"
-                        android:hint="Plesae Enter"
+                        android:hint="Please Enter"
                         android:background="@null"/>
 
                 </LinearLayout>
@@ -122,7 +122,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="#ffffebd3"
                         android:textSize="14sp"
-                        android:hint="Plesae Enter"
+                        android:hint="Please Enter"
                         android:background="@null"/>
 
                 </LinearLayout>

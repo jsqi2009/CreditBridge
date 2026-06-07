@@ -146,8 +146,9 @@
             android:paddingHorizontal="@dimen/margin_50">
 
             <TextView
-                android:layout_width="96dp"
-                android:layout_height="19dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:text="Back to Home"
                 android:textColor="#ffffebd3"
                 android:textSize="14sp"
