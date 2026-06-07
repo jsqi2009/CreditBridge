@@ -14,21 +14,21 @@ class GeographicInfo {
 
     var bearing: Double = 0.0
 
-    var provider: String? = null
+    var provider: String? = ""
 
     var speed: Double = 0.0
 
-    var countryCode: String? = null
+    var countryCode: String? = ""
 
-    var countryName: String? = null
+    var countryName: String? = ""
 
-    var gpsAddress: String? = null
+    var gpsAddress: String? = ""
 
-    var featureName: String? = null
+    var featureName: String? = ""
 
-    var adminArea: String? = null
+    var adminArea: String? = ""
 
-    var locality: String? = null
+    var locality: String? = ""
 
     var isMock: Boolean = false
 

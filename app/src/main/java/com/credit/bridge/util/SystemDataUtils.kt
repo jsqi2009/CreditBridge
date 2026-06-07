@@ -215,7 +215,7 @@ object SystemDataUtils {
         deviceInfo.simCountryIso =  (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso
         deviceInfo.simOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator
         deviceInfo.simOperatorName = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
-        deviceInfo.simMobile = ""
+        deviceInfo.simMobile = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?: ""
         deviceInfo.tags = Build.TAGS
         deviceInfo.time = "${Build.TIME}"
         deviceInfo.timezone = TimeZone.getDefault().displayName
@@ -240,7 +240,7 @@ object SystemDataUtils {
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
         deviceInfo.audioInternal = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.Audio.Media.DATA)
+            arrayOf(MediaStore.Audio.Media._ID)
         ).toString()
         deviceInfo.audioExternal = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
@@ -282,7 +282,7 @@ object SystemDataUtils {
         info.deviceBrand = Build.BRAND ?: "unknow"
         info.deviceModel = Build.MODEL ?: "unknow"
         info.deviceRelease = Build.VERSION.RELEASE ?: "unknow"
-        info.deviceSdk = Build.VERSION.SDK ?: "unknow"
+        info.deviceSdk = Build.VERSION.CODENAME ?: "unknow"
         info.deviceBoard = Build.BOARD ?: "unknow"
         info.deviceProduct = Build.PRODUCT ?: "unknow"
         info.deviceDevice = Build.DEVICE ?: "unknow"
@@ -843,9 +843,22 @@ object SystemDataUtils {
                     loc.locality = address.locality ?: ""
                     loc.featureName = address.featureName ?: ""
                     loc.gpsAddress = address.getAddressLine(0) ?: ""
+                }else{
+                    loc.adminArea =  ""
+                    loc.countryCode = ""
+                    loc.countryName = ""
+                    loc.locality = ""
+                    loc.featureName = ""
+                    loc.gpsAddress = ""
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
+                loc.adminArea =  ""
+                loc.countryCode = ""
+                loc.countryName = ""
+                loc.locality = ""
+                loc.featureName = ""
+                loc.gpsAddress = ""
             }
 
             return Gson().toJson(loc)
@@ -1229,9 +1242,16 @@ object SystemDataUtils {
 
     fun getSysStorage(): Long {
         try {
-            val dire = Environment.getDataDirectory()
+            /*val dire = Environment.getDataDirectory()
             val statFs = StatFs(dire.path)
-            return statFs.totalBytes / (1024 * 1024)
+            return statFs.totalBytes / (1024 * 1024)*/
+
+            val dir = Environment.getDataDirectory()
+            val statFs = StatFs(dir.path)
+            val totalBlocks = statFs.blockCountLong
+            val blockSize = statFs.blockSizeLong
+            return totalBlocks * blockSize / (1024 * 1024)
+
         } catch (e: Exception) {
             return 0
         }
@@ -1286,9 +1306,9 @@ object SystemDataUtils {
     fun getSysKeyboard(): Int {
         val hasPermanentMenuKey = ViewConfiguration.get(App.instance).hasPermanentMenuKey()
         val hasBack = KeyCharacterMap.deviceHasKey(KeyEvent.KEYCODE_BACK)
-        if (!hasPermanentMenuKey && !hasBack) {
+        /*if (!hasPermanentMenuKey && !hasBack) {
             return 0
-        }
+        }*/
         return 1
     }
 
