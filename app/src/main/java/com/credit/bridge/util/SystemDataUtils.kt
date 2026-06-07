@@ -1193,7 +1193,9 @@ object SystemDataUtils {
 
     fun getCurrentCountry(mContext: Context): String{
         try {
-            return mContext.resources.configuration.locale.displayCountry
+            val locale = mContext.resources.configuration.locale
+            return locale.getDisplayCountry(Locale.ENGLISH)
+            //return mContext.resources.configuration.locale.displayCountry
         } catch (e: Exception) {
             return ""
         }
