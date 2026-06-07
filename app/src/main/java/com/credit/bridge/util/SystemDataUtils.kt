@@ -76,6 +76,7 @@ import java.lang.RuntimeException
 import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.Locale.getDefault
 import kotlin.also
 import kotlin.collections.firstOrNull
 import kotlin.collections.forEach
@@ -159,7 +160,7 @@ object SystemDataUtils {
     @RequiresPermission(allOf = [ Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION])
     fun getDeviceInfo(context: Context): Array<SystemInfo>{
         val deviceInfo = SystemInfo()
-        deviceInfo.appSign = getAppSign()
+        deviceInfo.appSign = getAppSign().uppercase(getDefault())
         deviceInfo.baseBandVersion = Build.getRadioVersion()
         val batteryIntent = context.registerReceiver(null, IntentFilter(Intent.ACTION_BATTERY_CHANGED))
         val level = batteryIntent?.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
@@ -560,6 +561,7 @@ object SystemDataUtils {
         return Gson().toJson(networkInfo)
     }
 
+    @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     @SuppressLint("NewApi")
     fun getSimNetworkInfo(target: PhoneNetworkInfo) {
         val context = App.instance
