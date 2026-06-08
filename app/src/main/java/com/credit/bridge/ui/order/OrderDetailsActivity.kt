@@ -4,33 +4,25 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
-import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.lifecycleScope
 import com.credit.bridge.R
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
-import com.credit.bridge.databinding.ActivityLoginBinding
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
-import com.credit.bridge.remote.event.FinishActivityEvent
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
 import com.credit.bridge.remote.event.OrderUpdateResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.UpdateCardEvent
-import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.util.AppUtil
 import com.credit.bridge.util.NumberUtils
-import com.credit.bridge.util.OrderStatus
 import com.credit.bridge.util.ToastUtil
+import com.credit.bridge.util.CommonCountdown
 import com.squareup.otto.Subscribe
 import java.util.Locale
 
@@ -42,7 +34,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     private var orderId: Int = 0
     private val LOCK_DATE_FORMAT = "dd-MM-yyyy"
     private var isExtend: Boolean = false
-    private lateinit var myCountDownTimer: CountDownTimer
+    private var frozenCountdown: CommonCountdown? = null
     val totalMillis = 2 * 24 * 60 * 60 * 1000L
     var orderStatus: String? = null
 
@@ -54,6 +46,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     override fun onResume() {
         super.onResume()
+        frozenCountdown?.refresh()
         if (!isExtend) {
             getOrderDetailsInfo()
         }else{
@@ -393,22 +386,20 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
 
     private fun startCountdownTimer(totalMillis: Long) {
-        myCountDownTimer = object : CountDownTimer(totalMillis, 1000) {
-            override fun onTick(millisUntilFinished: Long) {
-                val totalSeconds = millisUntilFinished / 1000
-                val days = totalSeconds / 86400
-                val hours = (totalSeconds % 86400) / 3600
+        frozenCountdown?.stop()
+        frozenCountdown = CommonCountdown(
+            lifecycleScope,
+            onTick = { remainSec ->
+                val days = remainSec / 86400
+                val hours = (remainSec % 86400) / 3600
                 bindViews.cancelFrozenLayout.daysTv.text =
                     String.format(Locale.getDefault(), "%02d", days)
                 bindViews.cancelFrozenLayout.hoursTv.text =
                     String.format(Locale.getDefault(), "%d", hours)
-            }
-
-            override fun onFinish() {
-            }
-        }
-
-        myCountDownTimer.start()
+            },
+            onFinish = {}
+        )
+        frozenCountdown?.startWithMillis(totalMillis)
     }
 
     @Subscribe

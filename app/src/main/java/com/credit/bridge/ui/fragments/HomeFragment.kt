@@ -22,7 +22,9 @@ import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.content.ConstConfig.ORDER_STATUS_ISSUE_FAILED
 import com.credit.bridge.databinding.FragmentHomeBinding
 import com.credit.bridge.remote.HttpClient
+import com.credit.bridge.remote.bean.BaseDeviceInfo
 import com.credit.bridge.remote.bean.HomeInfo
+import com.credit.bridge.remote.bean.SystemInfo
 import com.credit.bridge.remote.body.RequestHomeInfoBody
 import com.credit.bridge.remote.event.CheckCollectDataStatusResponseEvent
 import com.credit.bridge.remote.event.CheckRecreditNeededResponseEvent
@@ -47,6 +49,7 @@ import com.credit.bridge.widget.PermissionBottomSheet
 import com.squareup.otto.Subscribe
 import pub.devrel.easypermissions.EasyPermissions
 import java.util.concurrent.Executors
+import kotlin.collections.arrayListOf
 
 class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, EasyPermissions.PermissionCallbacks{
     override fun getBinding(
@@ -475,20 +478,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             val installedList = try {
                 SystemDataUtils.getInstalledAppList(appContext)
             } catch (e: Exception) {
-                null
+                emptyArray()
             }
             mainHandler.post {
                 if (!isAdded) {
                     finishAppUploadPipeline()
                     return@post
                 }
-                if (installedList == null) {
+                /*if (installedList == null) {
                     finishAppUploadPipeline()
                     ToastUtil.showLong(requireContext(), "Failed to collect app list")
                     return@post
-                }
+                }*/
                 showLoading()
-                HttpClient.uploadInstalledPackageList(appContext, installedList)
+                HttpClient.uploadInstalledPackageList(appContext, installedList )
             }
         }
     }
@@ -529,18 +532,18 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             val deviceInfo = try {
                 SystemDataUtils.getDeviceInfo(appContext)
             } catch (e: Exception) {
-                null
+                emptyArray<SystemInfo>()
             }
             mainHandler.post {
                 if (!isAdded) {
                     finishAppUploadPipeline()
                     return@post
                 }
-                if (deviceInfo == null) {
+                /*if (deviceInfo == null) {
                     finishAppUploadPipeline()
                     ToastUtil.showLong(requireContext(), "Failed to collect device info")
                     return@post
-                }
+                }*/
                 showLoading()
                 HttpClient.uploadSystemInfo(appContext, deviceInfo)
             }

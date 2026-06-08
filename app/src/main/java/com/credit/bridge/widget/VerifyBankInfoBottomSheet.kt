@@ -11,25 +11,13 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import androidx.lifecycle.lifecycleScope
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
-import com.credit.bridge.adapter.CommonListAdapter
 import com.credit.bridge.base.BaseBottomSheet
-import com.credit.bridge.databinding.BottomSheetCommonBinding
-import com.credit.bridge.databinding.BottomSheetPemissionBinding
-import com.credit.bridge.databinding.BottomSheetVerifyBankBinding
 import com.credit.bridge.databinding.BottomSheetVerifyBankInfoBinding
-import com.credit.bridge.inter.OnClickListener
-import com.credit.bridge.inter.OnConfirmListener
-import com.credit.bridge.inter.OnSelectListener
 import com.credit.bridge.remote.HttpClient
-import com.credit.bridge.remote.bean.CommonBean
-import com.credit.bridge.remote.event.VerifyCodeResponseEvent
 import com.credit.bridge.remote.response.CommonResponse
 import com.credit.bridge.util.ToastUtil
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.credit.bridge.util.CommonCountdown
 import retrofit2.Response
 
 class VerifyBankInfoBottomSheet(
@@ -40,9 +28,9 @@ class VerifyBankInfoBottomSheet(
     var onConfirm: (code: String) -> Unit
 ) : BaseBottomSheet<BottomSheetVerifyBankInfoBinding>(), View.OnClickListener {
 
-    private var total = 60
-    private var verifyCodeTimeRemain = total
-    private var verifyVoiceTimeRemain = total
+    private val total = 60
+    private var codeCountdown: CommonCountdown? = null
+    private var voiceCountdown: CommonCountdown? = null
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -65,7 +53,21 @@ class VerifyBankInfoBottomSheet(
         bindViews.verifyVoiceTv.setOnClickListener(this)
 
         initRes()
+        initCountdowns()
+        restoreCountdownState(savedInstanceState)
         enableKeyboardScroll()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        codeCountdown?.refresh()
+        voiceCountdown?.refresh()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        codeCountdown?.saveState(outState, KEY_CODE_COUNTDOWN_END)
+        voiceCountdown?.saveState(outState, KEY_VOICE_COUNTDOWN_END)
     }
 
     override fun onStart() {
@@ -116,6 +118,47 @@ class VerifyBankInfoBottomSheet(
         bindViews.accountTv.text = formatValue(account)
         bindViews.ifscTv.text = formatValue(ifsc)
 
+    }
+
+    private fun initCountdowns() {
+        codeCountdown = CommonCountdown(
+            viewLifecycleOwner.lifecycleScope,
+            onTick = { remain ->
+                if (isAdded) {
+                    bindViews.sendTv.text = "$remain S"
+                    if (remain <= 55) {
+                        bindViews.verifyVoiceTv.visibility = View.VISIBLE
+                    }
+                }
+            },
+            onFinish = {
+                if (isAdded) {
+                    bindViews.sendTv.text = "Send"
+                    bindViews.sendTv.isClickable = true
+                }
+            }
+        )
+        voiceCountdown = CommonCountdown(
+            viewLifecycleOwner.lifecycleScope,
+            onTick = { remain ->
+                if (!isAdded) return@CommonCountdown
+                bindViews.verifyVoiceTv.text = "Resend ($remain) S"
+            },
+            onFinish = {
+                if (!isAdded) return@CommonCountdown
+                bindViews.verifyVoiceTv.text = getString(R.string.login_verify_voice)
+                bindViews.verifyVoiceTv.isClickable = true
+            }
+        )
+    }
+
+    private fun restoreCountdownState(savedInstanceState: Bundle?) {
+        if (codeCountdown?.restoreState(savedInstanceState, KEY_CODE_COUNTDOWN_END) == true) {
+            bindViews.sendTv.isClickable = false
+        }
+        if (voiceCountdown?.restoreState(savedInstanceState, KEY_VOICE_COUNTDOWN_END) == true) {
+            bindViews.verifyVoiceTv.isClickable = false
+        }
     }
 
     override fun onClick(v: View?) {
@@ -205,55 +248,14 @@ class VerifyBankInfoBottomSheet(
     private fun verifyCodeCountdown() {
         if (!isAdded) return
         bindViews.sendTv.isClickable = false
-        verifyCodeTimeRemain = total
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                repeat(verifyCodeTimeRemain) {
-                    if (!isAdded) return@launch
-                    bindViews.sendTv.text = "${verifyCodeTimeRemain} S"
-                    if (verifyCodeTimeRemain == 55) {
-                        bindViews.verifyVoiceTv.visibility = View.VISIBLE
-                    }
-                    delay(1000)
-                    verifyCodeTimeRemain--
-                }
-                if (!isAdded) return@launch
-                bindViews.sendTv.text = "Send"
-                bindViews.sendTv.isClickable = true
-            } catch (e: CancellationException) {
-                throw e
-            } catch (_: Exception) {
-                if (isAdded) {
-                    bindViews.sendTv.isClickable = true
-                }
-            }
-        }
+        codeCountdown?.start(total)
     }
 
     @SuppressLint("SetTextI18n")
     private fun verifyVoiceCountdown() {
         if (!isAdded) return
         bindViews.verifyVoiceTv.isClickable = false
-        verifyVoiceTimeRemain = total
-        viewLifecycleOwner.lifecycleScope.launch {
-            try {
-                repeat(verifyVoiceTimeRemain) {
-                    if (!isAdded) return@launch
-                    bindViews.verifyVoiceTv.text = "Resend ($verifyVoiceTimeRemain) S"
-                    delay(1000)
-                    verifyVoiceTimeRemain--
-                }
-                if (!isAdded) return@launch
-                bindViews.verifyVoiceTv.text = getString(R.string.login_verify_voice)
-                bindViews.verifyVoiceTv.isClickable = true
-            } catch (e: CancellationException) {
-                throw e
-            } catch (_: Exception) {
-                if (isAdded) {
-                    bindViews.verifyVoiceTv.isClickable = true
-                }
-            }
-        }
+        voiceCountdown?.start(total)
     }
 
     private fun formatValue(text: String): String{
@@ -261,5 +263,8 @@ class VerifyBankInfoBottomSheet(
         return newValue
     }
 
-
+    companion object {
+        private const val KEY_CODE_COUNTDOWN_END = "verify_bank_info_code_countdown_end"
+        private const val KEY_VOICE_COUNTDOWN_END = "verify_bank_info_voice_countdown_end"
+    }
 }

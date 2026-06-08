@@ -28,25 +28,36 @@ import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
 import com.credit.bridge.util.DialogUtil
 import com.credit.bridge.util.ToastUtil
+import com.credit.bridge.util.CommonCountdown
 import com.squareup.otto.Subscribe
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlin.toString
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener {
 
     override fun getBinding() = ActivityLoginBinding.inflate(layoutInflater)
 
     private var workTypeIndex =  -1;
-    private var total = 60
-    private var verifyCodeTimeRemain = total
-    private var verifyVoiceTimeRemain = total
+    private val total = 60
     private var isChecked = true
+    private var codeCountdown: CommonCountdown? = null
+    private var voiceCountdown: CommonCountdown? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        restoreCountdownState(savedInstanceState)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        codeCountdown?.refresh()
+        voiceCountdown?.refresh()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        codeCountdown?.saveState(outState, KEY_CODE_COUNTDOWN_END)
+        voiceCountdown?.saveState(outState, KEY_VOICE_COUNTDOWN_END)
     }
 
     override fun initRes() {
@@ -67,6 +78,42 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         bindViews.codeEt.addTextChangedListener(codeTextWatcher)
 
         configPrivacyPolicy()
+        initCountdowns()
+    }
+
+    private fun initCountdowns() {
+        codeCountdown = CommonCountdown(
+            lifecycleScope,
+            onTick = { remain ->
+                bindViews.sendTv.text = "$remain S"
+                if (remain <= 55) {
+                    bindViews.verifyVoiceTv.visibility = View.VISIBLE
+                }
+            },
+            onFinish = {
+                bindViews.sendTv.text = "Send"
+                bindViews.sendTv.isClickable = true
+            }
+        )
+        voiceCountdown = CommonCountdown(
+            lifecycleScope,
+            onTick = { remain ->
+                bindViews.verifyVoiceTv.text = "Resend ($remain) S"
+            },
+            onFinish = {
+                bindViews.verifyVoiceTv.text = getString(R.string.login_verify_voice)
+                bindViews.verifyVoiceTv.isClickable = true
+            }
+        )
+    }
+
+    private fun restoreCountdownState(savedInstanceState: Bundle?) {
+        if (codeCountdown?.restoreState(savedInstanceState, KEY_CODE_COUNTDOWN_END) == true) {
+            bindViews.sendTv.isClickable = false
+        }
+        if (voiceCountdown?.restoreState(savedInstanceState, KEY_VOICE_COUNTDOWN_END) == true) {
+            bindViews.verifyVoiceTv.isClickable = false
+        }
     }
 
     override fun onClick(view: View) {
@@ -229,42 +276,13 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
 
     private fun verifyCodeCountdown() {
         bindViews.sendTv.isClickable = false
-        verifyCodeTimeRemain = total
-        lifecycleScope.launch {
-            try {
-                repeat(verifyCodeTimeRemain) {
-                    bindViews.sendTv.text = "${verifyCodeTimeRemain} S"
-                    if (verifyCodeTimeRemain == 55) {
-                        bindViews.verifyVoiceTv.visibility = View.VISIBLE
-                    }
-                    delay(1000)
-                    verifyCodeTimeRemain--
-                }
-                bindViews.sendTv.text = "Send"
-                bindViews.sendTv.isClickable = true
-            } catch (e: Exception) {
-                bindViews.sendTv.isClickable = true
-            }
-        }
+        codeCountdown?.start(total)
     }
 
     @SuppressLint("SetTextI18n")
     private fun verifyVoiceCountdown() {
         bindViews.verifyVoiceTv.isClickable = false
-        verifyVoiceTimeRemain = total
-        lifecycleScope.launch {
-            try {
-                repeat(verifyVoiceTimeRemain) {
-                    bindViews.verifyVoiceTv.text = "Resend ($verifyVoiceTimeRemain) S"
-                    delay(1000)
-                    verifyVoiceTimeRemain--
-                }
-                bindViews.verifyVoiceTv.text = getString(R.string.login_verify_voice)
-                bindViews.verifyVoiceTv.isClickable = true
-            } catch (e: Exception) {
-                bindViews.verifyVoiceTv.isClickable = true
-            }
-        }
+        voiceCountdown?.start(total)
     }
 
     private fun hideKeyboard() {
@@ -294,5 +312,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
     }
 
 
-
+    companion object {
+        private const val KEY_CODE_COUNTDOWN_END = "login_code_countdown_end"
+        private const val KEY_VOICE_COUNTDOWN_END = "login_voice_countdown_end"
+    }
 }
