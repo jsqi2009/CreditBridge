@@ -141,6 +141,10 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                     ToastUtil.showLong(this,"Invalid mobile number. Please check and try again")
                     return
                 }
+
+                HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REQUEST_SMS_CODE,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_REQUEST_SMS_CODE)
+
                 showLoading()
                 HttpClient.sendVerifyCode(this, phone, "login", "1")
             }
@@ -155,6 +159,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                     return
                 }
                 DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
+                    HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REQUEST_VOICE_CODE,
+                        ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_REQUEST_VOICE_CODE)
+                    showLoading()
                     HttpClient.getVoiceCode(this, phone, "login")
                 }, onCancel = {
 
@@ -228,6 +235,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             }else {
                 ToastUtil.showLong(this, event.networkError.toString())
             }
+            HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_SMS_OPT_UNAVAILABLE,
+                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_SMS_OPT_UNAVAILABLE)
         }
     }
 
@@ -242,6 +251,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             }else {
                 ToastUtil.showLong(this, event.networkError.toString())
             }
+
+            HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_VOICE_OPT_UNAVAILABLE,
+                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_VOICE_OPT_UNAVAILABLE)
         }
     }
 

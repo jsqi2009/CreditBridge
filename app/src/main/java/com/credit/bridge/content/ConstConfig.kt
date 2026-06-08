@@ -26,6 +26,10 @@ object ConstConfig {
 
 
     //point page
+    const val EVENT_REQUEST_SMS_CODE = "requestSmsCode"	//
+    const val EVENT_SMS_OPT_UNAVAILABLE = "smsOtpUnavailable"	//
+    const val EVENT_REQUEST_VOICE_CODE = "requestVoiceCode"	//
+    const val EVENT_VOICE_OPT_UNAVAILABLE = "voiceOtpUnavailable"	//
     const val EVENT_REGISTER_COMPLETE = "register_complete"	//
     const val EVENT_HOME_SCREEN = "home_screen"	//
     const val EVENT_IDCARD_INPUT = "idcard_input"	//
