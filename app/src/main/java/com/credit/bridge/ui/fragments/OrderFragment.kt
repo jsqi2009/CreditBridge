@@ -60,27 +60,33 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
 
     }
 
+    private fun orderListFlag(type: String = orderType) = "bill_$type"
+
     private fun fetchOrderList() {
         showLoading()
-        HttpClient.fetchOrderList(requireContext(), orderType,"bill")
+        HttpClient.fetchOrderList(requireContext(), orderType, orderListFlag())
+    }
+
+    private fun isCurrentListResponse(event: OrderListResponseEvent): Boolean {
+        val flag = event.model?.flag?.takeIf { it.isNotEmpty() } ?: event.flagContent
+        return flag == orderListFlag()
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onFetchOrderListEvent(event: OrderListResponseEvent) {
+        if (!isCurrentListResponse(event)) return
+
         hideLoading()
         if (event.isSuccess) {
-            if (event.model?.flag == "bill") {
+            orderList = event.model?.mtaw ?: ArrayList()
+            mAdapter?.setData(orderList)
+            mAdapter?.notifyDataSetChanged()
 
-                orderList = event.model?.mtaw ?: ArrayList()
-                mAdapter?.setData(orderList)
-                mAdapter?.notifyDataSetChanged()
-
-                if (mAdapter?.getData()?.isEmpty() == true) {
-                    bindViews.defaultView.visibility = View.VISIBLE
-                } else {
-                    bindViews.defaultView.visibility = View.GONE
-                }
+            if (mAdapter?.getData()?.isEmpty() == true) {
+                bindViews.defaultView.visibility = View.VISIBLE
+            } else {
+                bindViews.defaultView.visibility = View.GONE
             }
         } else {
             ToastUtil.showLong(requireActivity(),event.errorMessage)
