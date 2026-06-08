@@ -87,6 +87,8 @@
                         android:layout_height="wrap_content"
                         android:textColor="#ffffebd3"
                         android:textSize="14sp"
+                        android:maxLines="1"
+                        android:maxLength="10"
                         android:hint="Please Enter"
                         android:background="@null"/>
 
