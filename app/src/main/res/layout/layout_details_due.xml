@@ -26,7 +26,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_100"
+                android:layout_width="@dimen/margin_130"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Status"
@@ -56,7 +56,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_100"
+                android:layout_width="@dimen/margin_130"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Created on"
@@ -84,7 +84,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_100"
+                android:layout_width="@dimen/margin_130"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Usage ID"
@@ -112,7 +112,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_100"
+                android:layout_width="@dimen/margin_130"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Usage amount"
@@ -140,7 +140,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_100"
+                android:layout_width="@dimen/margin_130"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Amount due"
@@ -168,7 +168,7 @@
             android:paddingHorizontal="@dimen/margin_15">
 
             <TextView
-                android:layout_width="@dimen/margin_100"
+                android:layout_width="@dimen/margin_130"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/margin_10"
                 android:text="Due date"

@@ -73,7 +73,7 @@ class OrderFragment : BaseFragment<FragmentOrderBinding>(), View.OnClickListener
             if (event.model?.flag == "bill") {
 
                 orderList = event.model?.mtaw ?: ArrayList()
-                mAdapter?.setData(orderList!!)
+                mAdapter?.setData(orderList)
                 mAdapter?.notifyDataSetChanged()
 
                 if (mAdapter?.getData()?.isEmpty() == true) {
