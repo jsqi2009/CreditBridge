@@ -95,6 +95,7 @@
 
     <dimen name="wheel_date_item_height">44dp</dimen>
     <dimen name="wheel_date_picker_height">600dp</dimen>
+    <dimen name="wheel_birthday_picker_height">280dp</dimen>
     <dimen name="wheel_date_selection_offset_negative">-22dp</dimen>
     <dimen name="wheel_date_selection_offset_positive">22dp</dimen>
 

@@ -39,38 +39,54 @@
         </RelativeLayout>
 
         <FrameLayout
+            android:id="@+id/wheelContainer"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/wheel_date_picker_height"
-            android:layout_marginBottom="@dimen/margin_15">
+            android:layout_height="@dimen/wheel_birthday_picker_height"
+            android:layout_marginBottom="@dimen/margin_10">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/dateRecyclerView"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:overScrollMode="never" />
+                android:orientation="horizontal">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/margin_15"
-                android:background="@color/line_color"
-                android:clickable="false"
-                android:focusable="false"
-                android:translationY="@dimen/wheel_date_selection_offset_negative" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/dayRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_gravity="center"
-                android:layout_marginHorizontal="@dimen/margin_15"
-                android:background="@color/line_color"
-                android:clickable="false"
-                android:focusable="false"
-                android:translationY="@dimen/wheel_date_selection_offset_positive" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/monthRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/yearRecyclerView"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never" />
+            </LinearLayout>
 
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/confirmTv"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/margin_50"
+            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_marginBottom="@dimen/margin_15"
+            android:background="@drawable/shape_permission_agree"
+            android:gravity="center"
+            android:text="Confirm"
+            android:textColor="#ffffffff"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

@@ -1,23 +1,17 @@
 package com.credit.bridge.widget
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.LinearSnapHelper
-import androidx.recyclerview.widget.RecyclerView
-import com.credit.bridge.adapter.WheelDateAdapter
 import com.credit.bridge.base.BaseBottomSheet
 import com.credit.bridge.databinding.BottomSheetBirthdayPickerBinding
 import com.credit.bridge.inter.OnBirthdaySelectListener
-import com.credit.bridge.inter.OnClickListener
 import com.credit.bridge.util.BirthdayDateHelper
+import com.credit.bridge.util.ToastUtil
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class BirthdayPickerBottomSheet(
     private val mContext: Context,
@@ -25,12 +19,17 @@ class BirthdayPickerBottomSheet(
     private val onBirthdaySelectListener: OnBirthdaySelectListener
 ) : BaseBottomSheet<BottomSheetBirthdayPickerBinding>(), View.OnClickListener {
 
-    private val dayCount = BirthdayDateHelper.getDayCount()
-    private lateinit var adapter: WheelDateAdapter
-    private lateinit var layoutManager: LinearLayoutManager
-    private val snapHelper = LinearSnapHelper()
-    private var selectedDataIndex = 0
-    private var edgePadCount = 0
+    private var years: List<Int> = emptyList()
+    private var months: List<Int> = emptyList()
+    private var days: List<Int> = emptyList()
+
+    private var selectedYearIndex = 0
+    private var selectedMonthIndex = 0
+    private var selectedDayIndex = 0
+
+    private lateinit var dayWheel: WheelColumnController
+    private lateinit var monthWheel: WheelColumnController
+    private lateinit var yearWheel: WheelColumnController
 
     override fun getBinding(
         inflater: LayoutInflater,
@@ -44,87 +43,104 @@ class BirthdayPickerBottomSheet(
         showExpanded = true
     }
 
+    override fun onStart() {
+        super.onStart()
+        (dialog as? BottomSheetDialog)?.behavior?.isDraggable = false
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bindViews.titleTv.text = mContext.getString(com.credit.bridge.R.string.hint_select)
         bindViews.dismissIv.setOnClickListener(this)
-
-        selectedDataIndex = BirthdayDateHelper.resolveInitialIndex(initialFormValue)
+        bindViews.confirmTv.setOnClickListener(this)
 
         val itemHeight = resources.getDimensionPixelSize(com.credit.bridge.R.dimen.wheel_date_item_height)
-        val wheelHeight = resources.getDimensionPixelSize(com.credit.bridge.R.dimen.wheel_date_picker_height)
-        edgePadCount = (wheelHeight / itemHeight / 2).coerceAtLeast(3) + 2
+        val wheelHeight = resources.getDimensionPixelSize(com.credit.bridge.R.dimen.wheel_birthday_picker_height)
 
-        adapter = WheelDateAdapter(mContext, edgePadCount, dayCount, selectedDataIndex, object : OnClickListener {
-            @SuppressLint("NotifyDataSetChanged")
-            override fun onClick(index: Int) {
-                selectedDataIndex = index
-                adapter.selectedDataIndex = index
-                adapter.notifyDataSetChanged()
-                val item = BirthdayDateHelper.getItem(index)
-                onBirthdaySelectListener.onSelect(item.formValue, item.displayText)
-                Handler(Looper.getMainLooper()).postDelayed({
-                    dismiss()
-                }, 300)
-            }
-        })
+        val (initialDay, initialMonth, initialYear) = BirthdayDateHelper.parseInitialParts(initialFormValue)
+        years = BirthdayDateHelper.getYears()
+        selectedYearIndex = years.indexOf(initialYear).coerceAtLeast(0)
+        refreshMonthList(initialMonth)
+        refreshDayList(initialDay)
 
-        layoutManager = LinearLayoutManager(mContext, RecyclerView.VERTICAL, false)
-        bindViews.dateRecyclerView.layoutManager = layoutManager
-        bindViews.dateRecyclerView.adapter = adapter
-        bindViews.dateRecyclerView.setHasFixedSize(true)
-        bindViews.dateRecyclerView.setItemViewCacheSize(12)
-        snapHelper.attachToRecyclerView(bindViews.dateRecyclerView)
+        dayWheel = WheelColumnController(mContext, bindViews.dayRecyclerView) { index ->
+            selectedDayIndex = index
+        }
+        monthWheel = WheelColumnController(mContext, bindViews.monthRecyclerView) { index ->
+            selectedMonthIndex = index
+            refreshDayList(days.getOrElse(selectedDayIndex) { days.lastOrNull() ?: 1 })
+        }
+        yearWheel = WheelColumnController(mContext, bindViews.yearRecyclerView) { index ->
+            selectedYearIndex = index
+            refreshMonthList(months.getOrElse(selectedMonthIndex) { months.lastOrNull() ?: 1 })
+            refreshDayList(days.getOrElse(selectedDayIndex) { days.lastOrNull() ?: 1 })
+        }
 
-        val verticalPadding = (wheelHeight - itemHeight) / 2
-        bindViews.dateRecyclerView.setPadding(0, verticalPadding, 0, verticalPadding)
+        val lineOffset = resources.getDimensionPixelSize(com.credit.bridge.R.dimen.wheel_date_selection_offset_positive)
+        val lineMargin = resources.getDimensionPixelSize(com.credit.bridge.R.dimen.margin_15)
+        val selectionDecoration = WheelSelectionDecoration(
+            horizontalMarginPx = lineMargin,
+            lineOffsetPx = lineOffset,
+        )
+        bindViews.dayRecyclerView.addItemDecoration(selectionDecoration)
+        bindViews.monthRecyclerView.addItemDecoration(selectionDecoration)
+        bindViews.yearRecyclerView.addItemDecoration(selectionDecoration)
 
-        bindViews.dateRecyclerView.viewTreeObserver.addOnGlobalLayoutListener(
+        dayWheel.setup(dayLabels(), selectedDayIndex, wheelHeight, itemHeight)
+        monthWheel.setup(monthLabels(), selectedMonthIndex, wheelHeight, itemHeight)
+        yearWheel.setup(yearLabels(), selectedYearIndex, wheelHeight, itemHeight)
+
+        bindViews.wheelContainer.viewTreeObserver.addOnGlobalLayoutListener(
             object : ViewTreeObserver.OnGlobalLayoutListener {
                 override fun onGlobalLayout() {
-                    if (bindViews.dateRecyclerView.height <= 0) return
-                    bindViews.dateRecyclerView.viewTreeObserver.removeOnGlobalLayoutListener(this)
-                    centerOnDataIndex(selectedDataIndex)
+                    if (bindViews.wheelContainer.height <= 0) return
+                    bindViews.wheelContainer.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                    dayWheel.scrollToIndex(selectedDayIndex)
+                    monthWheel.scrollToIndex(selectedMonthIndex)
+                    yearWheel.scrollToIndex(selectedYearIndex)
                 }
             }
         )
     }
 
-    private fun centerOnDataIndex(dataIndex: Int) {
-        val safeIndex = dataIndex.coerceIn(0, dayCount - 1)
-        val adapterPosition = adapter.adapterPositionForDataIndex(safeIndex)
-        layoutManager.scrollToPosition(adapterPosition)
-        alignAdapterPositionToCenter(adapterPosition, retry = 0)
+    private fun refreshMonthList(preferredMonth: Int) {
+        months = BirthdayDateHelper.getMonths()
+        selectedMonthIndex = months.indexOf(preferredMonth).coerceIn(0, (months.size - 1).coerceAtLeast(0))
+        if (::monthWheel.isInitialized) {
+            monthWheel.updateLabels(monthLabels(), selectedMonthIndex)
+        }
     }
 
-    private fun alignAdapterPositionToCenter(adapterPosition: Int, retry: Int) {
-        if (retry > 8) return
-        val rv = bindViews.dateRecyclerView
-        rv.post {
-            val child = layoutManager.findViewByPosition(adapterPosition)
-            if (child == null) {
-                layoutManager.scrollToPosition(adapterPosition)
-                alignAdapterPositionToCenter(adapterPosition, retry + 1)
-                return@post
-            }
-            val rvCenter = rv.height / 2f
-            val childCenter = (child.top + child.bottom) / 2f
-            val dy = (childCenter - rvCenter).toInt()
-            if (dy != 0) {
-                rv.scrollBy(0, dy)
-            }
-            rv.post {
-                val aligned = layoutManager.findViewByPosition(adapterPosition) ?: return@post
-                val remain = ((aligned.top + aligned.bottom) / 2f - rv.height / 2f).toInt()
-                if (kotlin.math.abs(remain) > 1) {
-                    rv.scrollBy(0, remain)
-                }
-            }
+    private fun refreshDayList(preferredDay: Int) {
+        val year = years[selectedYearIndex]
+        val month = months[selectedMonthIndex]
+        days = BirthdayDateHelper.getDays(year, month)
+        selectedDayIndex = days.indexOf(preferredDay).coerceIn(0, (days.size - 1).coerceAtLeast(0))
+        if (::dayWheel.isInitialized) {
+            dayWheel.updateLabels(dayLabels(), selectedDayIndex)
         }
+    }
+
+    private fun dayLabels() = days.map { BirthdayDateHelper.formatColumnLabel(it) }
+    private fun monthLabels() = months.map { BirthdayDateHelper.formatColumnLabel(it) }
+    private fun yearLabels() = years.map { it.toString() }
+
+    private fun confirmSelection() {
+        val year = years.getOrNull(selectedYearIndex) ?: return
+        val month = months.getOrNull(selectedMonthIndex) ?: return
+        val day = days.getOrNull(selectedDayIndex) ?: return
+        val item = BirthdayDateHelper.compose(day, month, year)
+        if (item == null) {
+            ToastUtil.showLong(mContext, "Invalid date")
+            return
+        }
+        onBirthdaySelectListener.onSelect(item.formValue, item.displayText)
+        dismiss()
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             com.credit.bridge.R.id.dismissIv -> dismiss()
+            com.credit.bridge.R.id.confirmTv -> confirmSelection()
         }
     }
 }

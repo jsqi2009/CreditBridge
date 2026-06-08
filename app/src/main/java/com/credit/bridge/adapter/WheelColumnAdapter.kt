@@ -4,23 +4,21 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.credit.bridge.R
-import com.credit.bridge.inter.OnClickListener
-import com.credit.bridge.util.BirthdayDateHelper
 
-class WheelDateAdapter(
+class WheelColumnAdapter(
     private val mContext: Context,
-    private val edgePadCount: Int,
-    private val dayCount: Int,
-    var selectedDataIndex: Int,
-    private val clickListener: OnClickListener
-) : RecyclerView.Adapter<WheelDateAdapter.Holder>() {
+    private var labels: List<String>,
+    var selectedIndex: Int,
+) : RecyclerView.Adapter<WheelColumnAdapter.Holder>() {
 
     class Holder(val textView: TextView) : RecyclerView.ViewHolder(textView)
+
+    val dataCount: Int
+        get() = labels.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
         val view = LayoutInflater.from(parent.context)
@@ -30,17 +28,12 @@ class WheelDateAdapter(
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: Holder, position: Int) {
-        val dataIndex = position - edgePadCount
-        if (dataIndex < 0 || dataIndex >= dayCount) {
+        if (position < 0 || position >= labels.size) {
             holder.textView.text = ""
-            holder.textView.isClickable = false
-            holder.textView.setOnClickListener(null)
             return
         }
-        val item = BirthdayDateHelper.getItem(dataIndex)
-        holder.textView.isClickable = true
-        holder.textView.text = item.displayText
-        if (selectedDataIndex == dataIndex) {
+        holder.textView.text = labels[position]
+        if (selectedIndex == position) {
             holder.textView.setTextColor(mContext.getColor(R.color.sheet_item_select_color))
             holder.textView.setTypeface(null, Typeface.BOLD)
             holder.textView.textSize = 18f
@@ -49,12 +42,14 @@ class WheelDateAdapter(
             holder.textView.setTypeface(null, Typeface.NORMAL)
             holder.textView.textSize = 15f
         }
-        holder.textView.setOnClickListener {
-            clickListener.onClick(dataIndex)
-        }
     }
 
-    override fun getItemCount(): Int = dayCount + edgePadCount * 2
+    override fun getItemCount(): Int = labels.size
 
-    fun adapterPositionForDataIndex(dataIndex: Int): Int = dataIndex + edgePadCount
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateLabels(newLabels: List<String>, newSelectedIndex: Int) {
+        labels = newLabels
+        selectedIndex = newSelectedIndex.coerceIn(0, (labels.size - 1).coerceAtLeast(0))
+        notifyDataSetChanged()
+    }
 }

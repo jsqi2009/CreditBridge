@@ -79,6 +79,67 @@ object BirthdayDateHelper {
         return String.format(Locale.US, "%02d - %02d - %04d", day, month, year)
     }
 
+    fun formatColumnLabel(value: Int): String {
+        return String.format(Locale.US, "%02d", value)
+    }
+
+    fun getYears(): List<Int> {
+        val endYear = todayCalendar().get(Calendar.YEAR)
+        return (START_YEAR..endYear).toList()
+    }
+
+    fun getMonths(): List<Int> = (1..12).toList()
+
+    fun getDays(year: Int, month: Int): List<Int> {
+        val today = todayCalendar()
+        val todayYear = today.get(Calendar.YEAR)
+        val todayMonth = today.get(Calendar.MONTH) + 1
+        if (year == todayYear && month > todayMonth) {
+            return emptyList()
+        }
+        val maxDayInMonth = calendarAt(year, month, 1).getActualMaximum(Calendar.DAY_OF_MONTH)
+        var maxDay = maxDayInMonth
+        if (year == todayYear && month == todayMonth) {
+            maxDay = minOf(maxDay, today.get(Calendar.DAY_OF_MONTH))
+        }
+        val minDay = 1
+        if (minDay > maxDay) return emptyList()
+        return (minDay..maxDay).toList()
+    }
+
+    fun compose(day: Int, month: Int, year: Int): BirthdayDateItem? {
+        if (day !in getDays(year, month)) return null
+        val cal = calendarAt(year, month, day)
+        if (cal.before(startCalendar()) || cal.after(todayCalendar())) return null
+        return BirthdayDateItem(
+            year = year,
+            month = month,
+            day = day,
+            displayText = formatDisplay(day, month, year),
+            formValue = formValueFormat.format(cal.time)
+        )
+    }
+
+    fun parseInitialParts(initialFormValue: String?): Triple<Int, Int, Int> {
+        val cal = clampToValidRange(parseToCalendar(initialFormValue) ?: todayCalendar())
+        return Triple(
+            cal.get(Calendar.DAY_OF_MONTH),
+            cal.get(Calendar.MONTH) + 1,
+            cal.get(Calendar.YEAR)
+        )
+    }
+
+    private fun clampToValidRange(cal: Calendar): Calendar {
+        val start = startCalendar()
+        val end = todayCalendar()
+        val copy = cal.clone() as Calendar
+        return when {
+            copy.before(start) -> startCalendar()
+            copy.after(end) -> todayCalendar()
+            else -> copy
+        }
+    }
+
     fun toDisplayText(text: String?): String? {
         val calendar = parseToCalendar(text) ?: return null
         return formatDisplay(
