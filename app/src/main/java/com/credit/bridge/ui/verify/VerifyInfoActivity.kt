@@ -451,11 +451,13 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         syncVerifyStep1KeyboardScroll()
     }
 
-    private fun isVerifyKeyboardScrollStep() = currentStep == 1 || currentStep == 3
+    private fun isVerifyKeyboardScrollStep() = currentStep == 1 || currentStep == 3 || currentStep == 4
 
     private fun isVerifyStepLayoutVisible() = when (currentStep) {
         1 -> bindViews.verify1.root.visibility == View.VISIBLE
         3 -> bindViews.verify3.root.visibility == View.VISIBLE
+        4 -> bindViews.verify4.root.visibility == View.VISIBLE &&
+            bindViews.verify4.panInfoLl.visibility == View.VISIBLE
         else -> false
     }
 
@@ -464,6 +466,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         3 -> field == bindViews.verify3.accountNumberEt ||
             field == bindViews.verify3.confirmAccountNumberEt ||
             field == bindViews.verify3.ifscCodeEt
+        4 -> field == bindViews.verify4.panNumberTv || field == bindViews.verify4.fullNameTv
         else -> false
     }
 
@@ -511,6 +514,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.verify3.confirmAccountNumberEt.onFocusChangeListener = focusScroll
                 bindViews.verify3.ifscCodeEt.onFocusChangeListener = focusScroll
             }
+            4 -> {
+                bindViews.verify4.panNumberTv.onFocusChangeListener = focusScroll
+                bindViews.verify4.fullNameTv.onFocusChangeListener = focusScroll
+            }
         }
     }
 
@@ -520,6 +527,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         bindViews.verify3.accountNumberEt.onFocusChangeListener = null
         bindViews.verify3.confirmAccountNumberEt.onFocusChangeListener = null
         bindViews.verify3.ifscCodeEt.onFocusChangeListener = null
+        bindViews.verify4.panNumberTv.onFocusChangeListener = null
+        bindViews.verify4.fullNameTv.onFocusChangeListener = null
     }
 
     private fun disableVerifyStep1KeyboardHandling() {
@@ -547,12 +556,13 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private fun scrollVerifyStep1FieldIntoView(focused: View) {
         if (!isVerifyKeyboardScrollStep()) return
         val scrollView = bindViews.verifyScrollView
+        val scrollTarget = if (currentStep == 4) bindViews.verify4.panInfoLl else focused
         scrollView.post {
             if (!isVerifyKeyboardScrollStep() || !isVerifyStepLayoutVisible()) return@post
             val content = scrollView.getChildAt(0) ?: return@post
             val rect = Rect()
-            focused.getDrawingRect(rect)
-            scrollView.offsetDescendantRectToMyCoords(focused, rect)
+            scrollTarget.getDrawingRect(rect)
+            scrollView.offsetDescendantRectToMyCoords(scrollTarget, rect)
             rect.bottom += resources.getDimensionPixelSize(R.dimen.margin_20)
             scrollView.requestChildRectangleOnScreen(content, rect, true)
         }
@@ -1416,6 +1426,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                     bindViews.verify4.panNumberTv.setText(it.fwrcjkq)
                     bindViews.verify4.birthDateTv.text =
                         BirthdayDateHelper.toDisplayText(it.bzumerxb) ?: it.bzumerxb
+                    syncVerifyStep1KeyboardScroll()
                     hideLoading()
                 }else{
                     hideLoading()
@@ -1461,6 +1472,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             bindViews.verify4.fullNameTv.setText("")
             bindViews.verify4.panNumberTv.setText("")
             bindViews.verify4.birthDateTv.text = ""
+            syncVerifyStep1KeyboardScroll()
         }
     }
 
