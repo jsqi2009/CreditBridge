@@ -54,7 +54,7 @@
             android:layout_marginHorizontal="@dimen/margin_15"
             android:gravity="center_horizontal"
             android:lineHeight="@dimen/margin_25"
-            android:text="Rupee Cycle follows an “assess first, use when needed” approach. This model provides flexibility while helping users maintain better control over their personal financial planning and credit usage."
+            android:text="Credit Bridge helps users view and manage revolving credit line information in a clear and simple way.Users can check available credit line details, current usage, billing information, and account status through the app. We focus on clear information, responsible usage, and account security to support a better digital credit line experience."
             android:textColor="#ffffebd3"
             android:textSize="15sp"
             />

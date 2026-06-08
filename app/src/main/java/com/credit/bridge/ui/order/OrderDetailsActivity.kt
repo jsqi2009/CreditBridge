@@ -108,10 +108,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 startActivity(Intent(this@OrderDetailsActivity, EditCardActivity::class.java))
             }
             R.id.viewPaymentOptionsTv -> {
-                if (orderInfo?.umoatyothkt == true) {
+                /*if (orderInfo?.umoatyothkt == true) {
                     isExtend =  true
                     getOrderUpdateInfo()
-                }
+                }*/
+                isExtend =  true
+                getOrderUpdateInfo()
             }
             R.id.continuePaymentTv -> {
                 getPaymentLink()
