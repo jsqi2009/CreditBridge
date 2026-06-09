@@ -82,7 +82,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.viewPaymentOptionsTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
 
-        if (orderInfo?.gphysdjxvns == true || isExtend) {
+        //if (orderInfo?.gphysdjxvns == true || isExtend) {
+        if (orderInfo?.umoatyothkt == true || isExtend) {
             initExtendInfo()
         } else {
             initOrderDetailsInfo()
@@ -149,7 +150,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.continueTv.visibility = View.GONE
 
                 //initOrderDetailsInfo()
-                if (orderInfo?.gphysdjxvns == true || isExtend) {
+                //if (orderInfo?.gphysdjxvns == true || isExtend) {
+                if (orderInfo?.umoatyothkt == true || isExtend) {
                     initExtendInfo()
                 } else {
                     initOrderDetailsInfo()

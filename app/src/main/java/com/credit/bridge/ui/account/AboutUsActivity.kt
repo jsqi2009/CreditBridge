@@ -13,6 +13,7 @@ import com.credit.bridge.databinding.ActivityAboutUsBinding
 import com.credit.bridge.databinding.ActivityConfirmProductBinding
 import com.credit.bridge.databinding.ActivityPaymentAccountBinding
 import com.credit.bridge.ui.product.SubmitSuccessActivity
+import com.credit.bridge.util.DeviceInfoUtil
 
 class AboutUsActivity : BaseActivity<ActivityAboutUsBinding>(), View.OnClickListener {
     override fun getBinding() = ActivityAboutUsBinding.inflate(layoutInflater)
@@ -30,6 +31,7 @@ class AboutUsActivity : BaseActivity<ActivityAboutUsBinding>(), View.OnClickList
 
         bindViews.titleLayout.titleTv.setOnClickListener(this)
         bindViews.titleLayout.backLl.setOnClickListener(this)
+        bindViews.versionTv.text = "Version: " + DeviceInfoUtil.getAppVersionName()
     }
 
 

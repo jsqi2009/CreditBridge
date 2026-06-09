@@ -4,6 +4,7 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Context.WIFI_SERVICE
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
 import android.net.Network
@@ -434,6 +435,16 @@ object DeviceInfoUtil {
             return gateway
         }
         return ""
+    }
+
+    fun getAppVersionName(): String {
+        val context = App.instance
+        return try {
+            val packageInfo = context.packageManager.getPackageInfo(context.packageName, 0)
+            packageInfo.versionName ?: ""
+        } catch (e: Exception) {
+            ""
+        }
     }
 
 

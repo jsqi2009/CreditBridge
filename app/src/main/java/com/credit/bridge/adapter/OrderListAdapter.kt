@@ -66,7 +66,7 @@ class OrderListAdapter(
             ConstConfig.ORDER_STATUS_OVERDUE -> {
                 holder.bindView.statusTv.text = itemInfo.xjywdrtdxzt
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
-                        " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
+                        " " + DataFormatUtils.float2Str(itemInfo.kmlwyjhlacigctavsolh)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_amount_due)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_due_date)+ " "
                 holder.bindView.statusTv.text = mContext.getString(R.string.order_status_overdue)
