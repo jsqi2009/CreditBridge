@@ -52,7 +52,14 @@ object ConstConfig {
     const val EVENT_UPLOAD_ID_DOCUMENT_SUCCESS = "idDocumentUploaded"	//
     const val EVENT_UPLOAD_ID_DOCUMENT_FAIL = "idDocumentUploadUnavailable"	//
 
-    const val EVENT_START_LIVENESS = "liveness_start"	//
+    const val EVENT_START_LIVENESS = "startFaceCheck"	//
+    const val EVENT_UPLOAD_FACE_CHECK = "uploadFaceCheck"	//
+    const val EVENT_UPLOAD_FACE_SUCCESS = "faceCheckUploaded"	//
+    const val EVENT_UPLOAD_FACE_FAIL = "faceCheckUploadUnavailable"	//
+    const val EVENT_SUBMIT_FACE = "submitFaceCheck"	//
+    const val EVENT_SELECT_CREDIT_AMOUNT = "selectCreditAmount"	//
+
+
     const val EVENT_INPUT_LIVENESS = "liveness_input"	//
     const val EVENT_FAIL_LIVENESS = "liveness_fail"	//
     const val EVENT_IDCARD_FAIL = "idcard_fail"	//

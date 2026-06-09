@@ -959,12 +959,17 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     fun onOssInfoFaceResponseEvent(event: OssInfoFaceResponseEvent) {
         if(event.isSuccess){
             event.model?.mtaw?.let{
+                HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_FACE_CHECK,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_FACE_CHECK)
+
                 ImageUploader.uploadImage(real_path,it,object:Callback{
                     override fun onFailure(call: Call, e: IOException) {
                         hideLoading()
                         runOnUiThread {
                             ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
                         }
+                        HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_FACE_FAIL,
+                            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_FACE_FAIL)
                     }
 
                     override fun onResponse(call: Call, response: Response) {
@@ -974,6 +979,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                                 val ossImageUrl = "${it.fev}$fileName"
                                 showLoading()
                                 HttpClient.verifyOcrFace(this@VerifyInfoActivity,ossImageUrl.formatSubString())
+
+                                HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_FACE_SUCCESS,
+                                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_FACE_SUCCESS)
 
                             } else {
                                 hideLoading()
@@ -1000,6 +1008,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             startVerifyFace()
             return
         }
+
+        HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_SUBMIT_FACE,
+            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_SUBMIT_FACE)
 
         showLoading()
         HttpClient.completeVerify(this)
@@ -1569,6 +1580,10 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun showVerifySuccessDialog() {
         DialogUtil.showVerifySuccessDialog(this, onConfirm = {
+
+            HttpClient.eventReport(this,ConstConfig.EVENT_SELECT_CREDIT_AMOUNT,
+                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_SELECT_CREDIT_AMOUNT)
+
             setResult(RESULT_OK, Intent())
             finish()
         }, onCancel = {
