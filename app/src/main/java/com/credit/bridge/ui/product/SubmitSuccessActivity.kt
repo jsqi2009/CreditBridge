@@ -138,7 +138,11 @@ class SubmitSuccessActivity : BaseActivity<ActivitySubmitSuccessBinding>(), View
     private fun submitFeedback() {
 
         var feedback = bindViews.feedbackEt.text.toString()
-        if (feedback.isEmpty() && currentStarRating == 0) {
+        if (currentStarRating == 0) {
+            ToastUtil.showLong(this, "Please rate first")
+            return
+        }
+        if (feedback.isEmpty()) {
             ToastUtil.showLong(this, "Please enter your feedback or comment")
             return
         }

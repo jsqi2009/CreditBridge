@@ -134,9 +134,9 @@ class OrderListAdapter(
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
                 holder.bindView.descTv.text = mContext.getString(R.string.order_desc_usage_amount)
                 holder.bindView.dateDescTv.text = mContext.getString(R.string.order_date_desc_created_on)+ " "
-                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_closed)
-                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_closed)
-                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_closed))
+                holder.bindView.statusTv.text = mContext.getString(R.string.order_status_not_completed)
+                holder.bindView.statusTv.setBackgroundResource(R.drawable.shape_order_status_not_completed)
+                holder.bindView.statusTv.setTextColor(mContext.getColor(R.color.order_not_completed))
                 holder.bindView.dateTv.text = itemInfo.dhqprsdsv
                 holder.bindView.paymentOptionsTv.visibility = View.GONE
                 holder.bindView.rightArrowIv.visibility = View.GONE
@@ -170,6 +170,14 @@ class OrderListAdapter(
                 holder.bindView.rightArrowIv.visibility = View.GONE
                 holder.bindView.continuePaymentTv.visibility = View.GONE
             }
+        }
+
+        if (itemInfo.umoatyothkt) {
+            holder.bindView.paymentOptionsTv.visibility = View.VISIBLE
+            holder.bindView.rightArrowIv.visibility = View.VISIBLE
+        }else{
+            holder.bindView.paymentOptionsTv.visibility = View.GONE
+            holder.bindView.rightArrowIv.visibility = View.GONE
         }
 
         holder.bindView.root.setOnClickListener {

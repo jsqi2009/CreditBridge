@@ -82,8 +82,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.viewPaymentOptionsTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
 
-        //if (orderInfo?.gphysdjxvns == true || isExtend) {
-        if (orderInfo?.umoatyothkt == true || isExtend) {
+        if (orderInfo?.gphysdjxvns == true || isExtend) {
             initExtendInfo()
         } else {
             initOrderDetailsInfo()
@@ -150,8 +149,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.continueTv.visibility = View.GONE
 
                 //initOrderDetailsInfo()
-                //if (orderInfo?.gphysdjxvns == true || isExtend) {
-                if (orderInfo?.umoatyothkt == true || isExtend) {
+                if (orderInfo?.gphysdjxvns == true || isExtend) {
                     initExtendInfo()
                 } else {
                     initOrderDetailsInfo()
@@ -381,7 +379,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.cancelLayout.amountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
             }
+        }
 
+        if (orderInfo?.umoatyothkt == true) {
+            bindViews.viewPaymentOptionsTv.visibility = View.VISIBLE
+        }else{
+            bindViews.viewPaymentOptionsTv.visibility = View.GONE
         }
     }
 

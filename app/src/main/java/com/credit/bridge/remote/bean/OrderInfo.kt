@@ -25,7 +25,7 @@ class OrderInfo: Serializable {
     val tkjgeq: String? = null   //period
     val wnvelqecci: String? = null   //periodUnit
     val qpruccpdjot: String? = null   //overdueDays
-    val umoatyothkt: Boolean = false   //isExtension     true or false
+    val umoatyothkt: Boolean = false   //isExtension     true or false   is can extend
     val gphysdjxvns: Boolean = false   //hasExtended     true or false
     val dtwfaeaf: String? = null   //userName
     val pdpljp: String? = null   //abFace
