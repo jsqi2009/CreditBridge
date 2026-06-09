@@ -9,6 +9,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import com.credit.bridge.R
+import com.credit.bridge.adapter.OrderListAdapter
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
@@ -16,6 +17,7 @@ import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
 import com.credit.bridge.remote.event.OrderDetailsResponseEvent
+import com.credit.bridge.remote.event.OrderListResponseEvent
 import com.credit.bridge.remote.event.OrderUpdateResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.UpdateCardEvent
@@ -37,6 +39,9 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     private var frozenCountdown: CommonCountdown? = null
     val totalMillis = 2 * 24 * 60 * 60 * 1000L
     var orderStatus: String? = null
+
+    private var orderList: ArrayList<OrderInfo> =  ArrayList()
+    private var mAdapter: OrderListAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,10 +87,14 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.viewPaymentOptionsTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
 
-        if (orderInfo?.gphysdjxvns == true || isExtend) {
-            initExtendInfo()
-        } else {
-            initOrderDetailsInfo()
+        if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
+            fetchFailOrderList()
+        }else{
+            if (orderInfo?.gphysdjxvns == true || isExtend) {
+                initExtendInfo()
+            } else {
+                initOrderDetailsInfo()
+            }
         }
     }
 
@@ -114,6 +123,31 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             R.id.continueTv -> {
                 getPaymentLink2()
             }
+        }
+    }
+
+    private fun fetchFailOrderList() {
+        showLoading()
+        HttpClient.fetchOrderList(this, "FAILED", "fail_order")
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    @Subscribe
+    fun onFetchOrderListEvent(event: OrderListResponseEvent) {
+        hideLoading()
+        if (event.model?.flag != "fail_order") return
+        if (event.isSuccess) {
+            orderList = event.model?.mtaw ?: ArrayList()
+            mAdapter?.setData(orderList)
+            mAdapter?.notifyDataSetChanged()
+
+            if (mAdapter?.getData()?.isEmpty() == true) {
+                //bindViews.defaultView.visibility = View.VISIBLE
+            } else {
+                //bindViews.defaultView.visibility = View.GONE
+            }
+        } else {
+            ToastUtil.showLong(this,event.errorMessage)
         }
     }
 
