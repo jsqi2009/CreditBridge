@@ -35,14 +35,23 @@ object ConstConfig {
     const val EVENT_REQUEST_VERIFICATION_START = "requestVerificationStart"	//
     const val EVENT_REGISTER_COMPLETE = "register_complete"	//
     const val EVENT_HOME_SCREEN = "home_screen"	//
-    const val EVENT_IDCARD_INPUT = "idcard_input"	//
-    const val EVENT_IDCARD_SUNMIT = "idcard_submit"	//
+    const val EVENT_IDCARD_INPUT = "openVerificationGuide"	//
+    const val EVENT_IDCARD_SUNMIT = "submitIdDocument"	//
     const val EVENT_INTO_INFO = "openBasicForm"	//
     const val EVENT_INFO_SUBMIT = "saveBasicForm"	//
     const val EVENT_CONTACT_INPUT = "openContactForm"	//
     const val EVENT_CONTACT_SUBMIT = "saveContactForm"	//
     const val EVENT_BANKCARD_INPUT = "openBankForm"	//
     const val EVENT_BANKCARD_SUBMIT = "saveBankForm"	//
+
+
+    const val EVENT_TAP_VERIFY_IDENTITY = "tapVerifyIdentity"	//
+    const val EVENT_START_DOCUMENT_REVIEW = "startDocumentReview"	//
+    const val EVENT_DOCUMENT_REVIEW_FAIL = "documentReviewUnavailable"	//
+    const val EVENT_UPLOAD_ID_DOCUMENT = "uploadIdDocument"	//
+    const val EVENT_UPLOAD_ID_DOCUMENT_SUCCESS = "idDocumentUploaded"	//
+    const val EVENT_UPLOAD_ID_DOCUMENT_FAIL = "idDocumentUploadUnavailable"	//
+
     const val EVENT_START_LIVENESS = "liveness_start"	//
     const val EVENT_INPUT_LIVENESS = "liveness_input"	//
     const val EVENT_FAIL_LIVENESS = "liveness_fail"	//

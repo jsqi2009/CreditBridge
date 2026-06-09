@@ -184,6 +184,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }
             R.id.startVerifyLl -> {
+
+                HttpClient.eventReport(requireContext(),ConstConfig.EVENT_REQUEST_VERIFICATION_START,
+                    ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_REQUEST_VERIFICATION_START)
+
                 isCreateOrder = false
                 checkUploadStatus()
             }

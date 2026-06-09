@@ -325,6 +325,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 chooseContact2()
             }
             R.id.panNumberIv -> {
+                HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_TAP_VERIFY_IDENTITY,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_TAP_VERIFY_IDENTITY)
                 //startOcrPanNumber()
                 showStartOcrPanNumberSheet()
             }
@@ -1354,6 +1356,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun identifyOcrPanCardInfo(imagePath: Uri? = null) {
+        HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_START_DOCUMENT_REVIEW,
+            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_START_DOCUMENT_REVIEW)
+
         showLoading()
         val builder = if (imagePath == null) {
             Luban.with(this).load(cardImgPath)
@@ -1380,12 +1385,19 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         //hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let{
+
+                HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_ID_DOCUMENT,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_ID_DOCUMENT)
+
                 ImageUploader.uploadImage(real_path,it,object:Callback{
                     override fun onFailure(call: Call, e: IOException) {
                         hideLoading()
                         runOnUiThread {
                             ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
                         }
+
+                        HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_ID_DOCUMENT_FAIL,
+                            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_ID_DOCUMENT_FAIL)
                     }
 
                     override fun onResponse(call: Call, response: Response) {
@@ -1394,6 +1406,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                             val ossImageUrl = "${it.fev}$fileName"
                             HttpClient.verifyOcrPan(this@VerifyInfoActivity,ossImageUrl.formatSubString())
                             HttpClient.getUserCredit(this@VerifyInfoActivity)
+
+                            HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_ID_DOCUMENT_SUCCESS,
+                                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_ID_DOCUMENT_SUCCESS)
                         }
                     }
                 })
@@ -1401,6 +1416,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }else {
             hideLoading()
             ToastUtil.showLong(this,event.networkError.toString())
+
+            HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_DOCUMENT_REVIEW_FAIL,
+                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_DOCUMENT_REVIEW_FAIL)
         }
 
     }
