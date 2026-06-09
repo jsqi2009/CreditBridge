@@ -196,6 +196,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         }
         CacheManager.smsCode = code
 
+        HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_START_SIGNUP,
+            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_START_SIGNUP)
+
         showLoading()
         HttpClient.login(this, phone)
     }

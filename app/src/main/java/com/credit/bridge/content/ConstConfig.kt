@@ -30,16 +30,19 @@ object ConstConfig {
     const val EVENT_SMS_OPT_UNAVAILABLE = "smsOtpUnavailable"	//
     const val EVENT_REQUEST_VOICE_CODE = "requestVoiceCode"	//
     const val EVENT_VOICE_OPT_UNAVAILABLE = "voiceOtpUnavailable"	//
+    const val EVENT_START_SIGNUP = "startSignup"	//
+
+    const val EVENT_REQUEST_VERIFICATION_START = "requestVerificationStart"	//
     const val EVENT_REGISTER_COMPLETE = "register_complete"	//
     const val EVENT_HOME_SCREEN = "home_screen"	//
     const val EVENT_IDCARD_INPUT = "idcard_input"	//
     const val EVENT_IDCARD_SUNMIT = "idcard_submit"	//
-    const val EVENT_INTO_INFO = "personal_info_input"	//
-    const val EVENT_INFO_SUBMIT = "personal_info_submit"	//
-    const val EVENT_CONTACT_INPUT = "contact_input"	//
-    const val EVENT_CONTACT_SUBMIT = "contact_submit"	//
-    const val EVENT_BANKCARD_INPUT = "bankcard_input"	//
-    const val EVENT_BANKCARD_SUBMIT = "bankcard_submit"	//
+    const val EVENT_INTO_INFO = "openBasicForm"	//
+    const val EVENT_INFO_SUBMIT = "saveBasicForm"	//
+    const val EVENT_CONTACT_INPUT = "openContactForm"	//
+    const val EVENT_CONTACT_SUBMIT = "saveContactForm"	//
+    const val EVENT_BANKCARD_INPUT = "openBankForm"	//
+    const val EVENT_BANKCARD_SUBMIT = "saveBankForm"	//
     const val EVENT_START_LIVENESS = "liveness_start"	//
     const val EVENT_INPUT_LIVENESS = "liveness_input"	//
     const val EVENT_FAIL_LIVENESS = "liveness_fail"	//
