@@ -111,7 +111,7 @@ class ToastUtil private constructor() {
             }
         }
 
-        fun customToastView(context: Context, message: CharSequence?, duration: Int) {
+        fun customToastView(context: Context, message: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
             if (isShow) {
                 if (mToast == null) {
                     mToast = Toast.makeText(context.applicationContext, message, duration)

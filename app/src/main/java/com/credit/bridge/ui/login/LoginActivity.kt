@@ -14,6 +14,7 @@ import android.text.style.ClickableSpan
 import android.text.style.LeadingMarginSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
 import com.credit.bridge.R
@@ -234,9 +235,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             verifyCodeCountdown()
         }else{
             if(event.model != null && event.model?.fzpn == 500){
-                ToastUtil.showLong(this,event.model?.dvusonb)
+                ToastUtil.customToastView(this, event.model?.dvusonb)
+                //ToastUtil.showLong(this,event.model?.dvusonb)
             }else {
-                ToastUtil.showLong(this, event.networkError.toString())
+                ToastUtil.customToastView(this, event.networkError.toString())
+                //ToastUtil.showLong(this, event.networkError.toString())
             }
             HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_SMS_OPT_UNAVAILABLE,
                 ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_SMS_OPT_UNAVAILABLE)
@@ -250,9 +253,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
             verifyVoiceCountdown()
         }else{
             if(event.model != null && event.model?.fzpn == 500){
-                ToastUtil.showLong(this,event.model?.dvusonb)
+                ToastUtil.customToastView(this, event.model?.dvusonb)
+                //ToastUtil.showLong(this,event.model?.dvusonb)
             }else {
-                ToastUtil.showLong(this, event.networkError.toString())
+                //ToastUtil.showLong(this, event.networkError.toString())
+                ToastUtil.customToastView(this, event.networkError.toString())
             }
 
             HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_VOICE_OPT_UNAVAILABLE,
