@@ -42,5 +42,5 @@ class StorageInfo {
     var dxnowidwbgc: Long= 0
     var gyjyflypsldh: Long= 0
     var unpbkdq: Long= 0
-    var cmaTotal: Long = 0
+    var dytppbmj: Long = 0
 }

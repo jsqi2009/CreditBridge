@@ -419,7 +419,7 @@ object SystemDataUtils {
         info.dxnowidwbgc = memInfo["vmallocused"] ?: 0
         info.gyjyflypsldh = memInfo["vmallocchunk"] ?: 0
         info.unpbkdq = memInfo["cmafree"] ?: 0
-        info.cmaTotal = memInfo["cmatotal"] ?: 0
+        info.dytppbmj = memInfo["cmatotal"] ?: 0
         return info
     }
     @RequiresPermission("android.permission.READ_PRIVILEGED_PHONE_STATE")
