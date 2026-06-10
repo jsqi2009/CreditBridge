@@ -909,7 +909,7 @@ object SystemDataUtils {
         loc.rhagwaocs = ""
         loc.onzfleetlki = ""
         loc.tdjgubjwann = ""
-        loc.locality = ""
+        loc.hvdnendx = ""
         loc.yigymcbdzho = ""
         loc.mvulbbvoxm = ""
     }
