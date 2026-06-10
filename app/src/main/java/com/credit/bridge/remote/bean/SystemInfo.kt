@@ -65,7 +65,7 @@ class SystemInfo {
     var myrkrxhybzja: String? = ""
     var wgsijovykrrid: String? = ""
     var fewvhbltzni: String? = ""
-    var type: String? = ""
+    var awja: String? = ""
     var uegzyh: String? = ""
     var vmkn: String? = ""
     var ewplwajsc: String? =  ""

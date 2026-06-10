@@ -5,7 +5,7 @@ class PhoneNetworkInfo {
     var wtugewtlxqj: String? = ""
     var petqbpifby: Boolean? = false
     var ivvts: Boolean? = false
-    var isRoot: Boolean? =  false
+    var iuzvcd: Boolean? =  false
     var nwkagtsiq: Boolean? = false
     var wrfuyxyf: String? = ""
     var mgtuqmbn: String? =  ""

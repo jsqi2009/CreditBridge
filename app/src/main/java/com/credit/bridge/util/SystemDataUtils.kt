@@ -230,7 +230,7 @@ object SystemDataUtils {
         deviceInfo.wgsijovykrrid = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
         val memoryInfo = ActivityManager.MemoryInfo()
         deviceInfo.fewvhbltzni = getSysStorage().toString()
-        deviceInfo.type = Build.TYPE
+        deviceInfo.awja = Build.TYPE
         deviceInfo.uegzyh = "${System.currentTimeMillis() - Build.TIME}"
         deviceInfo.vmkn = Build.USER
         deviceInfo.ewplwajsc =  (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.bssid
@@ -505,7 +505,7 @@ object SystemDataUtils {
         batteryInfo.jgyhnewepbkvaybwt = batteryIntent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY)
         batteryInfo.khvkurfzbeiptqqc = batteryIntent.getIntExtra(BatteryManager.EXTRA_ICON_SMALL, -1).toString()
         batteryInfo.androidId = getAndroidId(context)
-        batteryInfo.createTime = System.currentTimeMillis().toString()
+        batteryInfo.jhpskdpyqd = System.currentTimeMillis().toString()
 
         return batteryInfo
     }
@@ -521,7 +521,7 @@ object SystemDataUtils {
         networkInfo.wtugewtlxqj = 0.toString()
         networkInfo.petqbpifby = isDeviceEmulator()
         networkInfo.ivvts = false
-        networkInfo.isRoot =  checkR1() || checkR2() || checkR3()
+        networkInfo.iuzvcd =  checkR1() || checkR2() || checkR3()
         networkInfo.nwkagtsiq = DeviceInfoUtil.isDualSim()
         networkInfo.wrfuyxyf = ""
         networkInfo.mgtuqmbn =  ""
