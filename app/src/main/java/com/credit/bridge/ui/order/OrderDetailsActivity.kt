@@ -117,7 +117,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                     isExtend =  true
                     getOrderUpdateInfo()
                 }*/
-                isExtend =  true
+                //isExtend =  true
                 getOrderUpdateInfo()
             }
             R.id.continuePaymentTv -> {
