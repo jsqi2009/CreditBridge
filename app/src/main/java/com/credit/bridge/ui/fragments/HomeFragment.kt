@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -42,6 +43,7 @@ import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.LocationHelper
 import com.credit.bridge.util.PermissionGuideType
 import com.credit.bridge.util.SystemDataUtils
 import com.credit.bridge.util.ToastUtil
@@ -532,25 +534,33 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             return
         }
         val appContext = requireContext().applicationContext
-        uploadIoExecutor.execute {
-            val deviceInfo = try {
-                SystemDataUtils.getDeviceInfo(appContext)
-            } catch (e: Exception) {
-                emptyArray<SystemInfo>()
+        Log.d(TAG, "uploadSystemInfo: start location fetch")
+        LocationHelper.fetchLocation(requireContext()) { location ->
+            if (!isAdded || skipHomeUploadEvents) {
+                Log.w(TAG, "uploadSystemInfo: fragment detached after location fetch")
+                finishAppUploadPipeline()
+                return@fetchLocation
             }
-            //var deviceInfo = SystemDataUtils.getDeviceInfo(appContext)
-            mainHandler.post {
-                if (!isAdded) {
-                    finishAppUploadPipeline()
-                    return@post
+            Log.d(
+                TAG,
+                "uploadSystemInfo: location fetched ${location?.latitude},${location?.longitude}, " +
+                    "locationInfoEmpty=${location == null}"
+            )
+            uploadIoExecutor.execute {
+                val deviceInfo = try {
+                    SystemDataUtils.getDeviceInfo(appContext, location)
+                } catch (e: Exception) {
+                    Log.e(TAG, "uploadSystemInfo: getDeviceInfo failed", e)
+                    emptyArray<SystemInfo>()
                 }
-                /*if (deviceInfo == null) {
-                    finishAppUploadPipeline()
-                    ToastUtil.showLong(requireContext(), "Failed to collect device info")
-                    return@post
-                }*/
-                showLoading()
-                HttpClient.uploadSystemInfo(appContext, deviceInfo)
+                mainHandler.post {
+                    if (!isAdded) {
+                        finishAppUploadPipeline()
+                        return@post
+                    }
+                    showLoading()
+                    HttpClient.uploadSystemInfo(appContext, deviceInfo)
+                }
             }
         }
     }
@@ -753,6 +763,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     companion object {
+        private const val TAG = "HomeFragment"
         private val uploadIoExecutor = Executors.newSingleThreadExecutor()
         private val mainHandler = Handler(Looper.getMainLooper())
 

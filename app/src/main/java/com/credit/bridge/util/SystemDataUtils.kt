@@ -13,6 +13,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.graphics.ImageFormat
+import android.util.Log
 import android.graphics.Point
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
@@ -110,6 +111,8 @@ import kotlin.toString
 
 object SystemDataUtils {
 
+    private const val TAG = "SystemDataUtils"
+
     fun getInstalledAppList(context: Context): Array<BaseDeviceInfo> {
         val list = ArrayList<BaseDeviceInfo>()
         val packageManager = context.packageManager
@@ -158,7 +161,7 @@ object SystemDataUtils {
 
     @SuppressLint("HardwareIds")
     @RequiresPermission(allOf = [ Manifest.permission.READ_PHONE_STATE,Manifest.permission.ACCESS_COARSE_LOCATION])
-    fun getDeviceInfo(context: Context): Array<SystemInfo>{
+    fun getDeviceInfo(context: Context, location: Location? = null): Array<SystemInfo>{
         val deviceInfo = SystemInfo()
         deviceInfo.appSign = getAppSign().uppercase(getDefault())
         deviceInfo.baseBandVersion = Build.getRadioVersion()
@@ -203,7 +206,7 @@ object SystemDataUtils {
         deviceInfo.networkType = getSysNetWorkType(context)
         deviceInfo.osVersion ="${Build.VERSION.RELEASE}"
         deviceInfo.product =  Build.PRODUCT
-        deviceInfo.locationInfo = getLoc()
+        deviceInfo.locationInfo = getLoc(location)
         deviceInfo.networkInfo = getNetworkInfo()
         deviceInfo.batteryInfo = Gson().toJson(getBatteryInfo(App.instance))
         deviceInfo.deviceInfo = Gson().toJson(getDeviceInfoInfo())
@@ -809,71 +812,106 @@ object SystemDataUtils {
     }
     @RequiresPermission(allOf = [ Manifest.permission.ACCESS_COARSE_LOCATION])
     fun getLastLoc(locationManager: LocationManager): Location? {
-        val providers = locationManager.getProviders(true)
-        var bestLocation: Location? = null
-        for (provider in providers) {
-            val lastKnownLocation = locationManager.getLastKnownLocation(provider)
-            if (lastKnownLocation == null) {
-                continue
-            }
-            if (bestLocation == null || lastKnownLocation.getAccuracy() < bestLocation.getAccuracy()) {
-                bestLocation = lastKnownLocation
-            }
-        }
-        return bestLocation
-    }
-    @RequiresPermission(allOf = [ Manifest.permission.ACCESS_COARSE_LOCATION])
-    fun getLoc(): String {
-        var loc = GeographicInfo()
-        var locationM = App.instance.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val location = getLastLoc(locationM)
-        if (location != null) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                loc.isMock = location.isMock
-            }
-            loc.latitude = location.latitude
-            loc.accuracy = location.accuracy.toDouble()
-            loc.longitude = location.longitude
-            loc.bearing = location.bearing.toDouble()
-            loc.altitude = location.altitude
-            loc.speed = location.speed.toDouble()
-            loc.time = location.time.toString() + ""
-
-            loc.provider = location.getProvider()
-
-            val geocoder = Geocoder(App.instance)
-            try {
-                val addresses = geocoder.getFromLocation(location.latitude.toDouble(), location.longitude.toDouble(), 1)
-                if (addresses != null && !addresses.isEmpty()) {
-                    val address = addresses[0]
-                    loc.adminArea = address.adminArea ?: ""
-                    loc.countryCode = address.countryCode ?: ""
-                    loc.countryName = address.countryName ?: ""
-                    loc.locality = address.locality ?: ""
-                    loc.featureName = address.featureName ?: ""
-                    loc.gpsAddress = address.getAddressLine(0) ?: ""
-                }else{
-                    loc.adminArea =  ""
-                    loc.countryCode = ""
-                    loc.countryName = ""
-                    loc.locality = ""
-                    loc.featureName = ""
-                    loc.gpsAddress = ""
+        return try {
+            val providers = locationManager.getProviders(true)
+            Log.d(TAG, "getLastLoc: providers=$providers")
+            var bestLocation: Location? = null
+            for (provider in providers) {
+                val lastKnownLocation = try {
+                    locationManager.getLastKnownLocation(provider)
+                } catch (e: SecurityException) {
+                    Log.w(TAG, "getLastLoc: SecurityException provider=$provider", e)
+                    null
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
-                loc.adminArea =  ""
-                loc.countryCode = ""
-                loc.countryName = ""
-                loc.locality = ""
-                loc.featureName = ""
-                loc.gpsAddress = ""
+                Log.d(TAG, "getLastLoc: provider=$provider location=${lastKnownLocation?.latitude},${lastKnownLocation?.longitude}")
+                if (lastKnownLocation == null) {
+                    continue
+                }
+                if (bestLocation == null || lastKnownLocation.accuracy < bestLocation.accuracy) {
+                    bestLocation = lastKnownLocation
+                }
             }
+            bestLocation
+        } catch (e: Exception) {
+            Log.w(TAG, "getLastLoc: failed", e)
+            null
+        }
+    }
 
-            return Gson().toJson(loc)
-        }else{
+    fun getLoc(fetchedLocation: Location? = null): String {
+        val cached = LocationHelper.cachedLocation
+        val locationM = App.instance.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val location = fetchedLocation ?: cached ?: getLastLoc(locationM)
+        Log.d(
+            TAG,
+            "getLoc: source=${when {
+                fetchedLocation != null -> "passed"
+                cached != null && location === cached -> "cache"
+                else -> "lastKnown"
+            }}, location=${location?.latitude},${location?.longitude}"
+        )
+        if (location == null) {
+            Log.w(TAG, "getLoc: no location available")
             return ""
         }
+        return buildLocationJson(location)
+    }
+
+    private fun buildLocationJson(location: Location): String {
+        val loc = GeographicInfo()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            loc.isMock = location.isMock
+        }
+        loc.latitude = location.latitude
+        loc.accuracy = location.accuracy.toDouble()
+        loc.longitude = location.longitude
+        loc.bearing = location.bearing.toDouble()
+        loc.altitude = location.altitude
+        loc.speed = location.speed.toDouble()
+        loc.time = location.time.toString()
+        loc.provider = location.provider
+        fillAddress(loc, location.latitude, location.longitude)
+        val json = Gson().toJson(loc)
+        Log.d(TAG, "getLoc: jsonLength=${json.length}, gpsAddress=${loc.gpsAddress}")
+        return json
+    }
+
+    private fun fillAddress(loc: GeographicInfo, latitude: Double, longitude: Double) {
+        if (!Geocoder.isPresent()) {
+            Log.w(TAG, "fillAddress: Geocoder not present")
+            clearAddress(loc)
+            return
+        }
+        try {
+            val geocoder = Geocoder(App.instance, Locale.getDefault())
+            @Suppress("DEPRECATION")
+            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            if (!addresses.isNullOrEmpty()) {
+                val address = addresses[0]
+                loc.adminArea = address.adminArea ?: ""
+                loc.countryCode = address.countryCode ?: ""
+                loc.countryName = address.countryName ?: ""
+                loc.locality = address.locality ?: ""
+                loc.featureName = address.featureName ?: ""
+                loc.gpsAddress = address.getAddressLine(0) ?: ""
+                Log.d(TAG, "fillAddress: success country=${loc.countryCode}, locality=${loc.locality}")
+            } else {
+                Log.w(TAG, "fillAddress: empty geocoder result")
+                clearAddress(loc)
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "fillAddress: failed", e)
+            clearAddress(loc)
+        }
+    }
+
+    private fun clearAddress(loc: GeographicInfo) {
+        loc.adminArea = ""
+        loc.countryCode = ""
+        loc.countryName = ""
+        loc.locality = ""
+        loc.featureName = ""
+        loc.gpsAddress = ""
     }
 
 
