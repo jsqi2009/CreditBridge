@@ -215,7 +215,11 @@ object SystemDataUtils {
         deviceInfo.simCountryIso =  (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso
         deviceInfo.simOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator
         deviceInfo.simOperatorName = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
-        deviceInfo.simMobile = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?: ""
+        try {
+            deviceInfo.simMobile = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?: ""
+        } catch (e: Exception) {
+            deviceInfo.simMobile = ""
+        }
         deviceInfo.tags = Build.TAGS
         deviceInfo.time = "${Build.TIME}"
         deviceInfo.timezone = TimeZone.getDefault().displayName

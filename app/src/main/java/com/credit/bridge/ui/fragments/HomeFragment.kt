@@ -538,6 +538,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             } catch (e: Exception) {
                 emptyArray<SystemInfo>()
             }
+            //var deviceInfo = SystemDataUtils.getDeviceInfo(appContext)
             mainHandler.post {
                 if (!isAdded) {
                     finishAppUploadPipeline()
