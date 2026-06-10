@@ -97,6 +97,7 @@ class PaymentAccountActivity : BaseActivity<ActivityPaymentAccountBinding>(), Vi
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onOrderLinkBankResponseEvent(event: OrderLinkBankResponseEvent) {
+        hideLoading()
         if (event.isSuccess) {
             orderList = event.model?.mtaw ?: ArrayList()
             mAdapter?.setData(orderList!!)

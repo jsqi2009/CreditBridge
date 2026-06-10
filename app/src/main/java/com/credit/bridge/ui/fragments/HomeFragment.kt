@@ -101,11 +101,12 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.onResume()
         syncFromSession()
         skipHomeUploadEvents = false
-        if (isVisible) {
-            showLoading()
-            checkCollectDataStatus()
-            tryResumeUploadAfterPermissionFromSettings()
-        }
+        /*if (isVisible) {
+
+        }*/
+        showLoading()
+        checkCollectDataStatus()
+        tryResumeUploadAfterPermissionFromSettings()
     }
     override fun initRes() {
         super.initRes()
@@ -220,9 +221,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             return
         }
         val amount = homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn
-        if (amount != null && amount > 0) {
-            bindViews.totalAmountTv.text =
-                context?.getString(R.string.money_symbol) + " " + String.format("%,d", amount)
+        if (amount != null && amount >= 0) {
+            if (isAuthed) {
+                bindViews.totalAmountTv.text =
+                    context?.getString(R.string.money_symbol) + " " + String.format("%,d", amount)
+            }
         }
         if (homeInfo!!.hahsraev != null && homeInfo!!.hahsraev?.gdcuhe != null) {
             val orderStatus = homeInfo?.hahsraev?.gdcuhe

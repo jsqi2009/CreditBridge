@@ -130,6 +130,14 @@
         android:gravity="center_vertical"
         android:orientation="vertical">
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="@dimen/margin_10"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:src="@mipmap/ic_due_mark" />
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -146,7 +154,7 @@
                 android:paddingHorizontal="@dimen/margin_15">
 
                 <TextView
-                    android:layout_width="@dimen/margin_170"
+                    android:layout_width="@dimen/margin_140"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:text="Status"
@@ -176,7 +184,7 @@
                 android:paddingHorizontal="@dimen/margin_15">
 
                 <TextView
-                    android:layout_width="@dimen/margin_170"
+                    android:layout_width="@dimen/margin_140"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:text="Created on"
@@ -204,7 +212,7 @@
                 android:paddingHorizontal="@dimen/margin_15">
 
                 <TextView
-                    android:layout_width="@dimen/margin_170"
+                    android:layout_width="@dimen/margin_140"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:text="Usage ID"
@@ -232,7 +240,7 @@
                 android:paddingHorizontal="@dimen/margin_15">
 
                 <TextView
-                    android:layout_width="@dimen/margin_170"
+                    android:layout_width="@dimen/margin_140"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="@dimen/margin_10"
                     android:text="Usage amount"
@@ -253,13 +261,7 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/margin_10"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:src="@mipmap/ic_due_mark" />
+
 
     </RelativeLayout>
 
