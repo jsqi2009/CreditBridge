@@ -49,7 +49,7 @@ class OrderListAdapter(
         val orderStatus = itemInfo.xjywdrtdxzt
 
         when(orderStatus){
-            ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
+            ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING, ConstConfig.ORDER_STATUS_READY_TO_ISSUE -> {
                 holder.bindView.statusTv.text = itemInfo.xjywdrtdxzt
                 holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                         " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)

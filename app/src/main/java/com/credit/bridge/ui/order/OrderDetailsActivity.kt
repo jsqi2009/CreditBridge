@@ -92,7 +92,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.continueTv.setOnClickListener(this)
 
 
-        if (orderInfo?.gphysdjxvns == true || isExtend) {
+        //if (orderInfo?.gphysdjxvns == true || isExtend) {
+        if (isExtend) {
             initExtendInfo()
         } else {
             initOrderDetailsInfo()
@@ -187,7 +188,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.continueTv.visibility = View.GONE
 
                 //initOrderDetailsInfo()
-                if (orderInfo?.gphysdjxvns == true || isExtend) {
+                //if (orderInfo?.gphysdjxvns == true || isExtend) {
+                if (isExtend) {
                     initExtendInfo()
                 } else {
                     initOrderDetailsInfo()
@@ -301,7 +303,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             return
         }
         when (orderStatus) {
-            ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING -> {
+            ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING, ConstConfig.ORDER_STATUS_READY_TO_ISSUE -> {
                 bindViews.processingLayout.rootView.visibility = View.VISIBLE
 
                 bindViews.processingLayout.dateTv.text = orderInfo?.dhqprsdsv
