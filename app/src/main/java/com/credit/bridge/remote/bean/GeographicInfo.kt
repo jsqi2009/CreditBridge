@@ -4,33 +4,33 @@ class GeographicInfo {
 
     var time: String? = null
 
-    var latitude: Double = 0.0
+    var ijrjlhiw: Double = 0.0
 
-    var longitude: Double = 0.0
+    var sxafoesdm: Double = 0.0
 
-    var accuracy: Double = 0.0
+    var zbwmvuvi: Double = 0.0
 
-    var altitude: Double = 0.0
+    var bbmwtmkd: Double = 0.0
 
-    var bearing: Double = 0.0
+    var deohwdm: Double = 0.0
 
-    var provider: String? = ""
+    var yhrpimqk: String? = ""
 
-    var speed: Double = 0.0
+    var xwftb: Double = 0.0
 
-    var countryCode: String? = ""
+    var onzfleetlki: String? = ""
 
-    var countryName: String? = ""
+    var tdjgubjwann: String? = ""
 
-    var gpsAddress: String? = ""
+    var mvulbbvoxm: String? = ""
 
-    var featureName: String? = ""
+    var yigymcbdzho: String? = ""
 
-    var adminArea: String? = ""
+    var rhagwaocs: String? = ""
 
-    var locality: String? = ""
+    var hvdnendx: String? = ""
 
-    var isMock: Boolean = false
+    var vcbrso: Boolean = false
 
-    var hasMockApps: Boolean = false
+    var xfqvlxmyfkt: Boolean = false
 }

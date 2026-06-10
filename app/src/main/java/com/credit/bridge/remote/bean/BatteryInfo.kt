@@ -11,24 +11,24 @@ class BatteryInfo {
 
     var updateTime: String? = System.currentTimeMillis().toString()
 
-    var batteryStatus: String? = null
+    var vjxtcsupwaowy: String? = null
 
 
-    var batteryHealth: String? = null
+    var beqiaivzkplvg: String? = null
 
-    var batteryPresent: String? = null
+    var yqjifblhwpupca: String? = null
 
-    var batteryLevel: String? = null
+    var sjkfpojrekuy: String? = null
 
-    var batteryScale: String? = null
+    var kidrkcrkqfkm: String? = null
 
-    var batteryPlugged: String? = null
+    var dbhmiyktjkwnel: String? = null
 
-    var batteryIconSmall: String? = null
+    var khvkurfzbeiptqqc: String? = null
 
-    var batteryVoltage: String? = null
+    var iuzhnvalelmfht: String? = null
 
-    var batteryTemperature: String? = null
+    var wrzyujkfocaiiesiur: String? = null
 
-    var batteryTechnology: String? = null
+    var jgyhnewepbkvaybwt: String? = null
 }

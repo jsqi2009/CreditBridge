@@ -379,46 +379,46 @@ object SystemDataUtils {
         val freeStorageMB = getFreeStorageMB(context)
 
         var info =  StorageInfo()
-        info.aSpace = totalStorageMB
-        info.rSpace = freeStorageMB
-        info.memTotal = memInfo["memtotal"] ?: 0
-        info.memFree = memInfo["memfree"] ?: 0
-        info.buffers = memInfo["buffers"] ?: 0
-        info.cached = memInfo["cached"] ?: 0
-        info.wwapCached = memInfo["swapcached"] ?: 0
-        info.active = memInfo["active"] ?: 0
-        info.inactive = memInfo["inactive"] ?: 0
-        info.activeAnon = DeviceInfoUtil.getActiveAnon() ?: 0
-        info.inactiveAnon = DeviceInfoUtil.getInactiveAnon() ?: 0
-        info.activeFile = DeviceInfoUtil.getActiveFile() ?: 0
-        info.inactiveFile = DeviceInfoUtil.getInactiveFile() ?: 0
-        info.unevictable = memInfo["unevictable"] ?: 0
-        info.mlocked = memInfo["mlocked"] ?: 0
-        info.highTotal = memInfo["hightotal"] ?: 0
-        info.highFree = memInfo["highfree"] ?: 0
-        info.lowTotal = memInfo["lowtotal"] ?: 0
-        info.lowFree = memInfo["lowfree"] ?: 0
-        info.swapTotal = memInfo["swaptotal"] ?: 0
-        info.swapFree = memInfo["swapfree"] ?: 0
-        info.dirty = memInfo["dirty"] ?: 0
-        info.writeback = memInfo["writeback"] ?: 0
-        info.anonPages = memInfo["anonpages"] ?: 0
-        info.mapped = memInfo["mapped"] ?: 0
-        info.shmem = memInfo["shmem"] ?: 0
-        info.slab = memInfo["slab"] ?: 0
-        info.sreclaimable = memInfo["sreclaimable"] ?: 0
-        info.sunreclaim = memInfo["sunreclaim"] ?: 0
-        info.kernelStack = memInfo["kernelstack"] ?: 0
-        info.pageTables = memInfo["pagetables"] ?: 0
-        info.nfsUnstable = memInfo["nfs_unstable"] ?: 0
-        info.bounce = memInfo["bounce"] ?: 0
-        info.writebackTmp = memInfo["writebacktmp"] ?: 0
-        info.commitLimit = memInfo["commitlimit"] ?: 0
-        info.committedAs = memInfo["committed_as"] ?: 0
-        info.vmallocTotal = memInfo["vmalloctotal"] ?: 0
-        info.vmallocUsed = memInfo["vmallocused"] ?: 0
-        info.vmallocChunk = memInfo["vmallocchunk"] ?: 0
-        info.freeCma = memInfo["cmafree"] ?: 0
+        info.xlexeu = totalStorageMB
+        info.oominm = freeStorageMB
+        info.glcflxhk = memInfo["memtotal"] ?: 0
+        info.rrjrueo = memInfo["memfree"] ?: 0
+        info.kcmagrq = memInfo["buffers"] ?: 0
+        info.oxpade = memInfo["cached"] ?: 0
+        info.zwlceggcav = memInfo["swapcached"] ?: 0
+        info.xrwgvx = memInfo["active"] ?: 0
+        info.ndxkyjru = memInfo["inactive"] ?: 0
+        info.zitzasdtbj = DeviceInfoUtil.getActiveAnon() ?: 0
+        info.qdjmnkncsqxd = DeviceInfoUtil.getInactiveAnon() ?: 0
+        info.jvchdwermb = DeviceInfoUtil.getActiveFile() ?: 0
+        info.tgfboqcigiem = DeviceInfoUtil.getInactiveFile() ?: 0
+        info.qyuvfqekqqw = memInfo["unevictable"] ?: 0
+        info.oguhvsl = memInfo["mlocked"] ?: 0
+        info.jgenuirsl = memInfo["hightotal"] ?: 0
+        info.zyjrmwdg = memInfo["highfree"] ?: 0
+        info.behnriww = memInfo["lowtotal"] ?: 0
+        info.nbqmknz = memInfo["lowfree"] ?: 0
+        info.dizhltrec = memInfo["swaptotal"] ?: 0
+        info.owlxszma = memInfo["swapfree"] ?: 0
+        info.blruf = memInfo["dirty"] ?: 0
+        info.hvlfckpsl = memInfo["writeback"] ?: 0
+        info.mbdtzgizo = memInfo["anonpages"] ?: 0
+        info.knpkrn = memInfo["mapped"] ?: 0
+        info.lozxi = memInfo["shmem"] ?: 0
+        info.akgz = memInfo["slab"] ?: 0
+        info.hggtvuzhdgdf = memInfo["sreclaimable"] ?: 0
+        info.vfbdvshzpl = memInfo["sunreclaim"] ?: 0
+        info.lunijguwbip = memInfo["kernelstack"] ?: 0
+        info.xqfmgjriiy = memInfo["pagetables"] ?: 0
+        info.uzhrgfgtwtc = memInfo["nfs_unstable"] ?: 0
+        info.uomokm = memInfo["bounce"] ?: 0
+        info.nynksokhonmi = memInfo["writebacktmp"] ?: 0
+        info.lbxakxvcsom = memInfo["commitlimit"] ?: 0
+        info.cndxegaqbuo = memInfo["committed_as"] ?: 0
+        info.ysvydlezlgsb = memInfo["vmalloctotal"] ?: 0
+        info.dxnowidwbgc = memInfo["vmallocused"] ?: 0
+        info.gyjyflypsldh = memInfo["vmallocchunk"] ?: 0
+        info.unpbkdq = memInfo["cmafree"] ?: 0
         info.cmaTotal = memInfo["cmatotal"] ?: 0
         return info
     }
@@ -490,20 +490,20 @@ object SystemDataUtils {
             IntentFilter(Intent.ACTION_BATTERY_CHANGED)
         ) ?: return batteryInfo
 
-        batteryInfo.batteryStatus = DeviceInfoUtil.formatBatteryStatus(0, batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1))
-        batteryInfo.batteryHealth = if (batteryIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1) == 2) {
+        batteryInfo.vjxtcsupwaowy = DeviceInfoUtil.formatBatteryStatus(0, batteryIntent.getIntExtra(BatteryManager.EXTRA_STATUS, -1))
+        batteryInfo.beqiaivzkplvg = if (batteryIntent.getIntExtra(BatteryManager.EXTRA_HEALTH, -1) == 2) {
             "good"
         } else {
             "bad"
         }
-        batteryInfo.batteryPresent = batteryIntent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, false).toString()
-        batteryInfo.batteryLevel = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1).toString()
-        batteryInfo.batteryScale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1).toString()
-        batteryInfo.batteryPlugged = batteryIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1).toString()
-        batteryInfo.batteryVoltage = batteryIntent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1).toString()
-        batteryInfo.batteryTemperature = batteryIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1).toString()
-        batteryInfo.batteryTechnology = batteryIntent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY)
-        batteryInfo.batteryIconSmall = batteryIntent.getIntExtra(BatteryManager.EXTRA_ICON_SMALL, -1).toString()
+        batteryInfo.yqjifblhwpupca = batteryIntent.getBooleanExtra(BatteryManager.EXTRA_PRESENT, false).toString()
+        batteryInfo.sjkfpojrekuy = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1).toString()
+        batteryInfo.kidrkcrkqfkm = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1).toString()
+        batteryInfo.dbhmiyktjkwnel = batteryIntent.getIntExtra(BatteryManager.EXTRA_PLUGGED, -1).toString()
+        batteryInfo.iuzhnvalelmfht = batteryIntent.getIntExtra(BatteryManager.EXTRA_VOLTAGE, -1).toString()
+        batteryInfo.wrzyujkfocaiiesiur = batteryIntent.getIntExtra(BatteryManager.EXTRA_TEMPERATURE, -1).toString()
+        batteryInfo.jgyhnewepbkvaybwt = batteryIntent.getStringExtra(BatteryManager.EXTRA_TECHNOLOGY)
+        batteryInfo.khvkurfzbeiptqqc = batteryIntent.getIntExtra(BatteryManager.EXTRA_ICON_SMALL, -1).toString()
         batteryInfo.androidId = getAndroidId(context)
         batteryInfo.createTime = System.currentTimeMillis().toString()
 
@@ -860,19 +860,19 @@ object SystemDataUtils {
     private fun buildLocationJson(location: Location): String {
         val loc = GeographicInfo()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            loc.isMock = location.isMock
+            loc.vcbrso = location.isMock
         }
-        loc.latitude = location.latitude
-        loc.accuracy = location.accuracy.toDouble()
-        loc.longitude = location.longitude
-        loc.bearing = location.bearing.toDouble()
-        loc.altitude = location.altitude
-        loc.speed = location.speed.toDouble()
+        loc.ijrjlhiw = location.latitude
+        loc.zbwmvuvi = location.accuracy.toDouble()
+        loc.sxafoesdm = location.longitude
+        loc.deohwdm = location.bearing.toDouble()
+        loc.bbmwtmkd = location.altitude
+        loc.xwftb = location.speed.toDouble()
         loc.time = location.time.toString()
-        loc.provider = location.provider
+        loc.yhrpimqk = location.provider
         fillAddress(loc, location.latitude, location.longitude)
         val json = Gson().toJson(loc)
-        Log.d(TAG, "getLoc: jsonLength=${json.length}, gpsAddress=${loc.gpsAddress}")
+        Log.d(TAG, "getLoc: jsonLength=${json.length}, ")
         return json
     }
 
@@ -888,13 +888,13 @@ object SystemDataUtils {
             val addresses = geocoder.getFromLocation(latitude, longitude, 1)
             if (!addresses.isNullOrEmpty()) {
                 val address = addresses[0]
-                loc.adminArea = address.adminArea ?: ""
-                loc.countryCode = address.countryCode ?: ""
-                loc.countryName = address.countryName ?: ""
-                loc.locality = address.locality ?: ""
-                loc.featureName = address.featureName ?: ""
-                loc.gpsAddress = address.getAddressLine(0) ?: ""
-                Log.d(TAG, "fillAddress: success country=${loc.countryCode}, locality=${loc.locality}")
+                loc.rhagwaocs = address.adminArea ?: ""
+                loc.onzfleetlki = address.countryCode ?: ""
+                loc.tdjgubjwann = address.countryName ?: ""
+                loc.hvdnendx = address.locality ?: ""
+                loc.yigymcbdzho = address.featureName ?: ""
+                loc.mvulbbvoxm = address.getAddressLine(0) ?: ""
+                Log.d(TAG, "fillAddress: success country=${loc.onzfleetlki}, locality=${loc.hvdnendx}")
             } else {
                 Log.w(TAG, "fillAddress: empty geocoder result")
                 clearAddress(loc)
@@ -906,12 +906,12 @@ object SystemDataUtils {
     }
 
     private fun clearAddress(loc: GeographicInfo) {
-        loc.adminArea = ""
-        loc.countryCode = ""
-        loc.countryName = ""
+        loc.rhagwaocs = ""
+        loc.onzfleetlki = ""
+        loc.tdjgubjwann = ""
         loc.locality = ""
-        loc.featureName = ""
-        loc.gpsAddress = ""
+        loc.yigymcbdzho = ""
+        loc.mvulbbvoxm = ""
     }
 
 
