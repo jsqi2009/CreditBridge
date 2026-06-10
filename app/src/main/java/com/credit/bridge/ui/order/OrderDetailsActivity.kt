@@ -10,6 +10,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
+import com.credit.bridge.adapter.FailOrderListAdapter
 import com.credit.bridge.adapter.OrderListAdapter
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
@@ -43,7 +44,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     var orderStatus: String? = null
 
     private var orderList: ArrayList<OrderInfo> =  ArrayList()
-    private var mAdapter: OrderListAdapter? = null
+    private var mAdapter: FailOrderListAdapter? = null
     private var failFlag = "fail_order"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -139,8 +140,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         hideLoading()
         if (event.model?.flag != failFlag) return
         if (event.isSuccess) {
-            orderList = event.model?.mtaw ?: ArrayList()
-            mAdapter?.setData(orderList)
+            val allOrderList =  event.model?.mtaw ?: ArrayList()
+            val filterList = allOrderList.filter {
+                it.kcyrbnp != orderId
+            }
+            //orderList = event.model?.mtaw ?: ArrayList()
+            mAdapter?.setData(filterList)
             mAdapter?.notifyDataSetChanged()
 
         } else {
@@ -151,7 +156,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
     private fun initListAdapter() {
 
         bindViews.failureLayout.orderRv.layoutManager = LinearLayoutManager(this)
-        mAdapter = OrderListAdapter(this, items = orderList,this)
+        mAdapter = FailOrderListAdapter(this, items = orderList,this)
         bindViews.failureLayout.orderRv.adapter = mAdapter
         mAdapter?.notifyDataSetChanged()
     }
@@ -389,6 +394,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.failureLayout.ifscTv.text = NumberUtils.formatNumber(orderInfo?.eqzbyofrbkzo,3,2)
                 bindViews.failureLayout.accountTv.text = NumberUtils.formatNumber(orderInfo?.ifhldxjdjt,3,2)
                 bindViews.failureLayout.dateTv.text = orderInfo?.dhqprsdsv
+                bindViews.failureLayout.productName.text = orderInfo?.jerftvqtjkg
                 bindViews.failureLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
                 bindViews.failureLayout.amountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
