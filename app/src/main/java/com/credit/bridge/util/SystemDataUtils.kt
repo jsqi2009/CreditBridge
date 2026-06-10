@@ -534,9 +534,9 @@ object SystemDataUtils {
         networkInfo.gacseaguahsvhvupbxz = DeviceInfoUtil.getOperatorInfo(App.instance.applicationContext, 1)
         networkInfo.networkType = DeviceInfoUtil.getSysNetworkType(App.instance.applicationContext).toString()
         networkInfo.phoneType = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
-        networkInfo.simCountryIso = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso.toString()
-        networkInfo.simOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator.toString()
-        networkInfo.simOperatorName = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
+        networkInfo.fveoavhlpydvv = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso.toString()
+        networkInfo.qmvasiuxvco = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator.toString()
+        networkInfo.xfrcdpjtgbbcinw = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
         networkInfo.ofspgbxgemnkrdz = ""
         getSimNetworkInfo(networkInfo)
         networkInfo.yqxrpinwuyl = if(getSimState(0) == TelephonyManager.SIM_STATE_READY) "1" else "0"
@@ -578,28 +578,28 @@ object SystemDataUtils {
             val activeSubs = subscriptionManager.activeSubscriptionInfoList
             if (!activeSubs.isNullOrEmpty()) {
                 val firstSub = activeSubs[0]
-                target.simCountryIso = firstSub.countryIso ?: ""
-                target.simOperator = "${firstSub.mccString ?: ""}${firstSub.mncString ?: ""}"
+                target.fveoavhlpydvv = firstSub.countryIso ?: ""
+                target.qmvasiuxvco = "${firstSub.mccString ?: ""}${firstSub.mncString ?: ""}"
                 val rawName = firstSub.carrierName?.toString() ?: ""
                 val pureName = rawName.indexOf("-").let { idx ->
                     if (idx > 0) rawName.substring(idx + 1).trim() else rawName.trim()
                 }
-                target.simOperatorName = pureName
+                target.xfrcdpjtgbbcinw = pureName
                 //target.simOperatorName = firstSub.carrierName?.toString() ?: ""
                 target.ofspgbxgemnkrdz = ""
                 return
             }
 
-            target.simCountryIso = telephonyManager.simCountryIso ?: ""
-            target.simOperator = telephonyManager.simOperator ?: ""
-            target.simOperatorName = telephonyManager.simOperatorName ?: ""
+            target.fveoavhlpydvv = telephonyManager.simCountryIso ?: ""
+            target.qmvasiuxvco = telephonyManager.simOperator ?: ""
+            target.xfrcdpjtgbbcinw = telephonyManager.simOperatorName ?: ""
             target.ofspgbxgemnkrdz = ""
 
-            if (target.simOperator.isNullOrBlank()) {
-                target.simOperator = telephonyManager.networkOperator ?: ""
+            if (target.qmvasiuxvco.isNullOrBlank()) {
+                target.qmvasiuxvco = telephonyManager.networkOperator ?: ""
             }
-            if (target.simCountryIso.isNullOrBlank()) {
-                target.simCountryIso = telephonyManager.networkCountryIso ?: ""
+            if (target.fveoavhlpydvv.isNullOrBlank()) {
+                target.fveoavhlpydvv = telephonyManager.networkCountryIso ?: ""
             }
         } catch (_: Exception) {
         }
