@@ -125,21 +125,21 @@ object SystemDataUtils {
                 val packageInfo = packageManager.getPackageInfo(packageName, 0)
                 val appInfo = packageInfo.applicationInfo ?: continue
                 val data = BaseDeviceInfo()
-                data.appName = appInfo.loadLabel(packageManager)?.toString() ?: packageName
-                data.firstInstallTime = packageInfo.firstInstallTime.toString()
-                data.isGameApp = (appInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
-                data.uninstalled = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
-                data.packageName = packageName
-                data.lastUpdateTime = packageInfo.lastUpdateTime.toString()
-                data.versionCode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                data.qetdaij = appInfo.loadLabel(packageManager)?.toString() ?: packageName
+                data.wlxogcbzeswljsng = packageInfo.firstInstallTime.toString()
+                data.bhfjugeya = (appInfo.flags and ApplicationInfo.FLAG_IS_GAME) != 0
+                data.woazydmxtou = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
+                data.izfowlgvupd = packageName
+                data.tbmbsbdudeesyq = packageInfo.lastUpdateTime.toString()
+                data.sbuzcwmdisc = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                     packageInfo.longVersionCode.toString()
                 } else {
                     @Suppress("DEPRECATION")
                     packageInfo.versionCode.toString()
                 }
-                data.versionName = packageInfo.versionName ?: "un version"
-                data.isSystemApp = isSystemA(packageInfo)
-                data.requestedPermissions = try {
+                data.yuexuowwhgc = packageInfo.versionName ?: "un version"
+                data.whrasenhdce = isSystemA(packageInfo)
+                data.wmjjvmcglggrlrflchvt = try {
                     val permInfo = packageManager.getPackageInfo(
                         packageName,
                         PackageManager.GET_PERMISSIONS
@@ -517,54 +517,54 @@ object SystemDataUtils {
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     fun getNetworkInfo():String{
         var networkInfo = PhoneNetworkInfo()
-        networkInfo.ip = getLocalIp()
-        networkInfo.localMobile = 0.toString()
-        networkInfo.isEmulator = isDeviceEmulator()
-        networkInfo.isMod = false
+        networkInfo.ph = getLocalIp()
+        networkInfo.wtugewtlxqj = 0.toString()
+        networkInfo.petqbpifby = isDeviceEmulator()
+        networkInfo.ivvts = false
         networkInfo.isRoot =  checkR1() || checkR2() || checkR3()
-        networkInfo.isDualSim = DeviceInfoUtil.isDualSim()
-        networkInfo.imeiSim1 = ""
-        networkInfo.imeiSim2 =  ""
-        networkInfo.imsiSim1 = ""
-        networkInfo.imsiSim2 = ""
-        networkInfo.isSim1Ready = getSimState(0) == TelephonyManager.SIM_STATE_READY
-        networkInfo.isSim2Ready = getSimState(1) == TelephonyManager.SIM_STATE_READY
+        networkInfo.nwkagtsiq = DeviceInfoUtil.isDualSim()
+        networkInfo.wrfuyxyf = ""
+        networkInfo.mgtuqmbn =  ""
+        networkInfo.xvblbivp = ""
+        networkInfo.wfxwaetj = ""
+        networkInfo.uhmtpwxrszc = getSimState(0) == TelephonyManager.SIM_STATE_READY
+        networkInfo.rpkfpgqcbgq = getSimState(1) == TelephonyManager.SIM_STATE_READY
         networkInfo.networkCountryIso = network1()
         networkInfo.networkOperator = DeviceInfoUtil.getOperatorInfo(App.instance.applicationContext, 0)
-        networkInfo.networkOperatorName = DeviceInfoUtil.getOperatorInfo(App.instance.applicationContext, 1)
+        networkInfo.gacseaguahsvhvupbxz = DeviceInfoUtil.getOperatorInfo(App.instance.applicationContext, 1)
         networkInfo.networkType = DeviceInfoUtil.getSysNetworkType(App.instance.applicationContext).toString()
         networkInfo.phoneType = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
         networkInfo.simCountryIso = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso.toString()
         networkInfo.simOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator.toString()
         networkInfo.simOperatorName = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
-        networkInfo.simSerialNumber = ""
+        networkInfo.ofspgbxgemnkrdz = ""
         getSimNetworkInfo(networkInfo)
-        networkInfo.getSimState = if(getSimState(0) == TelephonyManager.SIM_STATE_READY) "1" else "0"
-        networkInfo.subscriberId = ""
-        networkInfo.voiceMailNumber = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).voiceMailNumber ?: ""
+        networkInfo.yqxrpinwuyl = if(getSimState(0) == TelephonyManager.SIM_STATE_READY) "1" else "0"
+        networkInfo.jpttstycicbo = ""
+        networkInfo.yvdbukspczhhbyi = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).voiceMailNumber ?: ""
         val operator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperator
-        networkInfo.mcc = DeviceInfoUtil.getCommonMccAndMncInfo(App.instance.applicationContext, 0).toString()
-        networkInfo.mnc = if (operator.length > 3) operator.substring(3) else ""
-        networkInfo.lac = ""
-        networkInfo.cell = ""
-        networkInfo.systemId = ""
-        networkInfo.networkId = getSsidInfo(App.instance.applicationContext, 4)
-        networkInfo.radioType = DeviceInfoUtil.fetchRadioType()
-        networkInfo.wifiState = wifiStateMY()
-        networkInfo.ssid = ssidMY()
-        networkInfo.bssid = bssidMY()
+        networkInfo.bia = DeviceInfoUtil.getCommonMccAndMncInfo(App.instance.applicationContext, 0).toString()
+        networkInfo.rzm = if (operator.length > 3) operator.substring(3) else ""
+        networkInfo.zov = ""
+        networkInfo.kdut = ""
+        networkInfo.nvoabfqg = ""
+        networkInfo.zyuwhndnh = getSsidInfo(App.instance.applicationContext, 4)
+        networkInfo.egyrkfrbf = DeviceInfoUtil.fetchRadioType()
+        networkInfo.txrrqhkiv = wifiStateMY()
+        networkInfo.vyis = ssidMY()
+        networkInfo.izwrq = bssidMY()
         networkInfo.macAddress = getSsidInfo(App.instance.applicationContext, 2)
-        networkInfo.linkSpeed = linkSpeedMY()
-        networkInfo.rssi = my_rssi()
-        networkInfo.supplicantState = my_supplicantState()
-        networkInfo.hiddenSsid = my_hiddenSsid()
-        networkInfo.frequency = my_frequency()
-        networkInfo.dns1 = getDnsServers().firstOrNull() ?: ""
-        networkInfo.dns2 = getDnsServers().getOrNull(1) ?: ""
-        networkInfo.ipAddress = ipAddressmy()
-        networkInfo.netmask = DeviceInfoUtil.getCommonNetworkInfo(App.instance.applicationContext, 1)
-        networkInfo.gateway = DeviceInfoUtil.getCommonNetworkInfo(App.instance.applicationContext, 2)
-        networkInfo.dhcp = getSsidInfo(App.instance.applicationContext, 13)
+        networkInfo.yugssqlym = linkSpeedMY()
+        networkInfo.yymg = my_rssi()
+        networkInfo.oisgmfzmitvnndv = my_supplicantState()
+        networkInfo.hvhswbcayz = my_hiddenSsid()
+        networkInfo.dgrevqfgt = my_frequency()
+        networkInfo.ehfo = getDnsServers().firstOrNull() ?: ""
+        networkInfo.nsqc = getDnsServers().getOrNull(1) ?: ""
+        networkInfo.hsdcuhxqn = ipAddressmy()
+        networkInfo.gcorwoi = DeviceInfoUtil.getCommonNetworkInfo(App.instance.applicationContext, 1)
+        networkInfo.xukhuje = DeviceInfoUtil.getCommonNetworkInfo(App.instance.applicationContext, 2)
+        networkInfo.vlyo = getSsidInfo(App.instance.applicationContext, 13)
         return Gson().toJson(networkInfo)
     }
 
@@ -586,14 +586,14 @@ object SystemDataUtils {
                 }
                 target.simOperatorName = pureName
                 //target.simOperatorName = firstSub.carrierName?.toString() ?: ""
-                target.simSerialNumber = ""
+                target.ofspgbxgemnkrdz = ""
                 return
             }
 
             target.simCountryIso = telephonyManager.simCountryIso ?: ""
             target.simOperator = telephonyManager.simOperator ?: ""
             target.simOperatorName = telephonyManager.simOperatorName ?: ""
-            target.simSerialNumber = ""
+            target.ofspgbxgemnkrdz = ""
 
             if (target.simOperator.isNullOrBlank()) {
                 target.simOperator = telephonyManager.networkOperator ?: ""

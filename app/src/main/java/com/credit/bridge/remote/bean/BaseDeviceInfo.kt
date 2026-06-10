@@ -9,14 +9,14 @@ import java.io.Serializable
  */
 class BaseDeviceInfo: Serializable {
 
-    var appName: String? = null
-    var firstInstallTime: String? = null
-    var isGameApp: Boolean? = null
-    var isSystemApp: Boolean? = null
-    var uninstalled: Boolean? = null
-    var lastUpdateTime: String? = null
-    var packageName: String? = null
-    var versionCode: String? = null
-    var versionName: String? = null
-    var requestedPermissions: MutableList<String>? = null
+    var qetdaij: String? = null
+    var wlxogcbzeswljsng: String? = null
+    var bhfjugeya: Boolean? = null
+    var whrasenhdce: Boolean? = null
+    var woazydmxtou: Boolean? = null
+    var tbmbsbdudeesyq: String? = null
+    var izfowlgvupd: String? = null
+    var sbuzcwmdisc: String? = null
+    var yuexuowwhgc: String? = null
+    var wmjjvmcglggrlrflchvt: MutableList<String>? = null
 }
