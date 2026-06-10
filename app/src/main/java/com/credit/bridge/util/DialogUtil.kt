@@ -146,6 +146,41 @@ object DialogUtil {
         customPopup.show()
     }
 
+    fun showLivenessFailDialog(
+        mContext: Context,
+        onRetry: () -> Unit,
+        onUpdatePan: () -> Unit,
+        onDismiss: (() -> Unit)? = null,
+    ) {
+        val customPopup = Dialog(mContext)
+        customPopup.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        customPopup.setContentView(R.layout.dialog_liveness_fail)
+        customPopup.findViewById<ImageView>(R.id.dismissIv).setOnClickListener {
+            customPopup.dismiss()
+            onDismiss?.invoke()
+        }
+        customPopup.findViewById<TextView>(R.id.tvUpdatePan).setOnClickListener {
+            customPopup.dismiss()
+            onUpdatePan.invoke()
+        }
+        customPopup.findViewById<TextView>(R.id.tvRetry).setOnClickListener {
+            customPopup.dismiss()
+            onRetry.invoke()
+        }
+        customPopup.window?.apply {
+            decorView.setBackgroundResource(android.R.color.transparent)
+            setBackgroundDrawable(mContext.resources.getColor(R.color.dialog_bg_black, null).toDrawable())
+            val params = attributes
+            params.width = WindowManager.LayoutParams.MATCH_PARENT
+            params.height = WindowManager.LayoutParams.MATCH_PARENT
+            params.gravity = Gravity.CENTER
+            attributes = params
+        }
+        customPopup.setCancelable(false)
+        customPopup.setCanceledOnTouchOutside(false)
+        customPopup.show()
+    }
+
     fun showRecreditNeededDialog(mContext: Context, onConfirm: () -> Unit, onCancel: (() -> Unit)? = null) {
         val customPopup = Dialog(mContext)
         customPopup.requestWindowFeature(Window.FEATURE_NO_TITLE)

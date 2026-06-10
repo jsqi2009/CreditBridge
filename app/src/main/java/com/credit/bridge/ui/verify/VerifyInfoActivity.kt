@@ -64,6 +64,7 @@ import com.credit.bridge.inter.OnBirthdaySelectListener
 import com.credit.bridge.widget.BirthdayPickerBottomSheet
 import com.credit.bridge.widget.CommonBottomSheet
 import com.credit.bridge.widget.StartVerifyBottomSheet
+import com.liveness.dflivenesslibrary.DFAcitivityBase
 import com.liveness.dflivenesslibrary.DFTransferResultInterface
 import com.liveness.dflivenesslibrary.liveness.DFActionLivenessActivity
 import com.liveness.dflivenesslibrary.liveness.util.Constants
@@ -103,6 +104,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     var panNumberFailTimes = 0
     var isOcrNumberPassed = false
     var faceNumberOfTimes = 0
+    private var faceFailTimes = 0
+    private var faceFromHome = false
+    private var pendingReturnToFaceAfterOcr = false
     var isUseOcePan = false
     var isUseVerifyFace = false
     var isFacePassed = false
@@ -169,45 +173,56 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     private val liveFaceLauncher: ActivityResultLauncher<Intent> = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         val data = result.data
         val resultCode = result.resultCode
-        //HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
-        if (resultCode == RESULT_OK ) {
-            val mResult =  (this.application as DFTransferResultInterface).result
+        if (resultCode == RESULT_OK) {
+            val mResult = (this.application as DFTransferResultInterface).result
             if (mResult != null) {
                 val imageResultArr = mResult.livenessImageResults
-                if (imageResultArr != null) {
-                    val size = imageResultArr.size
-                    if (size > 0) {
-                        showLoading()
-                        var imageResult = imageResultArr[0]
-                        var imageBitmap = BitmapFactory.decodeByteArray(
-                            imageResult.image,
-                            0,
-                            imageResult.image.size
-                        )
-                        bindViews.verify5.verifyFaceIv.setImageBitmap(imageBitmap)
-                        val tempFile = File.createTempFile("ocr_face_",
-                            ".jpg",
-                            cacheDir
-                        )
-                        FileOutputStream(tempFile).use { it.write(imageResult.image) }
-                        real_path = tempFile.absolutePath
-                        //showLoading()
-                        HttpClient.getOssInfo(this@VerifyInfoActivity, 2)
-                    }
+                if (!imageResultArr.isNullOrEmpty()) {
+                    showLoading()
+                    val imageResult = imageResultArr[0]
+                    val imageBitmap = BitmapFactory.decodeByteArray(
+                        imageResult.image,
+                        0,
+                        imageResult.image.size
+                    )
+                    bindViews.verify5.verifyFaceIv.setImageBitmap(imageBitmap)
+                    val tempFile = File.createTempFile(
+                        "ocr_face_",
+                        ".jpg",
+                        cacheDir
+                    )
+                    FileOutputStream(tempFile).use { it.write(imageResult.image) }
+                    real_path = tempFile.absolutePath
+                    HttpClient.getOssInfo(this@VerifyInfoActivity, 2)
+                } else {
+                    handleFaceVerifyFailure()
+                    HttpClient.eventReport(
+                        this,
+                        ConstConfig.EVENT_FAIL_LIVENESS,
+                        ConstConfig.EVENT_ACTION_HOLD,
+                        ConstConfig.EVENT_FAIL_LIVENESS
+                    )
                 }
-            }else{
-
-                HttpClient.eventReport(this,ConstConfig.EVENT_FAIL_LIVENESS,
-                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_FAIL_LIVENESS)
+            } else {
+                handleFaceVerifyFailure()
+                HttpClient.eventReport(
+                    this,
+                    ConstConfig.EVENT_FAIL_LIVENESS,
+                    ConstConfig.EVENT_ACTION_HOLD,
+                    ConstConfig.EVENT_FAIL_LIVENESS
+                )
             }
         } else {
-
-            HttpClient.eventReport(this,ConstConfig.EVENT_FAIL_LIVENESS,
-                ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_FAIL_LIVENESS)
-
-            if (result.data != null) {
-                val errorCode = data!!.getIntExtra(DFActionLivenessActivity.KEY_RESULT_ERROR_CODE, -10000);
-                Log.e("onActivityResult", "action liveness cancel，error code:" + errorCode);
+            val errorCode = data?.getIntExtra(DFActionLivenessActivity.KEY_RESULT_ERROR_CODE, -10000) ?: -10000
+            Log.e("onActivityResult", "action liveness cancel，error code:$errorCode")
+            if (!isLivenessUserCancel(resultCode, errorCode)) {
+                handleFaceVerifyFailure()
+                HttpClient.eventReport(
+                    this,
+                    ConstConfig.EVENT_FAIL_LIVENESS,
+                    ConstConfig.EVENT_ACTION_HOLD,
+                    ConstConfig.EVENT_FAIL_LIVENESS
+                )
             }
         }
     }
@@ -241,13 +256,15 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     override fun initRes() {
         super.initRes()
 
-        currentStep = intent.getIntExtra("currentStep",0)
-        Log.e("VerifyInfoActivity", "currentStep: $currentStep")
+        val intentStep = intent.getIntExtra("currentStep", 0)
+        faceFromHome = intentStep >= 4
+        Log.e("VerifyInfoActivity", "currentStep: $intentStep, faceFromHome: $faceFromHome")
 
         bindViews.titleLayout.titleTv.text = "Details"
         bindViews.titleLayout.rightTv.text = "1/5"
         bindViews.titleLayout.rightTv.visibility = View.VISIBLE
 
+        currentStep = intentStep
         currentStep++
         refreshUI()
 
@@ -924,8 +941,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     fun onSaveQuestion4ResponseEvent(event: SaveQuestion4ResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            currentStep++
-            refreshUI()
+            navigateAfterOcrSubmitSuccess()
         } else {
             if(event.model == null){
                 ToastUtil.showLong(this,event.networkError.toString())
@@ -941,8 +957,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     fun onVerifyPanInfoResponseEvent(event: VerifyPanInfoResponseEvent) {
         hideLoading()
         if (event.isSuccess) {
-            currentStep++
-            refreshUI()
+            navigateAfterOcrSubmitSuccess()
         } else {
             if(event.model == null){
                 ToastUtil.showLong(this,event.networkError.toString())
@@ -967,6 +982,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                         hideLoading()
                         runOnUiThread {
                             ToastUtil.showLong(this@VerifyInfoActivity,"upload fail：${e.message}")
+                            handleFaceVerifyFailure()
                         }
                         HttpClient.eventReport(this@VerifyInfoActivity,ConstConfig.EVENT_UPLOAD_FACE_FAIL,
                             ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_UPLOAD_FACE_FAIL)
@@ -986,6 +1002,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                             } else {
                                 hideLoading()
                                 ToastUtil.showLong(this@VerifyInfoActivity,"upload error：HTTP error code ${response.code}")
+                                handleFaceVerifyFailure()
                             }
                         }
                         response.close()
@@ -995,6 +1012,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         }else {
             hideLoading()
             ToastUtil.showLong(this,event.networkError.toString())
+            handleFaceVerifyFailure()
         }
 
     }
@@ -1537,10 +1555,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let {
+                faceFailTimes = 0
                 isFacePassed = true
-                //showVerifySuccessDialog()
             }
         }else {
+            handleFaceVerifyFailure()
             if(event.model != null){
                 ToastUtil.showLong(this, event.model?.dvusonb)
             }else{
@@ -1548,6 +1567,53 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
         }
         HttpClient.verifyOcrFaceNumber(this)
+    }
+
+    private fun isLivenessUserCancel(resultCode: Int, errorCode: Int): Boolean {
+        return resultCode == RESULT_CANCELED ||
+            errorCode == DFAcitivityBase.RESULT_BACK_PRESSED
+    }
+
+    private fun handleFaceVerifyFailure() {
+        isFacePassed = false
+        faceFailTimes++
+        if (faceFailTimes >= FACE_FAIL_THRESHOLD) {
+            faceFailTimes = 0
+            showLivenessFailDialog()
+        }
+    }
+
+    private fun showLivenessFailDialog() {
+        DialogUtil.showLivenessFailDialog(
+            this,
+            onRetry = { retryLivenessFromFailDialog() },
+            onUpdatePan = { goToOcrForUpdate() }
+        )
+    }
+
+    private fun retryLivenessFromFailDialog() {
+        if (faceNumberOfTimes > 0) {
+            startVerifyFace()
+        } else {
+            ToastUtil.showLong(this, getString(R.string.verify_times_limit))
+        }
+    }
+
+    private fun goToOcrForUpdate() {
+        isFacePassed = false
+        pendingReturnToFaceAfterOcr = faceFromHome
+        currentStep = 4
+        refreshUI()
+    }
+
+    private fun navigateAfterOcrSubmitSuccess() {
+        if (pendingReturnToFaceAfterOcr) {
+            pendingReturnToFaceAfterOcr = false
+            currentStep = 5
+        } else {
+            currentStep++
+        }
+        refreshUI()
     }
 
     override fun onPermissionsGranted(
@@ -1598,5 +1664,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         })
     }
 
+    companion object {
+        private const val FACE_FAIL_THRESHOLD = 3
+    }
 
 }

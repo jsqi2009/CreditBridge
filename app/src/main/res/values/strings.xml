@@ -50,6 +50,10 @@
     <string name="verify_photo_attempts_left_today">Photo attempts left today:</string>
     <string name="verify_times_limit">Daily limit reached. Try again tomorrow.</string>
     <string name="verify_face_attempts_left_today">Attempts available today:</string>
+    <string name="liveness_fail_title">Verification Unsuccessful</string>
+    <string name="liveness_fail_message">Face and PAN photo did not match. Please try again or retake your PAN photo.</string>
+    <string name="liveness_fail_retry">Retry</string>
+    <string name="liveness_fail_update_pan">Update PAN photo</string>
 
     <!--product  -->
     <string name="product_up_to">Up to</string>
