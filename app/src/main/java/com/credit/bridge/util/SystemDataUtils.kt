@@ -199,63 +199,63 @@ object SystemDataUtils {
         deviceInfo.iebnmxrehdzfi = System.getProperty("os.version")
         deviceInfo.chbqebrj = Locale.getDefault().language
         deviceInfo.minlvsdont = getSsidInfo(context, 2)
-        deviceInfo.manufacturer = Build.MANUFACTURER
-        deviceInfo.modelNo = Build.MODEL
-        deviceInfo.networkCountryIso = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkCountryIso
-        deviceInfo.networkOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperator
-        deviceInfo.networkType = getSysNetWorkType(context)
-        deviceInfo.osVersion ="${Build.VERSION.RELEASE}"
-        deviceInfo.product =  Build.PRODUCT
-        deviceInfo.locationInfo = getLoc(location)
-        deviceInfo.networkInfo = getNetworkInfo()
-        deviceInfo.batteryInfo = Gson().toJson(getBatteryInfo(App.instance))
-        deviceInfo.deviceInfo = Gson().toJson(getDeviceInfoInfo())
-        deviceInfo.memoryInfo = Gson().toJson(getMemoryStorageInfo(App.instance))
-        deviceInfo.screenHeight = height()
-        deviceInfo.screenWidth = width()
-        deviceInfo.sdkVersion = "${Build.VERSION.SDK_INT}"
-        deviceInfo.serialNo = Build.SERIAL
-        deviceInfo.simCountryIso =  (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso
-        deviceInfo.simOperator = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator
-        deviceInfo.simOperatorName = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
+        deviceInfo.ugyeqbpvsmut = Build.MANUFACTURER
+        deviceInfo.ebqpvpc = Build.MODEL
+        deviceInfo.ksyypuzafjoojchxw = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkCountryIso
+        deviceInfo.tfeeylmgibglpdp = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).networkOperator
+        deviceInfo.ycmvulqfvev = getSysNetWorkType(context)
+        deviceInfo.idnfrfybk ="${Build.VERSION.RELEASE}"
+        deviceInfo.lsipinx =  Build.PRODUCT
+        deviceInfo.krvxfdgmjegu = getLoc(location)
+        deviceInfo.itvfhphlqkh = getNetworkInfo()
+        deviceInfo.dcifglhqfrc = Gson().toJson(getBatteryInfo(App.instance))
+        deviceInfo.zyejnqjkze = Gson().toJson(getDeviceInfoInfo())
+        deviceInfo.stfnawjsgo = Gson().toJson(getMemoryStorageInfo(App.instance))
+        deviceInfo.eswxeozoglpn = height()
+        deviceInfo.yxzdsosjhzz = width()
+        deviceInfo.lczodomrqz = "${Build.VERSION.SDK_INT}"
+        deviceInfo.wgaymgvp = Build.SERIAL
+        deviceInfo.fveoavhlpydvv =  (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simCountryIso
+        deviceInfo.qmvasiuxvco = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperator
+        deviceInfo.xfrcdpjtgbbcinw = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).simOperatorName
         try {
-            deviceInfo.simMobile = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?: ""
+            deviceInfo.lpcogjjdw = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).line1Number ?: ""
         } catch (e: Exception) {
-            deviceInfo.simMobile = ""
+            deviceInfo.lpcogjjdw = ""
         }
-        deviceInfo.tags = Build.TAGS
-        deviceInfo.time = "${Build.TIME}"
-        deviceInfo.timezone = TimeZone.getDefault().displayName
-        deviceInfo.timezoneLong = TimeZone.getDefault().getDisplayName(false, TimeZone.LONG)
-        deviceInfo.timezoneShort = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
+        deviceInfo.stoo = Build.TAGS
+        deviceInfo.nvny = "${Build.TIME}"
+        deviceInfo.tuoydrmv = TimeZone.getDefault().displayName
+        deviceInfo.myrkrxhybzja = TimeZone.getDefault().getDisplayName(false, TimeZone.LONG)
+        deviceInfo.wgsijovykrrid = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
         val memoryInfo = ActivityManager.MemoryInfo()
-        deviceInfo.totalMemory = getSysStorage().toString()
+        deviceInfo.fewvhbltzni = getSysStorage().toString()
         deviceInfo.type = Build.TYPE
-        deviceInfo.upTime = "${System.currentTimeMillis() - Build.TIME}"
-        deviceInfo.user = Build.USER
-        deviceInfo.wifiBssid =  (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.bssid
-        deviceInfo.wifiSsid = (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.ssid
-        deviceInfo.wifiRssi = "${(App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.rssi}"
-        deviceInfo.deviceNo = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
-        deviceInfo.keyboard = getSysKeyboard().toString()
-        deviceInfo.memorySpace = getMemberSpace(0).toString()
-        deviceInfo.memoryUseSpace = getMemberSpace(1).toString()
-        deviceInfo.imagesInternal = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+        deviceInfo.uegzyh = "${System.currentTimeMillis() - Build.TIME}"
+        deviceInfo.vmkn = Build.USER
+        deviceInfo.ewplwajsc =  (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.bssid
+        deviceInfo.tqoxofmq = (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.ssid
+        deviceInfo.qdtmypan = "${(App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.rssi}"
+        deviceInfo.hslilxtd = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
+        deviceInfo.bltfqxag = getSysKeyboard().toString()
+        deviceInfo.xamyfyemmig = getMemberSpace(0).toString()
+        deviceInfo.isgxpooeojocbe = getMemberSpace(1).toString()
+        deviceInfo.ebflyfqduowlor = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.imagesExternal = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        deviceInfo.tfpxzxaecfamyz = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.audioInternal = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+        deviceInfo.gmkoatbfaodqb = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Audio.Media._ID)
         ).toString()
-        deviceInfo.audioExternal = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        deviceInfo.zwpbttjobcjml = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.videoInternal = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+        deviceInfo.recychnqldveg = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.videoExternal = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+        deviceInfo.lhpxzxkmohxlq = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
         deviceInfo.downloadFiles = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).listFiles().size.toString()
