@@ -439,6 +439,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
                 bindViews.titleLayout.titleTv.text = "KYC Information"
                 bindViews.titleLayout.rightTv.text = "4/5"
 
+                bindViews.verify5.root.visibility = View.GONE
+
                 HttpClient.getQuestionByStep(this, currentStep)
 
                 HttpClient.eventReport(this,ConstConfig.EVENT_IDCARD_INPUT,
