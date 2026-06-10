@@ -50,13 +50,17 @@
 
             <TextView
                 android:id="@+id/accountTv"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/margin_15"
                 android:layout_marginTop="@dimen/margin_10"
+                android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                android:text="123*************12"
+                android:text="123*************1233"
                 android:textColor="#FFD29F"
                 android:textSize="24sp"
+                android:maxLines="2"
+                android:ellipsize="end"
                 />
 
         </LinearLayout>

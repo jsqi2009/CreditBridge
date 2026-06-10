@@ -88,10 +88,14 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="@dimen/margin_15"
                     android:layout_marginTop="@dimen/margin_10"
+                    android:paddingHorizontal="@dimen/margin_15"
                     android:layout_gravity="center_horizontal"
                     android:text="Account: 123*************12"
                     android:textColor="#FFD29F"
                     android:textSize="@dimen/ts_18"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
                     />
 
             </LinearLayout>

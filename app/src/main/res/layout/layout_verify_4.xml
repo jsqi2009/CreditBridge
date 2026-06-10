@@ -130,7 +130,6 @@
                         android:hint="Please Enter"
                         android:singleLine="true"
                         android:maxLines="1"
-                        android:maxLength="10"
                         android:inputType="text|textNoSuggestions"
                         android:imeOptions="actionDone"
                         android:background="@null"/>

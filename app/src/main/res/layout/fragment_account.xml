@@ -125,10 +125,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/margin_10"
+                    android:paddingHorizontal="@dimen/margin_15"
                     android:layout_gravity="center_horizontal"
                     android:text=""
                     android:textColor="#FFD29F"
                     android:textSize="24sp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    android:gravity="center_horizontal"
                     />
 
 
