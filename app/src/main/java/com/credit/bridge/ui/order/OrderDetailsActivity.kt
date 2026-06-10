@@ -8,11 +8,13 @@ import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.core.net.toUri
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.credit.bridge.R
 import com.credit.bridge.adapter.OrderListAdapter
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.databinding.ActivityOrderDetailsBinding
+import com.credit.bridge.inter.OnOrderItemClickListener
 import com.credit.bridge.remote.HttpClient
 import com.credit.bridge.remote.bean.OrderInfo
 import com.credit.bridge.remote.body.RequestOrderDetailsBody
@@ -28,7 +30,7 @@ import com.credit.bridge.util.CommonCountdown
 import com.squareup.otto.Subscribe
 import java.util.Locale
 
-class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.OnClickListener {
+class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.OnClickListener,OnOrderItemClickListener {
 
     override fun getBinding() = ActivityOrderDetailsBinding.inflate(layoutInflater)
 
@@ -42,10 +44,12 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     private var orderList: ArrayList<OrderInfo> =  ArrayList()
     private var mAdapter: OrderListAdapter? = null
+    private var failFlag = "fail_order"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        initListAdapter()
 
     }
 
@@ -87,14 +91,11 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         bindViews.viewPaymentOptionsTv.setOnClickListener(this)
         bindViews.continueTv.setOnClickListener(this)
 
-        if (orderStatus == ConstConfig.ORDER_STATUS_REJECTED) {
-            fetchFailOrderList()
-        }else{
-            if (orderInfo?.gphysdjxvns == true || isExtend) {
-                initExtendInfo()
-            } else {
-                initOrderDetailsInfo()
-            }
+
+        if (orderInfo?.gphysdjxvns == true || isExtend) {
+            initExtendInfo()
+        } else {
+            initOrderDetailsInfo()
         }
     }
 
@@ -128,27 +129,30 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
 
     private fun fetchFailOrderList() {
         showLoading()
-        HttpClient.fetchOrderList(this, "FAILED", "fail_order")
+        HttpClient.fetchOrderList(this, "FAILED", failFlag)
     }
 
     @SuppressLint("NotifyDataSetChanged")
     @Subscribe
     fun onFetchOrderListEvent(event: OrderListResponseEvent) {
         hideLoading()
-        if (event.model?.flag != "fail_order") return
+        if (event.model?.flag != failFlag) return
         if (event.isSuccess) {
             orderList = event.model?.mtaw ?: ArrayList()
             mAdapter?.setData(orderList)
             mAdapter?.notifyDataSetChanged()
 
-            if (mAdapter?.getData()?.isEmpty() == true) {
-                //bindViews.defaultView.visibility = View.VISIBLE
-            } else {
-                //bindViews.defaultView.visibility = View.GONE
-            }
         } else {
             ToastUtil.showLong(this,event.errorMessage)
         }
+    }
+
+    private fun initListAdapter() {
+
+        bindViews.failureLayout.orderRv.layoutManager = LinearLayoutManager(this)
+        mAdapter = OrderListAdapter(this, items = orderList,this)
+        bindViews.failureLayout.orderRv.adapter = mAdapter
+        mAdapter?.notifyDataSetChanged()
     }
 
     private fun getOrderDetailsInfo() {
@@ -386,6 +390,9 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.failureLayout.usageIdTv.text = orderInfo?.kcyrbnp.toString()
                 bindViews.failureLayout.amountTv.text = getString(R.string.money_symbol) + " " +
                         orderInfo?.otjjqwdpupp?.let { NumberUtils.formatIntToStr(it) }
+
+                // get fail order list
+                fetchFailOrderList()
             }
             ConstConfig.ORDER_STATUS_CLOSED -> {
 
@@ -447,5 +454,14 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             finish()
         } catch (e: Exception) {
         }
+    }
+
+    override fun onOrderItemClick(info: OrderInfo) {
+    }
+
+    override fun onViewPaymentOptionsClick(info: OrderInfo) {
+    }
+
+    override fun onPaymentClick(info: OrderInfo) {
     }
 }
