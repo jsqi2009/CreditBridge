@@ -27,6 +27,7 @@ class BatteryInfo {
     var khvkurfzbeiptqqc: String? = null
 
     var iuzhnvalelmfht: String? = null
+    var jhpskdpyqd: String? = null
 
     var wrzyujkfocaiiesiur: String? = null
 
