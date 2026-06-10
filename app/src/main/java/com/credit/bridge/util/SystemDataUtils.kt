@@ -7,6 +7,7 @@ import android.bluetooth.BluetoothAdapter
 import android.content.ContentResolver
 import android.content.Context
 import android.content.Context.WIFI_SERVICE
+import android.content.Context.WINDOW_SERVICE
 import android.content.Intent
 import android.content.IntentFilter
 import android.content.pm.ApplicationInfo
@@ -107,6 +108,7 @@ import kotlin.text.toInt
 import kotlin.text.toLongOrNull
 import kotlin.text.toRegex
 import kotlin.text.trim
+import kotlin.times
 import kotlin.toString
 
 object SystemDataUtils {
@@ -186,12 +188,12 @@ object SystemDataUtils {
         deviceInfo.cwezcobqbgyxdd = Locale.getDefault().displayCountry
         deviceInfo.iqcfkykbdap = Locale.getDefault().displayName
         deviceInfo.wgykgfblqfguvro = Locale.getDefault().displayLanguage
-        deviceInfo.pgnsouvgbv = getSysFreeStorage().toString()
+        deviceInfo.pgnsouvgbv = getSysFreeStorage() * (1024 * 1024)
         deviceInfo.nshxmtaoqyl = Build.FINGERPRINT
         deviceInfo.huuczczl = Build.HARDWARE
         deviceInfo.fdnq = Build.HOST
         deviceInfo.znzr = Settings.Secure.getString(App.instance.contentResolver, Settings.Secure.ANDROID_ID)
-        deviceInfo.iwgiimj = "${BuildConfig.DEBUG}"
+        deviceInfo.iwgiimj = BuildConfig.DEBUG.toString()
         deviceInfo.fxzibbkxrujllwwpgqe = false
         deviceInfo.qcpsrtg = isProxy()
         deviceInfo.iuzvcd = checkR1() || checkR2() || checkR3()
@@ -229,9 +231,9 @@ object SystemDataUtils {
         deviceInfo.myrkrxhybzja = TimeZone.getDefault().getDisplayName(false, TimeZone.LONG)
         deviceInfo.wgsijovykrrid = TimeZone.getDefault().getDisplayName(false, TimeZone.SHORT)
         val memoryInfo = ActivityManager.MemoryInfo()
-        deviceInfo.fewvhbltzni = getSysStorage().toString()
-        deviceInfo.type = Build.TYPE
-        deviceInfo.uegzyh = "${System.currentTimeMillis() - Build.TIME}"
+        deviceInfo.fewvhbltzni = getSysStorage()* (1024 * 1024)
+        deviceInfo.awja = Build.TYPE
+        deviceInfo.uegzyh = SystemClock.uptimeMillis()
         deviceInfo.vmkn = Build.USER
         deviceInfo.ewplwajsc =  (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.bssid
         deviceInfo.tqoxofmq = (App.instance.getSystemService(Context.WIFI_SERVICE) as WifiManager).connectionInfo.ssid
@@ -246,9 +248,8 @@ object SystemDataUtils {
         deviceInfo.tfpxzxaecfamyz = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.gmkoatbfaodqb = getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
-            arrayOf(MediaStore.Audio.Media._ID)
-        ).toString()
+        deviceInfo.gmkoatbfaodqb =
+            getAudioEnternal(App.instance, MediaStore.Audio.Media.INTERNAL_CONTENT_URI, MediaStore.Audio.Media._ID).toString()
         deviceInfo.zwpbttjobcjml = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
@@ -258,16 +259,21 @@ object SystemDataUtils {
         deviceInfo.lhpxzxkmohxlq = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.coyomiayafmzl = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).listFiles().size.toString()
+        deviceInfo.coyomiayafmzl = try {
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                ?.listFiles()?.size?.toString() ?: "0"
+        }catch (e:Exception){
+            "0"
+        }
         deviceInfo.aygn = wifiB()
-        deviceInfo.lenomhvjdydw = "${SystemClock.elapsedRealtimeNanos()}"
+        deviceInfo.lenomhvjdydw = System.currentTimeMillis() - SystemClock.elapsedRealtime()
         deviceInfo.qlxgfaeoupzump = Build.TIME.toString()
         deviceInfo.ybiymourh = 0.toString()
         deviceInfo.gwkglwhovxisyt = DeviceInfoUtil.getWifiConfigure(context)
         deviceInfo.sbpcg = cor()
         deviceInfo.vuxxszhyngwl = height()
         deviceInfo.lzpoptgggxk = width()
-        deviceInfo.tmysjrxzuzvqhc = screenS()
+        deviceInfo.tmysjrxzuzvqhc = getIn(App.instance)
         deviceInfo.ulmroucex = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
         deviceInfo.lslhltdnfmyhbe = DeviceInfoUtil.getMemberMounted(0).toString()
         deviceInfo.zdqrfwqrnkogjymffrdc = DeviceInfoUtil.getMemberMounted(1).toString()
@@ -280,35 +286,57 @@ object SystemDataUtils {
         )}"
         return arrayOf(deviceInfo)
     }
-
-
+    fun getIn(context: Context): Double {
+        val displayMetrics = DisplayMetrics()
+        val windowManager =
+            context.getSystemService(WINDOW_SERVICE) as WindowManager
+        windowManager.defaultDisplay.getMetrics(displayMetrics)
+        return (sqrt(
+            displayMetrics.widthPixels / displayMetrics.xdpi.pow(2.0f) + displayMetrics.heightPixels / displayMetrics.ydpi.pow(
+                2.0f
+            )
+        )).toDouble()
+    }
+    fun getAudioEnternal(mContext: Context, uri: Uri, id: String): Int {
+        var fileSize = 0
+        try {
+            val cursor = mContext.contentResolver.query(
+                uri,
+                arrayOf(id),
+                null, null, null
+            )
+            if (cursor != null) {
+                fileSize = cursor.count
+                cursor.close()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return fileSize
+    }
     fun getDeviceInfoInfo(): DeviceInfo {
         var info =  DeviceInfo()
         info.xvfwimyt = getBootTime()
         info.deviceNo = getDeviceNo(App.instance)
-        info.aayicsmovpg = Build.BRAND ?: "unknow"
-        info.tbocfgnffxv = Build.MODEL ?: "unknow"
-        info.xzobehbpluwfx = Build.VERSION.RELEASE ?: "unknow"
-        info.bwpvyuyda = Build.VERSION.CODENAME ?: "unknow"
-        info.fatxjektobt = Build.BOARD ?: "unknow"
-        info.xjllxhuexzqhm = Build.PRODUCT ?: "unknow"
-        info.gsrjhrpmhzaz = Build.DEVICE ?: "unknow"
-        info.bkrzvdzaneuogfvle = Build.FINGERPRINT ?: "unknow"
-        info.dfkcyphqnp = Build.HOST ?: "unknow"
-        info.jzovdprqxa = Build.TAGS ?: "unknow"
-        info.ystjwjohjb = Build.TYPE ?: "unknow"
+        info.aayicsmovpg = Build.BRAND ?: ""
+        info.tbocfgnffxv = Build.MODEL ?: ""
+        info.xzobehbpluwfx = Build.VERSION.RELEASE ?: ""
+        info.bwpvyuyda = Build.VERSION.CODENAME ?: ""
+        info.fatxjektobt = Build.BOARD ?: ""
+        info.xjllxhuexzqhm = Build.PRODUCT ?: ""
+        info.gsrjhrpmhzaz = Build.DEVICE ?: ""
+        info.bkrzvdzaneuogfvle = Build.FINGERPRINT ?: ""
+        info.dfkcyphqnp = Build.HOST ?: ""
+        info.jzovdprqxa = Build.TAGS ?: ""
+        info.ystjwjohjb = Build.TYPE ?: ""
         info.dymareonjo = formatBuildTime()
-        info.imxtqcatxpxvxstqv = Build.VERSION.INCREMENTAL ?: "unknow"
+        info.imxtqcatxpxvxstqv = Build.VERSION.INCREMENTAL ?: ""
         info.hlrgfxqxvpfx = Build.VERSION.SDK_INT.toString()
-        info.zhhakpvpthsdrgjixl = Build.MANUFACTURER ?: "unknow"
-        info.jfiqzkjormnfwgwb = Build.BOOTLOADER ?: "unknow"
-        info.tpjrvcgqusjk = Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
-        info.cyjzupehmzbww = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
-            } else {
-                Build.CPU_ABI2 ?: ""
-            }
-        info.gysxtvyhxicqtp = Build.HARDWARE ?: "unknow"
+        info.zhhakpvpthsdrgjixl = Build.MANUFACTURER ?: ""
+        info.jfiqzkjormnfwgwb = Build.BOOTLOADER ?: ""
+        info.tpjrvcgqusjk = Build.SUPPORTED_ABIS.firstOrNull() ?: ""
+        info.cyjzupehmzbww = Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
+        info.gysxtvyhxicqtp = Build.HARDWARE ?: ""
         info.mxuudfyqvddu = getDeviceSerial(App.instance)
         return info
     }
@@ -863,7 +891,7 @@ object SystemDataUtils {
             loc.vcbrso = location.isMock
         }
         loc.ijrjlhiw = location.latitude
-        loc.zbwmvuvi = location.accuracy.toDouble()
+        loc.zbwmvuvi = location.accuracy
         loc.sxafoesdm = location.longitude
         loc.deohwdm = location.bearing.toDouble()
         loc.bbmwtmkd = location.altitude
@@ -1254,8 +1282,8 @@ object SystemDataUtils {
     fun getCurrentCountry(mContext: Context): String{
         try {
             val locale = mContext.resources.configuration.locale
-            return locale.getDisplayCountry(Locale.ENGLISH)
-            //return mContext.resources.configuration.locale.displayCountry
+            //return locale.getDisplayCountry(Locale.ENGLISH)
+            return mContext.resources.configuration.locale.displayCountry
         } catch (e: Exception) {
             return ""
         }
@@ -1284,23 +1312,17 @@ object SystemDataUtils {
             }
 
         }
-        return "unknown"
+        return ""
     }
 
     fun getSysStorage(): Long {
-        try {
-            /*val dire = Environment.getDataDirectory()
-            val statFs = StatFs(dire.path)
-            return statFs.totalBytes / (1024 * 1024)*/
-
-            val dir = Environment.getDataDirectory()
-            val statFs = StatFs(dir.path)
-            val totalBlocks = statFs.blockCountLong
-            val blockSize = statFs.blockSizeLong
-            return totalBlocks * blockSize / (1024 * 1024)
-
+        return try {
+            val path = Environment.getDataDirectory()
+            val statFs = StatFs(path.path)
+            statFs.totalBytes / (1024 * 1024)
         } catch (e: Exception) {
-            return 0
+            e.printStackTrace()
+            0
         }
     }
 

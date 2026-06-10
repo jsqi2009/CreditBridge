@@ -8,7 +8,7 @@ class GeographicInfo {
 
     var sxafoesdm: Double = 0.0
 
-    var zbwmvuvi: Double = 0.0
+    var zbwmvuvi: Float = 0f
 
     var bbmwtmkd: Double = 0.0
 

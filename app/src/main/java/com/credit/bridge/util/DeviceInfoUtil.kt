@@ -270,8 +270,8 @@ object DeviceInfoUtil {
                 BatteryManager.BATTERY_STATUS_DISCHARGING -> "discharging"
                 BatteryManager.BATTERY_STATUS_FULL -> "full"
                 BatteryManager.BATTERY_STATUS_NOT_CHARGING -> "not_charging"
-                BatteryManager.BATTERY_STATUS_UNKNOWN -> "unknown"
-                else -> "unknown"
+                BatteryManager.BATTERY_STATUS_UNKNOWN -> ""
+                else -> ""
             }
         } else {
             when (status) {
@@ -283,8 +283,8 @@ object DeviceInfoUtil {
                 BatteryManager.BATTERY_HEALTH_UNSPECIFIED_FAILURE ->
                     "unspecified_failure"
 
-                BatteryManager.BATTERY_HEALTH_UNKNOWN -> "unknown"
-                else -> "unknown"
+                BatteryManager.BATTERY_HEALTH_UNKNOWN -> ""
+                else -> ""
             }
         })
     }
