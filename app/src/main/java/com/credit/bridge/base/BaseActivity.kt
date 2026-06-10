@@ -102,16 +102,19 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
     }
 
     protected fun showLoading() {
-        if (loadingDialog == null) {
-            loadingDialog = GlobalLoading.newInstance()
-        }
-        loadingDialog?.safeShow(getSupportFragmentManager())
+        if (isFinishing || isDestroyed) return
+        val fm = supportFragmentManager
+        if (fm.findFragmentByTag(GlobalLoading.TAG) != null) return
+        if (loadingDialog?.isAdded == true) return
+        if (loadingDialog != null) return
+
+        loadingDialog = GlobalLoading.newInstance()
+        loadingDialog?.safeShow(fm)
     }
 
     protected fun hideLoading() {
-        if (loadingDialog != null) {
-            loadingDialog?.safeDismiss()
-        }
+        loadingDialog?.safeDismiss()
+        loadingDialog = null
     }
 
 

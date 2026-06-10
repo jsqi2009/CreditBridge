@@ -42,13 +42,10 @@ class GlobalLoading : DialogFragment() {
     }
 
     fun safeShow(manager: FragmentManager?) {
-        if (manager == null) return
-
+        if (manager == null || isAdded) return
         if (manager.findFragmentByTag(TAG) != null) return
-
-        if (!manager.isStateSaved()) {
-            show(manager, TAG)
-        }
+        if (manager.isStateSaved) return
+        show(manager, TAG)
     }
 
     fun safeDismiss() {
@@ -66,7 +63,7 @@ class GlobalLoading : DialogFragment() {
     }
 
     companion object {
-        private const val TAG = "CommonLoadingDialog"
+        const val TAG = "CommonLoadingDialog"
 
         fun newInstance(): GlobalLoading {
             return GlobalLoading()

@@ -99,18 +99,19 @@ abstract class BaseBottomSheet<VB : ViewBinding> : BottomSheetDialogFragment() {
     }
 
     protected fun showLoading() {
-        if (!isAdded()) return
+        if (!isAdded) return
+        val fm = childFragmentManager
+        if (fm.findFragmentByTag(GlobalLoading.TAG) != null) return
+        if (loadingDialog?.isAdded == true) return
+        if (loadingDialog != null) return
 
-        if (loadingDialog == null) {
-            loadingDialog = GlobalLoading.newInstance()
-        }
-        loadingDialog!!.safeShow(getChildFragmentManager())
+        loadingDialog = GlobalLoading.newInstance()
+        loadingDialog?.safeShow(fm)
     }
 
     protected fun hideLoading() {
-        if (loadingDialog != null) {
-            loadingDialog!!.safeDismiss()
-        }
+        loadingDialog?.safeDismiss()
+        loadingDialog = null
     }
 
 }
