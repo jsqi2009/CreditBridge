@@ -241,6 +241,7 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         enableEdgeToEdge()
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         panNumberFailTimes = 0
+        ///showLivenessFailDialog()
     }
 
     override fun onResume() {
@@ -430,8 +431,11 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
             }
             4 -> {
                 bindViews.verify3.root.visibility = View.GONE
+                bindViews.verify5.root.visibility = View.GONE
+                bindViews.step5Line.root.visibility = View.GONE
                 bindViews.verify4.root.visibility = View.VISIBLE
                 bindViews.verifyTipsLayout.visibility = View.VISIBLE
+                bindViews.verifyTipsTv.visibility = View.VISIBLE
                 bindViews.attemptLeftTv.visibility = View.VISIBLE
                 bindViews.attemptLeftTv.text = getString(R.string.verify_photo_attempts_left_today) + panNumberOfTimes
                 bindViews.verifyTipsTv.text = "Please verify your ID information to proceed with account confirmation."
@@ -1601,15 +1605,47 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
     private fun goToOcrForUpdate() {
         isFacePassed = false
-        pendingReturnToFaceAfterOcr = faceFromHome
+        isUseVerifyFace = false
+        pendingReturnToFaceAfterOcr = true
         currentStep = 4
+        resetOcrToDefaultState()
+        resetFaceStepToDefault()
         refreshUI()
+    }
+
+    private fun resetOcrToDefaultState() {
+        bindViews.verifyTipsLayout.visibility = View.VISIBLE
+        bindViews.verifyTipsTv.visibility = View.VISIBLE
+        bindViews.verifyTipsTv.text = "Please verify your ID information to proceed with account confirmation."
+        bindViews.verify4.panTips.visibility = View.VISIBLE
+        bindViews.verify4.panInfoLl.visibility = View.GONE
+        bindViews.verify4.fullNameTv.setText("")
+        bindViews.verify4.panNumberTv.setText("")
+        bindViews.verify4.birthDateTv.text = ""
+        bindViews.verify4.genderTv.text = ""
+        bindViews.verify4.panNumberIv.setImageResource(R.mipmap.ic_pan_tips)
+        bindViews.verify4.cardIv.setImageResource(R.mipmap.ic_pan_tips)
+        bindViews.stepBtn4.visibility = View.GONE
+        bindViews.continueTv.visibility = View.VISIBLE
+        bindViews.continueTv.text = "Continue"
+        isOcrNumberPassed = false
+        panNumberFailTimes = 0
+        isUseOcePan = false
+        genderIndex = -1
+        cardImgPath = ""
+        syncVerifyStep1KeyboardScroll()
+    }
+
+    private fun resetFaceStepToDefault() {
+        bindViews.verify5.verifyFaceIv.setImageResource(R.mipmap.ic_tap_verify)
     }
 
     private fun navigateAfterOcrSubmitSuccess() {
         if (pendingReturnToFaceAfterOcr) {
             pendingReturnToFaceAfterOcr = false
             currentStep = 5
+            faceFailTimes = 0
+            resetFaceStepToDefault()
         } else {
             currentStep++
         }

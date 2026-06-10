@@ -53,7 +53,7 @@
     <string name="liveness_fail_title">Verification Unsuccessful</string>
     <string name="liveness_fail_message">Face and PAN photo did not match. Please try again or retake your PAN photo.</string>
     <string name="liveness_fail_retry">Retry</string>
-    <string name="liveness_fail_update_pan">Update PAN photo</string>
+    <string name="liveness_fail_update_pan">Update PAN Photo</string>
 
     <!--product  -->
     <string name="product_up_to">Up to</string>

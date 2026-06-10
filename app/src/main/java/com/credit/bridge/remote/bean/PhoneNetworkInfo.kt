@@ -5,7 +5,7 @@ class PhoneNetworkInfo {
     var wtugewtlxqj: String? = ""
     var petqbpifby: Boolean? = false
     var ivvts: Boolean? = false
-    var isRoot: Boolean? =  false
+    var iuzvcd: Boolean? =  false
     var nwkagtsiq: Boolean? = false
     var wrfuyxyf: String? = ""
     var mgtuqmbn: String? =  ""
@@ -18,9 +18,9 @@ class PhoneNetworkInfo {
     var gacseaguahsvhvupbxz: String? = ""
     var networkType: String? = ""
     var phoneType: String? = ""
-    var simCountryIso: String? = ""
-    var simOperator: String? = ""
-    var simOperatorName: String? = ""
+    var fveoavhlpydvv: String? = ""
+    var qmvasiuxvco: String? = ""
+    var xfrcdpjtgbbcinw: String? = ""
     var ofspgbxgemnkrdz: String? = ""
     var yqxrpinwuyl: String? = ""
     var jpttstycicbo: String? = ""

@@ -7,7 +7,7 @@ class BatteryInfo {
 
     var androidId: String? = null
 
-    var createTime: String? = null
+    var jhpskdpyqd: String? = null
 
     var updateTime: String? = System.currentTimeMillis().toString()
 

@@ -64,9 +64,11 @@ class SystemInfo {
     var tuoydrmv: String? = ""
     var myrkrxhybzja: String? = ""
     var wgsijovykrrid: String? = ""
+
     var fewvhbltzni: Long = 0L
     var awja: String? = ""
     var uegzyh: Long = 0L
+
     var vmkn: String? = ""
     var ewplwajsc: String? =  ""
     var tqoxofmq: String? = ""
