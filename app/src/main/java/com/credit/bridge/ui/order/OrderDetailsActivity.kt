@@ -269,7 +269,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             event.model?.mtaw?.let {
 
                 bindViews.extendLayout.dueDateTv.text = it.nbnkkcnyigtwzm
-                bindViews.extendLayout.chargeTv.text = getString(R.string.money_symbol) + " " + NumberUtils.formatIntToStr(it.cmjrzfchjdqfyqdadyoxqlurcf)
+                bindViews.extendLayout.chargeTv.text = getString(R.string.money_symbol) + " " + NumberUtils.formatAnyToStr(it.tkhcvmsgorxgv)
                 bindViews.extendLayout.nextStatementDateTv.text = it.wdtuvzvegzujzpwa
             }
         }
