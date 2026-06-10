@@ -258,22 +258,22 @@ object SystemDataUtils {
         deviceInfo.lhpxzxkmohxlq = getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         ).toString()
-        deviceInfo.downloadFiles = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).listFiles().size.toString()
-        deviceInfo.wifi = wifiB()
-        deviceInfo.lastBootTime = "${SystemClock.elapsedRealtimeNanos()}"
-        deviceInfo.productionDate = Build.TIME.toString()
-        deviceInfo.wifiCount = 0.toString()
-        deviceInfo.configuredWifi = DeviceInfoUtil.getWifiConfigure(context)
-        deviceInfo.cores = cor()
-        deviceInfo.deviceHeight = height()
-        deviceInfo.deviceWidth = width()
-        deviceInfo.inphysicalSize = screenS()
-        deviceInfo.phoneType = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
-        deviceInfo.memoryCardSize = DeviceInfoUtil.getMemberMounted(0).toString()
-        deviceInfo.memoryCardUsableSize = DeviceInfoUtil.getMemberMounted(1).toString()
-        deviceInfo.memoryCardSizeUse = DeviceInfoUtil.getMemberMounted(2).toString()
-        deviceInfo.memoryCardFreeSize = DeviceInfoUtil.getMemberMounted(3).toString()
-        deviceInfo.picCount = "${getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
+        deviceInfo.coyomiayafmzl = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).listFiles().size.toString()
+        deviceInfo.aygn = wifiB()
+        deviceInfo.lenomhvjdydw = "${SystemClock.elapsedRealtimeNanos()}"
+        deviceInfo.qlxgfaeoupzump = Build.TIME.toString()
+        deviceInfo.ybiymourh = 0.toString()
+        deviceInfo.gwkglwhovxisyt = DeviceInfoUtil.getWifiConfigure(context)
+        deviceInfo.sbpcg = cor()
+        deviceInfo.vuxxszhyngwl = height()
+        deviceInfo.lzpoptgggxk = width()
+        deviceInfo.tmysjrxzuzvqhc = screenS()
+        deviceInfo.ulmroucex = (App.instance.getSystemService(Context.TELEPHONY_SERVICE) as TelephonyManager).phoneType.toString()
+        deviceInfo.lslhltdnfmyhbe = DeviceInfoUtil.getMemberMounted(0).toString()
+        deviceInfo.zdqrfwqrnkogjymffrdc = DeviceInfoUtil.getMemberMounted(1).toString()
+        deviceInfo.xltuwggbrorgxbiat = DeviceInfoUtil.getMemberMounted(2).toString()
+        deviceInfo.dnvibjolhfdygrogzc = DeviceInfoUtil.getMemberMounted(3).toString()
+        deviceInfo.owiukkuq = "${getDataCount(MediaStore.Images.Media.INTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
         )+ getDataCount(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             arrayOf(MediaStore.Images.Media.DATA)
@@ -284,32 +284,32 @@ object SystemDataUtils {
 
     fun getDeviceInfoInfo(): DeviceInfo {
         var info =  DeviceInfo()
-        info.bootTime = getBootTime()
+        info.xvfwimyt = getBootTime()
         info.deviceNo = getDeviceNo(App.instance)
-        info.deviceBrand = Build.BRAND ?: "unknow"
-        info.deviceModel = Build.MODEL ?: "unknow"
-        info.deviceRelease = Build.VERSION.RELEASE ?: "unknow"
-        info.deviceSdk = Build.VERSION.CODENAME ?: "unknow"
-        info.deviceBoard = Build.BOARD ?: "unknow"
-        info.deviceProduct = Build.PRODUCT ?: "unknow"
-        info.deviceDevice = Build.DEVICE ?: "unknow"
-        info.deviceFingerprint = Build.FINGERPRINT ?: "unknow"
-        info.deviceHost = Build.HOST ?: "unknow"
-        info.deviceTags = Build.TAGS ?: "unknow"
-        info.deviceType = Build.TYPE ?: "unknow"
-        info.deviceTime = formatBuildTime()
-        info.deviceIncremental = Build.VERSION.INCREMENTAL ?: "unknow"
-        info.deviceSdkInt = Build.VERSION.SDK_INT.toString()
-        info.deviceManufacturer = Build.MANUFACTURER ?: "unknow"
-        info.deviceBootloader = Build.BOOTLOADER ?: "unknow"
-        info.deviceCpuAbi = Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
-        info.deviceCpuAbi2 = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        info.aayicsmovpg = Build.BRAND ?: "unknow"
+        info.tbocfgnffxv = Build.MODEL ?: "unknow"
+        info.xzobehbpluwfx = Build.VERSION.RELEASE ?: "unknow"
+        info.bwpvyuyda = Build.VERSION.CODENAME ?: "unknow"
+        info.fatxjektobt = Build.BOARD ?: "unknow"
+        info.xjllxhuexzqhm = Build.PRODUCT ?: "unknow"
+        info.gsrjhrpmhzaz = Build.DEVICE ?: "unknow"
+        info.bkrzvdzaneuogfvle = Build.FINGERPRINT ?: "unknow"
+        info.dfkcyphqnp = Build.HOST ?: "unknow"
+        info.jzovdprqxa = Build.TAGS ?: "unknow"
+        info.ystjwjohjb = Build.TYPE ?: "unknow"
+        info.dymareonjo = formatBuildTime()
+        info.imxtqcatxpxvxstqv = Build.VERSION.INCREMENTAL ?: "unknow"
+        info.hlrgfxqxvpfx = Build.VERSION.SDK_INT.toString()
+        info.zhhakpvpthsdrgjixl = Build.MANUFACTURER ?: "unknow"
+        info.jfiqzkjormnfwgwb = Build.BOOTLOADER ?: "unknow"
+        info.tpjrvcgqusjk = Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
+        info.cyjzupehmzbww = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Build.SUPPORTED_ABIS.getOrNull(1) ?: ""
             } else {
                 Build.CPU_ABI2 ?: ""
             }
-        info.deviceHardware = Build.HARDWARE ?: "unknow"
-        info.deviceSerial = getDeviceSerial(App.instance)
+        info.gysxtvyhxicqtp = Build.HARDWARE ?: "unknow"
+        info.mxuudfyqvddu = getDeviceSerial(App.instance)
         return info
     }
     private fun formatBuildTime(): String {
