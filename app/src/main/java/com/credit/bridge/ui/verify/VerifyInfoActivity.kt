@@ -466,8 +466,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
 
                 HttpClient.getQuestionByStep(this, currentStep)
 
-                HttpClient.eventReport(this,ConstConfig.EVENT_INPUT_LIVENESS,
-                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_INPUT_LIVENESS)
+                HttpClient.eventReport(this,ConstConfig.EVENT_START_LIVENESS,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_START_LIVENESS)
 
                 HttpClient.verifyOcrFaceNumber(this@VerifyInfoActivity)
             }

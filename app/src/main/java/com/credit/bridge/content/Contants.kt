@@ -5,7 +5,6 @@ object Contants {
 
     //Base URL
     const val BASE_SERVER_URL = "https://api.creditbridgeapp.com/"
-//    const val BASE_SERVER_URL = "https://api.rupeecycle.com/"
 
 
 

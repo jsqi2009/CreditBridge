@@ -60,12 +60,8 @@ object ConstConfig {
     const val EVENT_SELECT_CREDIT_AMOUNT = "selectCreditAmount"	//
 
 
-    const val EVENT_INPUT_LIVENESS = "liveness_input"	//
-    const val EVENT_FAIL_LIVENESS = "liveness_fail"	//
-    const val EVENT_IDCARD_FAIL = "idcard_fail"	//
-    const val EVENT_INTO_LOANAMOUNT = "loanamount_info"	//
-    const val EVENT_LOAN_SUBMIT = "loan_info_submit"	//
-    const val EVENT_CLICK_CAMERA = "click_camera"	//
+    const val EVENT_FAIL_LIVENESS = "faceCheckUploadUnavailable"	//
+    const val EVENT_IDCARD_FAIL = "idDocumentUploadUnavailable"	//
     const val EVENT_ACTION_CLICK = "click"
     const val EVENT_ACTION_HOLD = "hold"
 

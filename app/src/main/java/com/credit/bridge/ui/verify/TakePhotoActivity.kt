@@ -137,8 +137,8 @@ class TakePhotoActivity : BaseActivity<ActivityTakePhotoBinding>(), View.OnClick
                         }
                     })
 
-                HttpClient.eventReport(this,ConstConfig.EVENT_CLICK_CAMERA,
-                    ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_CLICK_CAMERA)
+                /*HttpClient.eventReport(this,ConstConfig.EVENT_CLICK_CAMERA,
+                    ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_CLICK_CAMERA)*/
             }
             R.id.flashIv -> {
                 if(imageCapture?.flashMode == ImageCapture.FLASH_MODE_ON){

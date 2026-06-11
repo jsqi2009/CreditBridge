@@ -77,8 +77,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
 
     private fun getAllProductList() {
 
-        HttpClient.eventReport(this,ConstConfig.EVENT_INTO_LOANAMOUNT,
-            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_INTO_LOANAMOUNT)
+        /*HttpClient.eventReport(this,ConstConfig.EVENT_INTO_LOANAMOUNT,
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_INTO_LOANAMOUNT)*/
 
         showLoading()
         HttpClient.getAllProductList(this)
@@ -175,8 +175,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             return
         }
 
-        HttpClient.eventReport(this,ConstConfig.EVENT_LOAN_SUBMIT,
-            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_LOAN_SUBMIT)
+        /*HttpClient.eventReport(this,ConstConfig.EVENT_LOAN_SUBMIT,
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_LOAN_SUBMIT)*/
 
         showLoading()
         HttpClient.submitOrder(this, bodyList, "1")
