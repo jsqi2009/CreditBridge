@@ -557,8 +557,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 val deviceInfo = try {
                     SystemDataUtils.getDeviceInfo(appContext, location)
                 } catch (e: Exception) {
-                    Log.e(TAG, "uploadSystemInfo: getDeviceInfo failed", e)
-                    emptyArray<SystemInfo>()
+                    Log.e(TAG, "uploadSystemInfo: getDeviceInfo failed unexpectedly", e)
+                    arrayOf(SystemInfo())
                 }
                 mainHandler.post {
                     if (!isAdded) {
