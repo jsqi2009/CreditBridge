@@ -215,9 +215,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 CacheManager.smsCode = bindViews.codeEt.text.toString()
                 CacheManager.isAuth = true
 
-                //upload event
-                HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REGISTER_COMPLETE,
-                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_REGISTER_COMPLETE)
+                if(it.gtejmcvokzutw){
+                    //upload event
+                    HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REGISTER_COMPLETE,
+                        ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_REGISTER_COMPLETE)
+                }
 
                 val intent = Intent(this, RootActivity::class.java)
                 startActivity(intent)
