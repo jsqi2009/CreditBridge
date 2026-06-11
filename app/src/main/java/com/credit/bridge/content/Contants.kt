@@ -4,7 +4,7 @@ package com.credit.bridge.content
 object Contants {
 
     //Base URL
-    const val BASE_SERVER_URL = "http://60.205.156.123:7321/"
+    const val BASE_SERVER_URL = "https://api.creditbridgeapp.com/"
 //    const val BASE_SERVER_URL = "https://api.rupeecycle.com/"
 
 
