@@ -596,6 +596,15 @@ object SystemDataUtils {
         return Gson().toJson(networkInfo)
     }
 
+    @Suppress("DEPRECATION")
+    private fun subscriptionMccMnc(sub: SubscriptionInfo): String {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            "${sub.mccString ?: ""}${sub.mncString ?: ""}"
+        } else {
+            "${sub.mcc}${sub.mnc}"
+        }
+    }
+
     @RequiresPermission(Manifest.permission.READ_PHONE_STATE)
     @SuppressLint("NewApi")
     fun getSimNetworkInfo(target: PhoneNetworkInfo) {
@@ -607,7 +616,7 @@ object SystemDataUtils {
             if (!activeSubs.isNullOrEmpty()) {
                 val firstSub = activeSubs[0]
                 target.fveoavhlpydvv = firstSub.countryIso ?: ""
-                target.qmvasiuxvco = "${firstSub.mccString ?: ""}${firstSub.mncString ?: ""}"
+                target.qmvasiuxvco = subscriptionMccMnc(firstSub)
                 val rawName = firstSub.carrierName?.toString() ?: ""
                 val pureName = rawName.indexOf("-").let { idx ->
                     if (idx > 0) rawName.substring(idx + 1).trim() else rawName.trim()

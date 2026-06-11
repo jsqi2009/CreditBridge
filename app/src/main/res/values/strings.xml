@@ -27,6 +27,7 @@
 
 
     <string name="money_symbol">₹</string>
+    <string name="home_credit_amount_placeholder">₹ ？？？？？</string>
 
     <!--order fragment  -->
     <string name="order_title">Bills</string>

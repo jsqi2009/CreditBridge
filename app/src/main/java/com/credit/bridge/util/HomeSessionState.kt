@@ -7,19 +7,12 @@ object HomeSessionState {
     var homeInfo: HomeInfo? = null
 
     fun restoreFromCache() {
-        if (!isAuthed) {
-            isAuthed = CacheManager.isUserVerified
-        }
+        // isAuthed is driven by checkCollectDataStatus (rvazxrtziwtcvrfrkzczx), not local cache.
     }
 
     fun updateCollectInfo(info: CollectDataInfo) {
         currentStep = info.lrksnnsd
-        val verified = info.rvazxrtziwtcvrfrkzczx || info.masxqgkeptyuo
-        if (verified) {
-            setVerified(true)
-        } else if (!isAuthed && !CacheManager.isUserVerified) {
-            setVerified(false)
-        }
+        setVerified(info.rvazxrtziwtcvrfrkzczx)
     }
 
     fun setVerified(verified: Boolean) {

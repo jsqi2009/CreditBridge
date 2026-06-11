@@ -60,7 +60,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     ) = FragmentHomeBinding.inflate(inflater, container, false)
 
     private val permissions = arrayOf(Manifest.permission.READ_PHONE_STATE,
-        Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
+        Manifest.permission.ACCESS_COARSE_LOCATION)
 
     private var isAuthed = false
     var isCreateOrder = false
@@ -82,6 +82,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             if (result.data != null) {
                 isBackFromVerifyInfoPage = true
             }
+            hideLoading()
         }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -101,12 +102,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.onResume()
         syncFromSession()
         skipHomeUploadEvents = false
-        /*if (isVisible) {
+        if (isVisible) {
+            checkCollectDataStatus()
+            tryResumeUploadAfterPermissionFromSettings()
+        }
+    }
 
-        }*/
-        showLoading()
-        checkCollectDataStatus()
-        tryResumeUploadAfterPermissionFromSettings()
+    override fun onStop() {
+        hideLoading()
+        super.onStop()
     }
     override fun initRes() {
         super.initRes()
@@ -135,6 +139,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             bindViews.verifiedNeedPayDue.visibility = View.GONE
             bindViews.verifiedNeedPay.visibility = View.GONE
             bindViews.verifiedFail.visibility = View.GONE
+            bindViews.totalAmountTv.text = getString(R.string.home_credit_amount_placeholder)
         }
     }
 
@@ -221,11 +226,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             return
         }
         val amount = homeInfo?.otytwlcq?.gkdtfbvtbvquxbewhmn
-        if (amount != null && amount >= 0) {
-            if (isAuthed) {
-                bindViews.totalAmountTv.text =
-                    context?.getString(R.string.money_symbol) + " " + String.format("%,d", amount)
-            }
+        if (isAuthed && amount != null && amount >= 0) {
+            bindViews.totalAmountTv.text =
+                context?.getString(R.string.money_symbol) + " " + String.format("%,d", amount)
+        } else if (!isAuthed) {
+            bindViews.totalAmountTv.text = getString(R.string.home_credit_amount_placeholder)
         }
         if (homeInfo!!.hahsraev != null && homeInfo!!.hahsraev?.gdcuhe != null) {
             val orderStatus = homeInfo?.hahsraev?.gdcuhe
@@ -405,7 +410,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             return PermissionGuideType.DEVICE_INFO
         }
         if (isPermanentlyDenied(activity, Manifest.permission.ACCESS_COARSE_LOCATION)
-            || isPermanentlyDenied(activity, Manifest.permission.ACCESS_FINE_LOCATION)
         ) {
             return PermissionGuideType.LOCATION
         }

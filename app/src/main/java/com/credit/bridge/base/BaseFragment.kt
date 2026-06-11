@@ -71,9 +71,12 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected fun showLoading() {
         if (!isAdded) return
         val fm = childFragmentManager
-        if (fm.findFragmentByTag(GlobalLoading.TAG) != null) return
+        val existing = fm.findFragmentByTag(GlobalLoading.TAG) as? GlobalLoading
+        if (existing != null) {
+            loadingDialog = existing
+            return
+        }
         if (loadingDialog?.isAdded == true) return
-        if (loadingDialog != null) return
 
         loadingDialog = GlobalLoading.newInstance()
         loadingDialog?.safeShow(fm)
@@ -82,6 +85,9 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected fun hideLoading() {
         loadingDialog?.safeDismiss()
         loadingDialog = null
+        if (isAdded) {
+            (childFragmentManager.findFragmentByTag(GlobalLoading.TAG) as? GlobalLoading)?.safeDismiss()
+        }
     }
 
 

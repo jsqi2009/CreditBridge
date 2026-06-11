@@ -241,7 +241,8 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
         enableEdgeToEdge()
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
         panNumberFailTimes = 0
-        ///showLivenessFailDialog()
+
+        //showLivenessFailDialog()
     }
 
     override fun onResume() {
