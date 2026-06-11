@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.pm.PackageInfo
 import android.provider.Settings
+import android.text.TextUtils
 import android.util.Log
 import androidx.annotation.RequiresPermission
 import com.appsflyer.AppsFlyerLib
@@ -206,27 +207,18 @@ object HttpClient {
         val packageInfo: PackageInfo = mContext.packageManager.getPackageInfo(mContext.packageName, 0)
         val headerMap: HashMap<String, String> = HashMap<String, String>()
 
-        headerMap["X-RRR-DZVRAKC-MMKJ"] = packageInfo.versionName.toString()
-        headerMap["X-CON-VHHD"] = "ANDROID"
-        headerMap["X-NHCKUD-VHQAORMXP"] = CacheManager.afChannel
-        headerMap["X-XRS-QLAE"] = mContext.resources.getString(R.string.app_name)
-        headerMap["X-ENWYHNRJ"] = ""
-        headerMap["X-BHW-JVMM"] = CacheManager.smsCode
-        headerMap["X-IYAOIEZT-IGYAM"] = ""   //Firebase token
-        headerMap["X-CRFG-WWRIH"] = CacheManager.token
-        headerMap["X-QSHIECIQ-QUJKZFAHFS"] = App.instance.googleAdIdResult?.gaid ?: ""
-        headerMap["X-VTZCTGQW-WRR"] = CacheManager.afChannel
-        headerMap["XX-QSNNRMS-XYL"] = "X-CAPTCHA-SID"
-        headerMap["X-HKR-UQCLRVW"] = packageInfo.versionCode.toString()
-        headerMap["X-YGEOCR-SYUU"] = AppsFlyerLib.getInstance().getAppsFlyerUID(App.instance) ?: ""
-        headerMap["X-AQITBIX-JA"] = SystemDataUtils.getAndroidId()
-        headerMap["X-SOH-TILKQCJ-YORU"] = "com.get.credit.full.fin.android"
-        headerMap["X-UE-DU"] = "X-AF-ID"
-        headerMap["X-ZTXHWJ-IXOA"] = ""    //device name
-        headerMap["X-QXMQSXJMGCD"] = ""
-        headerMap["X-UHV-CL"] = ""
-        headerMap["X-ID-NB"] = App.instance.googleAdIdResult?.gaid ?: ""
-        headerMap["X-GA-ID"] = App.instance.googleAdIdResult?.gaid ?: ""
+        headerMap["X-RRR-DZVRAKC-MMKJ"] = packageInfo.versionName.toString()//X-APP-VERSION-NAME11
+        headerMap["X-CON-VHHD"] = "ANDROID"//X-APP-TYPE11
+        headerMap["X-XRS-QLAE"] = mContext.resources.getString(R.string.app_name)//X-APP-NAME11
+        headerMap["X-BHW-JVMM"] = CacheManager.smsCode//X-SMS-CODE11
+        headerMap["X-CRFG-WWRIH"] = CacheManager.token//X-AUTH-TOKEN11
+        headerMap["X-VTZCTGQW-WRR"] = if (TextUtils.isEmpty(CacheManager.afChannel)) "Organic" else CacheManager.afChannel//X-REFERRER-SDK11
+        headerMap["X-HKR-UQCLRVW"] = packageInfo.versionCode.toString()//X-APP-VERSION11
+        headerMap["X-AQITBIX-JA"] = SystemDataUtils.getAndroidId()//X-ANDROID-ID11
+        headerMap["X-SOH-TILKQCJ-YORU"] = "com.get.credit.full.fin.android"//X-APP-PACKAGE-NAME11
+        headerMap["X-UE-DU"] =  AppsFlyerLib.getInstance().getAppsFlyerUID(App.instance) ?: "" //X-AF-ID11
+        headerMap["X-ID-NB"] = App.instance.googleAdIdResult?.gaid ?: ""//X-GA-ID
+        headerMap["X-ENWYHNRJ"] = CacheManager.afChannel//X-REFERRER
 
         return headerMap
     }

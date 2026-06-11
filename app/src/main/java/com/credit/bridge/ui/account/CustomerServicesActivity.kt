@@ -83,7 +83,7 @@ class CustomerServicesActivity : BaseActivity<ActivityCustomerServicesBinding>()
                 if (itemList.isNotEmpty()) {
                     itemList.forEach { it ->
                         if (it.ntwf == "WA") {
-                            bindViews.nameTv.text = it.ntwf + ": "
+                            bindViews.nameTv.text =  "WhatsApp: "
                             bindViews.valueTv.text = it.qnhoa
                         }
                         if (it.ntwf == "EMAIL") {

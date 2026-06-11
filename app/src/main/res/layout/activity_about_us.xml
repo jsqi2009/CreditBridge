@@ -41,27 +41,55 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@mipmap/ic_account_content_bg"
-        android:layout_weight="1">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_100"
-            android:layout_marginHorizontal="@dimen/margin_15"
-            android:gravity="center_horizontal"
-            android:lineHeight="@dimen/margin_25"
-            android:text="Credit Bridge helps users view and manage revolving credit line information in a clear and simple way.Users can check available credit line details, current usage, billing information, and account status through the app. We focus on clear information, responsible usage, and account security to support a better digital credit line experience."
-            android:textColor="#ffffebd3"
-            android:textSize="15sp"
-            />
+        android:layout_weight="1"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/ic_account_content_bg"
+            android:orientation="vertical"
+            >
 
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_50"
+                android:layout_marginHorizontal="@dimen/margin_15"
+                android:lineHeight="@dimen/margin_25"
+                android:text="         Credit Bridge helps users review and manage their credit line information through a clear digital account experience."
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
 
-    </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginHorizontal="@dimen/margin_15"
+                android:lineHeight="@dimen/margin_25"
+                android:text="        Users can complete verification, check account status, view available limit details, and follow related account activity within the app."                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingTop="20dp"
+                android:layout_marginHorizontal="@dimen/margin_15"
+                android:lineHeight="@dimen/margin_25"
+            android:text="          Our focus is to provide a simple, transparent, and secure way to support responsible credit line management."
+                android:textColor="#ffffebd3"
+                android:textSize="15sp"
+                />
+
+        </LinearLayout>
+    </ScrollView>
+
     <TextView
         android:id="@+id/versionTv"
         android:layout_width="match_parent"
