@@ -19,6 +19,7 @@ import android.graphics.Point
 import android.hardware.camera2.CameraAccessException
 import android.hardware.camera2.CameraCharacteristics
 import android.hardware.camera2.CameraManager
+import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
@@ -79,6 +80,8 @@ import java.security.MessageDigest
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale.getDefault
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 import kotlin.also
 import kotlin.collections.firstOrNull
 import kotlin.collections.forEach
@@ -114,6 +117,7 @@ import kotlin.toString
 object SystemDataUtils {
 
     private const val TAG = "SystemDataUtils"
+    private const val GEOCODE_TIMEOUT_SEC = 5L
 
     private inline fun safeAssign(tag: String, block: () -> Unit) {
         try {
@@ -998,17 +1002,9 @@ object SystemDataUtils {
         }
         try {
             val geocoder = Geocoder(App.instance, Locale.getDefault())
-            @Suppress("DEPRECATION")
-            val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+            val addresses = reverseGeocode(geocoder, latitude, longitude)
             if (!addresses.isNullOrEmpty()) {
-                val address = addresses[0]
-                loc.rhagwaocs = address.adminArea ?: ""
-                loc.onzfleetlki = address.countryCode ?: ""
-                loc.tdjgubjwann = address.countryName ?: ""
-                loc.hvdnendx = address.locality ?: ""
-                loc.yigymcbdzho = address.featureName ?: ""
-                loc.mvulbbvoxm = address.getAddressLine(0) ?: ""
-                Log.d(TAG, "fillAddress: success country=${loc.onzfleetlki}, locality=${loc.hvdnendx}")
+                applyAddressFields(loc, addresses[0])
             } else {
                 Log.w(TAG, "fillAddress: empty geocoder result")
                 clearAddress(loc)
@@ -1017,6 +1013,69 @@ object SystemDataUtils {
             Log.w(TAG, "fillAddress: failed", e)
             clearAddress(loc)
         }
+    }
+
+    private fun reverseGeocode(geocoder: Geocoder, latitude: Double, longitude: Double): List<Address>? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            reverseGeocodeAsync(geocoder, latitude, longitude)
+        } else {
+            @Suppress("DEPRECATION")
+            geocoder.getFromLocation(latitude, longitude, 1)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun reverseGeocodeAsync(
+        geocoder: Geocoder,
+        latitude: Double,
+        longitude: Double
+    ): List<Address>? {
+        val latch = CountDownLatch(1)
+        var addresses: List<Address>? = null
+        var geocodeFailed = false
+        geocoder.getFromLocation(latitude, longitude, 1, object : Geocoder.GeocodeListener {
+            override fun onGeocode(result: MutableList<Address>) {
+                addresses = result
+                latch.countDown()
+            }
+
+            override fun onError(errorMessage: String?) {
+                Log.w(TAG, "fillAddress: geocode async error=$errorMessage")
+                geocodeFailed = true
+                latch.countDown()
+            }
+        })
+        val completed = latch.await(GEOCODE_TIMEOUT_SEC, TimeUnit.SECONDS)
+        if (!completed) {
+            Log.w(TAG, "fillAddress: geocode async timeout after ${GEOCODE_TIMEOUT_SEC}s")
+            return null
+        }
+        if (geocodeFailed) {
+            return null
+        }
+        return addresses
+    }
+
+    private fun applyAddressFields(loc: GeographicInfo, address: Address) {
+        val adminArea = address.adminArea?.takeIf { it.isNotBlank() }
+        val subAdminArea = address.subAdminArea?.takeIf { it.isNotBlank() }
+        val locality = address.locality?.takeIf { it.isNotBlank() }
+        val subLocality = address.subLocality?.takeIf { it.isNotBlank() }
+
+        loc.rhagwaocs = adminArea ?: subAdminArea ?: ""
+        loc.onzfleetlki = address.countryCode ?: ""
+        loc.tdjgubjwann = address.countryName ?: ""
+        loc.hvdnendx = locality
+            ?: subLocality
+            ?: subAdminArea?.takeIf { it != loc.rhagwaocs }
+            ?: ""
+        loc.yigymcbdzho = address.featureName ?: ""
+        loc.mvulbbvoxm = address.getAddressLine(0) ?: ""
+        Log.d(
+            TAG,
+            "fillAddress: success country=${loc.onzfleetlki}, adminArea=${loc.rhagwaocs}, " +
+                "locality=${loc.hvdnendx}, rawAdmin=${address.adminArea}, rawSubAdmin=${address.subAdminArea}"
+        )
     }
 
     private fun clearAddress(loc: GeographicInfo) {
