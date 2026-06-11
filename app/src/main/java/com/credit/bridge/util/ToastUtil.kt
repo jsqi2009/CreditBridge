@@ -19,11 +19,45 @@ class ToastUtil private constructor() {
     }
 
     companion object {
+        private const val MSG_NETWORK_UNAVAILABLE =
+            "Network connection failed, please check network settings"
+        private const val MSG_NETWORK_TIMEOUT =
+            "Request timed out, please try again"
+
         private var isShow = true
 
         private var mToast: Toast? = null
 
         private var toastView: View? = null
+
+        private fun sanitizeMessage(message: CharSequence?): CharSequence? {
+            if (message.isNullOrBlank()) return message
+
+            val text = message.toString().trim()
+            if (!looksLikeTechnicalError(text)) return message
+
+            return when {
+                text.contains("SocketTimeoutException", ignoreCase = true)
+                    || text.contains("timeout", ignoreCase = true) ->
+                    MSG_NETWORK_TIMEOUT
+
+                text.contains("ConnectException", ignoreCase = true)
+                    || text.contains("UnknownHostException", ignoreCase = true)
+                    || text.contains("Failed to connect", ignoreCase = true)
+                    || text.contains("Unable to resolve host", ignoreCase = true)
+                    || text.startsWith("java.net.")
+                    || text.startsWith("java.io.") ->
+                    MSG_NETWORK_UNAVAILABLE
+
+                else -> MSG_NETWORK_UNAVAILABLE
+            }
+        }
+
+        private fun looksLikeTechnicalError(text: String): Boolean {
+            return text.startsWith("java.")
+                || text.startsWith("android.")
+                || text.contains("Exception", ignoreCase = true)
+        }
 
         fun controlShow(isShowToast: Boolean) {
             isShow = isShowToast
@@ -37,13 +71,14 @@ class ToastUtil private constructor() {
 
         fun showShort(context: Context, message: CharSequence?) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
                     mToast =
-                        Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(context.applicationContext, displayMessage, Toast.LENGTH_SHORT)
                     mToast!!.setGravity(Gravity.CENTER, 0, 0)
                 } else {
                     mToast =
-                        Toast.makeText(context.applicationContext, message, Toast.LENGTH_SHORT)
+                        Toast.makeText(context.applicationContext, displayMessage, Toast.LENGTH_SHORT)
                     mToast!!.setGravity(Gravity.CENTER, 0, 0)
                 }
                 mToast!!.show()
@@ -67,12 +102,13 @@ class ToastUtil private constructor() {
 
         fun showLong(context: Context, message: CharSequence?) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
                     mToast =
-                        Toast.makeText(context.applicationContext, message, Toast.LENGTH_LONG)
+                        Toast.makeText(context.applicationContext, displayMessage, Toast.LENGTH_LONG)
                 } else {
                     mToast =
-                        Toast.makeText(context.applicationContext, message, Toast.LENGTH_LONG)
+                        Toast.makeText(context.applicationContext, displayMessage, Toast.LENGTH_LONG)
                 }
                 mToast!!.setGravity(Gravity.CENTER, 0, 0)
                 mToast!!.show()
@@ -89,10 +125,11 @@ class ToastUtil private constructor() {
 
         fun show(context: Context, message: CharSequence?, duration: Int) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
-                    mToast = Toast.makeText(context.applicationContext, message, duration)
+                    mToast = Toast.makeText(context.applicationContext, displayMessage, duration)
                 } else {
-                    mToast!!.setText(message)
+                    mToast!!.setText(displayMessage)
                 }
                 mToast!!.setGravity(Gravity.CENTER, 0, 0)
                 mToast!!.show()
@@ -113,14 +150,15 @@ class ToastUtil private constructor() {
 
         fun customToastView(context: Context, message: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
-                    mToast = Toast.makeText(context.applicationContext, message, duration)
+                    mToast = Toast.makeText(context.applicationContext, displayMessage, duration)
                 }
                 if (toastView == null) {
                     toastView =
                         LayoutInflater.from(context).inflate(R.layout.layout_custom_toast, null)
                 }
-                (toastView!!.findViewById<View?>(R.id.tvToast) as TextView).text = message
+                (toastView!!.findViewById<View?>(R.id.tvToast) as TextView).text = displayMessage
                 if (toastView != null) {
                     mToast!!.setView(toastView)
                 }
@@ -138,10 +176,11 @@ class ToastUtil private constructor() {
             yOffset: Int
         ) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
-                    mToast = Toast.makeText(context.applicationContext, message, duration)
+                    mToast = Toast.makeText(context.applicationContext, displayMessage, duration)
                 } else {
-                    mToast!!.setText(message)
+                    mToast!!.setText(displayMessage)
                 }
                 mToast!!.setGravity(gravity, xOffset, yOffset)
                 mToast!!.show()
@@ -158,10 +197,11 @@ class ToastUtil private constructor() {
             yOffset: Int
         ) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
-                    mToast = Toast.makeText(context.applicationContext, message, duration)
+                    mToast = Toast.makeText(context.applicationContext, displayMessage, duration)
                 } else {
-                    mToast!!.setText(message)
+                    mToast!!.setText(displayMessage)
                 }
                 mToast!!.setGravity(gravity, xOffset, yOffset)
                 val toastView = mToast!!.getView() as LinearLayout?
@@ -186,10 +226,11 @@ class ToastUtil private constructor() {
             verticalMargin: Float
         ) {
             if (isShow) {
+                val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
-                    mToast = Toast.makeText(context.applicationContext, message, duration)
+                    mToast = Toast.makeText(context.applicationContext, displayMessage, duration)
                 } else {
-                    mToast!!.setText(message)
+                    mToast!!.setText(displayMessage)
                 }
                 if (view != null) {
                     mToast!!.setView(view)
