@@ -144,7 +144,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 }
 
                 HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REQUEST_SMS_CODE,
-                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_REQUEST_SMS_CODE)
+                    ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_REQUEST_SMS_CODE)
 
                 showLoading()
                 HttpClient.sendVerifyCode(this, phone, "login", "1")
@@ -161,7 +161,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
                 }
                 DialogUtil.showVoiceVerifyDialog(this, onConfirm = {
                     HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_REQUEST_VOICE_CODE,
-                        ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_REQUEST_VOICE_CODE)
+                        ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_REQUEST_VOICE_CODE)
                     showLoading()
                     HttpClient.getVoiceCode(this, phone, "login")
                 }, onCancel = {
@@ -198,7 +198,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         CacheManager.smsCode = code
 
         HttpClient.eventReport(this@LoginActivity,ConstConfig.EVENT_START_SIGNUP,
-            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_START_SIGNUP)
+            ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_START_SIGNUP)
 
         showLoading()
         HttpClient.login(this, phone)

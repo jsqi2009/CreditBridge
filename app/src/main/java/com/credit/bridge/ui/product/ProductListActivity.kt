@@ -137,6 +137,12 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
             }
         }
 
+        if (mAdapter?.getData()?.isEmpty() == true) {
+            bindViews.continueTv.visibility = View.GONE
+        } else {
+            bindViews.continueTv.visibility = View.VISIBLE
+        }
+
     }
 
     private fun viewDetails() {
