@@ -81,7 +81,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginHorizontal="@dimen/margin_15"
+            android:layout_margin="@dimen/margin_15"
             android:lineHeight="@dimen/margin_28"
             android:gravity="center_vertical"
             android:text="        We are committed to providing you with excellent service. If you encounter any problems while using the app, please contact our customer service team via WhatsApp.
