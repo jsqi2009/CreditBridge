@@ -21,6 +21,17 @@ android {
         }*/
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file("creditbridge.jks")
+            storePassword = "CreditBridge888"
+            keyAlias = "key0"
+            keyPassword = "CreditBridge888"
+            enableV2Signing = true
+            enableV1Signing = true
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
