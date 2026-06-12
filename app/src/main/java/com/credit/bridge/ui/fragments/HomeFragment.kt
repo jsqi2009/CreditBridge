@@ -44,6 +44,7 @@ import com.credit.bridge.ui.product.ProductListActivity
 import com.credit.bridge.ui.verify.VerifyInfoActivity
 import com.credit.bridge.util.DeviceInfoUtil
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.HomeSessionState
 import com.credit.bridge.util.LocationHelper
 import com.credit.bridge.util.PermissionGuideType
 import com.credit.bridge.util.SystemDataUtils
@@ -77,6 +78,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private var skipHomeUploadEvents = false
     private var pendingUploadAfterPermission = false
     private var pendingOrderNavigation = false
+    private var isHomeReady = false
 
     private val verifyInfoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -103,8 +105,45 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.onResume()
         syncFromSession()
         skipHomeUploadEvents = false
-        checkCollectDataStatus()
-        tryResumeUploadAfterPermissionFromSettings()
+        if (!isHomeReady) {
+            beginHomeBootstrap()
+            checkCollectDataStatus()
+        } else {
+            tryResumeUploadAfterPermissionFromSettings()
+        }
+    }
+
+    private fun beginHomeBootstrap() {
+        isHomeReady = false
+        setHomeInteractionEnabled(false)
+        showLoading()
+    }
+
+    private fun finishHomeBootstrap() {
+        isHomeReady = true
+        setHomeInteractionEnabled(true)
+        hideLoading()
+        maybeAutoShowPermissionSheet()
+    }
+
+    private fun setHomeInteractionEnabled(enabled: Boolean) {
+        if (!isAdded) return
+        bindViews.startVerifyLl.isEnabled = enabled
+        bindViews.accessAccountIv.isEnabled = enabled
+    }
+
+    private fun maybeAutoShowPermissionSheet() {
+        if (CacheManager.isNeedShowPermissionSheet && privacyPolicyUrl.isNotEmpty()) {
+            autoShowPermissionSheet()
+        }
+    }
+
+    private fun dismissLoadingIfReady() {
+        if (!isHomeReady) {
+            finishHomeBootstrap()
+        } else {
+            hideLoading()
+        }
     }
 
     override fun onStop() {
@@ -129,7 +168,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun getPolicy() {
-        showLoading()
         HttpClient.getPrivacyPolicyUrl2(requireContext())
     }
 
@@ -149,6 +187,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     override fun onClick(v: View?) {
+        if (!isHomeReady) return
         when (v?.id) {
             R.id.accessAccountIv -> {
 
@@ -197,6 +236,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
             }
             R.id.startVerifyLl -> {
+                if (isAuthed || CacheManager.isUserVerified) return
 
                 HttpClient.eventReport(requireContext(),ConstConfig.EVENT_REQUEST_VERIFICATION_START,
                     ConstConfig.EVENT_ACTION_CLICK,ConstConfig.EVENT_REQUEST_VERIFICATION_START)
@@ -300,7 +340,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun checkCollectDataStatus() {
         try {
-            showLoading()
             HttpClient.checkCollectDataStatus(requireContext())
         } catch (e: Exception) {
         }
@@ -326,21 +365,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     @Subscribe
     fun onCheckCollectDataStatusResponseEvent(event: CheckCollectDataStatusResponseEvent) {
         try {
-            hideLoading()
             if (event.isSuccess) {
                 event.model?.mtaw?.let { HomeSessionState.updateCollectInfo(it) }
-                //syncFromSession()
                 isAuthed = HomeSessionState.isAuthed
                 currentStep = HomeSessionState.currentStep
                 applyAuthUi()
-                showLoading()
                 getHomeData()
             } else {
+                dismissLoadingIfReady()
                 syncFromSession()
                 ToastUtil.showLong(requireContext(), event.errorMessage.toString())
             }
         } catch (e: Exception) {
-            hideLoading()
+            dismissLoadingIfReady()
         }
     }
 
@@ -348,7 +385,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     @Subscribe
     fun onHomeInfoEvent(event: HomeInfoResponseEvent) {
         try {
-            hideLoading()
             if (event.isSuccess) {
                 homeInfo = event.model?.mtaw
                 HomeSessionState.homeInfo = homeInfo
@@ -359,8 +395,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     tryNavigateToOrderPage()
                 }
             }
+            dismissLoadingIfReady()
         } catch (e: Exception) {
-            hideLoading()
+            dismissLoadingIfReady()
         }
     }
 
@@ -369,6 +406,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         try {
             hideLoading()
             if (event.isSuccess) {
+                if (isAuthed || CacheManager.isUserVerified) {
+                    return
+                }
                 if(event.model?.mtaw != true){
                     if(privacyPolicyUrl.isEmpty()) {
                         HttpClient.getPrivacyPolicyUrl(requireContext())
@@ -407,13 +447,16 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     @Subscribe
     fun onPrivacyPolicyUrlResponseEvent2(event: PrivacyPolicyUrlResponseEvent2) {
-        hideLoading()
         if (event.isSuccess) {
             event.model?.mtaw?.let {
                 privacyPolicyUrl = it
                 Log.e("HomeFragment", "privacyPolicyUrl: $it")
-                autoShowPermissionSheet()
+                if (isHomeReady) {
+                    autoShowPermissionSheet()
+                }
             }
+        } else if (!isHomeReady) {
+            // Policy URL is optional for bootstrap; home data can still finish loading.
         } else {
             ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }

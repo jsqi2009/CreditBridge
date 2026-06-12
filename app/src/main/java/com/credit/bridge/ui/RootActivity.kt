@@ -21,6 +21,7 @@ import com.credit.bridge.databinding.ActivityRootBinding
 import com.credit.bridge.remote.event.UnauthorizedEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.ui.login.LoginActivity
+import com.credit.bridge.util.HomeSessionState
 import com.squareup.otto.Subscribe
 
 class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {

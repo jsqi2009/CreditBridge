@@ -1,3 +1,5 @@
+package com.credit.bridge.util
+
 import com.credit.bridge.remote.bean.CollectDataInfo
 import com.credit.bridge.remote.bean.HomeInfo
 
@@ -7,7 +9,9 @@ object HomeSessionState {
     var homeInfo: HomeInfo? = null
 
     fun restoreFromCache() {
-        // isAuthed is driven by checkCollectDataStatus (rvazxrtziwtcvrfrkzczx), not local cache.
+        if (CacheManager.isUserVerified) {
+            isAuthed = true
+        }
     }
 
     fun updateCollectInfo(info: CollectDataInfo) {
@@ -16,6 +20,7 @@ object HomeSessionState {
     }
 
     fun setVerified(verified: Boolean) {
+        if (isAuthed && !verified) return
         isAuthed = verified
         CacheManager.isUserVerified = verified
     }

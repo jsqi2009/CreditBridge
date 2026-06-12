@@ -17,6 +17,7 @@ import com.credit.bridge.remote.event.LogoutResponseEvent
 import com.credit.bridge.ui.login.LoginActivity
 import com.credit.bridge.ui.product.SubmitSuccessActivity
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.HomeSessionState
 import com.credit.bridge.util.NumberUtils
 import com.squareup.otto.Subscribe
 

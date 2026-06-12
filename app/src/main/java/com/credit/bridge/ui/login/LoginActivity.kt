@@ -28,6 +28,7 @@ import com.credit.bridge.remote.event.VoiceCodeResponseEvent
 import com.credit.bridge.ui.RootActivity
 import com.credit.bridge.ui.account.PrivacyPolicyActivity
 import com.credit.bridge.util.DialogUtil
+import com.credit.bridge.util.HomeSessionState
 import com.credit.bridge.util.ToastUtil
 import com.credit.bridge.util.CommonCountdown
 import com.squareup.otto.Subscribe
@@ -209,6 +210,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(), View.OnClickListener
         hideLoading()
         if(event.isSuccess){
             event.model?.mtaw?.let {
+                HomeSessionState.clear()
                 CacheManager.token = it.igfid
                 CacheManager.mobile = bindViews.phoneEt.text.toString()
                 CacheManager.isNewCustomer = it.gtejmcvokzutw
