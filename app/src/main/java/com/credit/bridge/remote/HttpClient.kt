@@ -60,6 +60,7 @@ import com.credit.bridge.remote.event.PaymentLinkDetailsResponseEvent
 import com.credit.bridge.remote.event.PaymentLinkResponseEvent
 import com.credit.bridge.remote.event.PolicyLinkResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
+import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent2
 import com.credit.bridge.remote.event.QuestionByStep1ResponseEvent
 import com.credit.bridge.remote.event.QuestionByStep2ResponseEvent
 import com.credit.bridge.remote.event.QuestionByStep3ResponseEvent
@@ -317,6 +318,14 @@ object HttpClient {
         formMap["qxcndlgiiu"] = "declaration"
         val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
         dispatchClient?.enqueue(call, CommonResponse::class.java, PrivacyPolicyUrlResponseEvent::class.java)
+    }
+
+    fun getPrivacyPolicyUrl2(mContext: Context) {
+
+        val formMap: HashMap<String, Any> = HashMap()
+        formMap["qxcndlgiiu"] = "declaration"
+        val call = mHttpApi!!.requestGetAuth1(getHeaders(mContext), Contants.URL_PRIVTE,formMap)
+        dispatchClient?.enqueue(call, CommonResponse::class.java, PrivacyPolicyUrlResponseEvent2::class.java)
     }
 
     @SuppressLint("HardwareIds")

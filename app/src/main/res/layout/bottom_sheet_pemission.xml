@@ -16,16 +16,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_10"
             android:layout_marginHorizontal="@dimen/margin_15"
-            android:orientation="horizontal"
+            android:layout_marginTop="@dimen/margin_10"
             android:paddingVertical="14dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-
                 android:orientation="horizontal">
 
                 <ImageView
@@ -46,140 +44,52 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"
                 android:src="@mipmap/ic_common_close" />
         </RelativeLayout>
 
-        <androidx.core.widget.NestedScrollView
+        <WebView
+            android:id="@+id/contentWebView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:fillViewport="true">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingBottom="@dimen/margin_60"
-                android:paddingHorizontal="@dimen/margin_20"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:text="In order to provide you with faster and more convenlent service. we need your authorization below to access to your data. As loan provider. we will upload your application data to make risk assessment and we commit to your data which will never be leaked to any third party."
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:text="SMS"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:text="We collect and monitor only financial and non personal SMS for transaction detalls &amp; amounts to calculate eligibility and assess customer risk Other SMS data is not accessed.
-
-"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:text="Camera and Photos"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:text="
-We require camera and photo permission so that you can scan and upload KYC documents. which help us ensure that the loan application Is done by yourself and give you a smooth application experience.
-"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:layout_marginTop="@dimen/margin_15"
-                    android:text="Location"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="#ff4f2a0f"
-                    android:textSize="14sp"
-                    android:textStyle="bold"
-                    android:text="
-We collect and monitor the location Information of your device to reduce the risk with your loan application. And we also need your location Information to make sure you are within our service area."
-                    />
-
-            </LinearLayout>
-
-        </androidx.core.widget.NestedScrollView>
-
+            android:nestedScrollingEnabled="true"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbars="vertical" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/margin_15"
-            android:layout_marginBottom="@dimen/margin_30"
             android:layout_marginTop="@dimen/margin_10"
+            android:layout_marginBottom="@dimen/margin_30"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/refuseTv"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="5dp"
-                android:gravity="center"
                 android:layout_height="@dimen/margin_50"
+                android:layout_marginEnd="5dp"
+                android:layout_weight="1"
                 android:background="@drawable/shape_permission_refuse"
+                android:gravity="center"
                 android:text="Refuse"
                 android:textColor="#ff2e0d05"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/agreeTv"
                 android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_marginStart="@dimen/margin_5"
                 android:layout_height="@dimen/margin_50"
-                android:gravity="center"
+                android:layout_marginStart="@dimen/margin_5"
+                android:layout_weight="1"
                 android:background="@drawable/shape_permission_agree"
+                android:gravity="center"
                 android:text="Agree"
                 android:textColor="#ffffffff"
-                android:textSize="18sp"
-                />
+                android:textSize="18sp" />
 
         </LinearLayout>
-
-
-
-
-
-
-
 
     </LinearLayout>
 

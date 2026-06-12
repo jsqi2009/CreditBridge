@@ -34,6 +34,7 @@ import com.credit.bridge.remote.event.CheckUploadStatusResponseEvent
 import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
+import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent2
 import com.credit.bridge.remote.event.UpdateCardEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
@@ -124,8 +125,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         HttpClient.eventReport(requireActivity(),ConstConfig.EVENT_HOME_SCREEN,
             ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_HOME_SCREEN)
 
-        autoShowPermissionSheet()
+        //autoShowPermissionSheet()
+        getPolicy()
         syncFromSession()
+    }
+
+    private fun getPolicy() {
+        showLoading()
+        HttpClient.getPrivacyPolicyUrl2(requireContext())
     }
 
     private fun applyAuthUi() {
@@ -394,6 +401,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             event.model?.mtaw?.let {
                 privacyPolicyUrl = it
                 showPermissionSheet()
+            }
+        } else {
+            ToastUtil.showLong(requireContext(), event.errorMessage.toString())
+        }
+    }
+
+    @Subscribe
+    fun onPrivacyPolicyUrlResponseEvent2(event: PrivacyPolicyUrlResponseEvent2) {
+        hideLoading()
+        if (event.isSuccess) {
+            event.model?.mtaw?.let {
+                privacyPolicyUrl = it
+                Log.e("HomeFragment", "privacyPolicyUrl: $it")
+                autoShowPermissionSheet()
             }
         } else {
             ToastUtil.showLong(requireContext(), event.errorMessage.toString())
@@ -772,8 +793,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun showPermissionDeclarationSheet(requestUploadAfterGrant: Boolean) {
         val onClose = { onDeclarationSheetClosed(requestUploadAfterGrant) }
+        Log.d(TAG, "showPermissionDeclarationSheet: $requestUploadAfterGrant, privacyPolicyUrl:" + privacyPolicyUrl)
         val permissionSheet = PermissionBottomSheet(
             requireActivity(),
+            privacyPolicyUrl,
             onRefuseListener = onClose,
             onAgreeListener = onClose
         )
