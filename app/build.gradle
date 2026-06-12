@@ -22,7 +22,7 @@ android {
     }
 
     signingConfigs {
-        create("release") {
+        create("cb") {
             storeFile = file("creditbridge.jks")
             storePassword = "CreditBridge888"
             keyAlias = "key0"
@@ -36,6 +36,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig = signingConfigs.getByName("cb")
+
         }
     }
     compileOptions {
