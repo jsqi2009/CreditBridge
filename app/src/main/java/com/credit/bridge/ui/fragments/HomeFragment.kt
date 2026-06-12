@@ -115,7 +115,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     override fun initRes() {
         super.initRes()
         bindViews.accessAccountIv.setOnClickListener(this)
-        bindViews.accessManageIv.setOnClickListener(this)
+        //bindViews.accessManageIv.setOnClickListener(this)
         bindViews.startVerifyLl.setOnClickListener(this)
         bindViews.verifiedNeedPayDue.setOnClickListener(this)
         bindViews.verifiedNeedPay.setOnClickListener(this)
