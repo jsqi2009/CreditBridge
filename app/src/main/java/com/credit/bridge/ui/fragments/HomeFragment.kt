@@ -324,7 +324,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             hideLoading()
             if (event.isSuccess) {
                 event.model?.mtaw?.let { HomeSessionState.updateCollectInfo(it) }
-                syncFromSession()
+                //syncFromSession()
+                isAuthed = HomeSessionState.isAuthed
+                currentStep = HomeSessionState.currentStep
+                applyAuthUi()
                 showLoading()
                 getHomeData()
             } else {
