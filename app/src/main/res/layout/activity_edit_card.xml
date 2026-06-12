@@ -56,7 +56,7 @@
                 android:layout_marginTop="@dimen/margin_10"
                 android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                android:text="123*************1233"
+                android:text=""
                 android:textColor="#FFD29F"
                 android:textSize="24sp"
                 android:maxLines="2"

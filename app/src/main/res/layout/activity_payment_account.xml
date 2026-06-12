@@ -90,7 +90,7 @@
                     android:layout_marginTop="@dimen/margin_10"
                     android:paddingHorizontal="@dimen/margin_15"
                     android:layout_gravity="center_horizontal"
-                    android:text="Account: 123*************12"
+                    android:text=""
                     android:textColor="#FFD29F"
                     android:textSize="@dimen/ts_18"
                     android:maxLines="2"

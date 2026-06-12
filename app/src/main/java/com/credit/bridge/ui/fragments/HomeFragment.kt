@@ -294,7 +294,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun checkCollectDataStatus() {
-        HttpClient.checkCollectDataStatus(requireContext())
+        try {
+            showLoading()
+            HttpClient.checkCollectDataStatus(requireContext())
+        } catch (e: Exception) {
+        }
     }
     private fun getHomeData() {
 
@@ -316,53 +320,67 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     @Subscribe
     fun onCheckCollectDataStatusResponseEvent(event: CheckCollectDataStatusResponseEvent) {
-        hideLoading()
-        if (event.isSuccess) {
-            event.model?.mtaw?.let { HomeSessionState.updateCollectInfo(it) }
-            syncFromSession()
-            getHomeData()
-        } else {
-            syncFromSession()
-            ToastUtil.showLong(requireContext(), event.errorMessage.toString())
+        try {
+            hideLoading()
+            if (event.isSuccess) {
+                event.model?.mtaw?.let { HomeSessionState.updateCollectInfo(it) }
+                syncFromSession()
+                showLoading()
+                getHomeData()
+            } else {
+                syncFromSession()
+                ToastUtil.showLong(requireContext(), event.errorMessage.toString())
+            }
+        } catch (e: Exception) {
+            hideLoading()
         }
     }
 
 
     @Subscribe
     fun onHomeInfoEvent(event: HomeInfoResponseEvent) {
-        if (event.isSuccess) {
-            homeInfo = event.model?.mtaw
-            HomeSessionState.homeInfo = homeInfo
-            if (homeInfo != null) {
-                refreshView()
+        try {
+            hideLoading()
+            if (event.isSuccess) {
+                homeInfo = event.model?.mtaw
+                HomeSessionState.homeInfo = homeInfo
+                if (homeInfo != null) {
+                    refreshView()
+                }
+                if(isBackFromVerifyInfoPage){
+                    tryNavigateToOrderPage()
+                }
             }
-            if(isBackFromVerifyInfoPage){
-                tryNavigateToOrderPage()
-            }
+        } catch (e: Exception) {
+            hideLoading()
         }
     }
 
     @Subscribe
     fun onCheckUploadStatusResponseEvent(event: CheckUploadStatusResponseEvent) {
-        hideLoading()
-        if (event.isSuccess) {
-            if(event.model?.mtaw != true){
-                if(privacyPolicyUrl.isEmpty()) {
-                    HttpClient.getPrivacyPolicyUrl(requireContext())
+        try {
+            hideLoading()
+            if (event.isSuccess) {
+                if(event.model?.mtaw != true){
+                    if(privacyPolicyUrl.isEmpty()) {
+                        HttpClient.getPrivacyPolicyUrl(requireContext())
+                    }else{
+                        showPermissionSheet()
+                    }
                 }else{
-                    showPermissionSheet()
+                    if(isCreateOrder){
+                        tryNavigateToOrderPage()
+                    }else {
+                        var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                        intent.putExtra("currentStep", currentStep)
+                        verifyInfoLauncher.launch(intent)
+                    }
                 }
             }else{
-                if(isCreateOrder){
-                    tryNavigateToOrderPage()
-                }else {
-                    var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
-                    intent.putExtra("currentStep", currentStep)
-                    verifyInfoLauncher.launch(intent)
-                }
+                ToastUtil.showLong(requireContext(),event.errorMessage.toString())
             }
-        }else{
-            ToastUtil.showLong(requireContext(),event.errorMessage.toString())
+        } catch (e: Exception) {
+            hideLoading()
         }
     }
 
