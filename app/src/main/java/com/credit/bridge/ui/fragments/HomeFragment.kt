@@ -103,10 +103,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         super.onResume()
         syncFromSession()
         skipHomeUploadEvents = false
-        if (isVisible) {
-            checkCollectDataStatus()
-            tryResumeUploadAfterPermissionFromSettings()
-        }
+        checkCollectDataStatus()
+        tryResumeUploadAfterPermissionFromSettings()
     }
 
     override fun onStop() {
