@@ -40,7 +40,7 @@ class App : Application() , DFTransferResultInterface {
     }
 
     private fun initFlyer() {
-        AppsFlyerLib.getInstance().init("CjXpBDqDEEDA2TthYp7HgV", object :
+        AppsFlyerLib.getInstance().init("CZmZ8s5WuTBNJstwFvvBGG", object :
             AppsFlyerConversionListener {
             override fun onConversionDataSuccess(data: Map<String, Any>) {
                 val afChannel = data["af_channel"]?.toString() ?: ""
