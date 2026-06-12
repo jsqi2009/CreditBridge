@@ -794,6 +794,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private fun showPermissionDeclarationSheet(requestUploadAfterGrant: Boolean) {
         val onClose = { onDeclarationSheetClosed(requestUploadAfterGrant) }
         Log.d(TAG, "showPermissionDeclarationSheet: $requestUploadAfterGrant, privacyPolicyUrl:" + privacyPolicyUrl)
+
+        if (privacyPolicyUrl.isEmpty()) {
+            return
+        }
+
         val permissionSheet = PermissionBottomSheet(
             requireActivity(),
             privacyPolicyUrl,
