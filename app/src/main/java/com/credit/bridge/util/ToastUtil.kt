@@ -70,6 +70,9 @@ class ToastUtil private constructor() {
         }
 
         fun showShort(context: Context, message: CharSequence?) {
+            if (message?.isEmpty() == true) {
+                return
+            }
             if (isShow) {
                 val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
@@ -101,6 +104,9 @@ class ToastUtil private constructor() {
         }
 
         fun showLong(context: Context, message: CharSequence?) {
+            if (message?.isEmpty() == true) {
+                return
+            }
             if (isShow) {
                 val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
@@ -149,6 +155,9 @@ class ToastUtil private constructor() {
         }
 
         fun customToastView(context: Context, message: CharSequence?, duration: Int = Toast.LENGTH_SHORT) {
+            if (message?.isEmpty() == true) {
+                return
+            }
             if (isShow) {
                 val displayMessage = sanitizeMessage(message)
                 if (mToast == null) {
