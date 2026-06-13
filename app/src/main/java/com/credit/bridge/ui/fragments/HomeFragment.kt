@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.Settings
 import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,6 +36,7 @@ import com.credit.bridge.remote.event.ExecuteRecreditResponseEvent
 import com.credit.bridge.remote.event.HomeInfoResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent
 import com.credit.bridge.remote.event.PrivacyPolicyUrlResponseEvent2
+import com.credit.bridge.remote.event.RefreshHomeEvent
 import com.credit.bridge.remote.event.UpdateCardEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.remote.event.UploadInstalledPackageListResponseEvent
@@ -79,6 +81,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private var pendingUploadAfterPermission = false
     private var pendingOrderNavigation = false
     private var isHomeReady = false
+    private var lastHomeRefreshAt = 0L
+    private var isHomeRefreshInFlight = false
 
     private val verifyInfoLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -103,14 +107,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     override fun onResume() {
         super.onResume()
-        syncFromSession()
         skipHomeUploadEvents = false
+        refreshHomeWhenVisible()
+        tryResumeUploadAfterPermissionFromSettings()
+    }
+
+    fun refreshHomeWhenVisible() {
+        if (!isAdded) return
+        val now = SystemClock.elapsedRealtime()
+        if (isHomeRefreshInFlight) return
+        if (now - lastHomeRefreshAt < REFRESH_DEBOUNCE_MS) return
+        lastHomeRefreshAt = now
+        isHomeRefreshInFlight = true
+
+        syncFromSession()
         if (!isHomeReady) {
             beginHomeBootstrap()
-            checkCollectDataStatus()
         } else {
-            tryResumeUploadAfterPermissionFromSettings()
+            showLoading()
         }
+        checkCollectDataStatus()
     }
 
     private fun beginHomeBootstrap() {
@@ -139,6 +155,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     private fun dismissLoadingIfReady() {
+        isHomeRefreshInFlight = false
         if (!isHomeReady) {
             finishHomeBootstrap()
         } else {
@@ -147,6 +164,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     override fun onStop() {
+        isHomeRefreshInFlight = false
         hideLoading()
         super.onStop()
     }
@@ -850,10 +868,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     }
 
     @Subscribe
+    fun onRefreshHomeEvent(event: RefreshHomeEvent) {
+        refreshHomeWhenVisible()
+    }
+
+    @Subscribe
     fun onUpdateCardEvent(event: UpdateCardEvent) {
         try {
-            showLoading()
-            checkCollectDataStatus()
+            refreshHomeWhenVisible()
             tryResumeUploadAfterPermissionFromSettings()
         } catch (e: Exception) {
         }
@@ -861,6 +883,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     companion object {
         private const val TAG = "HomeFragment"
+        private const val REFRESH_DEBOUNCE_MS = 300L
         private val uploadIoExecutor = Executors.newSingleThreadExecutor()
         private val mainHandler = Handler(Looper.getMainLooper())
 

@@ -18,6 +18,7 @@ import com.credit.bridge.R
 import com.credit.bridge.adapter.RootAdapter
 import com.credit.bridge.base.BaseActivity
 import com.credit.bridge.databinding.ActivityRootBinding
+import com.credit.bridge.remote.event.RefreshHomeEvent
 import com.credit.bridge.remote.event.UnauthorizedEvent
 import com.credit.bridge.remote.event.UpdateTabIndexEvent
 import com.credit.bridge.ui.login.LoginActivity
@@ -148,6 +149,7 @@ class RootActivity : BaseActivity<ActivityRootBinding>(), View.OnClickListener {
                         tabItemSelected(bindViews.tabHome.tabItem, true, 0)
                         tabItemSelected(bindViews.tabOrder.tabItem, false, 1)
                         tabItemSelected(bindViews.tabAccount.tabItem, false,2)
+                        eventBus.post(RefreshHomeEvent())
                     }
                     1 -> {
                         tabItemSelected(bindViews.tabHome.tabItem, false, 0)
