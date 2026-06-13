@@ -75,6 +75,8 @@ class ConfirmProductActivity : BaseActivity<ActivityConfirmProductBinding>(), Vi
                 finish()
             }
             R.id.confirmUseTv -> {
+                HttpClient.eventReport(this@ConfirmProductActivity,ConstConfig.EVENT_APPLY_DETAIL,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_APPLY_DETAIL)
                 submitOrder()
             }
             R.id.editBankIv -> {

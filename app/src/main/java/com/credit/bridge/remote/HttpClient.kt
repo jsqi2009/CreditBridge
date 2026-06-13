@@ -12,6 +12,7 @@ import androidx.annotation.RequiresPermission
 import com.appsflyer.AppsFlyerLib
 import com.credit.bridge.R
 import com.credit.bridge.content.AndroidBus
+import com.credit.bridge.content.ConstConfig
 import com.credit.bridge.content.Contants
 import com.credit.bridge.remote.bean.BaseDeviceInfo
 import com.credit.bridge.remote.bean.BaseUserInfo
@@ -276,9 +277,11 @@ object HttpClient {
 
     fun eventReport(mContext: Context, tag: String, actionType: String, status: String, reportType: String = "user") {
 
-        val eventType =  HashMap<String, Any>()
-        eventType[tag] = ""
-        AppsFlyerLib.getInstance().logEvent(mContext, tag, eventType)
+        if(tag == ConstConfig.EVENT_REGISTER_COMPLETE || tag == ConstConfig.EVENT_APPLY_LIST || tag == ConstConfig.EVENT_APPLY_DETAIL){
+            val eventType =  HashMap<String, Any>()
+            eventType[tag] = ""
+            AppsFlyerLib.getInstance().logEvent(mContext, tag, eventType)
+        }
 
         val formMap: HashMap<String, Any> = HashMap()
         formMap[RequestParams.actionType] = actionType

@@ -33,7 +33,7 @@ object ConstConfig {
     const val EVENT_START_SIGNUP = "startSignup"	//
 
     const val EVENT_REQUEST_VERIFICATION_START = "requestVerificationStart"	//
-    const val EVENT_REGISTER_COMPLETE = "register_complete"	//
+    const val EVENT_REGISTER_COMPLETE = "signupFinished"	//
     const val EVENT_HOME_SCREEN = "home_screen"	//
     const val EVENT_IDCARD_INPUT = "openVerificationGuide"	//
     const val EVENT_IDCARD_SUNMIT = "submitIdDocument"	//
@@ -43,6 +43,9 @@ object ConstConfig {
     const val EVENT_CONTACT_SUBMIT = "saveContactForm"	//
     const val EVENT_BANKCARD_INPUT = "openBankForm"	//
     const val EVENT_BANKCARD_SUBMIT = "saveBankForm"	//
+
+    const val EVENT_APPLY_LIST = "submitCreditAmount"	//
+    const val EVENT_APPLY_DETAIL = "submitCreditAmountdetails"	//
 
 
     const val EVENT_TAP_VERIFY_IDENTITY = "tapVerifyIdentity"	//

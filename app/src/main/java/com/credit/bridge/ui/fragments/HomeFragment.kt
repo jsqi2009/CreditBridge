@@ -177,9 +177,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         bindViews.verifiedNeedPay.setOnClickListener(this)
         bindViews.verifiedFail.setOnClickListener(this)
 
-        HttpClient.eventReport(requireActivity(),ConstConfig.EVENT_HOME_SCREEN,
-            ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_HOME_SCREEN)
-
         //autoShowPermissionSheet()
         getPolicy()
         syncFromSession()

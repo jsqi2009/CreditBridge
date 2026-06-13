@@ -110,6 +110,8 @@ class ProductListActivity : BaseActivity<ActivityProductListBinding>(), View.OnC
                 viewDetails()
             }
             R.id.continueTv -> {
+                HttpClient.eventReport(this@ProductListActivity,ConstConfig.EVENT_APPLY_LIST,
+                    ConstConfig.EVENT_ACTION_HOLD,ConstConfig.EVENT_APPLY_LIST)
                 submitOrder()
             }
         }
