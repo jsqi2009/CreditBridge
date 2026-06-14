@@ -37,6 +37,8 @@ class OrderListAdapter(
     ) {
         val itemInfo = items[position]
 
+        holder.bindView.tvName.text = itemInfo.jerftvqtjkg
+
         holder.bindView.statusTv.text = itemInfo.xjywdrtdxzt
         holder.bindView.amountTv.text = mContext.getString(R.string.money_symbol) +
                 " " + DataFormatUtils.float2Str(itemInfo.otjjqwdpupp)
