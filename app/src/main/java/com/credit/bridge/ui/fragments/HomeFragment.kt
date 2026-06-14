@@ -165,7 +165,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     override fun onStop() {
         isHomeRefreshInFlight = false
-        hideLoading()
+        if (!isCollectingOrUploadingApps) {
+            hideLoading()
+        }
         super.onStop()
     }
     override fun initRes() {
@@ -419,29 +421,30 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     @Subscribe
     fun onCheckUploadStatusResponseEvent(event: CheckUploadStatusResponseEvent) {
         try {
-            hideLoading()
             if (event.isSuccess) {
                 if (isAuthed || CacheManager.isUserVerified) {
+                    hideLoading()
                     return
                 }
-                if(event.model?.mtaw != true){
-                    if(privacyPolicyUrl.isEmpty()) {
-                        showLoading()
+                if (event.model?.mtaw != true) {
+                    if (privacyPolicyUrl.isEmpty()) {
                         HttpClient.getPrivacyPolicyUrl(requireContext())
-                    }else{
+                    } else {
                         showPermissionSheet()
                     }
-                }else{
-                    if(isCreateOrder){
+                } else {
+                    hideLoading()
+                    if (isCreateOrder) {
                         tryNavigateToOrderPage()
-                    }else {
-                        var intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                    } else {
+                        val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
                         intent.putExtra("currentStep", currentStep)
                         verifyInfoLauncher.launch(intent)
                     }
                 }
-            }else{
-                ToastUtil.showLong(requireContext(),event.errorMessage.toString())
+            } else {
+                hideLoading()
+                ToastUtil.showLong(requireContext(), event.errorMessage.toString())
             }
         } catch (e: Exception) {
             hideLoading()
@@ -450,13 +453,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     @Subscribe
     fun onPrivacyPolicyUrlResponseEvent(event: PrivacyPolicyUrlResponseEvent) {
-        hideLoading()
         if (event.isSuccess) {
             event.model?.mtaw?.let {
                 privacyPolicyUrl = it
                 showPermissionSheet()
             }
         } else {
+            hideLoading()
             ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }
     }
@@ -529,12 +532,15 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 return
             }
             if (hasAnyPermanentlyDeniedPermission()) {
+                hideLoading()
                 showPermissionGuideDialog()
                 return
             }
+            showLoading()
             requestSystemPermissions()
         } catch (_: Exception) {
             pendingUploadAfterPermission = false
+            finishAppUploadPipeline()
         }
     }
 
@@ -545,6 +551,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             type,
             onConfirm = { openAppSettings() },
             onCancel = {
+                pendingUploadAfterPermission = false
+                hideLoading()
                 ToastUtil.showLong(requireContext(), "Please allow permissions to continue")
             }
         )
@@ -573,6 +581,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private fun onDeclarationSheetClosed(requestUploadAfterGrant: Boolean) {
         CacheManager.isNeedShowPermissionSheet = false
         pendingUploadAfterPermission = requestUploadAfterGrant
+        if (requestUploadAfterGrant) {
+            showLoading()
+        }
         requestSystemPermissions()
     }
 
@@ -597,12 +608,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     finishAppUploadPipeline()
                     return@post
                 }
-                /*if (installedList == null) {
-                    finishAppUploadPipeline()
-                    ToastUtil.showLong(requireContext(), "Failed to collect app list")
-                    return@post
-                }*/
-                showLoading()
                 HttpClient.uploadInstalledPackageList(appContext, installedList )
             }
         }
@@ -620,7 +625,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             finishAppUploadPipeline()
             return
         }
-        hideLoading()
         if (event.isSuccess) {
             uploadSystemInfo()
         } else {
@@ -639,7 +643,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             finishAppUploadPipeline()
             return
         }
-        showLoading()
         val appContext = requireContext().applicationContext
         Log.d(TAG, "uploadSystemInfo: start location fetch")
         LocationHelper.fetchLocation(requireContext()) { location ->
@@ -665,7 +668,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                         finishAppUploadPipeline()
                         return@post
                     }
-                    showLoading()
                     HttpClient.uploadSystemInfo(appContext, deviceInfo)
                 }
             }
@@ -678,23 +680,21 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             finishAppUploadPipeline()
             return
         }
-        try {
-            hideLoading()
-            if (event.isSuccess) {
-                zipDone = true
-                if (isCreateOrder) {
-                    tryNavigateToOrderPage()
-                } else {
-                    skipHomeUploadEvents = true
-                    val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
-                    intent.putExtra("currentStep", currentStep)
-                    verifyInfoLauncher.launch(intent)
-                }
+        if (event.isSuccess) {
+            zipDone = true
+            isCollectingOrUploadingApps = false
+            if (isCreateOrder) {
+                finishAppUploadPipeline()
+                tryNavigateToOrderPage()
             } else {
-                ToastUtil.showLong(requireContext(), event.errorMessage.toString())
+                skipHomeUploadEvents = true
+                val intent = Intent(requireContext(), VerifyInfoActivity::class.java)
+                intent.putExtra("currentStep", currentStep)
+                verifyInfoLauncher.launch(intent)
             }
-        } finally {
+        } else {
             finishAppUploadPipeline()
+            ToastUtil.showLong(requireContext(), event.errorMessage.toString())
         }
     }
 
@@ -707,33 +707,31 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     @Subscribe
     fun onCheckRecreditNeededResponseEvent(event: CheckRecreditNeededResponseEvent) {
-        hideLoading()
         if (event.isSuccess) {
-
             if (event.model?.mtaw == true) {
                 isRecreditNeeded = true
-                //executeRecredit()
+                hideLoading()
                 showRecreditNeededDialog()
-                checkUploadStatus2()
             } else {
                 isRecreditNeeded = false
-                //previewProduct()
-                checkUploadStatus2()
             }
-        }else{
+            checkUploadStatus2()
+        } else {
+            hideLoading()
             isAccountCreditPipelineBusy = false
-            ToastUtil.showLong(requireContext(),event.errorMessage.toString())}
+            ToastUtil.showLong(requireContext(), event.errorMessage.toString())
+        }
     }
 
     @Subscribe
     fun onCheckUploadStatusResponseEvent2(event: CheckUploadStatus2ResponseEvent) {
         if (!isAdded || skipHomeUploadEvents) return
-        hideLoading()
         try {
             if (event.isSuccess) {
                 if (event.model?.mtaw != true) {
                     ensurePermissionsThenUpload()
                 } else {
+                    hideLoading()
                     if (isCreateOrder) {
                         tryNavigateToOrderPage()
                     } else {
@@ -744,6 +742,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                     }
                 }
             } else {
+                hideLoading()
                 ToastUtil.showLong(requireContext(), event.errorMessage.toString())
             }
         } finally {
@@ -801,6 +800,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
     private fun handlePermissionResultAfterRequest() {
         CacheManager.hasRequestedRuntimePermissions = true
         if (!hasAllRequiredPermissions()) {
+            pendingUploadAfterPermission = false
+            hideLoading()
             ToastUtil.showLong(requireContext(), "Please allow permissions to continue")
             if (hasAnyPermanentlyDeniedPermission()) {
                 showPermissionGuideDialog()
@@ -814,6 +815,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         }
         if (pendingUploadAfterPermission) {
             pendingUploadAfterPermission = false
+            showLoading()
             uploadInstalledPackageList()
         }
     }
@@ -856,6 +858,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
         if (privacyPolicyUrl.isEmpty()) {
             return
         }
+        hideLoading()
 
         val permissionSheet = PermissionBottomSheet(
             requireActivity(),
