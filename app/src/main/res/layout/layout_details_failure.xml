@@ -152,7 +152,6 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_centerVertical="true"
-                    android:text="Credit Option"
                     android:textColor="#ff2e0d05"
                     android:textSize="13sp"
                     />

@@ -35,7 +35,7 @@ class ProductListAdapter(
         position: Int
     ) {
         val itemInfo = items[position]
-
+        holder.bindView.tvName.text = itemInfo.jerftvqtjkg
         holder.bindView.amountPaidTv.text = mContext.getString(R.string.money_symbol) + " " + itemInfo.qcakyrooudutx.toString()
         holder.bindView.daysTv.text = mContext.getString(R.string.product_up_to) +
                 " " + itemInfo.tkjgeq.toString() + " " + itemInfo.wnvelqecci

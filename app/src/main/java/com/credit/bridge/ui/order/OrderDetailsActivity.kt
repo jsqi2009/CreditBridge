@@ -307,6 +307,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
         if (orderInfo == null) {
             return
         }
+        bindViews.titleImage.text = orderInfo?.jerftvqtjkg
         when (orderStatus) {
             ConstConfig.ORDER_STATUS_PRE_REVIEW, ConstConfig.ORDER_STATUS_ISSUING, ConstConfig.ORDER_STATUS_READY_TO_ISSUE -> {
                 bindViews.processingLayout.rootView.visibility = View.VISIBLE
@@ -387,7 +388,8 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
                 bindViews.failureLayout.rootView.visibility = View.VISIBLE
                 bindViews.editBankTv.visibility = View.VISIBLE
 
-                bindViews.titleImage.setImageResource(R.mipmap.ic_fail_title)
+                bindViews.titleImageFail.visibility = View.VISIBLE
+                bindViews.titleImage.visibility = View.GONE
 
                 bindViews.titleLayout.titleTv.text = "Request Not Completed"
                 bindViews.tipsTv.text = getString(R.string.product_tips_failure)
