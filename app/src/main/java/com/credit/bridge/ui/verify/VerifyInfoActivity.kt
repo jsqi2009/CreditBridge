@@ -1120,6 +1120,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun showRelationship1Sheet() {
+        if(VerifyInfoUtil.getContact1List().isEmpty() || step2QuestionInfo.ffuyqtcgfw.isEmpty()){
+            return
+        }
         val workTypeSheet = CommonBottomSheet(
             this,step2QuestionInfo.ffuyqtcgfw[0].qpwjbrdvuq,VerifyInfoUtil.getContact1List(),
             contact1Index, object : OnSelectListener {
@@ -1132,6 +1135,9 @@ class VerifyInfoActivity : BaseActivity<ActivityVerifyInfoBinding>(), View.OnCli
     }
 
     private fun showRelationship2Sheet() {
+        if(VerifyInfoUtil.getContact2List().isEmpty() || step2QuestionInfo.ffuyqtcgfw.isEmpty()){
+            return
+        }
         val workTypeSheet = CommonBottomSheet(
             this,step2QuestionInfo.ffuyqtcgfw[3].qpwjbrdvuq,VerifyInfoUtil.getContact2List(),
             contact2Index, object : OnSelectListener {
