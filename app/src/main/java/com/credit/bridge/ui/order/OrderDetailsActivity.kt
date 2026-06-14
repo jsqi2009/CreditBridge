@@ -292,6 +292,7 @@ class OrderDetailsActivity : BaseActivity<ActivityOrderDetailsBinding>(), View.O
             bindViews.continuePaymentTv.visibility = View.GONE
             bindViews.viewPaymentOptionsTv.visibility = View.GONE
 
+            bindViews.titleImage.text = orderInfo?.jerftvqtjkg
             bindViews.extendLayout.dueDateTv.text = orderInfo?.vzlwrta
             bindViews.extendLayout.chargeTv.text = getString(R.string.money_symbol) + " " +
                     orderInfo?.vimzxivnoztqbclsxanyxuhx.toString()
