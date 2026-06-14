@@ -405,11 +405,17 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             if (event.isSuccess) {
                 homeInfo = event.model?.mtaw
                 HomeSessionState.homeInfo = homeInfo
-                if (homeInfo != null) {
-                    refreshView()
-                }
-                if(isBackFromVerifyInfoPage){
+                if(isRecreditNeeded){
+                    hideLoading()
+                    isRecreditNeeded = false
                     tryNavigateToOrderPage()
+                }else{
+                    if (homeInfo != null) {
+                        refreshView()
+                    }
+                    if(isBackFromVerifyInfoPage){
+                        tryNavigateToOrderPage()
+                    }
                 }
             }
             dismissLoadingIfReady()
@@ -839,8 +845,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
 
     private fun showRecreditNeededDialog() {
         DialogUtil.showRecreditNeededDialog(requireContext(), onConfirm = {
-            isRecreditNeeded = false
-            tryNavigateToOrderPage()
+           /* isRecreditNeeded = false
+            tryNavigateToOrderPage()*/
+            showLoading()
+            getHomeData()
         }, onCancel = {
         })
     }
