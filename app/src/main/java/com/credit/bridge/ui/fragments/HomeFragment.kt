@@ -426,6 +426,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
                 }
                 if(event.model?.mtaw != true){
                     if(privacyPolicyUrl.isEmpty()) {
+                        showLoading()
                         HttpClient.getPrivacyPolicyUrl(requireContext())
                     }else{
                         showPermissionSheet()
@@ -638,6 +639,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(), View.OnClickListener, 
             finishAppUploadPipeline()
             return
         }
+        showLoading()
         val appContext = requireContext().applicationContext
         Log.d(TAG, "uploadSystemInfo: start location fetch")
         LocationHelper.fetchLocation(requireContext()) { location ->
